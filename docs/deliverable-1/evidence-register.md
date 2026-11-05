@@ -1,103 +1,92 @@
-# Part F — Working Sprint 1 และ Evidence Register
+# Part F — Working Sprint 1 Evidence Register
 
-Version 0.1 | 4 พฤศจิกายน 2026
-
-**ยังไม่มี working application, test execution, GitHub Issues/PRs, teammate review หรือ release หลักฐานทั้งหมดด้านล่างมีสถานะ MISSING / NOT EXECUTED** จัดเตรียมโครงบันทึกเพื่อเก็บข้อมูลจริงภายหลัง ไม่ใช่รายงานผลการทำงานที่เสร็จแล้ว
+Documentation baseline v0.5 | 5 พฤศจิกายน 2026
+Execution evidence: MISSING / NOT EXECUTED; Issues #1–4 มีแล้วตามข้อมูลทีม ส่วน PR/review/board/release evidence ยังรอบันทึก
 
 ## 1. Release identification
 
 | รายการ | ค่า |
 |---|---|
-| Repository URL | รอทีมกรอก |
-| Sprint staging branch | วางแผนใช้ dev เป็น integration branch; ยังไม่มี branch/merge evidence |
-| Submitted main commit / tag | ยังไม่มี release |
-| Runtime / dependency / DB versions | ยังไม่เลือก/pin/execute |
-| Test environment / execution date | ยังไม่ execute |
-| ผู้พัฒนา / ผู้รีวิว / ผู้ทดสอบ | รอชื่อและการทำงานจริง |
+| Repository | https://github.com/jetanin/LoungCheu |
+| Sprint staging | sprint-1-staging |
+| GitHub project board URL / captured status/date | https://github.com/users/jetanin/projects/10/views/1 |
+| Documentation history | [Changelog](../changelog.md) |
+| Submitted main tag/commit | ยังไม่มี application release |
+| Runtime/dependency/DB versions | รอ pin ตอน implement |
+| Environment / execution date / tester | รอการรันจริง |
 
-## 2. Program demonstration scenarios
+## 2. Program demonstrations
 
-ทุก scenario ต้องแนบภาพจริงที่อ่านได้ role/fixture/version และ expected/actual result ภาพปุ่มซ่อนอย่างเดียวไม่พิสูจน์ backend permission; แสดง API/test/DB หลักฐานตามที่เกี่ยวข้อง
+แนบภาพ/output พร้อม Feature/AC, role, preconditions, steps, expected/actual และ tested commit; protected operations มี API/test evidence ประกอบ
 
-| Evidence | Feature / AC | Role และ starting conditions | ขั้นตอนที่ต้องทำ | Expected | Actual / version |
-|---|---|---|---|---|---|
-| EV-01 | F-01–05 / AC-01,06,08,12,18,21,24 | OA/PA seed; valid future event | OA Login/create/publish → PA Login/register/read saved detail → OA roster | ID/participant/count ตรงข้อมูลบันทึกจริง | MISSING / — |
-| EV-02 | F-03 / AC-13–15 | PA ลงแล้ว หรือ event full/deadline fixture | ส่ง duplicate/full/closed request และตรวจ DB count ก่อน–หลัง | API 409 ตามกรณี, ไม่มี record เพิ่ม | MISSING / — |
-| EV-03 | F-01,F-02,F-04,F-05 / AC-04,10,19,22 | PA/PB/OA/OB | Logout แล้วใช้ session เก่า; PA เรียก owner API; OB เปิด OA roster; PA เปิด PB registration | 401/403/404 ตาม contract, ไม่คืน private data | MISSING / — |
-| EV-04 | Cross-feature / AC-25 | Saved registration และ app/DB แยก process | Restart app แล้ว Login/read own/roster จาก DB | Record/reference/count คงอยู่ | MISSING / — |
-
-### Caption template ต่อภาพ/ชุดภาพ
-
-- Evidence / Feature / AC IDs: รอกรอก
-- Role และข้อมูลตั้งต้นที่สังเคราะห์: รอกรอก
-- Steps: รอการทำงานจริง
-- Expected result: อ้าง contract
-- Actual result: NOT EXECUTED
-- Tested commit / exception จาก release หลัก: ยังไม่มี
-- Screenshot หรือ output ที่แนบใน PDF: ยังไม่มี
-
-## 3. Build/test results
-
-| Evidence | สิ่งที่ต้องบันทึก | Actual command | ผล / counts / commit |
+| Evidence | Feature / AC | Scenario / expected result | Actual / commit |
 |---|---|---|---|
-| EV-05 | TypeScript checks, Vite/Express build และ Vitest/Supertest รวม Prisma/PostgreSQL integration/concurrency | ยังไม่มีคำสั่งที่ implement แล้ว | NOT EXECUTED; counts ยังไม่มี |
-| EV-06 | Selected browser E2E และ manual checks แยกจาก automated | ยังไม่มี | NOT EXECUTED |
-| EV-07 | Domain-rule actual test excerpt เช่น TEST-16/20: setup + assertions + execution result | ยังไม่มี test source | MISSING |
-| EV-08 | Access-rule actual test excerpt เช่น TEST-23/27: setup + assertions + execution result | ยังไม่มี test source | MISSING |
-| EV-09 | Meaningful TDD red และ green พร้อม test/implementation versions | ยังไม่มี | MISSING |
+| EV-01 | F-01–05 / AC-01,06,08,12,18,21,24 | OA Login/create/publish → PA Login/register/read saved result → OA roster; reference/count ตรง DB | MISSING / — |
+| EV-02 | F-03 / AC-13–15 | Duplicate/full/closed ได้ 409 ตาม contract; count/records ไม่เพิ่ม | MISSING / — |
+| EV-03 | F-01,F-02,F-04,F-05 / AC-04,10,19,22 | Cookie หลัง Logout=401; PA ใช้ owner API=403; OB ดู OA roster และ PA ดู PB registration=404; ไม่คืน private data | MISSING / — |
+| EV-04 | Cross-feature / AC-25 | Restart แอปโดยไม่ reset DB แล้วอ่าน record/reference/count เดิมได้ | MISSING / — |
 
-ต้องแนบ output จริงที่อ่าน pass/fail/skipped ได้และตรง commit ไม่แต่ง terminal output ไม่อ้างว่ามี test files จาก STS เพียงอย่างเดียว ใช้ AC result table ใน traceability เป็นตารางผลหลักและเติม actual path/test name ในทุกแถว
+PA/PB/OA/OB และ event fixtures ตาม [STS](../sprints/sprint-1/sts.md)
 
-## 4. สอง Issue/PR chains ที่ต้องเก็บ
+## 3. Build/test evidence
 
-| Field | Chain 1 ที่เสนอ: F-03 duplicate/capacity | Chain 2 ที่เสนอ: F-05 owner roster |
+| Evidence | เนื้อหาที่แนบ | Actual command / result / commit |
 |---|---|---|
-| Requirement / contract / test | FR-06, AC-12–17, TEST-15–21 | FR-08, AC-21–23, TEST-26–29 |
-| Issue ID / วันที่ | ยังไม่มี | ยังไม่มี |
-| Contract/test-design commit ก่อน implementation | ยังไม่มี | ยังไม่มี |
-| Feature branch จาก dev (sprint integration) | ยังไม่มี | ยังไม่มี |
-| Author / pair participants | ยังไม่มี | ยังไม่มี |
-| PR เข้า dev (sprint integration) | ยังไม่มี | ยังไม่มี |
-| Teammate reviewer / substantive finding | ยังไม่มี | ยังไม่มี |
-| Review/แก้ไข/ผลทดสอบ | ยังไม่มี | ยังไม่มี |
-| dev merge/integration checks | ยังไม่มี | ยังไม่มี |
-| Reviewed release PR dev → main | ยังไม่มี | ยังไม่มี |
-| Release tag/commit / วันที่ | ยังไม่มี | ยังไม่มี |
+| EV-05 | Type-check, frontend/backend build, Vitest/Supertest และ PostgreSQL concurrency; pass/fail/skipped counts | NOT EXECUTED / — |
+| EV-06 | Selected browser E2E และ manual UI/restart checks แยกกัน | NOT EXECUTED / — |
+| EV-07 | Actual domain-rule test excerpt: setup/assertions และผลรัน เช่น TEST-16/20 | MISSING / — |
+| EV-08 | Actual access-rule test excerpt เช่น TEST-23/27 พร้อมผลรัน | MISSING / — |
+| EV-09 | Meaningful TDD red→green พร้อม test/implementation versions | MISSING / — |
 
-EV-10: แนบ chain table พร้อมภาพ/ประวัติ GitHub ที่อ่าน IDs/dates/review ได้ EV-11: final board status และ release reference ยัง MISSING ทั้งคู่ ไม่สร้าง Issue/PR ปลอมเพื่อเติมตาราง
+ผลแต่ละ AC ใช้ตารางหลักใน [Traceability](../traceability.md) เติม actual file/name/result และ tested commit
 
-## 5. Setup และ reproduction summary ที่ต้องเติม
+## 4. Issue/PR/integration evidence
 
-อ้าง design ใน System SDS แต่เมื่อมีแอปต้องใส่คำสั่งจริงต่อไปนี้ พร้อมผลที่เพื่อนทำตามแล้ว:
+เลือก 2 completed implementation Issues แสดงใน PDF; ทุก feature PR ยังต้อง review ตาม workflow
 
-| ขั้นตอน | Actual instruction / outcome |
+| Field | Chain 1: #3 / F-03 | Chain 2: #4 / F-04–05 |
+|---|---|---|
+| Requirement / AC / Test | FR-06 / AC-12–17 / TEST-15–21 | FR-07–08 / AC-18–23 / TEST-22–29 |
+| Issue | [#3 Registration](https://github.com/jetanin/LoungCheu/issues/3) | [#4 Registration Views](https://github.com/jetanin/LoungCheu/issues/4) |
+| Contract/test-design commit / วันที่ | — | — |
+| Feature branch จาก sprint-1-staging / author / pair participants | — | — |
+| PR เข้า staging / teammate reviewer | — | — |
+| Specific review finding หรือเหตุผลอนุมัติ / การแก้ / tests | — | — |
+| Staging integration checks / merge commit | — | — |
+| Reviewed release PR เข้า main / release tag/commit | — | — |
+
+EV-10: ตาราง chains พร้อม readable GitHub/history evidence
+EV-11: board URL, captured final status/date และ release reference
+ทั้งคู่ยัง MISSING; baseline review บันทึกใน [Decisions](../decisions.md)
+
+## 5. Setup/reproduction — EV-12
+
+| ขั้นตอน | Actual commands / outcome |
 |---|---|
-| Runtime/dependency installation | ยังไม่มี executable project |
-| Safe environment configuration | Names เสนอใน SDS; ยังไม่มี .env.example ของแอป |
-| Database creation/migration | ยังไม่มี migration |
-| Synthetic seed และ private demo access | ยังไม่มี seed; ห้ามกรอก real passwords ใน PDF/Git |
-| Build/run/test commands | ยังไม่มี |
-| Teammate clean reproduction | NOT EXECUTED; EV-12 |
+| Dependencies/runtime และ safe environment examples | — |
+| Database creation/migrations และ synthetic seed/private demo access | — |
+| Build/run/test และ normal journey | — |
+| Teammate clean reproduction: tester/date/commit/result | NOT EXECUTED |
 
-Cloud URL/Docker/CI pipeline ยังไม่ใช่สิ่งที่ต้องเสร็จใน D1 แต่ design ต้องรองรับ การระบุว่าไม่ครบในตอนนี้ไม่ได้แทนหลักฐาน local release ที่ D1 ต้องมี
+นำขั้นตอนจริงจาก README implementation มาสรุปใน PDF โดยไม่ใส่ secrets
 
-## 6. Contribution table
+## 6. Contributions / AI use
 
-| สมาชิก | งานเอกสาร/การตัดสินใจจริง | Coding/tests/review/integration จริง | Evidence |
-|---|---|---|---|
-| M1: รอชื่อ/รหัส | รอทีมตรวจทานและระบุ contribution จริง | ยังไม่มี | — |
-| M2: รอชื่อ/รหัส | รอทีมตรวจทานและระบุ contribution จริง | ยังไม่มี | — |
+| สมาชิก | Design/implementation/tests/review/integration ที่ทำจริง | Evidence |
+|---|---|---|
+| M1: Jetanin Naitho 67070501011 | รอบันทึก | — |
+| M2: Paphangkorn Luanseng 67070501083 | รอบันทึก | — |
 
-AI-use declaration อยู่ใน changelog; เพิ่มงานที่ AI ช่วยจริงในอนาคต และบันทึกการตรวจรับของมนุษย์ ไม่ต้องแนบ prompt transcript ยาว
+AI-use declaration ดู [Changelog](../changelog.md)
 
-## 7. Known limitations / remaining work
+## 7. Remaining work / limitations
 
-| ID | ประเภท | สถานะและผลกระทบ | Next action |
-|---|---|---|---|
-| GAP-01 | Required implementation missing | F-01–05 ทั้งหมดยังไม่ implement; ยังไม่เป็น working Sprint 1 | พัฒนาตาม contracts หลัง baseline review |
-| GAP-02 | Required verification missing | ไม่มี automated/manual execution หรือ TDD evidence | Implement/run tests และเก็บ results/versions |
-| GAP-03 | Required process missing | ไม่มี Issues/PR/review/integration/release history ที่ยืนยันได้ | ดำเนิน workflow จริงตั้งแต่เริ่ม coding |
-| GAP-04 | Submission metadata missing | ชื่อ/รหัส/repo/theme eligibility ยังไม่ยืนยัน | สมาชิกทั้งคู่เติมและตรวจ |
-| GAP-05 | Submission packaging pending | ยังไม่มี self-contained PDF และเลขหน้าจริง | ประกอบรายงานหลังมีหลักฐานจริง |
+| ID | งานที่ขาด | Next action |
+|---|---|---|
+| GAP-01 | Implementation F-01–05 | พัฒนาตาม contracts |
+| GAP-02 | Executed automated/manual tests และ TDD | Implement/run และเก็บ results/versions |
+| GAP-03 | Issues #1–4 มีแล้ว; board/PR/review/release evidence ยังขาด และ local baseline/staging ไม่มี common ancestor | เตรียม baseline branch ตาม sprint plan; เชื่อม board และเก็บ history |
+| GAP-04 | Final metadata/review/contribution verification และ release reference | สมาชิกตรวจข้อมูลและเติมตามงานจริง |
+| GAP-05 | Self-contained PDF / page numbers | ประกอบหลังมีหลักฐาน |
 
-รายการข้างต้นคือ required work ที่ยังไม่ทำ ไม่เรียกว่า technical debt เพื่อกลบความไม่ครบ ไม่มี defect ที่ค้นพบจาก execution ณ ตอนนี้เพราะยังไม่ได้ทดสอบ ไม่ได้หมายความว่าระบบปราศจาก defect
+เมื่อมี execution failures ให้เพิ่ม defect/failed/skipped records พร้อมผลกระทบและ next action

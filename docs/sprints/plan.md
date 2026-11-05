@@ -1,73 +1,82 @@
 # Part D — Three-Sprint Plan
 
-Version 0.2 | 4 พฤศจิกายน 2026 | Stack ยืนยันแล้ว; แผนงานไม่ใช่บันทึกงานที่เสร็จแล้ว
+Documentation baseline v0.5 | 5 พฤศจิกายน 2026 | สถานะ: PLANNED
 
-| Sprint | เป้าหมาย / Features | Dependencies | ผลที่ต้องได้ / Checkpoint |
+| Sprint | เป้าหมาย / Features | Dependencies | Completion outcome / Checkpoint |
 |---|---|---|---|
-| 1: baseline และ domain slice | F-01–05: Login, create/publish/list event, registration, own records, roster | Stack ตามผู้ใช้; ทีม review scope, Prisma data model, contracts/STS ก่อน coding | Local release บน main, Vitest/Supertest และ selected UI tests, peer-reviewed integration; D1 วันที่ 8 พ.ย. |
-| 2: core expansion | F-06–07: cancellation/reactivation/close และ editing/capacity rules | Accepted Sprint 1, shared locking convention; ผล Lab 5/6 | ทุกฟีเจอร์ S2 ครบและ release แยกอ้างอิงได้; D2 วันที่ 29 พ.ย. |
-| 3: completion และ hardening | F-08–09: check-in, own attendance status และ summary; regression/UAT re-tests | F-04–07, contract/STS ก่อน coding | มีอย่างน้อย 1 workflow/rule implement และ test จริงใน D2; ครบทั้งหมด Final วันที่ 13 ธ.ค. |
+| 1 | F-01–05: auth, create/publish/browse, registration, own records และ roster | Reviewed SRS/SDS/contracts/STS; DB/session foundation | Local working release บน main พร้อม tests/review/setup; D1 8 พ.ย. |
+| 2 | F-06–07: cancel/reactivate/close และ edit/capacity rules | Accepted S1 และ shared locking convention; Lab 5/6 | S2 ครบ มี integrated tested release; D2 29 พ.ย. |
+| 3 | F-08–09: check-in, own attendance และ summary; regression/hardening | F-04–07 และ contracts/STS ก่อน implement | มี working progress และ remaining-work list ใน D2; ครบ Final 13 ธ.ค. |
 
-Sprint 2/3 ไม่ได้มีแค่ปรับ UI แต่เพิ่ม lifecycle จริงและกฎร่วมกับข้อมูลเดิม ต้องคง regression จาก Sprint 1 และ traceability ทุก requirement
+## Sprint 1 work breakdown
 
-## งาน Sprint 1 และการแบ่งงานเสนอ
+ทีมแจ้งว่าสร้าง Issues #1–4 แล้ว ตารางนี้ผูกขอบเขต baseline กับ Issues ดังกล่าว; ตรวจ/เติม requirement/contract links และ assignees ใน Issue ก่อน coding เพิ่ม setup/fix/change Issues ได้
 
-Stack: React/TypeScript/Vite/Bootstrap, Express/TypeScript, PostgreSQL/Prisma; Vitest unit/API integration ร่วมกับ Supertest และ PostgreSQL จริง Browser E2E เสนอ Playwright เพิ่มตาม STS
-
-### Initial GitHub Projects / four-Issue plan
-
-ตารางนี้เป็นแผน ยังไม่ได้สร้าง Issues จริง จำนวน 4 มาจาก workflow ในภาพอ้างอิงที่ระบุบริบท Lab; รวม feature ที่เกี่ยวข้องเป็น Issue เดียวได้และเปิด defect/change Issues เพิ่มตามความจำเป็น
-
-| Planned Issue (ไม่ใช่ GitHub ID จริง) | Features / ผลลัพธ์ | Branch ที่เสนอ |
+| GitHub Issue | Features / ผลลัพธ์ | Branch ที่เสนอ |
 |---|---|---|
-| LC-PLAN-01 | F-01: session auth, CSRF, account seed และ access foundation | feature/auth |
-| LC-PLAN-02 | F-02: Prisma event model, create/publish/browse และ owner list | feature/events |
-| LC-PLAN-03 | F-03: registration และ duplicate/capacity/concurrency tests | feature/registration |
-| LC-PLAN-04 | F-04/F-05: own records และ owner roster รวม journey/reproduction evidence | feature/registration-views |
+| [#1 Authentication](https://github.com/jetanin/LoungCheu/issues/1) | F-01; FR-01–02; AC-01–05: auth/CSRF/seed | feature/auth |
+| [#2 Event Management](https://github.com/jetanin/LoungCheu/issues/2) | F-02; FR-03–05,08; AC-06–11: event schema/create/publish/browse | feature/events |
+| [#3 Registration](https://github.com/jetanin/LoungCheu/issues/3) | F-03; FR-06; AC-12–17: duplicate/capacity/concurrency | feature/registration |
+| [#4 Registration Views](https://github.com/jetanin/LoungCheu/issues/4) | F-04–05; FR-07–08; AC-18–23: own records/roster | feature/registration-views |
 
-แตก `feature/*` จาก `dev` → PR เข้า `dev` ให้เพื่อนรีวิว → รัน integration/system/acceptance checks บน `dev` → reviewed release PR จาก `dev` เข้า `main` → บันทึก tag/commit แต่ละ Sprint ดังนั้น `dev` ทำหน้าที่ sprint staging/integration โดยไม่ต้องเพิ่ม branch ชื่อ sprint-1 แยก
+ทุก Issue เชื่อม AC-24–27/DoD ที่เกี่ยวข้องด้วย Setup workspace/config/build/test/migrations ตาม System SDS เป็นขั้นแรกของ #1 หรือ setup Issue แยกตามที่ทีมตกลง
 
-GitHub Projects status ที่เสนอ: Backlog → Ready (contract/test design พร้อม) → In Progress → In Review → Done (accepted ตาม DoD) ตรวจ actual authors/reviewers/commit ก่อนเปลี่ยน Done
+Workflow: version contracts/test design ก่อน implement → feature branch จาก `sprint-1-staging` → teammate-reviewed PR กลับ staging → integration/system/acceptance checks → reviewed release PR เข้า `main` → บันทึก release tag/commit
 
-ใช้ M1/M2 เป็นชื่อชั่วคราวจนทีมใส่ชื่อจริง ไม่ใช่หลักฐานการมีส่วนร่วม
+รอบตรวจ 5 พ.ย. local `docs/deliverable-1-baseline` กับ `sprint-1-staging` ไม่มี common ancestor ก่อนเปิด baseline PR ให้ fetch/check ฐานล่าสุด หากยังต่าง root:
 
-| งาน | Driver ที่เสนอ | Reviewer ที่เสนอ | Dependency / ผลลัพธ์ |
+1. บันทึก baseline นี้เป็น commit และจด source commit
+2. แตก `docs/deliverable-1-review` จาก staging แล้วนำ README/docs/.gitignore ของ baseline มาบันทึกเป็น commit ใหม่ พร้อมอ้าง source revision/commit
+3. เปิด PR `docs/deliverable-1-review → sprint-1-staging` ให้ทีมตรวจ scope/design/AC/STS ก่อนรับ baseline
+
+ขั้นตอนนี้ยังไม่ได้ดำเนินการ เก็บ branch ต้นทางเป็น history การแยก docs-only PR เป็นวิธีของทีม; ข้อกำหนดหลักคือ contracts มี version ก่อน implementation และ review/history ตรวจสอบได้
+
+ต้องมี GitHub project board ตาม master หน้า 4 Board/Kanban และคอลัมน์ต่อไปนี้เป็น convention ของทีม; URL/สถานะจริงรอบันทึกใน evidence register
+
+| Status | เงื่อนไข |
+|---|---|
+| Backlog | ยังไม่พร้อมเริ่ม |
+| Ready | Scope/contract/STS พร้อมและมีผู้รับผิดชอบ |
+| In Progress | กำลัง implement/test |
+| In Review | เปิด PR หรือรอ acceptance/integration |
+| Done | ผ่าน [DoD](sprint-1/README.md) รวม reviewed integration และ accepted main release |
+
+Merge เข้า staging แล้วแต่ยังไม่ผ่าน release acceptance ให้คง In Review การปิด Issue/ย้าย Done ต้องตรงหลักฐานจริง
+
+## Proposed assignments
+
+M1/M2 ตาม [README](../../README.md) ทั้งคู่ร่วม design, implementation, testing และ review
+
+| งาน | Driver | Reviewer | Dependencies |
 |---|---|---|---|
-| ทบทวน SRS/feature inventory/plan | M1+M2 | ตรวจร่วมกัน | Scope, decisions และ theme ยืนยันแล้ว |
-| F-01 auth และ session tests | M1 | M2 | Reviewed contract ก่อน implement |
-| F-02 create/publish/browse | M2 | M1 | F-01 และ DB foundation |
-| F-03 registration และ race tests | M1+M2 pair | คนที่ไม่ใช่ author หลักตรวจ PR; pair work ต้องระบุจริง | F-02, PostgreSQL transaction |
-| F-04 own registration UI/API/tests | M1 | M2 | F-03 |
-| F-05 owner roster UI/API/tests | M2 | M1 | F-03 |
-| Integration/reproduction/report | M1+M2 | Review release PR โดยผู้ไม่ใช่ author | Build/test/review evidence และ PDF |
+| Scope/design/contract review | M1+M2 | ตรวจร่วมกัน | ตกลง baseline |
+| #1 / F-01 | M1 | M2 | Workspace/seed/session foundation |
+| #2 / F-02 | M2 | M1 | F-01 |
+| #3 / F-03 | M1 | M2 | F-02 และ PostgreSQL transaction |
+| #4 / F-04–05 | M2 | M1 | F-03 |
+| Integration/reproduction/report | M1+M2 | ผู้ไม่ใช่ release PR author | Features/tests พร้อม |
 
-หาก pair ทำทั้งคู่จนไม่มี independent teammate review ที่ชัดเจน ต้องแยกช่วง author/reviewer และบันทึกว่าใครตรวจอะไร ผู้เขียน PR ไม่ approve งานตนเอง ทั้งคู่ต้องอธิบาย requirements/design/test/deployment ได้
+ผู้เขียน PR ไม่ approve งานตนเอง ทุก review ระบุสิ่งที่ตรวจ/ข้อค้นพบ/เหตุผลอนุมัติ Pair work ให้ระบุผู้ร่วมและบทบาทตามจริง
 
-## วันที่เป้าหมาย Sprint 1
+## Target dates และงานต่อเนื่อง
 
-| วัน | ผลลัพธ์ที่วางแผน |
+| ช่วง | เป้าหมาย |
 |---|---|
-| 4 พ.ย. | Baseline/decision review, contracts/STS, Issues และ test design |
-| 5 พ.ย. | F-01/F-02 พร้อม tests และ review |
-| 6 พ.ย. | F-03–05, concurrency/access tests และ review |
-| 7 พ.ย. | Integration, local release, restart/reproduction, รวบรวมหลักฐาน/PDF |
-| 8 พ.ย. | ตรวจ Parts A–F เลขหน้าและ release reference ส่งก่อน 23:59 |
+| 4–5 พ.ย. | Baseline/Issues, F-01/F-02 พร้อม tests และ review |
+| 6 พ.ย. | F-03–05 และ concurrency/access tests |
+| 7–8 พ.ย. | Integration, restart/clean reproduction, release และ PDF; ส่ง D1 ก่อน 8 พ.ย. 23:59 |
+| ไม่เกิน 15 พ.ย. | Lab 5: Docker, CI quality gate, GCP และ persistence |
+| ไม่เกิน 22 พ.ย. | S2 development; Lab 6 independent UAT และ defect fix/re-test |
+| ไม่เกิน 29 พ.ย. | S2 ครบ, S3 contracts/progress และ D2 deployed candidate; Lab 7 approved maintenance change |
+| 1–11 ธ.ค. | ช่วงสอบ: จำกัดงานคงเหลือเป็นงานที่มี owner/วันเสร็จชัดเจน |
+| ไม่เกิน 13 ธ.ค. | S3 ครบ, final regression/re-tests, deployment, PDF และ demo video |
 
-## งานต่อเนื่องและ Labs
+Lab 7 เปลี่ยน behavior ที่ implement แล้วและได้รับ TA approval; required baseline feature ที่ยังไม่ทำใช้แทน maintenance ไม่ได้
 
-| กำหนด | งาน / ข้อผูกพัน |
-|---|---|
-| 9–15 พ.ย. | Lab 5: Docker, CI gate, pipeline, GCP และ data persistence; เริ่ม contracts S2 |
-| 16–22 พ.ย. | S2 implementation และ Lab 6: UAT 4 กรณี, triage, accepted defect fix และ independent re-test |
-| 23–29 พ.ย. | ปิด S2, ทำ S3 contracts ครบและ implement/test progress จริง, Lab 7 approved maintenance change, D2 deployed candidate |
-| 1–11 ธ.ค. | ช่วงสอบ; เผื่อเฉพาะงานคงเหลือขอบเขตชัดเจน ไม่วาง main workflows ไว้สองวันท้าย |
-| ไม่เกิน 13 ธ.ค. | S3 ครบ, final regression/UAT re-tests, final deployment, PDF และ demo video |
+## Scope control
 
-Lab 7 ต้องเป็นการเปลี่ยน behavior/rule ที่ทำแล้วและได้รับอนุมัติ ไม่ใช้ฟีเจอร์ baseline ที่ยังไม่ได้ทำมาแทน maintenance exercise ต้องเก็บ failing changed-behavior test ก่อนแก้ พร้อม regression/review/redeploy และ 5 metrics ที่มีช่วงเวลา/แหล่งข้อมูลจริง
-
-## Completion / scope control
-
-- Sprint 1 exit criteria ตาม [DoD](sprint-1/README.md); ไม่ต้องมี GCP/Docker/CI เสร็จใน D1
-- D2 ต้องไม่เลื่อน required S2 features ไป S3 เพื่อทำให้สถานะดูเสร็จโดยไม่บันทึก scope revision ที่อนุมัติ
-- งาน S3 คงเหลือใน D2 ต้องระบุ Feature/AC, owner จริง, dependency, next action และวันเสร็จ
-- ทุก Sprint ติดตาม issue → contract → tests → reviewed PR → staging integration → main release และหลักฐานผลตาม commit
+- D1 ใช้ local build/test results; Docker/CI/GCP เสร็จใน Lab 5
+- ทุก release อัปเดต traceability, documents, limitations และ evidence ตาม commit
+- การเปลี่ยน scope บันทึกเหตุผล/IDs และการตกลงที่เกี่ยวข้อง
+- D2 ต้องมี S2 ครบและ S3 progress จริง; remaining work ระบุ feature/AC, owner, dependency, next action และวันเสร็จ
+- ก่อน Sprint 2/3 ระบุ staging branch และ accepted main commit ที่ใช้เป็นฐาน
