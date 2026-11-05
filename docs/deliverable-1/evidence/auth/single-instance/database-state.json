@@ -1,0 +1,19 @@
+{
+  "app": {
+    "database": "loung-cheu-database",
+    "port": 5432
+  },
+  "test": {
+    "database": "loungcheu_test",
+    "port": 5432
+  },
+  "test_migrations": [
+    {
+      "migration_name": "202611060001_auth",
+      "finished": true
+    }
+  ],
+  "app_user_count": 6,
+  "app_users_unchanged": true,
+  "credentials": "omitted"
+}

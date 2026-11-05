@@ -1,0 +1,35 @@
+
+> loungcheu@0.1.0 test:e2e
+> playwright test
+
+[WebServer] (node:21416) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+[WebServer] (Use `node --trace-warnings ...` to show where the warning was created)
+[WebServer] (node:39336) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+[WebServer] (Use `node --trace-warnings ...` to show where the warning was created)
+[WebServer] (node:51272) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+[WebServer] (Use `node --trace-warnings ...` to show where the warning was created)
+[WebServer] (node:29988) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+[WebServer] (Use `node --trace-warnings ...` to show where the warning was created)
+[WebServer] (node:29988) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+[WebServer] (Use `node --trace-warnings ...` to show where the warning was created)
+[WebServer] (node:33892) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+[WebServer] (Use `node --trace-warnings ...` to show where the warning was created)
+[WebServer] (node:45120) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+[WebServer] (Use `node --trace-warnings ...` to show where the warning was created)
+
+Running 7 tests using 1 worker
+
+(node:55312) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ok 1 tests\e2e\auth.spec.ts:3:3 › F-01 participant.a: login, refresh, logout and browser back (1.3s)
+  ok 2 tests\e2e\auth.spec.ts:3:3 › F-01 organizer.a: login, refresh, logout and browser back (769ms)
+  ok 3 tests\e2e\auth.spec.ts:18:1 › F-01 invalid form, generic credentials and pending submit (1.2s)
+  ok 4 tests\e2e\auth.spec.ts:29:1 › F-01 expired session clears private UI on focus (394ms)
+  ok 5 tests\e2e\auth.spec.ts:37:1 › F-01 failed logout clears private UI and offers a working retry (593ms)
+  ok 6 tests\e2e\auth.spec.ts:50:1 › F-01 ignores an older successful session response after a newer 401 (497ms)
+  ok 7 tests\e2e\auth.spec.ts:76:1 › F-01 rechecks a restored page after its session was logged out elsewhere (440ms)
+
+  7 passed (15.7s)
+
+Exit code: 0
+

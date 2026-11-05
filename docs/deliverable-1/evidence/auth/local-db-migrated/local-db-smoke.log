@@ -1,0 +1,6 @@
+
+> loungcheu@0.1.0 test:local-db
+> node scripts/smoke-local-db.mjs
+
+Local application database loung-cheu-database: connection/health, anonymous access and both-role Login/Identity/Logout checks passed (credentials omitted).
+Exit code: 0

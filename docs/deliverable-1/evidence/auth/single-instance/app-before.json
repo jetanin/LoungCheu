@@ -1,0 +1,6 @@
+{
+  "database": "loung-cheu-database",
+  "port": 5432,
+  "user_count": 6,
+  "users_sha256": "fba7582ac5513c54cd137e96d9e684c807451e7f127ab299217e52455d1ae311"
+}
