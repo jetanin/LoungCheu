@@ -1,6 +1,6 @@
 # Part D — Three-Sprint Plan
 
-Documentation baseline v0.5 | 5 พฤศจิกายน 2026 | สถานะ: PLANNED
+Documentation baseline v0.5 | 5 พฤศจิกายน 2026 | Execution update 6 พ.ย.: F-01 local implementation/test verification แล้ว รอ feature PR/review; F-02–09 และ release ยัง PLANNED
 
 | Sprint | เป้าหมาย / Features | Dependencies | Completion outcome / Checkpoint |
 |---|---|---|---|
@@ -23,13 +23,9 @@ Documentation baseline v0.5 | 5 พฤศจิกายน 2026 | สถาน�
 
 Workflow: version contracts/test design ก่อน implement → feature branch จาก `sprint-1-staging` → teammate-reviewed PR กลับ staging → integration/system/acceptance checks → reviewed release PR เข้า `main` → บันทึก release tag/commit
 
-รอบตรวจ 5 พ.ย. local `docs/deliverable-1-baseline` กับ `sprint-1-staging` ไม่มี common ancestor ก่อนเปิด baseline PR ให้ fetch/check ฐานล่าสุด หากยังต่าง root:
+Baseline integration สำเร็จแล้ว: รวม unrelated histories/แก้ conflict ที่ `f5339b9` บน `docs/deliverable-1-baseline`; [PR #5](https://github.com/jetanin/LoungCheu/pull/5) ได้ review APPROVED จาก jetanin และ merge เข้า `sprint-1-staging` ที่ `5395942` เมื่อ 6 พ.ย. 2026 00:26:37 Asia/Bangkok จึงไม่ต้องใช้แผนคัดลอกเอกสารเข้า branch ใหม่ที่เสนอไว้ก่อนหน้า
 
-1. บันทึก baseline นี้เป็น commit และจด source commit
-2. แตก `docs/deliverable-1-review` จาก staging แล้วนำ README/docs/.gitignore ของ baseline มาบันทึกเป็น commit ใหม่ พร้อมอ้าง source revision/commit
-3. เปิด PR `docs/deliverable-1-review → sprint-1-staging` ให้ทีมตรวจ scope/design/AC/STS ก่อนรับ baseline
-
-ขั้นตอนนี้ยังไม่ได้ดำเนินการ เก็บ branch ต้นทางเป็น history การแยก docs-only PR เป็นวิธีของทีม; ข้อกำหนดหลักคือ contracts มี version ก่อน implementation และ review/history ตรวจสอบได้
+ตรวจ GitHub/remote ก่อนเริ่ม F-01: staging ตรง `5395942`, ไม่พบ open PR, Issue #1 ยัง open ไม่มี body/assignee และ `feature/auth` ในเครื่องเริ่มจาก staging commit นี้ เก็บ scope/contract links สำหรับ Issue #1 ใน [auth work record](sprint-1/auth-work-record.md); ยังไม่ได้แก้ Issue หรือส่ง review request ไป GitHub
 
 ต้องมี GitHub project board ตาม master หน้า 4 Board/Kanban และคอลัมน์ต่อไปนี้เป็น convention ของทีม; URL/สถานะจริงรอบันทึกใน evidence register
 

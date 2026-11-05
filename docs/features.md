@@ -1,6 +1,6 @@
 # Part B — Feature Inventory
 
-Documentation baseline v0.5 | 5 พฤศจิกายน 2026 | ทุก feature: PLANNED
+Documentation baseline v0.5 | 5 พฤศจิกายน 2026 | Execution update 6 พ.ย.: F-01 มี implementation/tests รอ PR/review/integration; F-02–09 ยัง PLANNED ดู [auth pre-PR review](sprints/sprint-1/auth-pre-pr-review.md)
 
 | ID | Feature / ผลลัพธ์ | Requirement / Rules | Dependency | Sprint |
 |---|---|---|---|---:|
@@ -19,7 +19,7 @@ Documentation baseline v0.5 | 5 พฤศจิกายน 2026 | ทุก fea
 | ID | ความรับผิดชอบร่วม | Owner feature / ตรวจ |
 |---|---|---|
 | SYS-AUTH | Authentication, role, record ownership, cookie, CSRF และ password policy | F-01 วางพื้นฐาน; ทุก feature ต้องตรวจ endpoint ของตน |
-| SYS-DATA | Database constraints, migration, transaction, UTC และ seed | F-02/F-03 วางพื้นฐาน; F-06/F-07/F-08 รักษากฎร่วม |
+| SYS-DATA | Database constraints, migration, transaction, UTC และ seed | F-01 วาง User/session migration/seed; F-02/F-03 วาง domain/transaction foundation; F-06/F-07/F-08 รักษากฎร่วม |
 | SYS-UX | Error contract, validation, loading และ empty state | F-01–05 เริ่ม; ทุก feature รักษา convention |
 | SYS-DELIVERY | Reproduction, Docker, CI gate, GCP และ version identification | Sprint 1 ออกแบบ/ local setup; Lab 5 ทำจริง; ทุก release หลังจากนั้น |
 | SYS-QA | AC→test traceability, regression และ independent UAT | ทุก Sprint; Lab 6 ทำ UAT; Lab 7 ทำ maintenance |

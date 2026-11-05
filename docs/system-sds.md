@@ -12,7 +12,7 @@ React SPA → REST JSON `/api` → Express application services → PostgreSQL �
 | Express + TypeScript | Routers, session/CSRF middleware, authorization, services และ JSON errors |
 | PostgreSQL + Prisma | Domain/session persistence, migrations, constraints และ transactions |
 | Vitest + Supertest | Unit และ API/database integration; concurrency ใช้ PostgreSQL จริง |
-| Browser E2E | เสนอ Playwright สำหรับ selected critical journeys |
+| Browser E2E | Playwright สำหรับ selected auth journeys; cross-feature journeys ตาม STS ยัง pending |
 
 ```mermaid
 flowchart LR
@@ -26,15 +26,15 @@ Modules: accounts (auth/seed), events (create/publish/list; S2 edit/close), regi
 
 ### Planned source layout
 
-เป็นแผนสำหรับ setup; ปัจจุบัน repository มี README/docs/.gitignore
+Layout ด้านล่างเป็นแผนทั้ง Sprint 1; setup/F-01 เพิ่ม workspace, frontend auth, backend accounts/session, Prisma config/User+session migration และ tests แล้วบน `feature/auth` ส่วน events/registrations ยังเป็นแผน ดู [auth work record](sprints/sprint-1/auth-work-record.md)
 
 ```text
 LoungCheu/
 ├── package.json / package-lock.json
-├── frontend/
+├── client/
 │   ├── package.json / vite.config.ts / tsconfig.json / index.html
 │   └── src/{main.tsx,app/,components/,lib/,styles/,features/}
-├── backend/
+├── server/
 │   ├── package.json / tsconfig.json / .env.example
 │   ├── prisma/{schema.prisma,seed.ts,migrations/}
 │   ├── src/{app.ts,server.ts,config/,db/,middleware/,shared/}
@@ -43,7 +43,7 @@ LoungCheu/
 └── tests/e2e/
 ```
 
-app.ts ประกอบ Express app สำหรับ Supertest; server.ts เปิด port; routes/controller รับส่ง HTTP, service ดูแลกฎ/transaction และ validation ตรวจ input Frontend features แบ่ง auth/events/registrations; component tests วางคู่ component ส่วน attendance เพิ่มใน S3 สร้างไฟล์ตามงานจริงและ pin versions/lockfile ตอน setup
+app.ts ประกอบ Express app สำหรับ Supertest; server.ts เปิด port; routes/controller รับส่ง HTTP, service ดูแลกฎ/transaction และ validation ตรวจ input Frontend features แบ่ง auth/events/registrations; component tests วางคู่ component ส่วน attendance เพิ่มใน S3 สร้างไฟล์ตามงานจริง Versions pin ใน package.json/lockfile; F-01 ใช้ Prisma 7.10.1 พร้อม PostgreSQL driver adapter และ `server/prisma.config.ts` อ่าน connection URL จาก environment, `server/src/db/client.ts` ประกอบ client
 
 ## 2. Data model / migrations
 
@@ -144,7 +144,9 @@ Express SPA fallback ใช้เฉพาะ frontend routes; unknown API ค�
 
 Cookie: HttpOnly, SameSite=Lax, Secure บน HTTPS; server expiry 2 ชั่วโมงจาก Login ไม่มี sliding extension Protected endpoints อ่าน user/role/current active state จาก backend
 
-`GET /api/auth/csrf` สร้าง pre-auth session เมื่อจำเป็น หรือคืน token ของ current session; mutations ส่ง `X-CSRF-Token` หลัง Login fetch token ใหม่เพราะ session rotate `GET /api/auth/me` คืน Identity ตาม contract Logout destroy server session และ clear cookie attributes เดิม; cookie เก่าใช้ protected API ไม่ได้
+`GET /api/auth/csrf` สร้าง pre-auth session เมื่อจำเป็น หรือคืน token ของ current session; mutations ส่ง `X-CSRF-Token` หลัง Login fetch token ใหม่เพราะ session rotate `GET /api/auth/me` คืน Identity ตาม contract Logout destroy server session และ clear cookie attributes เดิม; cookie เก่าใช้ protected API ไม่ได้ PostgreSQL store ปิด touch เพื่อไม่ยืดอายุและ prune expired infrastructure rows ด้วยรอบพื้นฐาน 15 นาที (store มี randomized interval); application clock ยังบังคับ fixed expiry ทุก protected request
+
+Frontend ใช้ลำดับ request ป้องกัน response เก่ามาแสดง private identity หลัง response ใหม่ยืนยันว่า session ใช้ไม่ได้; เมื่อ browser ส่ง persisted pageshow จะล้าง identity และตรวจ session ใหม่ รายละเอียด regression/หลักฐานอยู่ใน auth pre-PR review
 
 Seed ใช้ Participant A/B/C, Organizer A/B และ inactive account จากข้อมูลสังเคราะห์ Username trim แล้วเทียบ case-sensitive ตาม seed รับ demo password ผ่าน environment/private handoff แล้ว hash ไม่ commit/log credentials Demo events ใช้เวลาที่ยังเป็นอนาคตขณะ seed/สร้างผ่าน UI; fixed t0 ใช้เฉพาะ automated fixtures
 
@@ -154,8 +156,8 @@ README implementation ต้องระบุ runtime/dependency versions แ�
 
 1. Install dependencies ตาม lockfile และเตรียม safe environment
 2. สร้าง PostgreSQL database/account และ run versioned migrations/Prisma Client generation
-3. Run idempotent synthetic seed; test DB แยกจาก demo/deployment
-4. Build/run frontend/backend, unit/API/DB/browser tests
+3. Run idempotent synthetic seed; test database แยกจาก demo/deployment ปัจจุบันใช้ instance 5432 เดียวกัน โดย `db:setup:test` เตรียม test DB/URL และไม่ start PostgreSQL เพิ่ม
+4. Build/run client/server, unit/API/DB/browser tests
 5. ทำ normal journey, restart persistence และ teammate clean reproduction
 
 Fixtures/time control และ expected results ตาม [STS](sprints/sprint-1/sts.md)

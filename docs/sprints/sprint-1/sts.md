@@ -2,16 +2,16 @@
 
 เอกสาร LC-S1-STS | Documentation baseline v0.5 | 5 พฤศจิกายน 2026
 
-**TEST-01–36: PLANNED / NOT EXECUTED** เก็บ actual file/name/result/commit ใน traceability หลังรัน
+**TEST-01–06: มี actual API/DB/unit results** ดู [auth evidence](../../deliverable-1/evidence/auth/README.md) และ traceability; TEST-07–36 ส่วนที่เกิน F-01 ยัง PLANNED/NOT EXECUTED โดย TEST-32 มีเพียง partial JSON-404/generic-500 checks ของ auth foundation
 
 ## 1. Environment และ fixtures
 
 - Vitest เป็น runner สำหรับ unit และ API/database integration; Supertest เรียก Express app โดยตรง ใช้ cookie agents แยกผู้ใช้และขอ CSRF token ตาม session
 - Unit tests ตรวจ validation/service logic; API integration ใช้ Prisma กับ PostgreSQL จริง ไม่ mock data layer เพื่ออ้าง persistence/authorization
-- React component tests เสนอ Vitest + React Testing Library; selected browser E2E เสนอ Playwright เพิ่ม (ยังไม่มี test implementation)
+- React component tests ด้วย React Testing Library ยังเป็นข้อเสนอและยังไม่ได้ติดตั้ง; เลือกใช้ Playwright แล้วสำหรับ selected auth browser journeys ใน tests/e2e/auth.spec.ts
 - ทดสอบ auth ด้วย cookie jar/session lifecycle จริง; หลัง Login ที่ regenerate session ต้องขอ CSRF token ใหม่ ห้ามแก้ session store ตรง ๆ เพื่อข้าม authentication ใน end-to-end auth tests
 
-- ใช้ test database PostgreSQL แยกจาก demo/deployment; unit tests ใช้ clock ที่ควบคุมได้
+- ใช้ test database PostgreSQL แยกจาก demo/deployment; config ปัจจุบันใช้ instance 5432 เดียวกันสำหรับ app/test โดยแยก database Unit tests ใช้ clock ที่ควบคุมได้ ไม่ต้องเปิด cluster 55432 เก่า
 - PA/PB/PC = active Participants; OA/OB = active Organizers; IX = inactive account ทั้งหมด synthetic
 - เวลาอ้างอิง `t0 = 2026-11-06T03:00:00.000Z` (10:00 Bangkok) เป็น fixed fixture time ไม่ใช้วันที่จริงตัดสิน test
 - EOPEN: owner OA, PUBLISHED, capacity=2, closes=t0+1h, starts=t0+2h, ends=t0+4h, ไม่มี registrations
@@ -19,12 +19,12 @@
 - ทุก test reset fixture เป็นอิสระ; permission tests ใช้ valid CSRF token เพื่อแยกจาก CSRF failure
 - Domain IDs ใช้ UUID ตาม contracts; ทดสอบ malformed path ด้วย authorized session เพื่อแยก validation จาก auth/role rejection Schema assertions อ้าง contracts v0.5 รวม nested event/participant และไม่คืน field ลับ
 - Domain clock/DB timestamps ใช้ millisecond; test boundary ใช้ deadline-1 ms, deadline และ deadline+1 ms; input precision เกิน 3 หลักต้องถูกปฏิเสธ ไม่ปัดลงให้ผ่าน
-- สำหรับ expiry ใช้ time control ตาม backend/session mechanism; ไม่ sleep รอจริง 2 ชั่วโมง
+- สำหรับ expiry ใช้ time control ตาม server/session mechanism; ไม่ sleep รอจริง 2 ชั่วโมง
 - Concurrency ใช้ separate connections/transactions และ start barrier; commit fixtures ก่อนเริ่ม requests, join แล้วอ่าน committed state จาก connection ใหม่ ไม่ครอบทุก request ด้วย uncommitted fixture transaction เดียวหรือ mock lock
 
 ## 2. Planned test cases
 
-ระดับ API/DB ด้านล่างหมายถึง automated integration กับ PostgreSQL จริง ส่วน Unit คือ validation/service logic; E2E คือ browser journey ที่จะ implement ภายหลัง
+ระดับ API/DB ด้านล่างหมายถึง automated integration กับ PostgreSQL จริง ส่วน Unit คือ validation/service logic; F-01 มี browser E2E แล้ว ส่วน cross-feature journeys ที่ยังไม่ implement คงเป็น PLANNED
 
 | Test ID / AC | ระดับ | Preconditions / input | Action | Expected result |
 |---|---|---|---|---|
@@ -77,7 +77,7 @@
 
 | ประเภท | ผลปัจจุบัน | Actual command / file / commit |
 |---|---|---|
-| Unit/API/DB/concurrency | NOT EXECUTED | ยังไม่มี test implementation |
-| Browser E2E | NOT EXECUTED | ยังไม่มีแอปหรือ browser suite |
-| Manual restart/reproduction/UI | NOT EXECUTED | ยังไม่มี runnable release |
-| Process review | NOT EXECUTED | Issues #1–4 มีแล้วตามข้อมูลทีม; completed review/PR/board/release evidence ยังขาด |
+| Unit/API/DB/concurrency | F-01 latest recorded run: 54 PASS (31 API/DB + 23 unit), 0 fail/skip; domain concurrency NOT EXECUTED | `npm.cmd test`; server/tests/integration/auth.test.ts และ unit/{password,config,database-url}.test.ts; current manifest/logs ใน [auth evidence](../../deliverable-1/evidence/auth/README.md), TDD corrections ใน [pre-PR review](auth-pre-pr-review.md) |
+| Browser E2E | F-01 latest recorded run: 7 PASS, 0 fail/skip; journeys F-02–05 NOT EXECUTED | `npm.cmd run test:e2e`; tests/e2e/auth.spec.ts; Chromium 156.0.8078.4; current logs/source manifest และ historical failures ใน auth evidence |
+| Manual restart/reproduction/UI | Teammate/manual NOT EXECUTED | มี runnable F-01 และ automated app-recreation session test แล้ว; ยังไม่มี full Sprint 1/main release หรือ independent clean reproduction |
+| Process review | Baseline review/merge VERIFIED; feature/release review NOT EXECUTED | PR #5 approved jetanin ที่ f5339b9, staging 5395942; feature Issue #1 ยัง open/unassigned และยังไม่มี feature PR |

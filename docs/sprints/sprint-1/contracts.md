@@ -2,7 +2,7 @@
 
 เอกสาร LC-S1-CONTRACT | Documentation baseline v0.5 | 5 พฤศจิกายน 2026
 
-F-01–05: PLANNED; ใช้ SRS/System SDS baseline v0.5 กติกา success/error/session/time ร่วมตาม System SDS และ IDs ตาม traceability
+ใช้ SRS/System SDS baseline v0.5 กติกา success/error/session/time ร่วมตาม System SDS และ IDs ตาม traceability; F-01 มี implementation บน `feature/auth` รอ teammate review/integration/release (ดู [work record](auth-work-record.md)) ส่วน F-02–05 ยัง PLANNED ไม่มีการเปลี่ยน AC จาก baseline
 
 ## Sprint 1 JSON schemas ร่วม
 
