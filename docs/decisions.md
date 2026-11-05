@@ -1,42 +1,45 @@
-# Decisions, Assumptions และคำถามคงค้าง
+# Decisions, Assumptions และ Review Record
 
-Version 0.2 | 4 พฤศจิกายน 2026
+Documentation baseline v0.5 | 5 พฤศจิกายน 2026
 
-ผู้ใช้ยืนยัน technology stack ตามภาพเมื่อ 4 พฤศจิกายน 2026 แล้ว (DEC-02, DEC-13) ส่วน business/design decisions อื่นยังเป็นข้อเสนอ ไม่มีการอ้างว่าอาจารย์/TA อนุมัติหรือทีม review แล้ว
+ตารางนี้เป็น design ที่เสนอให้ทีมตรวจรับ รายการที่ระบุว่ายืนยันแล้วคือ stack และชื่อ branch; ประวัติ revision/commit ดู [Changelog](changelog.md)
 
-| ID | ข้อเสนอ/สมมติฐาน | เหตุผลและผลกระทบ | สถานะ |
+| ID | การตัดสินใจ / สมมติฐาน | เหตุผล |
+|---|---|---|
+| DEC-01 | กิจกรรมภายในมหาวิทยาลัย; ชื่อ LoungCheu | จำกัดโดเมนและใช้ข้อมูลสังเคราะห์ |
+| DEC-02 | React/TypeScript/Vite/Bootstrap, Express/TypeScript, PostgreSQL/Prisma และ REST JSON; stack ยืนยันแล้ว | แยก UI/API/data ชัดเจนและ deploy same-origin ได้ |
+| DEC-03 | หนึ่งบัญชีมีหนึ่ง role; ใช้ seeded demo accounts | เพียงพอสำหรับ workflow โดยไม่เพิ่ม account administration |
+| DEC-04 | Session อายุ 2 ชั่วโมงจาก Login; mutations ใช้ CSRF token | Logout invalidate ฝั่ง server ได้ |
+| DEC-05 | Login ก่อนดูรายการกิจกรรม | ใช้ access policy เดียวกับข้อมูลลงทะเบียน |
+| DEC-06 | UTC millisecond ใน DB/API; UI Asia/Bangkok; ตรวจ deadline หลังได้ event lock | ป้องกัน timezone/lock-wait boundary ผิด; format ตาม BR-14 |
+| DEC-07 | ยกเลิกก่อน deadline และ event=PUBLISHED เท่านั้น | คงรายชื่อเมื่อปิดรับแล้ว |
+| DEC-08 | หนึ่ง record ต่อ user/event; registered_at เป็นเวลาลงครั้งแรก; S2 cancel ตั้ง cancelled_at และ reactivate ล้าง cancelled_at พร้อมเก็บ history | ป้องกันซ้ำและรักษา timestamp สำหรับ backfill/history |
+| DEC-09 | Lock Event ก่อนตรวจ count/ทำ seat mutations ใน transaction | คุม last-seat race และ capacity changes |
+| DEC-10 | capacity 1–1,000; string lengths นับ Unicode code points หลัง trim; CLOSED ไม่เปิดกลับ/แก้ Event fields; ไม่มี delete | ใช้ validation เดียวกันทั้ง UI/API และคงข้อมูลอ้างอิง |
+| DEC-11 | Organizer กดเช็กชื่อช่วงเริ่ม–จบ; ซ้ำตอบ 409 ALREADY_CHECKED_IN คงข้อมูลเดิม | ไม่ต้องใช้ QR และไม่สร้าง attendance ซ้ำ |
+| DEC-12 | API prefix /api; identity/role จาก session | ป้องกัน client spoofing |
+| DEC-13 | Vitest/Supertest, GitHub Projects และ Issues #1–4 ตาม sprint plan | จำนวน Issues เป็นแผนทีม; เพิ่ม setup/fix/change Issues ได้ |
+| DEC-14 | express-session + PostgreSQL store, salted scrypt hash; เสนอ Playwright สำหรับ E2E | รองรับ session lifecycle และ browser journey |
+| DEC-15 | sprint-1-staging เป็น integration branch; feature PRs กลับ staging ก่อน release PR เข้า main; ชื่อ branch ยืนยันแล้ว | รวมงานและให้เพื่อนตรวจทุก PR; baseline integration ตาม sprint plan |
+| DEC-16 | Summary นับสถานะปัจจุบัน; lifecycle history นับเหตุการณ์แยก | Reactivate ลด CANCELLED และเพิ่ม ACTIVE; ไม่สะสมจำนวนครั้ง cancel ใน summary |
+| DEC-17 | UUID และ named schemas; validation/error code/precedence ตาม System SDS และ feature contracts | ให้ UI/API/tests ใช้ contract เดียวกัน; ownership ยังตรวจบน backend |
+
+## คำถามและสถานะ
+
+| ID | สถานะ / ข้อสรุป | งานถัดไป |
+|---|---|---|
+| Q-01 | Resolved: Theme 3 จาก M2 รหัสลงท้าย 3 ตาม master หน้า 4 | ทีมตรวจ metadata ก่อนส่ง |
+| Q-02 | ชื่อ/รหัส/repo ระบุใน README; ทีมแจ้งว่ามี Issues #1–4; assignment/board ยังรอยืนยัน | ตรวจ Issue scopes/assignees เติม board URL และ contribution ตามจริง |
+| Q-03 | Resolved: stack ตาม DEC-02/13 | Pin runtime/dependency versions ตอน implement |
+| Q-04 | Pending: ทีมตรวจรับ business/design decisions | ตรวจ BR-08,11–14, DEC-04/06/08/11/14/16/17 และ AC/STS |
+| Q-05 | Pending: GCP resources/persistence ตาม Lab 5 | ยืนยัน deployment components ก่อน deploy |
+| Q-06 | Master หน้า 13: Final video ≤10 นาที (8 คะแนน), summary ≤1 หน้า (2 คะแนน) | ตรวจ Final handout เพิ่ม; ถ้าขัดกันบันทึกแหล่งและถาม TA |
+| Q-07 | Pending: local docs baseline กับ staging ไม่มี common ancestor ในรอบตรวจนี้ | Fetch/check อีกครั้ง; หากยังต่าง root นำเอกสารเข้า branch ใหม่จาก staging ตาม sprint plan ก่อน PR |
+
+## Teammate baseline review
+
+| Revision | Reviewer / วันที่ | Document commit / PR | ข้อเสนอแนะและผลตัดสินใจ |
 |---|---|---|---|
-| DEC-01 | ใช้บริบทกิจกรรมภายในมหาวิทยาลัย; ชื่อ LoungCheu | จำกัดโดเมนและใช้ข้อมูลสังเคราะห์ได้ | เสนอ |
-| DEC-02 | React + TypeScript + Vite + Bootstrap; Node.js + Express + TypeScript; PostgreSQL + Prisma; REST-style APIs | ใช้ stack ตามภาพที่ผู้ใช้กำหนด แทนข้อเสนอเดิม; แยก frontend/backend source แต่ deploy same-origin ได้ | ยืนยันโดยผู้ใช้ 4 พ.ย. 2026 |
-| DEC-03 | หนึ่ง user มีหนึ่ง role; ไม่สมัครบัญชีผ่าน UI | Seed demo accounts เพียงพอสำหรับ Sprint 1 ตามโจทย์ | เสนอ |
-| DEC-04 | Session auth อายุ 2 ชั่วโมงหลัง Login; CSRF protection สำหรับคำขอเปลี่ยนข้อมูล | รองรับ Logout ที่ invalidate session ฝั่ง server โดยตรง | เสนอ |
-| DEC-05 | Login ก่อนดูรายการกิจกรรมทั้งหมด | ลดกรณี anonymous; ไม่ลดข้อบังคับเผยแพร่ให้ Participant เห็น | เสนอ |
-| DEC-06 | เวลา UTC ใน DB, Asia/Bangkok ใน UI | ชัดเจนสำหรับ deadline และขอบเขตเวลา | เสนอ |
-| DEC-07 | Participant ยกเลิกก่อน deadline และ event=PUBLISHED เท่านั้น | ป้องกันแก้รายชื่อหลังปิดรับ; แจ้งกฎบน UI | เสนอ |
-| DEC-08 | Registration record เดียวต่อ user/event; ยกเลิกแล้ว activate record เดิมพร้อม lifecycle history | ป้องกันซ้ำ; ทำให้ต้องเพิ่ม history ใน Sprint 2 และเปลี่ยน duplicate branch ของ F-03 อย่างมีประวัติ | เสนอ |
-| DEC-09 | Lock event row ก่อนตรวจ count และก่อน mutation ที่กระทบสิทธิ์รับที่นั่ง | คุม last-seat race และประสานกับ cancellation/capacity change | เสนอ |
-| DEC-10 | จำกัด capacity 1–1,000; ไม่เปิด event CLOSED กลับ; ไม่มี delete | ขอบเขตทีมสองคน; คงข้อมูลอ้างอิงไว้ | เสนอ |
-| DEC-11 | เช็กชื่อด้วยปุ่ม Organizer ระหว่างเริ่มถึงจบกิจกรรม ไม่มี QR | ครอบคลุม attendance โดยไม่เพิ่มการจัดการ token/อุปกรณ์ | เสนอ |
-| DEC-12 | เลือก API JSON prefix /api; UI ไม่รับ user ID/role เพื่อใช้เป็นตัวตน | Backend ใช้ session และ query scope เป็นหลัก | เสนอ |
-| DEC-13 | Vitest + Supertest; GitHub Projects; feature/* → dev → main พร้อม peer review; เริ่มแผน 4 Issues | dev ใช้เป็น sprint integration branch; 4 Issues เป็น initial work breakdown ตามภาพ ไม่ห้ามเปิด fix Issues เพิ่ม | ยืนยันเครื่องมือ/workflow ตามผู้ใช้; การแบ่ง Issue เป็นแผน |
-| DEC-14 | Express server-side session บน PostgreSQL, scrypt password hashing และ CSRF token; เสนอ Playwright เพิ่มสำหรับ browser E2E | แทนกลไก framework ของข้อเสนอเดิม โดยคง AC/security behavior เดิม | เสนอ implementation design; ยังไม่ทดสอบ |
+| v0.5 | PENDING | PENDING | PENDING |
 
-## Open questions ก่อนพัฒนา
-
-| ID | คำถาม | ผู้รับผิดชอบ | ผลต่อเอกสาร |
-|---|---|---|---|
-| Q-01 | สมาชิกคนใดมีเลขท้ายรหัส 3 เพื่อใช้ Theme 3 ตามโจทย์? | สมาชิกทั้งคู่ | ยืนยัน theme ก่อน baseline review |
-| Q-02 | ชื่อ/รหัสสมาชิก Repository URL และชื่อผู้พัฒนา/ผู้รีวิวแต่ละงานคืออะไร? | ทีม | README, sprint plan, evidence |
-| Q-03 (resolved) | ผู้ใช้กำหนด React/Express/TypeScript/PostgreSQL/Prisma และ Vitest/Supertest แล้ว | ผู้ใช้ 4 พ.ย. 2026 | ปรับ System SDS, auth contracts, STS และ workflow แล้ว; versions/lockfile กำหนดตอน implement |
-| Q-04 | สมาชิกทั้งคู่ยอมรับกติกายกเลิก/เช็กชื่อ/แก้เวลาแล้วหรือยัง? | ทีม; ถ้าสงสัยถาม TA | SRS BR-08,11–12 และ contracts ใน Sprint 2/3 |
-| Q-05 | GCP resource และ DB persistence จัดให้ผ่านวิธีใดใน Lab 5? | ทีมตาม handout Lab 5 | ปรับ deployment design ก่อน deploy |
-| Q-06 | Final video ใช้เพดาน 4 หรือ 10 นาที และ rubric 10 หรือ 8+2? | ทีมถามอาจารย์/TA ก่อน Final | ไม่กระทบ D1; ยังไม่สรุปเองว่าอนุมัติเกณฑ์ใด |
-
-## Baseline review record
-
-| Version | Reviewer | วันที่ | ข้อเสนอแนะ / การตัดสินใจ |
-|---|---|---|---|
-| 0.1 | ยังไม่ได้ระบุ | ยังไม่ได้ review | เตรียมเอกสารแล้ว แต่ไม่มีการอนุมัติหรือการตรวจจากเพื่อนร่วมทีม |
-| 0.2 | ผู้ใช้ยืนยันเฉพาะ stack ผ่านข้อความในแชต | 4 พ.ย. 2026 | ปรับตามภาพ; ไม่ใช่ teammate review ของ design/implementation ทั้งชุด |
-
-ทุก revision ต้องระบุ requirement/AC/test ที่กระทบและเหตุผล การย้าย required feature ข้าม Sprint ต้องมี scope revision ที่ทีมยืนยัน และเมื่อกระทบ baseline ที่รายวิชากำหนดต้องบันทึกการอนุมัติที่เกี่ยวข้อง
+บันทึก reviewer จริง สิ่งที่ตรวจ DEC/BR/AC/Test ที่กระทบ และผล accepted/changes requested ถ้าร่วมเขียน ให้ระบุ contribution และส่วนที่ตรวจข้ามกัน ผู้เขียน PR ไม่ approve งานตนเอง การตรวจโดย Codex เป็น AI assistance ตาม changelog
