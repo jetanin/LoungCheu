@@ -1,6 +1,6 @@
 # Part A — Software Requirements Specification
 
-เอกสาร: LC-SRS | Version 0.2 | 4 พฤศจิกายน 2026 | Stack กำหนดแล้ว; business baseline เสนอเพื่อทบทวนก่อนพัฒนา
+เอกสาร LC-SRS | Documentation baseline v0.5 | 5 พฤศจิกายน 2026
 
 ## 1. ปัญหาและเป้าหมาย
 
@@ -12,7 +12,7 @@
 
 | Actor | ความรับผิดชอบ/สิทธิ์ |
 |---|---|
-| Participant | ดูกิจกรรมที่เผยแพร่ ลงทะเบียน ดูประวัติของตน และยกเลิกก่อนปิดรับ |
+| Participant | ดูกิจกรรมที่เผยแพร่ ลงทะเบียน ดูรายการ/สถานะของตน และยกเลิกก่อนปิดรับ |
 | Organizer | สร้างและเผยแพร่กิจกรรมของตน ดูรายชื่อ ปิดรับ ปรับรายละเอียด/ความจุ เช็กชื่อ และดูรายงานของตน |
 | ผู้ไม่มี session | เข้าหน้า Login และขอ CSRF token ได้ แต่ใช้ข้อมูลกิจกรรม/ข้อมูลส่วนตัวผ่าน API ไม่ได้ |
 
@@ -26,16 +26,14 @@ Out of scope: self-registration, reset password, email verification, หลา�
 
 ไม่มีการรับประกันตัวบุคคลหน้างานด้วยเทคโนโลยี Organizer ตรวจตัวผู้เข้าร่วมก่อนกดเช็กชื่อเอง ใช้ข้อมูลสังเคราะห์ในการสาธิต
 
-### Technology constraints ที่ผู้ใช้กำหนด
+### Technology และ workflow
 
 - Frontend: React + TypeScript + Vite + Bootstrap
 - Backend: Node.js + Express + TypeScript
 - Database/data access: PostgreSQL + Prisma
 - Architecture: REST-style APIs
 - Testing: Vitest + Supertest เป็นชุดหลัก; selected automated browser E2E เสนอใช้ Playwright เพิ่ม
-- Workflow: Git/GitHub Projects, main/dev/feature branches, Pull Requests และ peer review; `dev` รับบท sprint staging ตามข้อกำหนด D1
-
-รายละเอียด deployment/session/transaction ตาม System SDS เป็น design ของทีม ต้องทดสอบจริง ไม่ใช่สิ่งที่ stack ทำให้อัตโนมัติ
+- Workflow: GitHub Issues/Projects, feature/* → sprint-1-staging → main พร้อม teammate review ตาม DEC-15
 
 ## 4. คำศัพท์และสถานะ
 
@@ -63,7 +61,7 @@ Out of scope: self-registration, reset password, email verification, หลา�
 | FR-08 | Organizer ดูรายการกิจกรรมของตนและรายชื่อผู้ลงทะเบียนพร้อมยอด ACTIVE ของกิจกรรมนั้นได้ | 1 |
 | FR-09 | Participant ยกเลิก ACTIVE ของตนก่อนปิดรับได้ และที่นั่งกลับมาใช้ได้ | 2 |
 | FR-10 | Organizer ปิดรับกิจกรรม PUBLISHED ของตนได้โดยไม่ลบรายการลงทะเบียนเดิม | 2 |
-| FR-11 | Organizer แก้ DRAFT ได้ครบทุกช่อง และแก้ชื่อ คำอธิบาย สถานที่ หรือความจุของ PUBLISHED ได้ตามกฎ | 2 |
+| FR-11 | Organizer แก้ DRAFT ของตนได้ทุกช่องใน EventInput (ไม่รวม id/owner/status/system fields) และแก้ชื่อ คำอธิบาย สถานที่ หรือความจุของ PUBLISHED ได้ตามกฎ | 2 |
 | FR-12 | Participant ที่เคยยกเลิกลงทะเบียนใหม่ได้เมื่อกิจกรรมยังเปิดรับและมีที่นั่ง | 2 |
 | FR-13 | Organizer เช็กชื่อผู้มี ACTIVE registration ในกิจกรรมของตนภายในช่วงกิจกรรมได้ | 3 |
 | FR-14 | Participant ดูสถานะการเช็กชื่อของตนได้ | 3 |
@@ -73,20 +71,20 @@ Out of scope: self-registration, reset password, email verification, หลา�
 
 | ID | กฎและผลเมื่อไม่ผ่าน |
 |---|---|
-| BR-01 | capacity ต้องเป็นจำนวนเต็ม 1–1,000; title 1–120 ตัวอักษรหลัง trim, description 1–2,000, location 1–200; ช่องจำเป็นว่างไม่ได้ |
+| BR-01 | capacity เป็น JSON integer 1–1,000 ไม่ coercion string/boolean; title 1–120, description 1–2,000, location 1–200 Unicode code points หลัง trim; ทุกช่องต้องเป็น string และว่างไม่ได้ |
 | BR-02 | `registration_closes_at <= starts_at < ends_at`; เผยแพร่ได้เมื่อ closes_at อยู่ในอนาคตเทียบเวลา server |
 | BR-03 | ลงทะเบียนได้เมื่อ status=PUBLISHED และ `server_now < registration_closes_at`; ที่เท่ากับ deadline ต้องปฏิเสธ |
-| BR-04 | ผู้ใช้หนึ่งคนมี registration record ต่อกิจกรรมได้หนึ่ง record และมี ACTIVE ได้ไม่เกินหนึ่ง; Sprint 2 ลงทะเบียนใหม่โดยใช้ record เดิม |
+| BR-04 | หนึ่ง registration record ต่อ user/event; S2 reactivate record เดิมโดยคง registered_at ครั้งแรก ล้าง cancelled_at และ append history; ไม่สร้าง ACTIVE ซ้ำ |
 | BR-05 | ACTIVE count ต้องไม่เกิน capacity แม้คำขอเข้าพร้อมกัน; คำขอที่แพ้ต้องไม่เพิ่ม record/กินที่นั่ง |
 | BR-06 | Participant เข้าถึงและเปลี่ยนเฉพาะ registration ของตน และไม่มีสิทธิ์จัดการกิจกรรม/รายชื่อ |
 | BR-07 | Organizer จัดการกิจกรรม รายชื่อ เช็กชื่อ และรายงานเฉพาะกิจกรรมตน; ไม่มีสิทธิ์ใช้ฟังก์ชันลงทะเบียนของ Participant |
 | BR-08 | Participant ยกเลิกได้เฉพาะ ACTIVE ก่อน deadline และเมื่อ event=PUBLISHED; เรียกซ้ำกับ CANCELLED ต้องปฏิเสธโดยไม่มีผลข้างเคียง |
-| BR-09 | Event transition ที่อนุญาตคือ DRAFT→PUBLISHED→CLOSED เท่านั้น; CLOSED แก้ไขหรือเปิดกลับไม่ได้ใน baseline |
+| BR-09 | Event transition คือ DRAFT→PUBLISHED→CLOSED; CLOSED ห้ามแก้ Event fields/เปิดกลับ แต่ check-in บน Registration ทำได้ตาม BR-12 |
 | BR-10 | ลด capacity ไม่ต่ำกว่า ACTIVE count; ลงทะเบียน/ยกเลิก/ปรับความจุ/ปิดรับต้องประสาน transaction บน event เดียวกัน |
-| BR-11 | PUBLISHED แก้เวลา/วันปิดรับ/เจ้าของไม่ได้; owner กำหนดจาก session ไม่รับจาก client; ไม่มี hard delete ผ่านผลิตภัณฑ์ |
-| BR-12 | Check-in ได้เฉพาะ ACTIVE และ `starts_at <= server_now <= ends_at`; CLOSED ยังเช็กชื่อได้ภายในช่วงงาน; เช็กชื่อซ้ำไม่สร้างการเข้าร่วมซ้ำ |
-| BR-13 | อัตราเข้าร่วม = checked-in / ACTIVE × 100 ปัดทศนิยม 2 ตำแหน่ง; ถ้า ACTIVE=0 แสดง 0.00%; ไม่รวม CANCELLED ในตัวหาร |
-| BR-14 | ทุกเวลาเก็บเป็น UTC; API รับ ISO 8601 ที่มี offset; UI แสดง Asia/Bangkok และระบุเขตเวลา; ใช้ server clock ตัดสินกฎ |
+| BR-11 | owner immutable ทุกสถานะและกำหนดจาก session; PUBLISHED แก้เวลา/วันปิดรับไม่ได้; id/status/system fields ไม่รับผ่าน edit input และไม่มี hard delete ผ่านผลิตภัณฑ์ |
+| BR-12 | Check-in ได้เฉพาะ ACTIVE และ `starts_at <= server_now <= ends_at`; CLOSED ยังเช็กชื่อได้ภายในช่วงงาน; เช็กชื่อซ้ำปฏิเสธ 409 ALREADY_CHECKED_IN โดยไม่เปลี่ยน checked_in_at/checked_in_by_id หรือยอดเข้าร่วม |
+| BR-13 | ACTIVE/CANCELLED นับ record ตามสถานะปัจจุบันของ event; checked-in นับ ACTIVE ที่ checked_in_at ไม่เป็น null; reactivate ย้ายยอด CANCELLED ไป ACTIVE ไม่สะสมจำนวนครั้ง cancel ใน summary; อัตราเข้าร่วม = checked-in / ACTIVE × 100 ปัดทศนิยม 2 ตำแหน่ง ถ้า ACTIVE=0 แสดง 0.00%; lifecycle history แยกจากยอดปัจจุบัน |
+| BR-14 | ทุกเวลาเก็บ UTC ความละเอียด millisecond; API รับ ISO 8601 ที่มี offset และเศษวินาที 0–3 หลัก คืน UTC แบบ YYYY-MM-DDTHH:mm:ss.SSSZ; input ละเอียดกว่า 3 หลักปฏิเสธ 400 ไม่ปัดเงียบ ๆ; UI Asia/Bangkok ระบุเขตเวลา; ใช้ server clock และตรวจเวลาของ event/registration mutations ภายใน transaction หลังได้ Event lock |
 
 ## 7. Non-Functional Requirements และวิธีตรวจ
 
@@ -102,8 +100,6 @@ Out of scope: self-registration, reset password, email verification, หลา�
 | NFR-08 | ทุก Sprint 1 AC มี planned test และตอนส่งมี actual test/manual record ที่ระบุผลกับ commit; requirement คงเหลือมี Sprint รับผิดชอบ | Traceability review / 1; ปรับทุก checkpoint |
 | NFR-09 | ผู้ทดสอบภายนอกทีมทำ UAT อย่างน้อย 4 กรณี (normal/rule/access/persistence) พร้อม tester/version และ re-test accepted defect อย่างน้อย 1 รายการตาม Lab 6 | Independent UAT records / Lab 6; final re-test ตามผลกระทบ |
 
-ไม่ได้ตั้ง performance SLA ที่ไม่มีหลักฐานรองรับ หากทีมเพิ่มเป้าหมาย latency ภายหลังต้องกำหนด workload/environment และวิธีวัดก่อนอ้างว่าผ่าน
-
 ## 8. เส้นทางใช้งานหลักและข้อผิดพลาด
 
 1. Organizer Login แล้วสร้าง DRAFT ที่ capacity=2 และกำหนดวันเวลาที่ถูกต้อง
@@ -116,8 +112,6 @@ Out of scope: self-registration, reset password, email verification, หลา�
 
 เส้นทางอื่นของผลิตภัณฑ์เต็ม: Participant ยกเลิกก่อนปิดรับ → ที่นั่งคืน → ลงใหม่; Organizer ปิดรับ/ปรับความจุ → เช็กชื่อในช่วงกิจกรรม → ดูสรุป
 
-## 9. สมมติฐานและการยอมรับ baseline
+## 9. Assumptions และ scope changes
 
-ขอบเขตนี้ไม่มีจำนวนฟีเจอร์ขั้นต่ำที่อ้างขึ้นเอง กำหนดให้เทียบความลึกกับ Theme 3: เผยแพร่กิจกรรม ลงทะเบียน ดูข้อมูลตามสิทธิ์ คุม capacity/duplicate รวม concurrency และ persistence
-
-รายละเอียดที่โจทย์ไม่ได้กำหนด เช่น กติกายกเลิก ช่วงเช็กชื่อ และเวลา session เป็นข้อเสนอทีมใน [Decision log](decisions.md) ต้องทบทวนก่อน implement หากเปลี่ยนต้องแก้เอกสาร/AC/STS/traceability ที่เกี่ยวข้องและบันทึกเหตุผล ไม่ลบ requirement เพื่อปกปิดงานคงเหลือ
+รายละเอียดที่ทีมเลือกเอง เช่น session อายุ 2 ชั่วโมง capacity สูงสุด และกติกายกเลิก/check-in อยู่ใน [Decisions](decisions.md) การเปลี่ยนกฎต้องปรับ AC/STS/traceability และบันทึกเหตุผลใน [Changelog](changelog.md)
