@@ -1,12 +1,12 @@
 # Part E — Sprint 1 Engineering Baseline และ Product DoD
 
-Version 0.1 | 4 พฤศจิกายน 2026 | สถานะ: PLANNED, ยังไม่ review/implement/execute
+Documentation baseline v0.5 | 5 พฤศจิกายน 2026 | สถานะ: PLANNED
 
 ## Sprint goal
 
 ผู้จัดสร้าง/เผยแพร่กิจกรรมที่จำกัดที่นั่ง ผู้เข้าร่วม Login ลงทะเบียนและอ่านผลที่ persist แล้ว ผู้จัดอ่าน roster ได้ โดย backend ป้องกัน role/ownership violation และป้องกัน duplicate/over-capacity รวมคำขอพร้อมกัน
 
-Scope คือ F-01–05; ยังไม่มี cancel/reactivate, close action, edit published event, check-in หรือ summary report ใน Sprint 1 การบันทึก event ที่ status=CLOSED เพื่อ negative test ทำผ่าน fixture ไม่ได้แปลว่ามี Close UI แล้ว
+Scope: F-01–05; cancel/reactivate/close/edit อยู่ S2 และ check-in/summary อยู่ S3 ค่า CLOSED ใน Sprint 1 tests เตรียมผ่าน fixture
 
 ## เอกสารที่เป็น contract ก่อน implement
 
@@ -14,7 +14,7 @@ Scope คือ F-01–05; ยังไม่มี cancel/reactivate, close act
 - [Software Test Specification](sts.md): TEST-01–36 และ trace ไป AC
 - [SRS](../../srs.md), [System SDS](../../system-sds.md), [Traceability](../../traceability.md)
 
-ก่อนเริ่ม coding ให้สมาชิกทั้งคู่ยืนยัน baseline, สร้าง Issue อ้าง IDs และบันทึก revision/commit จริงของ contract ถ้ากฎเปลี่ยนให้แก้ AC/STS และ changelog พร้อมเหตุผล
+Version contracts/STS ก่อน implementation และดำเนิน reviewed integration ตาม [Sprint plan](../plan.md) ประวัติเอกสารดู [Changelog](../../changelog.md)
 
 ## Product Definition of Done
 
@@ -31,7 +31,7 @@ Scope คือ F-01–05; ยังไม่มี cancel/reactivate, close act
 | DOD-09 | ระบุ limitations/failed/skipped/incomplete งานและไม่ใส่ secrets ใน Git/PDF | Defect register และ safe access review |
 | DOD-10 | ตั้งแต่ Lab 5 เป็นต้นไปมี CI gate, Docker/GCP version และ post-deploy verification; final มี independent acceptance และส่งมอบครบ | Pipeline/deployment/UAT records ตาม checkpoint; D1 ส่วนนี้เป็น PLANNED ไม่อ้างผ่าน |
 
-ณ วันที่ร่างเอกสารนี้ DOD-01–09 ยังไม่มี execution/completion evidence และ DOD-10 ยังไม่ถึง implementation checkpoint เอกสารเพียงอย่างเดียวไม่ทำให้ feature เสร็จ
+DOD-01–09 รอ implementation/evidence; DOD-10 ตรวจตั้งแต่ Lab 5
 
 ## Review gate ก่อนรับ implementation
 
