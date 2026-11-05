@@ -1,0 +1,48 @@
+{
+  "name": "loungcheu",
+  "private": true,
+  "type": "module",
+  "version": "0.1.0",
+  "workspaces": [
+    "server",
+    "client"
+  ],
+  "engines": {
+    "node": ">=22.16.0 <23"
+  },
+  "scripts": {
+    "dev": "concurrently -k \"npm run dev -w server\" \"npm run dev -w client\"",
+    "build": "npm run build -w client && npm run build -w server",
+    "typecheck": "npm run typecheck --workspaces && tsc --noEmit -p tsconfig.tools.json",
+    "start": "npm run start -w server",
+    "test": "vitest run",
+    "test:unit": "vitest run server/tests/unit client/src",
+    "test:auth": "vitest run server/tests/integration/auth.test.ts",
+    "test:e2e": "playwright test",
+    "test:built": "node scripts/smoke-built.mjs",
+    "test:local-db": "node scripts/smoke-local-db.mjs",
+    "db:generate": "npm run db:generate -w server",
+    "db:migrate": "npm run db:migrate -w server",
+    "db:setup:test": "node scripts/setup-test-db.mjs",
+    "db:migrate:test": "tsx scripts/test-db-migrate.ts",
+    "db:seed": "npm run db:seed -w server"
+  },
+  "devDependencies": {
+    "@playwright/test": "1.64.1",
+    "@types/connect-pg-simple": "7.0.3",
+    "@types/express": "5.0.6",
+    "@types/express-session": "1.19.0",
+    "@types/node": "22.20.5",
+    "@types/pg": "8.23.1",
+    "@types/react": "19.3.0",
+    "@types/react-dom": "19.3.0",
+    "@types/supertest": "7.2.1",
+    "concurrently": "10.0.6",
+    "prisma": "7.10.1",
+    "supertest": "7.3.1",
+    "tsx": "4.23.15",
+    "typescript": "5.9.3",
+    "vite": "6.4.5",
+    "vitest": "5.1.0"
+  }
+}
