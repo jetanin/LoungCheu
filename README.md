@@ -70,9 +70,24 @@ Remove-Item Env:DATABASE_URL
 
 `npm test`: unit/HTTP boundary/React component tests; `npm run test:db`: API + persistence + lock-wait + last-seat/duplicate race ผ่านคนละ PostgreSQL connections โดยมี lock barrier จริง ไม่ skip เงียบหากไม่มี test DB และจะปฏิเสธ DB name ที่ไม่ลงท้าย `_test` Fixtures ใช้ UUID เฉพาะรอบและ cleanup เฉพาะ records ที่สร้าง
 
+เฉพาะ backend ใช้ `npm test -w server` (Vitest + Supertest, ไม่ต้องมี DB) และ `npm run test:db -w server` (Vitest + Supertest + PostgreSQL จริง โดยตั้ง TEST_DATABASE_URL/migrate ตามด้านบน)
+
 ผลล่าสุด 6 พ.ย. 2026: **39 + 15 = 54 tests passed**, typecheck/build ผ่าน; ดู [ผลทดสอบและข้อจำกัด](docs/registration/verification.md) และ [จุดเชื่อมต่อกับเพื่อน](docs/registration/integration.md)
 
 การทดสอบ API ของ #3 inject guards เฉพาะ tests เพื่อแยกจาก #1 จึงยังไม่ถือว่าผ่าน real session/CSRF integration หรือ browser E2E ของแอปรวม
+
+## รัน backend
+
+หลังติดตั้ง/generate/migrate และเตรียม server/.env ตามด้านบน:
+
+```powershell
+npm run build -w server
+npm run start -w server
+```
+
+เปิด HTTP listener ที่ `http://127.0.0.1:3000` (ปรับ PORT ใน server/.env ได้) และเชื่อม PostgreSQL บน Docker ก่อนเริ่มรับคำขอ ใช้ Ctrl+C เพื่อหยุด; แก้ source แล้วต้อง build/start ใหม่
+
+server/src/server.ts ยังใช้ guards ที่ปฏิเสธคำขอทั้งหมดจนกว่า #1 จะนำ middleware session/CSRF จริงมาเชื่อม ดังนั้น Registration API ตอบ `401 AUTH_REQUIRED` เป็นพฤติกรรมที่คาดไว้ ไม่มี login bypass ส่วน auth/event/own-list APIs ยังไม่มีใน branch นี้
 
 ## Git / review
 

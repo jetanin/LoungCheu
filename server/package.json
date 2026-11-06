@@ -1,6 +1,9 @@
 {
   "name": "@loungcheu/backend", "version": "0.1.0", "private": true, "type": "module",
   "scripts": {
+    "start": "node --env-file-if-exists=.env dist/server.js",
+    "test": "vitest run tests/unit",
+    "test:db": "vitest run tests/integration",
     "generate": "prisma generate",
     "migrate": "prisma migrate deploy",
     "build": "tsc -p tsconfig.json",

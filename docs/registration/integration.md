@@ -27,7 +27,9 @@ app.use(apiErrorHandler);
 
 `verifySessionCsrfAndOrigin` ต้องตรวจ `X-CSRF-Token` ว่าผูกกับ session ปัจจุบัน และ Origin (ถ้ามี) ต้องตรง APP_ORIGIN ใช้ ApiError(403, 'CSRF_FAILED', ...) เมื่อไม่ผ่าน การตรวจ session จริง, token rotation, logout/expiry และ inactive session เป็นงาน #1 ที่ต้องรันร่วมอีกครั้ง
 
-ลำดับ route นี้: authenticate → Participant role → CSRF → JSON/body/UUID → domain transaction อย่าวาง global JSON parser ที่ reject malformed input ก่อน auth/role ถ้าต้องการรักษา precedence ตาม baseline โดย router มี JSON parser ของตนแล้ว `createRegistrationApp` เป็น composition harness สำหรับ #3/tests ไม่มี backend server หรือ auth/event endpoints แฝงไว้
+ลำดับ route นี้: authenticate → Participant role → CSRF → JSON/body/UUID → domain transaction อย่าวาง global JSON parser ที่ reject malformed input ก่อน auth/role ถ้าต้องการรักษา precedence ตาม baseline โดย router มี JSON parser ของตนแล้ว `createRegistrationApp` เป็น composition harness สำหรับ #3/tests
+
+`server/src/server.ts` เปิด HTTP listener ด้วย `npm run start -w server` หลัง build โดย guards เริ่มต้นปฏิเสธ auth ด้วย 401 และ CSRF ด้วย 403 จนกว่าจะเชื่อม middleware จริงของ #1 ไม่มี auth/event endpoints หรือ runtime test identity แฝงไว้
 
 Success 201: `{ data: { id, event_id, status: 'ACTIVE', registered_at } }`; error envelope `{ error: { code, message, fields: {} } }` ทุกครั้ง ข้อมูล participant มาจาก trusted identity ไม่คืน participant_id/session/password
 

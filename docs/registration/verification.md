@@ -19,8 +19,9 @@ Environment: Windows, Node 24.15.0, npm 11.11.0, Docker 29.2.1, PostgreSQL 17.11
 | Final dependency installation audit | 0 vulnerabilities (354 packages audited) |
 | `docker compose ps` | db และ db-test healthy; loopback ports 5432 และ 55433 |
 | Vite dev HTTP smoke | `/`, `/events/{UUID}`, `/src/main.tsx`, `/src/features/registrations/RegistrationPage.tsx` ตอบ HTTP 200 |
+| Backend startup follow-up | `npm run start -w server` เปิด listener ที่ 127.0.0.1:3000; POST registration ตอบ 401 AUTH_REQUIRED เมื่อยังไม่ได้เชื่อม #1; typecheck/backend build ผ่าน |
 
-Build artifacts: client/dist/index.html + Bootstrap CSS bundle + JS bundle; server/dist เป็น module build ไม่มี auth server startup ใน branch นี้ HTTP smoke เป็นการตรวจ serve/transform เท่านั้น ไม่ใช่ browser E2E
+Build artifacts: client/dist/index.html + Bootstrap CSS bundle + JS bundle; server/dist มี module build และ server.js ซึ่งเปิด listener ด้วย guards ที่ปฏิเสธคำขอไว้จนกว่า #1 จะเชื่อม auth จริง HTTP smoke เป็นการตรวจ serve/transform เท่านั้น ไม่ใช่ browser E2E
 
 ## Traceability สำหรับ #3
 
