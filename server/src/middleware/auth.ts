@@ -1,0 +1,39 @@
+import type { RequestHandler } from 'express';
+import type { PrismaClient, User, Role } from '@prisma/client';
+import { ApiError } from '../shared/errors.js';
+
+declare module 'express-session' {
+  interface SessionData { csrfToken?: string; userId?: string; expiresAt?: number; }
+}
+declare global {
+  namespace Express { interface Locals { identity: Pick<User, 'id' | 'displayName' | 'role'>; } }
+}
+
+export const identity = (user: Pick<User, 'id' | 'displayName' | 'role'>) =>
+  ({ id: user.id, display_name: user.displayName, role: user.role });
+
+export function requireAuth(db: PrismaClient, now: () => number): RequestHandler {
+  return async (req, res, next) => {
+    if (!req.session.userId) throw new ApiError(401, 'AUTH_REQUIRED', 'กรุณาเข้าสู่ระบบ');
+    // Cookie/store TTL alone is insufficient: enforce the fixed login deadline
+    // on the server even if a client replays its cookie after intervening reads.
+    if (typeof req.session.expiresAt !== 'number' || now() >= req.session.expiresAt) {
+      await new Promise<void>((resolve, reject) => req.session.destroy(error => error ? reject(error) : resolve()));
+      throw new ApiError(401, 'AUTH_REQUIRED', 'กรุณาเข้าสู่ระบบ');
+    }
+    const user = await db.user.findUnique({ where: { id: req.session.userId } });
+    if (!user || !user.isActive) {
+      await new Promise<void>((resolve, reject) => req.session.destroy(error => error ? reject(error) : resolve()));
+      throw new ApiError(401, 'AUTH_REQUIRED', 'กรุณาเข้าสู่ระบบ');
+    }
+    res.locals.identity = user;
+    next();
+  };
+}
+
+export function requireRole(role: Role): RequestHandler {
+  return (_req, res, next) => {
+    if (res.locals.identity.role !== role) throw new ApiError(403, 'ROLE_FORBIDDEN', 'ไม่มีสิทธิ์ใช้งาน');
+    next();
+  };
+}

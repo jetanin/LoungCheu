@@ -1,0 +1,51 @@
+import { useCallback, useEffect, useRef, useState } from 'react';
+import { ApiError, getIdentity, mutate, type Identity } from '../lib/api';
+import { Login } from '../features/auth/Login';
+
+function navigate(path: string) { if (window.location.pathname !== path) window.history.replaceState({}, '', path); }
+export function App() {
+  const [identity, setIdentity] = useState<Identity | null>(null), [loading, setLoading] = useState(true);
+  const [error, setError] = useState(''), [loggingOut, setLoggingOut] = useState(false), [logoutFailed, setLogoutFailed] = useState(false);
+  const generation = useRef(0);
+  const check = useCallback(async () => {
+    const requestGeneration = generation.current;
+    try {
+      const user = await getIdentity();
+      if (requestGeneration === generation.current) { setIdentity(user); setError(''); navigate('/events'); }
+    } catch (failure) {
+      if (requestGeneration !== generation.current) return;
+      setIdentity(null);
+      if (failure instanceof ApiError && failure.status === 401) { navigate('/login'); setError(''); }
+      else setError('ตรวจสอบการเข้าสู่ระบบไม่สำเร็จ กรุณาลองใหม่');
+    } finally { if (requestGeneration === generation.current) setLoading(false); }
+  }, []);
+  useEffect(() => { void check(); return () => { generation.current++; }; }, [check]);
+  useEffect(() => {
+    if (!identity) return;
+    const refresh = () => { void check(); };
+    const interval = window.setInterval(refresh, 60000);
+    window.addEventListener('focus', refresh); window.addEventListener('popstate', refresh);
+    return () => { window.clearInterval(interval); window.removeEventListener('focus', refresh); window.removeEventListener('popstate', refresh); };
+  }, [identity, check]);
+  async function logout() {
+    generation.current++; setIdentity(null); setLoggingOut(true); setLogoutFailed(false); setError(''); navigate('/login');
+    try { await mutate('/auth/logout'); }
+    catch (failure) {
+      if (!(failure instanceof ApiError && failure.status === 401)) { setError('ออกจากระบบไม่สำเร็จ กรุณาลองอีกครั้ง'); setLogoutFailed(true); }
+    } finally { setLoggingOut(false); }
+  }
+  return <div className="app-shell">
+    <header className="border-bottom bg-white"><nav className="container d-flex align-items-center justify-content-between py-3" aria-label="เมนูหลัก">
+      <a className="brand text-decoration-none" href={identity ? '/events' : '/login'}><span className="brand-mark" aria-hidden="true">ลช</span> LoungCheu</a>
+      {identity && <div className="d-flex align-items-center gap-3"><span className="small text-secondary">{identity.display_name}</span><button className="btn btn-outline-success btn-sm" onClick={() => void logout()}>ออกจากระบบ</button></div>}
+    </nav></header>
+    <main className="container py-5">
+      {loading || loggingOut ? <p role="status" className="text-center py-5">{loggingOut ? 'กำลังออกจากระบบ…' : 'กำลังตรวจสอบการเข้าสู่ระบบ…'}</p>
+        : error ? <div className="card mx-auto login-card p-4"><p role="alert">{error}</p><button className="btn btn-success" onClick={() => { if (logoutFailed) void logout(); else { setLoading(true); void check(); } }}>ลองใหม่</button></div>
+        : identity ? <section className="card border-0 shadow-sm p-4 p-md-5" aria-labelledby="welcome-title"><span className="eyebrow">เข้าสู่ระบบแล้ว</span>
+          <h1 id="welcome-title" className="h2 mt-2">สวัสดี {identity.display_name}</h1><p className="text-secondary mb-4">{identity.role === 'ORGANIZER' ? 'ผู้จัดกิจกรรม' : 'ผู้เข้าร่วมกิจกรรม'}</p>
+          <div className="rounded bg-light p-4"><h2 className="h5">กิจกรรมในมหาวิทยาลัย</h2><p className="mb-0 text-secondary">ระบบรายการกิจกรรมอยู่ระหว่างพัฒนา</p></div></section>
+          : <Login onLogin={user => { generation.current++; setIdentity(user); navigate('/events'); }}/>} 
+    </main><footer className="container pb-4 small text-secondary">LoungCheu · กิจกรรมดี ๆ เริ่มที่การลงชื่อ</footer>
+  </div>;
+}

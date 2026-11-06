@@ -1,0 +1,49 @@
+node.exe : npm warn "TEST-06 rejects at absolute expiry" is being parsed as a normal command line argument.
+At C:\Program Files\nodejs\npm.ps1:29 char:3
++   & $NODE_EXE $NPM_CLI_JS $args
++   ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : NotSpecified: (npm warn "TEST-... line argument.:String) [], RemoteException
+    + FullyQualifiedErrorId : NativeCommandError
+ 
+npm warn Unknown cli config "--t". This will stop working in the next major version of npm.
+
+> loungcheu@0.1.0 test:auth
+> vitest run backend/tests/integration/auth.test.ts TEST-06 rejects at absolute expiry
+
+
+ RUN  v5.1.0 C:/Kmutt/Senior/CPE334/Final/LoungCheu
+
+ ❯ backend/tests/integration/auth.test.ts (25 tests | 1 failed) 2768ms
+   ❯ F-01 API with real PostgreSQL sessions (25)
+     × TEST-06 rejects at absolute expiry even when a copied cookie is replayed after activity 104ms
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 1 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  backend/tests/integration/auth.test.ts > F-01 API with real PostgreSQL sessions > TEST-06 rejects at absolute 
+expiry even when a copied cookie is replayed after activity
+AssertionError: expected 200 to be 401 // Object.is equality
+
+- Expected
++ Received
+
+- 401
++ 200
+
+ ❯ expectError backend/tests/integration/auth.test.ts:34:27
+     32| }
+     33| function expectError(response: request.Response, status: number, code:…
+     34|   expect(response.status).toBe(status);
+       |                           ^
+     35|   expect(response.body).toEqual({ error: { code, message: expect.any(S…
+     36| }
+ ❯ backend/tests/integration/auth.test.ts:144:5
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/1]⎯
+
+
+ Test Files  1 failed (1)
+      Tests  1 failed | 24 passed (25)
+   Start at  01:22:07
+   Duration  3.97s (tests 74%, import 19%, transform 7%)
+
+Exit code: 1

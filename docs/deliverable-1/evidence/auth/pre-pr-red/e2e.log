@@ -1,0 +1,48 @@
+
+> loungcheu@0.1.0 test:e2e
+> playwright test --grep older successful session
+
+
+Running 1 test using 1 worker
+
+npm.cmd : (node:49340) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+At line:2 char:23
++ ... _COLOR='0'; npm.cmd run test:e2e -- --grep 'older successful session' ...
++                 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : NotSpecified: ((node:49340) Wa... env being set.:String) [], RemoteException
+    + FullyQualifiedErrorId : NativeCommandError
+ 
+(Use `node --trace-warnings ...` to show where the warning was created)
+  x  1 tests\e2e\auth.spec.ts:50:1 › F-01 ignores an older successful session response after a newer 401 (5.9s)
+
+
+  1) tests\e2e\auth.spec.ts:50:1 › F-01 ignores an older successful session response after a newer 401 
+
+    Error: expect(locator).toHaveCount(expected) failed
+
+    Locator:  getByText('Participant A')
+    Expected: 0
+    Received: 2
+    Timeout:  5000ms
+
+    Call log:
+      - Expect "toHaveCount" getByText('Participant A') with timeout 5000ms
+      - waiting for getByText('Participant A')
+        14 × locator resolved to 2 elements
+           - unexpected value "2"
+
+
+      71 |   // Let response JSON and the React commit finish before asserting the final UI.
+      72 |   await page.evaluate(() => new Promise<void>(resolve => requestAnimationFrame(() => requestAnimationFrame(() => resolve()))));
+    > 73 |   await expect(page.getByText('Participant A')).toHaveCount(0);
+         |                                                 ^
+      74 |   await expect(page).toHaveURL(/\/login$/);
+      75 | });
+      76 |
+        at C:\Kmutt\Senior\CPE334\Final\LoungCheu\tests\e2e\auth.spec.ts:73:49
+
+    Error Context: test-results\auth-F-01-ignores-an-older-08b9e--response-after-a-newer-401\error-context.md
+
+  1 failed
+    tests\e2e\auth.spec.ts:50:1 › F-01 ignores an older successful session response after a newer 401 
+Exit code: 1

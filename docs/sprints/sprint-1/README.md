@@ -1,6 +1,6 @@
 # Part E — Sprint 1 Engineering Baseline และ Product DoD
 
-Documentation baseline v0.5 | 5 พฤศจิกายน 2026 | สถานะ: PLANNED
+Documentation baseline v0.5 | 5 พฤศจิกายน 2026 | Execution update 6 พ.ย.: F-01 มี implementation/tests; Sprint 1 ยังไม่ผ่าน Product DoD ทั้งชุด
 
 ## Sprint goal
 
@@ -31,7 +31,7 @@ Version contracts/STS ก่อน implementation และดำเนิน re
 | DOD-09 | ระบุ limitations/failed/skipped/incomplete งานและไม่ใส่ secrets ใน Git/PDF | Defect register และ safe access review |
 | DOD-10 | ตั้งแต่ Lab 5 เป็นต้นไปมี CI gate, Docker/GCP version และ post-deploy verification; final มี independent acceptance และส่งมอบครบ | Pipeline/deployment/UAT records ตาม checkpoint; D1 ส่วนนี้เป็น PLANNED ไม่อ้างผ่าน |
 
-DOD-01–09 รอ implementation/evidence; DOD-10 ตรวจตั้งแต่ Lab 5
+DOD-01/02/04/06/08/09 มีหลักฐานส่วน F-01 แล้วใน [auth pre-PR review](auth-pre-pr-review.md) แต่ DOD ทั้ง Sprint ยังไม่ complete: ขาด F-02–05, domain/concurrency tests, teammate review/reproduction, integration และ main release; DOD-10 ตรวจตั้งแต่ Lab 5 ไม่ถือว่า AI review แทน teammate approval
 
 ## Review gate ก่อนรับ implementation
 

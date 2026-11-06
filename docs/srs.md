@@ -32,7 +32,7 @@ Out of scope: self-registration, reset password, email verification, หลา�
 - Backend: Node.js + Express + TypeScript
 - Database/data access: PostgreSQL + Prisma
 - Architecture: REST-style APIs
-- Testing: Vitest + Supertest เป็นชุดหลัก; selected automated browser E2E เสนอใช้ Playwright เพิ่ม
+- Testing: Vitest + Supertest เป็นชุดหลัก; เลือกใช้ Playwright สำหรับ selected automated browser E2E ของ F-01 แล้ว (execution update 6 พ.ย. 2026)
 - Workflow: GitHub Issues/Projects, feature/* → sprint-1-staging → main พร้อม teammate review ตาม DEC-15
 
 ## 4. คำศัพท์และสถานะ

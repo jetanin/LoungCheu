@@ -1,0 +1,87 @@
+import { test, expect, type Route } from '@playwright/test';
+for (const [username, displayName, role] of [['participant.a', 'Participant A', 'ผู้เข้าร่วมกิจกรรม'], ['organizer.a', 'Organizer A', 'ผู้จัดกิจกรรม']]) {
+  test(`F-01 ${username}: login, refresh, logout and browser back`, async ({ page }) => {
+    await page.goto('/events'); await expect(page).toHaveURL(/\/login$/);
+    if (username === 'participant.a') await page.screenshot({ path: '.local/verification/login.png', fullPage: true });
+    await page.getByLabel('ชื่อผู้ใช้').fill(username); await page.getByLabel('รหัสผ่าน', { exact: true }).fill(process.env.E2E_PASSWORD!);
+    await page.getByRole('button', { name: 'เข้าสู่ระบบ', exact: true }).click();
+    await expect(page).toHaveURL(/\/events$/); await expect(page.getByRole('heading', { name: `สวัสดี ${displayName}` })).toBeVisible();
+    await expect(page.getByText(role, { exact: true })).toBeVisible();
+    if (username === 'participant.a') await page.screenshot({ path: '.local/verification/participant.png', fullPage: true });
+    await page.reload(); await expect(page.getByRole('heading', { name: `สวัสดี ${displayName}` })).toBeVisible();
+    await page.getByRole('button', { name: 'ออกจากระบบ' }).click();
+    await expect(page.getByRole('heading', { name: 'ลงชื่อ แล้วไปด้วยกัน' })).toBeVisible();
+    await page.goto('/events'); await expect(page).toHaveURL(/\/login$/); await expect(page.getByText(displayName)).toHaveCount(0);
+    await page.goBack(); await expect(page.getByText(displayName)).toHaveCount(0);
+  });
+}
+test('F-01 invalid form, generic credentials and pending submit', async ({ page }) => {
+  await page.goto('/login');
+  await page.getByRole('button', { name: 'เข้าสู่ระบบ', exact: true }).click();
+  await expect(page.getByText('กรุณากรอกชื่อผู้ใช้', { exact: true })).toBeVisible();
+  await page.getByLabel('ชื่อผู้ใช้').fill('participant.a'); await page.getByLabel('รหัสผ่าน', { exact: true }).fill('wrong');
+  await page.route('**/api/auth/login', async route => { await new Promise(resolve => setTimeout(resolve, 250)); await route.continue(); });
+  await page.getByRole('button', { name: 'เข้าสู่ระบบ', exact: true }).click();
+  await expect(page.getByRole('button', { name: 'กำลังเข้าสู่ระบบ…' })).toBeDisabled();
+  await expect(page.getByRole('alert')).toHaveText('ชื่อผู้ใช้หรือรหัสผ่านไม่ถูกต้อง');
+  await expect(page.getByLabel('รหัสผ่าน', { exact: true })).toHaveValue('');
+});
+test('F-01 expired session clears private UI on focus', async ({ page }) => {
+  await page.goto('/login'); await page.getByLabel('ชื่อผู้ใช้').fill('participant.a'); await page.getByLabel('รหัสผ่าน', { exact: true }).fill(process.env.E2E_PASSWORD!);
+  await page.getByRole('button', { name: 'เข้าสู่ระบบ', exact: true }).click(); await expect(page).toHaveURL(/\/events$/);
+  // UI behavior only: server expiry is verified independently in TEST-06 with real PostgreSQL.
+  await page.route('**/api/auth/me', route => route.fulfill({ status: 401, contentType: 'application/json', body: JSON.stringify({ error: { code: 'AUTH_REQUIRED', message: 'กรุณาเข้าสู่ระบบ', fields: {} } }) }));
+  await page.evaluate(() => window.dispatchEvent(new Event('focus')));
+  await expect(page).toHaveURL(/\/login$/); await expect(page.getByText('Participant A')).toHaveCount(0);
+});
+test('F-01 failed logout clears private UI and offers a working retry', async ({ page }) => {
+  await page.goto('/login'); await page.getByLabel('ชื่อผู้ใช้').fill('participant.a'); await page.getByLabel('รหัสผ่าน', { exact: true }).fill(process.env.E2E_PASSWORD!);
+  await page.getByRole('button', { name: 'เข้าสู่ระบบ', exact: true }).click(); await expect(page).toHaveURL(/\/events$/);
+  await page.route('**/api/auth/logout', route => route.abort());
+  await page.getByRole('button', { name: 'ออกจากระบบ' }).click();
+  await expect(page.getByRole('alert')).toHaveText('ออกจากระบบไม่สำเร็จ กรุณาลองอีกครั้ง');
+  await expect(page.getByText('Participant A')).toHaveCount(0);
+  expect((await page.request.get('/api/auth/me')).status()).toBe(200);
+  await page.unroute('**/api/auth/logout');
+  await page.getByRole('button', { name: 'ลองใหม่' }).click();
+  await expect(page.getByRole('heading', { name: 'ลงชื่อ แล้วไปด้วยกัน' })).toBeVisible();
+  expect((await page.request.get('/api/auth/me')).status()).toBe(401);
+});
+test('F-01 ignores an older successful session response after a newer 401', async ({ page }) => {
+  await page.goto('/login');
+  await page.getByLabel('ชื่อผู้ใช้').fill('participant.a');
+  await page.getByLabel('รหัสผ่าน', { exact: true }).fill(process.env.E2E_PASSWORD!);
+  await page.getByRole('button', { name: 'เข้าสู่ระบบ', exact: true }).click();
+  await expect(page.getByRole('heading', { name: 'สวัสดี Participant A' })).toBeVisible();
+  const identity = await (await page.request.get('/api/auth/me')).json();
+  let olderRoute: Route | undefined;
+  let markOlderSeen!: () => void;
+  const olderSeen = new Promise<void>(resolve => { markOlderSeen = resolve; });
+  await page.route('**/api/auth/me', route => {
+    if (!olderRoute) { olderRoute = route; markOlderSeen(); return; }
+    return route.fulfill({ status: 401, contentType: 'application/json', body: JSON.stringify({ error: { code: 'AUTH_REQUIRED', message: 'กรุณาเข้าสู่ระบบ', fields: {} } }) });
+  });
+  await page.evaluate(() => window.dispatchEvent(new Event('focus')));
+  await olderSeen;
+  await page.evaluate(() => window.dispatchEvent(new Event('focus')));
+  await expect(page).toHaveURL(/\/login$/);
+  const olderDelivered = page.waitForResponse(response => response.url().endsWith('/api/auth/me') && response.status() === 200);
+  await olderRoute!.fulfill({ status: 200, contentType: 'application/json', body: JSON.stringify(identity) });
+  await olderDelivered;
+  // Let response JSON and the React commit finish before asserting the final UI.
+  await page.evaluate(() => new Promise<void>(resolve => requestAnimationFrame(() => requestAnimationFrame(() => resolve()))));
+  await expect(page.getByText('Participant A')).toHaveCount(0);
+  await expect(page).toHaveURL(/\/login$/);
+});
+test('F-01 rechecks a restored page after its session was logged out elsewhere', async ({ page }) => {
+  await page.goto('/login');
+  await page.getByLabel('ชื่อผู้ใช้').fill('participant.a');
+  await page.getByLabel('รหัสผ่าน', { exact: true }).fill(process.env.E2E_PASSWORD!);
+  await page.getByRole('button', { name: 'เข้าสู่ระบบ', exact: true }).click();
+  await expect(page.getByRole('heading', { name: 'สวัสดี Participant A' })).toBeVisible();
+  const token = (await (await page.request.get('/api/auth/csrf')).json()).data.csrf_token;
+  expect((await page.request.post('/api/auth/logout', { headers: { 'X-CSRF-Token': token }, data: {} })).status()).toBe(204);
+  await page.evaluate(() => window.dispatchEvent(new PageTransitionEvent('pageshow', { persisted: true })));
+  await expect(page).toHaveURL(/\/login$/);
+  await expect(page.getByText('Participant A')).toHaveCount(0);
+});

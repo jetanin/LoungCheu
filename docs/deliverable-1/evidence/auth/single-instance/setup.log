@@ -1,0 +1,6 @@
+
+> loungcheu@0.1.0 db:setup:test
+> node scripts/setup-test-db.mjs
+
+{"database":"loungcheu_test","host":"localhost","port":"5432","created":true,"private_test_config":"updated","previous_config_backup":".local/test-env-before-single-instance.env","credentials":"omitted"}
+Exit code: 0
