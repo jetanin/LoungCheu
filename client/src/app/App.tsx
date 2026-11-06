@@ -19,6 +19,7 @@ export function App() {
     sessionEpoch = useRef(0);
   const [path, setPath] = useState(window.location.pathname);
   const isOverview = /^\/organizer\/?$/.test(path);
+  const isSharedList = /^\/events\/?$/.test(path);
   const go = useCallback((target: string) => {
     navigate(target);
     setPath(target);
@@ -130,9 +131,9 @@ export function App() {
   }
   return (
     <div className="app-shell">
-      <header className="border-bottom bg-white">
+      <header className="app-header">
         <nav
-          className="container d-flex align-items-center justify-content-between py-3"
+          className="container app-header-inner"
           aria-label="เมนูหลัก"
         >
           <a
@@ -141,12 +142,12 @@ export function App() {
           >
             <span className="brand-mark" aria-hidden="true">
               ลช
-            </span>{" "}
+            </span>
             LoungCheu
           </a>
           {identity && (
-            <div className="d-flex align-items-center gap-3">
-              <span className="small text-secondary">
+            <div className="header-account">
+              <span className="header-identity" title={identity.display_name}>
                 {identity.display_name}
               </span>
               <button
@@ -159,7 +160,7 @@ export function App() {
           )}
         </nav>
       </header>
-      <main className="container py-5">
+      <main className="container app-main">
         {sessionWarning && (
           <div className="alert alert-warning" role="alert">
             {sessionWarning}{" "}
@@ -176,7 +177,7 @@ export function App() {
             {loggingOut ? "กำลังออกจากระบบ…" : "กำลังตรวจสอบการเข้าสู่ระบบ…"}
           </p>
         ) : error ? (
-          <div className="card mx-auto login-card p-4">
+          <div className="card login-card page-panel">
             <p role="alert">{error}</p>
             <button
               className="btn btn-success"
@@ -219,17 +220,17 @@ export function App() {
                 </a>
               )}
             </nav>
-            {path === "/events" && (
-              <section className="mb-4" aria-labelledby="welcome-title">
-                <h1 id="welcome-title" className="h2 mt-2">
+            {isSharedList && (
+              <section className="page-heading" aria-labelledby="welcome-title"><div>
+                <h1 id="welcome-title" className="page-title">
                   สวัสดี {identity.display_name}
                 </h1>
-                <p className="text-secondary mb-4">
+                <p className="page-subtitle">
                   {identity.role === "ORGANIZER"
                     ? "ผู้จัดกิจกรรม"
                     : "ผู้เข้าร่วมกิจกรรม"}
                 </p>
-              </section>
+              </div></section>
             )}
             {isOverview ? (
               <EventOverview
@@ -259,7 +260,7 @@ export function App() {
           />
         )}
       </main>
-      <footer className="container pb-4 small text-secondary">
+      <footer className="container app-footer">
         LoungCheu · กิจกรรมดี ๆ เริ่มที่การลงชื่อ
       </footer>
     </div>
