@@ -12,6 +12,20 @@ Documentation baseline v0.5 | 5 พฤศจิกายน 2026
 
 ## Git และ review history
 
+6 พ.ย. 2026 — Issue #2/F-02 บน `feature/events` working tree จาก staging `6e8a24c`: reuse schema/migration foundation ของ `feature/registration` โดยไม่เปลี่ยนชื่อ/เนื้อหา เพิ่ม Event APIs/UI ด้วย TDD, row-lock publish, committed snapshot counts, strict validation/ownership และ RegistrationAction host ที่รักษาสถานะขณะ refresh ผล 64 Vitest + 13 browser PASS พร้อม generate/test-migrate/typecheck/build/built smoke ไม่มี commit/push/merge; ไม่อ้าง Registration backend/full Sprint 1 journey หรือ independent UAT ดู [verification](events/verification.md) และ [integration dependencies](events/integration.md)
+
+6 พ.ย. 2026 — Follow-up F-02 spec audit: พบและแก้ cached record หลัง 403/404, background identity failure ที่ unmount RegistrationAction, session/mutation responses ข้ามบัญชี, publish conflict ไม่ refresh, frontend calendar rollover, SharedEvent type และ trailing slash เพิ่ม TDD RED/coverage และแก้ current summaries ที่ยังขัดกัน ผลล่าสุด 74 Vitest + 22 browser PASS พร้อม typecheck/build/built smoke ดู [audit findings](events/audit.md) และ [latest source/results](events/verification.md) ไม่เปลี่ยน Event backend/schema/migration หรือ RegistrationAction internals
+
+6 พ.ย. 2026 — F-02 form UI feedback: ใช้ native date/time picker ระดับนาทีแทน millisecond และจัด form กึ่งกลางแนวนอน เพิ่ม TDD assertions ใน journey เดิมสำหรับ native increment ทั้งสามช่อง, desktop/mobile center และ overflow; 74 Vitest / 22 browser + typecheck/build/built smoke PASS ดู [latest verification](events/verification.md) API timestamp precision contract คงเดิม
+
+6 พ.ย. 2026 — F-02 schedule layout ตามภาพอ้างอิง: เพิ่ม EventSchedule แยกวันที่/เวลาเป็นแถวและ timezone panel ด้านขวา คงสีเดิม ย้าย panel ลงบนมือถือ ใช้ date/time values รวมเป็น Bangkok timestamp ผ่าน validation/API เดิม ปรับ browser helpers/assertions และเก็บ RED/attempt/GREEN; ผลล่าสุด 74 Vitest / 22 browser + typecheck/build/built smoke PASS ดู [verification](events/verification.md)
+
+6 พ.ย. 2026 — F-02 เรียงช่องใหม่เป็นปิดรับลงทะเบียน→เริ่มกิจกรรม→สิ้นสุดกิจกรรม โดยคง date/time split และสีเดิม เพิ่ม DOM/visual order assertions บน desktop/mobile ด้วย TDD RED→GREEN; focused create/publish/shared-detail journey 1 PASS และ typecheck/build PASS Full 74/22 suite เป็นผลรอบก่อนการเรียงช่อง ดู [verification](events/verification.md)
+
+6 พ.ย. 2026 — F-02 optional Organizer overview `/organizer` ตามภาพอ้างอิง: ใช้ own event list เดิมสำหรับจำนวน Event ทั้งหมด/DRAFT/PUBLISHED, 3 รายการล่าสุด, empty state และลิงก์ Create/ดูทั้งหมด คงสีเดิมและ Auth Login `/events`; ใช้ฉบับร่างแทนยอดผู้ลงทะเบียนเพื่อคงขอบเขต Event UI ไม่มี API/schema/roster/attendance report เพิ่ม TDD browser RED 4 fail → full GREEN 26 pass; 74 Vitest, typecheck/build/compiled smoke PASS ดู [verification](events/verification.md)
+
+6 พ.ย. 2026 — F-02 align ช่องวัน/เวลาทั้งสามแถวให้กว้างเท่ากัน และขยาย timezone panel อยู่ขวาของทั้งชุด คงสี/ลำดับเดิม TDD geometry RED→GREEN ใน focused create/publish journey 1 PASS บน desktop/mobile พร้อม typecheck/build PASS; full 74/26 เป็นผลรอบ overview ก่อนหน้า ดู [verification](events/verification.md)
+
 | รายการ | สถานะ |
 |---|---|
 | v0.2 snapshot | commit `002c6982f40defd42657a2419b0a17329cb34069` วันที่ 4 พ.ย. 2026 |
@@ -29,4 +43,4 @@ Documentation baseline v0.5 | 5 พฤศจิกายน 2026
 
 ## AI-use declaration
 
-ใช้ Codex ช่วยอ่าน PDF ร่าง/ปรับเอกสาร วิเคราะห์ design และตรวจ IDs/links/traceability; ตั้งแต่ 6 พ.ย. 2026 ช่วย setup workspace, เขียน implementation/tests ของ F-01 และเก็บผลรันจริงตาม [auth work record](sprints/sprint-1/auth-work-record.md) ทีมรับผิดชอบตรวจรับและเข้าใจ code/tests และทำ teammate review เอง ผลที่ยังไม่รันไม่ถือว่าผ่าน
+ใช้ Codex ช่วยอ่าน PDF ร่าง/ปรับเอกสาร วิเคราะห์ design และตรวจ IDs/links/traceability; ตั้งแต่ 6 พ.ย. 2026 ช่วย setup workspace, เขียน implementation/tests ของ F-01/F-02 และ audit/แก้ไขพร้อมเก็บผลรันจริงตาม [auth work record](sprints/sprint-1/auth-work-record.md) และ [F-02 audit](events/audit.md) ทีมรับผิดชอบตรวจรับและเข้าใจ code/tests และทำ teammate review เอง ผลที่ยังไม่รันไม่ถือว่าผ่าน

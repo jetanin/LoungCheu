@@ -1,6 +1,6 @@
 # Part B — Feature Inventory
 
-Documentation baseline v0.5 | 5 พฤศจิกายน 2026 | Execution update 6 พ.ย.: F-01 มี implementation/tests รอ PR/review/integration; F-02–09 ยัง PLANNED ดู [auth pre-PR review](sprints/sprint-1/auth-pre-pr-review.md)
+Documentation baseline v0.5 | 5 พฤศจิกายน 2026 | Execution update 6 พ.ย.: F-01 รวม staging แล้ว; F-02 implement/test บน feature/events รอ review/integration/release ดู [verification](events/verification.md); F-03–09 ยังไม่รวมใน branch นี้
 
 | ID | Feature / ผลลัพธ์ | Requirement / Rules | Dependency | Sprint |
 |---|---|---|---|---:|

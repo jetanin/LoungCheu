@@ -1,6 +1,6 @@
 # Part D — Three-Sprint Plan
 
-Documentation baseline v0.5 | 5 พฤศจิกายน 2026 | Execution update 6 พ.ย.: F-01 local implementation/test verification แล้ว รอ feature PR/review; F-02–09 และ release ยัง PLANNED
+Documentation baseline v0.5 | 5 พฤศจิกายน 2026 | Execution update 6 พ.ย.: F-01 รวม staging แล้วที่ 6e8a24c; F-02 implement/test/audit บน feature/events รอ review/integration/release ดู [verification](../events/verification.md); F-03–09 ยังไม่รวมใน branch นี้ และยังไม่มี main release
 
 | Sprint | เป้าหมาย / Features | Dependencies | Completion outcome / Checkpoint |
 |---|---|---|---|

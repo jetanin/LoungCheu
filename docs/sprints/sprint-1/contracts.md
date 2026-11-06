@@ -2,7 +2,7 @@
 
 เอกสาร LC-S1-CONTRACT | Documentation baseline v0.5 | 5 พฤศจิกายน 2026
 
-ใช้ SRS/System SDS baseline v0.5 กติกา success/error/session/time ร่วมตาม System SDS และ IDs ตาม traceability; F-01 มี implementation บน `feature/auth` รอ teammate review/integration/release (ดู [work record](auth-work-record.md)) ส่วน F-02–05 ยัง PLANNED ไม่มีการเปลี่ยน AC จาก baseline
+ใช้ SRS/System SDS baseline v0.5 กติกา success/error/session/time ร่วมตาม System SDS และ IDs ตาม traceability; F-01 รวมใน staging แล้ว; F-02 มี implementation/tests บน `feature/events` รอ teammate review/integration/release (ดู [verification](../../events/verification.md)) ส่วน F-03–05 ยังไม่รวมใน branch นี้ ไม่มีการเปลี่ยน AC จาก baseline
 
 ## Sprint 1 JSON schemas ร่วม
 
@@ -72,6 +72,8 @@ DoD: AC-01–05, auth/config tests และ Product DoD
 Organizer เปิดรายการของตน → Create → กรอก title/description/location/capacity/starts_at/ends_at/registration_closes_at → Save เป็น DRAFT → preview → Publish → event ปรากฏในรายการทั่วไป
 
 Shared list เรียง starts_at ASC, id ASC; own list เรียง created_at DESC, id ASC แสดงเวลา Asia/Bangkok และ availability DRAFT อ่านผ่าน owner routes เท่านั้น Shared API ต้อง Login
+
+UI presentation เพิ่มตาม feedback ผู้ใช้: Organizer เปิด `/organizer` จากแท็บภาพรวมได้ โดย reuse `GET /api/organizer/events` แสดงจำนวนกิจกรรมของตนทั้งหมด, DRAFT และ PUBLISHED พร้อมสามรายการล่าสุดตาม own-list order และทางลัด Create/ดูทั้งหมด ไม่มี API/schema/business rule ใหม่ Login ยังไป `/events` ตาม F-01 ตัวเลขนี้เป็นจำนวน Event records ไม่ใช่ยอด Participant/registration/attendance หรือรายงาน F-09
 
 ### API / data contract
 

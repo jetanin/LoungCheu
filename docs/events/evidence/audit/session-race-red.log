@@ -1,0 +1,58 @@
+
+> loungcheu@0.1.0 test:e2e
+> playwright test tests/e2e/events-audit.spec.ts -g definitive session
+
+npm.cmd : [WebServer] (node:40028) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+At line:2 char:53
++ ... ORT='3011'; npm.cmd run test:e2e -- tests/e2e/events-audit.spec.ts -g ...
++                 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : NotSpecified: ([WebServer] (no... env being set.:String) [], RemoteException
+    + FullyQualifiedErrorId : NativeCommandError
+ 
+[WebServer] (Use `node --trace-warnings ...` to show where the warning was created)
+[WebServer] (node:64204) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+[WebServer] (Use `node --trace-warnings ...` to show where the warning was created)
+[WebServer] (node:48284) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+[WebServer] (Use `node --trace-warnings ...` to show where the warning was created)
+[WebServer] (node:9840) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+[WebServer] (Use `node --trace-warnings ...` to show where the warning was created)
+[WebServer] (node:9840) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+[WebServer] (Use `node --trace-warnings ...` to show where the warning was created)
+[WebServer] (node:33168) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+[WebServer] (Use `node --trace-warnings ...` to show where the warning was created)
+[WebServer] (node:11216) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+[WebServer] (Use `node --trace-warnings ...` to show where the warning was created)
+
+Running 1 test using 1 worker
+
+(node:24484) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  x  1 tests\e2e\events-audit.spec.ts:87:1 › TEST-14 a definitive session 401 still wins over a later temporary identity failure (5.7s)
+
+
+  1) tests\e2e\events-audit.spec.ts:87:1 › TEST-14 a definitive session 401 still wins over a later temporary identity failure 
+
+    Error: expect(page).toHaveURL(expected) failed
+
+    Expected pattern: /\/login$/
+    Received string:  "http://127.0.0.1:5183/events"
+    Timeout: 5000ms
+
+    Call log:
+      - Expect "toHaveURL" with timeout 5000ms
+        14 × locator resolved to <html lang="th">…</html>
+           - unexpected value "http://127.0.0.1:5183/events"
+
+
+       97 |   await expect(page.getByText('ตรวจสอบการเข้าสู่ระบบไม่สำเร็จ กรุณาลองใหม่')).toBeVisible();
+       98 |   await old.fulfill({ status: 401, json: { error: { code: 'AUTH_REQUIRED', message: 'กรุณาเข้าสู่ระบบ', fields: {} } } });
+    >  99 |   await expect(page).toHaveURL(/\/login$/); await expect(page.getByText('Participant A')).toHaveCount(0);
+          |                      ^
+      100 | });
+      101 |
+        at C:\Kmutt\Senior\CPE334\Final\LoungCheu\tests\e2e\events-audit.spec.ts:99:22
+
+    Error Context: test-results\events-audit-TEST-14-a-def-12cb4--temporary-identity-failure\error-context.md
+
+  1 failed
+    tests\e2e\events-audit.spec.ts:87:1 › TEST-14 a definitive session 401 still wins over a later temporary identity failure 

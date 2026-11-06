@@ -2,13 +2,13 @@
 
 เอกสาร LC-S1-STS | Documentation baseline v0.5 | 5 พฤศจิกายน 2026
 
-**TEST-01–06: มี actual API/DB/unit results** ดู [auth evidence](../../deliverable-1/evidence/auth/README.md) และ traceability; TEST-07–36 ส่วนที่เกิน F-01 ยัง PLANNED/NOT EXECUTED โดย TEST-32 มีเพียง partial JSON-404/generic-500 checks ของ auth foundation
+**TEST-01–14 และ TEST-36 มี actual results ตามขอบเขต F-01/F-02** ดู [auth evidence](../../deliverable-1/evidence/auth/README.md), [F-02 verification](../../events/verification.md) และ traceability; TEST-15–35 ส่วนที่เกินสอง features นี้ยัง PLANNED/NOT EXECUTED โดย TEST-32 มี partial checks ของ auth/event foundation
 
 ## 1. Environment และ fixtures
 
 - Vitest เป็น runner สำหรับ unit และ API/database integration; Supertest เรียก Express app โดยตรง ใช้ cookie agents แยกผู้ใช้และขอ CSRF token ตาม session
 - Unit tests ตรวจ validation/service logic; API integration ใช้ Prisma กับ PostgreSQL จริง ไม่ mock data layer เพื่ออ้าง persistence/authorization
-- React component tests ด้วย React Testing Library ยังเป็นข้อเสนอและยังไม่ได้ติดตั้ง; เลือกใช้ Playwright แล้วสำหรับ selected auth browser journeys ใน tests/e2e/auth.spec.ts
+- React component tests ด้วย React Testing Library ยังเป็นข้อเสนอและยังไม่ได้ติดตั้ง; ใช้ Playwright สำหรับ selected Auth/Event/audit journeys ใน tests/e2e/{auth,events,events-audit,overview}.spec.ts และ Vitest สำหรับ pure Event model validation/time
 - ทดสอบ auth ด้วย cookie jar/session lifecycle จริง; หลัง Login ที่ regenerate session ต้องขอ CSRF token ใหม่ ห้ามแก้ session store ตรง ๆ เพื่อข้าม authentication ใน end-to-end auth tests
 
 - ใช้ test database PostgreSQL แยกจาก demo/deployment; config ปัจจุบันใช้ instance 5432 เดียวกันสำหรับ app/test โดยแยก database Unit tests ใช้ clock ที่ควบคุมได้ ไม่ต้องเปิด cluster 55432 เก่า
@@ -16,7 +16,7 @@
 - เวลาอ้างอิง `t0 = 2026-11-06T03:00:00.000Z` (10:00 Bangkok) เป็น fixed fixture time ไม่ใช้วันที่จริงตัดสิน test
 - EOPEN: owner OA, PUBLISHED, capacity=2, closes=t0+1h, starts=t0+2h, ends=t0+4h, ไม่มี registrations
 - ELAST: เหมือน EOPEN แต่ capacity=1; EDRAFT: DRAFT; ECLOSED: CLOSED; EFULL: capacity=1 มี ACTIVE ของ PB
-- ทุก test reset fixture เป็นอิสระ; permission tests ใช้ valid CSRF token เพื่อแยกจาก CSRF failure
+- แต่ละ test ใช้ independent fixtures และ reset controlled clock; Event suite ใช้ UUID เฉพาะแต่ละกรณีและ cleanup เฉพาะ ids ที่สร้างหลัง suite โดยไม่ reset ข้อมูลทั้งฐาน; permission tests ใช้ valid CSRF token เพื่อแยกจาก CSRF failure
 - Domain IDs ใช้ UUID ตาม contracts; ทดสอบ malformed path ด้วย authorized session เพื่อแยก validation จาก auth/role rejection Schema assertions อ้าง contracts v0.5 รวม nested event/participant และไม่คืน field ลับ
 - Domain clock/DB timestamps ใช้ millisecond; test boundary ใช้ deadline-1 ms, deadline และ deadline+1 ms; input precision เกิน 3 หลักต้องถูกปฏิเสธ ไม่ปัดลงให้ผ่าน
 - สำหรับ expiry ใช้ time control ตาม server/session mechanism; ไม่ sleep รอจริง 2 ชั่วโมง
@@ -77,7 +77,7 @@
 
 | ประเภท | ผลปัจจุบัน | Actual command / file / commit |
 |---|---|---|
-| Unit/API/DB/concurrency | F-01 latest recorded run: 54 PASS (31 API/DB + 23 unit), 0 fail/skip; domain concurrency NOT EXECUTED | `npm.cmd test`; server/tests/integration/auth.test.ts และ unit/{password,config,database-url}.test.ts; current manifest/logs ใน [auth evidence](../../deliverable-1/evidence/auth/README.md), TDD corrections ใน [pre-PR review](auth-pre-pr-review.md) |
-| Browser E2E | F-01 latest recorded run: 7 PASS, 0 fail/skip; journeys F-02–05 NOT EXECUTED | `npm.cmd run test:e2e`; tests/e2e/auth.spec.ts; Chromium 156.0.8078.4; current logs/source manifest และ historical failures ใน auth evidence |
-| Manual restart/reproduction/UI | Teammate/manual NOT EXECUTED | มี runnable F-01 และ automated app-recreation session test แล้ว; ยังไม่มี full Sprint 1/main release หรือ independent clean reproduction |
-| Process review | Baseline review/merge VERIFIED; feature/release review NOT EXECUTED | PR #5 approved jetanin ที่ f5339b9, staging 5395942; feature Issue #1 ยัง open/unassigned และยังไม่มี feature PR |
+| Unit/API/DB/concurrency | F-01 + F-02 หลัง audit: 74 PASS (31 Auth integration + 14 Event integration + 23 existing unit + 6 Event model), 0 fail/skip, native exit 0; publish lock/concurrency และ committed-snapshot race ตรวจแล้ว | `npm.cmd test`; server/tests/integration/{auth,events}.test.ts + unit + client/src/features/events/model.test.ts; [F-02 TDD/source/results](../../events/verification.md); Registration concurrency ยังไม่รวม |
+| Browser E2E | 26 PASS, 0 fail/skip, native exit 0 (Auth 7 + Event/composition/audit/overview 19); full F-02–05 journey NOT EXECUTED | `npm.cmd run test:e2e` พอร์ต 5183/3011; tests/e2e/{auth,events,events-audit,overview}.spec.ts; [F-02 audit](../../events/audit.md) |
+| Manual restart/reproduction/UI | Teammate/manual NOT EXECUTED | automated createApp recreation อ่าน session และ Event DRAFT เดิมได้; ยังไม่ใช่ process restart/full Sprint 1/main release หรือ independent clean reproduction |
+| Process review | Baseline/Auth merge VERIFIED จาก local Git; F-02/release review NOT EXECUTED | baseline historical PR #5; Auth merge เข้า staging 6e8a24c แล้ว; feature/events ยัง working tree ไม่ commit/PR ไม่ได้ตรวจสถานะ GitHub Issues/board รอบนี้ |

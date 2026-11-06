@@ -1,0 +1,297 @@
+
+> loungcheu@0.1.0 test:e2e
+> playwright test tests/e2e/events-audit.spec.ts tests/e2e/events.spec.ts --grep TEST-14|publish conflict|trailing slash|RegistrationAction --timeout 15000
+
+npm.cmd : [WebServer] (node:62824) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+At line:2 char:53
++ ... ORT='3011'; npm.cmd run test:e2e -- tests/e2e/events-audit.spec.ts te ...
++                 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : NotSpecified: ([WebServer] (no... env being set.:String) [], RemoteException
+    + FullyQualifiedErrorId : NativeCommandError
+ 
+[WebServer] (Use `node --trace-warnings ...` to show where the warning was created)
+[WebServer] (node:65000) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+[WebServer] (Use `node --trace-warnings ...` to show where the warning was created)
+[WebServer] (node:23368) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+[WebServer] (Use `node --trace-warnings ...` to show where the warning was created)
+[WebServer] (node:21840) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+[WebServer] (Use `node --trace-warnings ...` to show where the warning was created)
+[WebServer] (node:21840) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+[WebServer] (Use `node --trace-warnings ...` to show where the warning was created)
+[WebServer] (node:31628) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+[WebServer] (Use `node --trace-warnings ...` to show where the warning was created)
+[WebServer] (node:61892) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+[WebServer] (Use `node --trace-warnings ...` to show where the warning was created)
+
+Running 10 tests using 1 worker
+
+(node:23520) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  x   1 tests\e2e\events-audit.spec.ts:19:34 › TEST-14 publish 403 removes cached private record even if an old refresh returns later (6.0s)
+(node:66524) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  x   2 tests\e2e\events-audit.spec.ts:19:34 › TEST-14 publish 404 removes cached private record even if an old refresh returns later (5.8s)
+(node:45828) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  x   3 tests\e2e\events-audit.spec.ts:36:1 › TEST-09/14 publish conflict explains rejection and refreshes the committed event status (5.8s)
+(node:61740) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  x   4 tests\e2e\events-audit.spec.ts:47:1 › TEST-14 a late create success cannot navigate the next signed-in account to the previous owner record (6.4s)
+(node:14672) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  x   5 tests\e2e\events-audit.spec.ts:66:1 › TEST-14 a late publish 401 cannot clear the next account session (6.0s)
+(node:51828) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  x   6 tests\e2e\events-audit.spec.ts:81:1 › TEST-14 canonical detail and create routes work with a trailing slash (5.6s)
+(node:9264) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ok  7 tests\e2e\events.spec.ts:54:1 › TEST-14 list loading, empty, failure and retry; detail 404 and publish conflict (1.4s)
+  x   8 tests\e2e\events.spec.ts:100:69 › F-02/#3 focus and availability refresh preserve RegistrationAction pending (6.2s)
+(node:35904) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  x   9 tests\e2e\events.spec.ts:100:69 › F-02/#3 focus and availability refresh preserve RegistrationAction success (6.4s)
+(node:50260) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  x  10 tests\e2e\events.spec.ts:100:69 › F-02/#3 focus and availability refresh preserve RegistrationAction uncertain (6.4s)
+
+
+  1) tests\e2e\events-audit.spec.ts:19:34 › TEST-14 publish 403 removes cached private record even if an old refresh returns later 
+
+    Error: expect(locator).toHaveCount(expected) failed
+
+    Locator:  getByRole('heading', { name: 'Audit draft 1793949657426' })
+    Expected: 0
+    Received: 1
+    Timeout:  5000ms
+
+    Call log:
+      - Expect "toHaveCount" getByRole('heading', { name: 'Audit draft 1793949657426' }) with timeout 5000ms
+      - waiting for getByRole('heading', { name: 'Audit draft 1793949657426' })
+        14 × locator resolved to 1 element
+           - unexpected value "1"
+
+
+      30 |   const delivered = page.waitForResponse(r => r.url().endsWith(`/api/organizer/events/${event.id}`));
+      31 |   await older.fulfill({ json: { data: event } }); await delivered; await settle(page);
+    > 32 |   await expect(page.getByRole('heading', { name: event.title })).toHaveCount(0);
+         |                                                                  ^
+      33 |   await expect(page.getByText(event.description, { exact: true })).toHaveCount(0);
+      34 | });
+      35 |
+        at C:\Kmutt\Senior\CPE334\Final\LoungCheu\tests\e2e\events-audit.spec.ts:32:66
+
+    Error Context: test-results\events-audit-TEST-14-publi-77fc1-n-old-refresh-returns-later\error-context.md
+
+  2) tests\e2e\events-audit.spec.ts:19:34 › TEST-14 publish 404 removes cached private record even if an old refresh returns later 
+
+    Error: expect(locator).toHaveCount(expected) failed
+
+    Locator:  getByRole('heading', { name: 'Audit draft 1793949664273' })
+    Expected: 0
+    Received: 1
+    Timeout:  5000ms
+
+    Call log:
+      - Expect "toHaveCount" getByRole('heading', { name: 'Audit draft 1793949664273' }) with timeout 5000ms
+      - waiting for getByRole('heading', { name: 'Audit draft 1793949664273' })
+        14 × locator resolved to 1 element
+           - unexpected value "1"
+
+
+      30 |   const delivered = page.waitForResponse(r => r.url().endsWith(`/api/organizer/events/${event.id}`));
+      31 |   await older.fulfill({ json: { data: event } }); await delivered; await settle(page);
+    > 32 |   await expect(page.getByRole('heading', { name: event.title })).toHaveCount(0);
+         |                                                                  ^
+      33 |   await expect(page.getByText(event.description, { exact: true })).toHaveCount(0);
+      34 | });
+      35 |
+        at C:\Kmutt\Senior\CPE334\Final\LoungCheu\tests\e2e\events-audit.spec.ts:32:66
+
+    Error Context: test-results\events-audit-TEST-14-publi-2d2f6-n-old-refresh-returns-later\error-context.md
+
+  3) tests\e2e\events-audit.spec.ts:36:1 › TEST-09/14 publish conflict explains rejection and refreshes the committed event status 
+
+    Error: expect(locator).toBeVisible() failed
+
+    Locator: getByText('PUBLISHED', { exact: true })
+    Expected: visible
+    Timeout: 5000ms
+    Error: element(s) not found
+
+    Call log:
+      - Expect "toBeVisible" getByText('PUBLISHED', { exact: true }) with timeout 5000ms
+      - waiting for getByText('PUBLISHED', { exact: true })
+
+
+      41 |   await page.getByRole('button', { name: 'เผยแพร่กิจกรรม', exact: true }).click();
+      42 |   await expect(page.getByRole('alert')).toContainText('เผยแพร่ได้เฉพาะกิจกรรม DRAFT');
+    > 43 |   await expect(page.getByText('PUBLISHED', { exact: true })).toBeVisible();
+         |                                                              ^
+      44 |   await expect(page.getByRole('button', { name: 'เผยแพร่กิจกรรม', exact: true })).toHaveCount(0);
+      45 | });
+      46 |
+        at C:\Kmutt\Senior\CPE334\Final\LoungCheu\tests\e2e\events-audit.spec.ts:43:62
+
+    Error Context: test-results\events-audit-TEST-09-14-pu-027dd--the-committed-event-status\error-context.md
+
+  4) tests\e2e\events-audit.spec.ts:47:1 › TEST-14 a late create success cannot navigate the next signed-in account to the previous owner record 
+
+    Error: expect(page).toHaveURL(expected) failed
+
+    Expected pattern: /\/events$/
+    Received string:  "http://127.0.0.1:5183/organizer/events/487962cd-fb83-4902-9671-c01c4e74eabe"
+    Timeout: 5000ms
+
+    Call log:
+      - Expect "toHaveURL" with timeout 5000ms
+        14 × locator resolved to <html lang="th">…</html>
+           - unexpected value "http://127.0.0.1:5183/organizer/events/487962cd-fb83-4902-9671-c01c4e74eabe"
+
+
+      60 |   const delivered = page.waitForResponse(r => r.url().endsWith('/api/organizer/events') && r.request().method() === 'POST');
+      61 |   await held.fulfill({ status: 201, json: payload }); await delivered; await settle(page);
+    > 62 |   await expect(page).toHaveURL(/\/events$/);
+         |                      ^
+      63 |   await expect(page.getByRole('heading', { name: 'สวัสดี Organizer B' })).toBeVisible();
+      64 | });
+      65 |
+        at C:\Kmutt\Senior\CPE334\Final\LoungCheu\tests\e2e\events-audit.spec.ts:62:22
+
+    Error Context: test-results\events-audit-TEST-14-a-lat-c1abd-o-the-previous-owner-record\error-context.md
+
+  5) tests\e2e\events-audit.spec.ts:66:1 › TEST-14 a late publish 401 cannot clear the next account session 
+
+    Error: expect(page).toHaveURL(expected) failed
+
+    Expected pattern: /\/events$/
+    Received string:  "http://127.0.0.1:5183/login"
+    Timeout: 5000ms
+
+    Call log:
+      - Expect "toHaveURL" with timeout 5000ms
+        14 × locator resolved to <html lang="th">…</html>
+           - unexpected value "http://127.0.0.1:5183/login"
+
+
+      76 |   await held.fulfill({ status: 401, json: { error: { code: 'AUTH_REQUIRED', message: 'กรุณาเข้าสู่ระบบ', fields: {} } } });
+      77 |   await delivered; await settle(page);
+    > 78 |   await expect(page).toHaveURL(/\/events$/); await expect(page.getByRole('heading', { name: 'สวัสดี Organizer B' })).toBeVisible();
+         |                      ^
+      79 | });
+      80 |
+      81 | test('TEST-14 canonical detail and create routes work with a trailing slash', async ({ page }) => {
+        at C:\Kmutt\Senior\CPE334\Final\LoungCheu\tests\e2e\events-audit.spec.ts:78:22
+
+    Error Context: test-results\events-audit-TEST-14-a-lat-6c441-ar-the-next-account-session\error-context.md
+
+  6) tests\e2e\events-audit.spec.ts:81:1 › TEST-14 canonical detail and create routes work with a trailing slash 
+
+    Error: expect(locator).toBeVisible() failed
+
+    Locator: getByRole('heading', { name: 'Audit draft 1793949691844' })
+    Expected: visible
+    Timeout: 5000ms
+    Error: element(s) not found
+
+    Call log:
+      - Expect "toBeVisible" getByRole('heading', { name: 'Audit draft 1793949691844' }) with timeout 5000ms
+      - waiting for getByRole('heading', { name: 'Audit draft 1793949691844' })
+
+
+      81 | test('TEST-14 canonical detail and create routes work with a trailing slash', async ({ page }) => {
+      82 |   await signIn(page); const event = await draft(page);
+    > 83 |   await page.goto(`/organizer/events/${event.id}/`); await expect(page.getByRole('heading', { name: event.title })).toBeVisible();
+         |                                                                                                                     ^
+      84 |   await page.goto('/organizer/events/new/'); await expect(page.getByRole('button', { name: 'บันทึก DRAFT', exact: true })).toBeVisible();
+      85 | });
+      86 |
+        at C:\Kmutt\Senior\CPE334\Final\LoungCheu\tests\e2e\events-audit.spec.ts:83:117
+
+    Error Context: test-results\events-audit-TEST-14-canon-8b69f--work-with-a-trailing-slash\error-context.md
+
+  7) tests\e2e\events.spec.ts:100:69 › F-02/#3 focus and availability refresh preserve RegistrationAction pending 
+
+    Error: expect(locator).toBeVisible() failed
+
+    Locator: getByRole('button', { name: 'กำลังลงทะเบียน…' })
+    Expected: visible
+    Timeout: 5000ms
+    Error: element(s) not found
+
+    Call log:
+      - Expect "toBeVisible" getByRole('button', { name: 'กำลังลงทะเบียน…' }) with timeout 5000ms
+      - waiting for getByRole('button', { name: 'กำลังลงทะเบียน…' })
+
+
+      134 |   await page.evaluate(() => window.dispatchEvent(new Event('focus')));
+      135 |   await expect(page.getByText('ตรวจสอบการเข้าสู่ระบบไม่สำเร็จ กรุณาลองใหม่')).toBeVisible();
+    > 136 |   await expect(state).toBeVisible();
+          |                       ^
+      137 |   await page.unroute('**/api/auth/me');
+      138 |   await page.getByRole('button', { name: 'ตรวจสอบอีกครั้ง', exact: true }).click();
+      139 |   await expect(page.getByText('ตรวจสอบการเข้าสู่ระบบไม่สำเร็จ กรุณาลองใหม่')).toHaveCount(0);
+        at C:\Kmutt\Senior\CPE334\Final\LoungCheu\tests\e2e\events.spec.ts:136:23
+
+    Error Context: test-results\events-F-02-3-focus-and-av-4e3c8--RegistrationAction-pending\error-context.md
+
+  8) tests\e2e\events.spec.ts:100:69 › F-02/#3 focus and availability refresh preserve RegistrationAction success 
+
+    Error: expect(locator).toBeVisible() failed
+
+    Locator: getByText('registration-reference')
+    Expected: visible
+    Timeout: 5000ms
+    Error: element(s) not found
+
+    Call log:
+      - Expect "toBeVisible" getByText('registration-reference') with timeout 5000ms
+      - waiting for getByText('registration-reference')
+
+
+      134 |   await page.evaluate(() => window.dispatchEvent(new Event('focus')));
+      135 |   await expect(page.getByText('ตรวจสอบการเข้าสู่ระบบไม่สำเร็จ กรุณาลองใหม่')).toBeVisible();
+    > 136 |   await expect(state).toBeVisible();
+          |                       ^
+      137 |   await page.unroute('**/api/auth/me');
+      138 |   await page.getByRole('button', { name: 'ตรวจสอบอีกครั้ง', exact: true }).click();
+      139 |   await expect(page.getByText('ตรวจสอบการเข้าสู่ระบบไม่สำเร็จ กรุณาลองใหม่')).toHaveCount(0);
+        at C:\Kmutt\Senior\CPE334\Final\LoungCheu\tests\e2e\events.spec.ts:136:23
+
+    Error Context: test-results\events-F-02-3-focus-and-av-b114c--RegistrationAction-success\error-context.md
+
+  9) tests\e2e\events.spec.ts:100:69 › F-02/#3 focus and availability refresh preserve RegistrationAction uncertain 
+
+    Error: expect(locator).toBeVisible() failed
+
+    Locator: getByText('ยังยืนยันผลไม่ได้')
+    Expected: visible
+    Timeout: 5000ms
+    Error: element(s) not found
+
+    Call log:
+      - Expect "toBeVisible" getByText('ยังยืนยันผลไม่ได้') with timeout 5000ms
+      - waiting for getByText('ยังยืนยันผลไม่ได้')
+
+
+      134 |   await page.evaluate(() => window.dispatchEvent(new Event('focus')));
+      135 |   await expect(page.getByText('ตรวจสอบการเข้าสู่ระบบไม่สำเร็จ กรุณาลองใหม่')).toBeVisible();
+    > 136 |   await expect(state).toBeVisible();
+          |                       ^
+      137 |   await page.unroute('**/api/auth/me');
+      138 |   await page.getByRole('button', { name: 'ตรวจสอบอีกครั้ง', exact: true }).click();
+      139 |   await expect(page.getByText('ตรวจสอบการเข้าสู่ระบบไม่สำเร็จ กรุณาลองใหม่')).toHaveCount(0);
+        at C:\Kmutt\Senior\CPE334\Final\LoungCheu\tests\e2e\events.spec.ts:136:23
+
+    Error Context: test-results\events-F-02-3-focus-and-av-7842b-egistrationAction-uncertain\error-context.md
+
+  9 failed
+    tests\e2e\events-audit.spec.ts:19:34 › TEST-14 publish 403 removes cached private record even if an old refresh returns later 
+    tests\e2e\events-audit.spec.ts:19:34 › TEST-14 publish 404 removes cached private record even if an old refresh returns later 
+    tests\e2e\events-audit.spec.ts:36:1 › TEST-09/14 publish conflict explains rejection and refreshes the committed event status 
+    tests\e2e\events-audit.spec.ts:47:1 › TEST-14 a late create success cannot navigate the next signed-in account to the previous owner record 
+    tests\e2e\events-audit.spec.ts:66:1 › TEST-14 a late publish 401 cannot clear the next account session 
+    tests\e2e\events-audit.spec.ts:81:1 › TEST-14 canonical detail and create routes work with a trailing slash 
+    tests\e2e\events.spec.ts:100:69 › F-02/#3 focus and availability refresh preserve RegistrationAction pending 
+    tests\e2e\events.spec.ts:100:69 › F-02/#3 focus and availability refresh preserve RegistrationAction success 
+    tests\e2e\events.spec.ts:100:69 › F-02/#3 focus and availability refresh preserve RegistrationAction uncertain 
+  1 passed (1.2m)

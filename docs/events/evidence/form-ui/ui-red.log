@@ -1,0 +1,121 @@
+
+> loungcheu@0.1.0 test:e2e
+> playwright test tests/e2e/events.spec.ts -g Organizer creates
+
+npm.cmd : [WebServer] (node:65704) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+At line:2 char:130
++ ... ORT='3011'; npm.cmd run test:e2e -- tests/e2e/events.spec.ts -g 'Orga ...
++                 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : NotSpecified: ([WebServer] (no... env being set.:String) [], RemoteException
+    + FullyQualifiedErrorId : NativeCommandError
+ 
+[WebServer] (Use `node --trace-warnings ...` to show where the warning was created)
+[WebServer] (node:9324) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+[WebServer] (Use `node --trace-warnings ...` to show where the warning was created)
+[WebServer] (node:50604) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+[WebServer] (Use `node --trace-warnings ...` to show where the warning was created)
+[WebServer] (node:61784) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+[WebServer] (Use `node --trace-warnings ...` to show where the warning was created)
+[WebServer] (node:61784) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+[WebServer] (Use `node --trace-warnings ...` to show where the warning was created)
+[WebServer] (node:59760) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+[WebServer] (Use `node --trace-warnings ...` to show where the warning was created)
+[WebServer] (node:57000) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+[WebServer] (Use `node --trace-warnings ...` to show where the warning was created)
+
+Running 1 test using 1 worker
+
+(node:43680) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  x  1 tests\e2e\events.spec.ts:9:1 › TEST-07/09/14/36 Organizer creates, previews, publishes; Participant browses persisted shared detail (19.6s)
+
+
+  1) tests\e2e\events.spec.ts:9:1 › TEST-07/09/14/36 Organizer creates, previews, publishes; Participant browses persisted shared detail 
+
+    Error: expect(received).toBeLessThanOrEqual(expected)
+
+    Expected: <= 1
+    Received:    158
+
+      13 |   const formCard = page.locator('section').filter({ has: page.getByRole('heading', { name: 'สร้างกิจกรรม', exact: true }) });
+      14 |   const cardBounds = await formCard.boundingBox(), mainBounds = await page.locator('main').boundingBox();
+    > 15 |   expect.soft(Math.abs(cardBounds!.x + cardBounds!.width / 2 - mainBounds!.x - mainBounds!.width / 2)).toBeLessThanOrEqual(1);
+         |                                                                                                        ^
+      16 |   // Exercise the native input's increment: ordinary event entry should advance
+      17 |   // by one minute, rather than exposing seconds/milliseconds in the picker.
+      18 |   for (const label of ['เริ่มกิจกรรม', 'สิ้นสุดกิจกรรม', 'ปิดรับลงทะเบียน']) {
+        at C:\Kmutt\Senior\CPE334\Final\LoungCheu\tests\e2e\events.spec.ts:15:104
+
+    Error: expect(locator).toHaveValue(expected) failed
+
+    Locator:  getByLabel('เริ่มกิจกรรม', { exact: true })
+    Expected: "2099-01-01T09:01"
+    Received: "2099-01-01T09:00:00.001"
+    Timeout:  5000ms
+
+    Call log:
+      - Expect "soft toHaveValue" getByLabel('เริ่มกิจกรรม', { exact: true }) with timeout 5000ms
+      - waiting for getByLabel('เริ่มกิจกรรม', { exact: true })
+        14 × locator resolved to <input step="0.001" class="form-control" id="event-starts_at" aria-invalid="false" type="datetime-local" value="2099-01-01T09:00"/>
+           - unexpected value "2099-01-01T09:00:00.001"
+
+
+      20 |     await field.fill('2099-01-01T09:00');
+      21 |     await field.evaluate((element: HTMLInputElement) => element.stepUp());
+    > 22 |     await expect.soft(field).toHaveValue('2099-01-01T09:01');
+         |                              ^
+      23 |     await field.clear();
+      24 |   }
+      25 |   await page.getByRole('button', { name: 'บันทึก DRAFT' }).click();
+        at C:\Kmutt\Senior\CPE334\Final\LoungCheu\tests\e2e\events.spec.ts:22:30
+
+    Error: expect(locator).toHaveValue(expected) failed
+
+    Locator:  getByLabel('สิ้นสุดกิจกรรม', { exact: true })
+    Expected: "2099-01-01T09:01"
+    Received: "2099-01-01T09:00:00.001"
+    Timeout:  5000ms
+
+    Call log:
+      - Expect "soft toHaveValue" getByLabel('สิ้นสุดกิจกรรม', { exact: true }) with timeout 5000ms
+      - waiting for getByLabel('สิ้นสุดกิจกรรม', { exact: true })
+        14 × locator resolved to <input step="0.001" id="event-ends_at" class="form-control" aria-invalid="false" type="datetime-local" value="2099-01-01T09:00"/>
+           - unexpected value "2099-01-01T09:00:00.001"
+
+
+      20 |     await field.fill('2099-01-01T09:00');
+      21 |     await field.evaluate((element: HTMLInputElement) => element.stepUp());
+    > 22 |     await expect.soft(field).toHaveValue('2099-01-01T09:01');
+         |                              ^
+      23 |     await field.clear();
+      24 |   }
+      25 |   await page.getByRole('button', { name: 'บันทึก DRAFT' }).click();
+        at C:\Kmutt\Senior\CPE334\Final\LoungCheu\tests\e2e\events.spec.ts:22:30
+
+    Error: expect(locator).toHaveValue(expected) failed
+
+    Locator:  getByLabel('ปิดรับลงทะเบียน', { exact: true })
+    Expected: "2099-01-01T09:01"
+    Received: "2099-01-01T09:00:00.001"
+    Timeout:  5000ms
+
+    Call log:
+      - Expect "soft toHaveValue" getByLabel('ปิดรับลงทะเบียน', { exact: true }) with timeout 5000ms
+      - waiting for getByLabel('ปิดรับลงทะเบียน', { exact: true })
+        14 × locator resolved to <input step="0.001" class="form-control" aria-invalid="false" type="datetime-local" value="2099-01-01T09:00" id="event-registration_closes_at"/>
+           - unexpected value "2099-01-01T09:00:00.001"
+
+
+      20 |     await field.fill('2099-01-01T09:00');
+      21 |     await field.evaluate((element: HTMLInputElement) => element.stepUp());
+    > 22 |     await expect.soft(field).toHaveValue('2099-01-01T09:01');
+         |                              ^
+      23 |     await field.clear();
+      24 |   }
+      25 |   await page.getByRole('button', { name: 'บันทึก DRAFT' }).click();
+        at C:\Kmutt\Senior\CPE334\Final\LoungCheu\tests\e2e\events.spec.ts:22:30
+
+    Error Context: test-results\events-TEST-07-09-14-36-Or-fa34a-ses-persisted-shared-detail\error-context.md
+
+  1 failed
+    tests\e2e\events.spec.ts:9:1 › TEST-07/09/14/36 Organizer creates, previews, publishes; Participant browses persisted shared detail 

@@ -1,7 +1,7 @@
 # Part F — Working Sprint 1 Evidence Register
 
 Documentation baseline v0.5 | 5 พฤศจิกายน 2026
-Execution update 6 พ.ย. 2026: setup/F-01 มี partial Sprint 1 evidence ใน [auth execution record](evidence/auth/README.md); baseline PR #5 approved/merged แล้ว ส่วน feature review, F-02–05, integration/release และ teammate reproduction ยังขาด
+Execution update 6 พ.ย. 2026: F-01 รวม staging แล้ว; F-02 มี implementation/tests/audit บน feature/events ผลล่าสุด 74 Vitest / 26 browser PASS ดู [Event verification](../events/verification.md) และ [audit](../events/audit.md); baseline/Auth merge แล้ว ส่วน F-02 review, backend F-03–05 integration, release และ teammate reproduction ยังขาด
 
 ## 1. Release identification
 
@@ -21,9 +21,9 @@ Execution update 6 พ.ย. 2026: setup/F-01 มี partial Sprint 1 evidence �
 
 | Evidence | Feature / AC | Scenario / expected result | Actual / commit |
 |---|---|---|---|
-| EV-01 | F-01–05 / AC-01,06,08,12,18,21,24 | OA Login/create/publish → PA Login/register/read saved result → OA roster; reference/count ตรง DB | MISSING / — |
+| EV-01 | F-01–05 / AC-01,06,08,12,18,21,24 | OA Login/create/publish → PA Login/register/read saved result → OA roster; reference/count ตรง DB | PARTIAL: create/preview/publish → shared detail ผ่าน real API/DB/browser แล้ว; register/own list/roster/full journey pending; [F-02](../events/verification.md) |
 | EV-02 | F-03 / AC-13–15 | Duplicate/full/closed ได้ 409 ตาม contract; count/records ไม่เพิ่ม | MISSING / — |
-| EV-03 | F-01,F-02,F-04,F-05 / AC-04,10,19,22 | Cookie หลัง Logout=401; PA ใช้ owner API=403; OB ดู OA roster และ PA ดู PB registration=404; ไม่คืน private data | MISSING / — |
+| EV-03 | F-01,F-02,F-04,F-05 / AC-04,10,19,22 | Cookie หลัง Logout=401; PA ใช้ owner API=403; OB ดู OA roster และ PA ดู PB registration=404; ไม่คืน private data | PARTIAL: Auth Logout/session + Event role/ownership/API precedence และ cached-record UI 403/404 PASS; registration/roster pending |
 | EV-04 | Cross-feature / AC-25 | Restart แอปโดยไม่ reset DB แล้วอ่าน record/reference/count เดิมได้ | MISSING / — |
 
 PA/PB/OA/OB และ event fixtures ตาม [STS](../sprints/sprint-1/sts.md)
@@ -32,11 +32,11 @@ PA/PB/OA/OB และ event fixtures ตาม [STS](../sprints/sprint-1/sts.md)
 
 | Evidence | เนื้อหาที่แนบ | Actual command / result / commit |
 |---|---|---|
-| EV-05 | Type-check, client/backend build, Vitest/Supertest และ PostgreSQL concurrency; pass/fail/skipped counts | PARTIAL: pre-PR typecheck/build PASS, F-01 unit/API/DB 54 PASS, 0 fail/skip, compiled smoke 3 PASS; concurrency NOT EXECUTED; [latest logs/source manifests](../sprints/sprint-1/auth-pre-pr-review.md) |
-| EV-06 | Selected browser E2E และ manual UI/restart checks แยกกัน | F-01 pre-PR browser E2E 7 PASS, 0 fail/skip พร้อม screenshots; all earlier failures preserved; manual/domain process restart NOT EXECUTED; [record](evidence/auth/README.md) |
-| EV-07 | Actual domain-rule test excerpt: setup/assertions และผลรัน เช่น TEST-16/20 | MISSING / — |
-| EV-08 | Actual access-rule test excerpt เช่น TEST-23/27 พร้อมผลรัน | MISSING / — |
-| EV-09 | Meaningful TDD red→green พร้อม test/implementation versions | F-01 TEST-06 fixed expiry และ pre-PR UI session race/JSON charset/config validation red→green; snapshots/logs/SHA256 ใน [auth evidence](evidence/auth/README.md); F-03 domain TDD ยังต้องเก็บเพิ่ม |
+| EV-05 | Type-check, client/backend build, Vitest/Supertest และ PostgreSQL concurrency; pass/fail/skipped counts | PARTIAL: typecheck/build PASS, F-01/F-02 74 Vitest PASS (0 fail/skip), compiled smoke 3 PASS; Event publish lock/race/snapshot ตรวจแล้ว; Registration last-seat/duplicate pending; [latest logs/source](../events/verification.md) |
+| EV-06 | Selected browser E2E และ manual UI/restart checks แยกกัน | 26 browser PASS (0 fail/skip) รวม Auth/Event/audit พร้อม screenshots; manual process restart/UAT NOT EXECUTED; [record](../events/verification.md) |
+| EV-07 | Actual domain-rule test excerpt: setup/assertions และผลรัน เช่น TEST-16/20 | PARTIAL: F-02 deadline/status/row-lock/concurrent publish ใน events.test.ts PASS; F-03 TEST-16/20 pending |
+| EV-08 | Actual access-rule test excerpt เช่น TEST-23/27 พร้อมผลรัน | PARTIAL: Event TEST-12/13 auth/role/CSRF/input/scope matrix PASS; Registration/roster TEST-23/27 pending |
+| EV-09 | Meaningful TDD red→green พร้อม test/implementation versions | F-01 historical TDD + F-02 API/UI/publish-refresh และ follow-up spec audit RED→GREEN พร้อม logs/SHA256 ใน [Event audit](../events/audit.md); F-03 domain TDD ยังต้องเก็บเพิ่ม |
 
 ผลแต่ละ AC ใช้ตารางหลักใน [Traceability](../traceability.md) เติม actual file/name/result และ tested commit
 
@@ -65,7 +65,7 @@ EV-11: board URL, captured final status/date และ release reference
 |---|---|
 | Dependencies/runtime และ safe environment examples | npm workspaces, pinned packages/lockfile; templates คือ server/.env.example และ root .env.test.example; root .env.example ที่ซ้ำลบแล้ว; clean npm ci copy ผ่านโดย Codex; [README](../../README.md#local-setup--issue-1--f-01) และ pre-PR record |
 | Database creation/migrations และ synthetic seed/private demo access | App DB loung-cheu-database และ test DB loungcheu_test อยู่ instance localhost:5432 เดียวกันและแยก database; migrate/seed/tests ผ่าน, cluster 55432 หยุดแล้ว, passwords ไม่อยู่ใน evidence ดู [single-instance record](../sprints/sprint-1/single-instance-db.md) |
-| Build/run/test และ normal journey | F-01 typecheck/build/unit/API/built smoke และ browser 7 cases PASS; same source ใน clean dependency copy build/compiled smoke ได้; full F-01–05 journey ยัง NOT EXECUTED |
+| Build/run/test และ normal journey | F-01/F-02 typecheck/build/built smoke + 74 Vitest/26 browser PASS; create/publish/browse ใช้ DB จริง; clean dependency copy เป็น historical F-01 evidence เท่านั้น ยังไม่ทำ independent F-02 reproduction/full F-01–05 journey |
 | Teammate clean reproduction: tester/date/commit/result | NOT EXECUTED |
 
 นำขั้นตอนจริงจาก README implementation มาสรุปใน PDF โดยไม่ใส่ secrets
@@ -83,9 +83,9 @@ AI-use declaration ดู [Changelog](../changelog.md)
 
 | ID | งานที่ขาด | Next action |
 |---|---|---|
-| GAP-01 | F-01 implementation มีแล้ว ยังไม่ commit/review/integrate; F-02–05 ยังขาด | Review auth diff/evidence แล้วทำ feature PR; พัฒนา #2–4 ตาม contracts |
-| GAP-02 | F-01 unit/API/browser และ expiry TDD มีแล้ว; manual/domain/concurrency/restart evidence ยังขาด | ทำ domain/integration suites ตาม STS และ teammate reproduction |
-| GAP-03 | Baseline unrelated histories/review/merge แก้แล้วที่ f5339b9/PR #5/staging 5395942; feature PR/review/release ยังขาด | ยืนยัน assignee/board, feature teammate review และ release chains ตามจริง |
+| GAP-01 | F-01 รวม staging แล้ว; F-02 working tree มี tests/audit รอ review/integration; backend F-03–05 ยังไม่รวม | Review F-02 diff/evidence และประสาน #3–4 ตาม contracts โดยไม่สร้าง migration ซ้ำ |
+| GAP-02 | F-02 domain/publish concurrency/snapshot และ UI races มีแล้ว; Registration concurrency/full journey/process restart/UAT ยังขาด | รวม backend #3 และ views/roster แล้วรัน integration/reproduction ที่เหลือ |
+| GAP-03 | Baseline/Auth merge มี local Git evidence แล้ว; F-02 PR/teammate review และ release ยังขาด | ตรวจ assignee/board จริงตอนนำส่ง, feature teammate review และ release chains ตามจริง; ไม่อ้างว่า audit นี้ตรวจ GitHub ล่าสุด |
 | GAP-04 | Final metadata/review/contribution verification และ release reference | สมาชิกตรวจข้อมูลและเติมตามงานจริง |
 | GAP-05 | Self-contained PDF / page numbers | ประกอบหลังมีหลักฐาน |
 

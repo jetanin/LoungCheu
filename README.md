@@ -3,9 +3,15 @@
 Documentation baseline v0.5 | ปรับปรุง 5 พฤศจิกายน 2026
 Deliverable 1: ส่ง 8 พฤศจิกายน 2026 เวลา 23:59 (Asia/Bangkok)
 
-**สถานะ: baseline v0.5 รับแล้วผ่าน [PR #5](https://github.com/jetanin/LoungCheu/pull/5)** setup/F-01 ผ่าน local pre-PR verification แล้วบน `feature/auth` จาก staging `5395942`; รอ commit/push/feature PR และ teammate review ยังไม่มี application release บน main ผลจริงดู [auth pre-PR review](docs/sprints/sprint-1/auth-pre-pr-review.md) ส่วน F-02–09 ยัง PLANNED
+**สถานะ: baseline v0.5 รับแล้วผ่าน [PR #5](https://github.com/jetanin/LoungCheu/pull/5)** F-01 รวมใน sprint-1-staging แล้ว (`6e8a24c`); F-02 มี implementation/tests บน `feature/events` รอ review/integration/release; F-03–09 ยังไม่รวมใน branch นี้ ยังไม่มี application release บน main ผล F-01 เดิมดู [auth pre-PR review](docs/sprints/sprint-1/auth-pre-pr-review.md)
 
 Layout ปัจจุบันใช้ `server/client`; app DB `loung-cheu-database` และ test DB `loungcheu_test` ใช้ PostgreSQL instance เดียวที่ `localhost:5432` โดยแยก database กัน ทั้ง app auth smoke และชุดทดสอบผ่านแล้ว ดู [single-instance record](docs/sprints/sprint-1/single-instance-db.md)
+
+6 พ.ย. 2026: branch `feature/events` มี F-02 APIs/UI และ tests แล้วจาก staging ที่รวม Auth (`6e8a24c`) ดู [ผลทดสอบจริง](docs/events/verification.md) และ [shared migration/จุดเชื่อม #3](docs/events/integration.md) ยังไม่ commit/review/release; backend Registration ยังไม่รวม จึงยังไม่สามารถยืนยันผลลงทะเบียนจากหน้ารายละเอียดบน branch นี้
+
+F-02 ใช้คำสั่ง generate/migrate/build/test ด้านล่างชุดเดิม Shared migration คือ `202611060002_registration_extension` จาก #3 ใช้ migration เดิมร่วมกัน ห้ามเพิ่ม migration สร้าง events ซ้ำ การตรวจรอบนี้ migrate เฉพาะ test DB; เมื่อนำไปใช้กับ app DB ให้ใช้ `npm run db:migrate` ตามขั้นตอนเดิม Routes เริ่มที่ `/events` และ Organizer ไป `/organizer/events` เพื่อสร้าง DRAFT/preview/publish เวลา form และ detail เป็น Asia/Bangkok หากพอร์ต dev เดิมใช้อยู่ ให้กำหนด `E2E_WEB_PORT=5183` และ `E2E_API_PORT=3011` สำหรับ browser tests
+
+Organizer มีแท็บ **ภาพรวม** ที่ `/organizer` พร้อมจำนวนกิจกรรมของตนทั้งหมด/ฉบับร่าง/เผยแพร่ และสามกิจกรรมล่าสุดจาก own event API เดิม หน้านี้เป็น F-02 UI presentation; Login ยังไป `/events` และไม่มี Participant/attendance report เพิ่ม
 
 ระบบกิจกรรมภายในมหาวิทยาลัยสำหรับ Participant และ Organizer ครอบคลุมการเผยแพร่ ลงทะเบียน ยกเลิก เช็กชื่อ และรายงานการเข้าร่วม
 
@@ -103,16 +109,16 @@ Unit/API suite ใช้ PostgreSQL จริงจาก `TEST_DATABASE_URL` �
 
 จำเป็นต้องแยก **database** สำหรับ fixtures ที่ reset ข้อมูล ปัจจุบันใช้ PostgreSQL **instance เดียวกัน** ที่ 5432: app DB `loung-cheu-database` และ test DB `loungcheu_test` โดย `.env.test` ชี้ฐาน tests และ migrate ด้วย `npm run db:migrate:test`
 
-Cluster 55432 เดิมหยุดแล้วและไม่ใช้ใน workflow ปัจจุบัน `scripts/local-db.ps1` เป็น compatibility wrapper สำหรับ setup test database บน instance ที่ตั้งใน `server/.env` เท่านั้น ไม่มีการ init/start/stop PostgreSQL เพิ่ม Vitest/Supertest/Playwright เป็นเครื่องมือที่ทีมเลือกและบันทึกใน baseline; จำนวน 54 unit/API กับ 7 browser cases เป็นผลของ implementation ปัจจุบัน ข้อกำหนดหลักคือ coverage ตาม AC และหลักฐานรันจริง ไม่ใช่จำนวน runner cases ตายตัว
+Cluster 55432 เดิมหยุดแล้วและไม่ใช้ใน workflow ปัจจุบัน `scripts/local-db.ps1` เป็น compatibility wrapper สำหรับ setup test database บน instance ที่ตั้งใน `server/.env` เท่านั้น ไม่มีการ init/start/stop PostgreSQL เพิ่ม Vitest/Supertest/Playwright เป็นเครื่องมือที่ทีมเลือกและบันทึกใน baseline ผลล่าสุดหลัง F-02 audit คือ 74 Vitest / 26 browser ผ่าน ดู [verification](docs/events/verification.md) ข้อกำหนดหลักคือ coverage ตาม AC และหลักฐานรันจริง ไม่ใช่จำนวน runner cases ตายตัว
 
 ```powershell
 npx playwright install chromium
 npm run test:e2e
 ```
 
-E2E เปิด server/Vite บน ports 3001/5173 และ seed password สุ่มเฉพาะ process ลง test DB จึงต้องให้ ports ว่าง ทดสอบ UI Login/refresh/Logout สำหรับสอง role, expired-session UI, failed Logout/retry, response ที่มาถึงสลับลำดับ และ page restore; proof ของ server expiry อยู่ใน TEST-06 แยกต่างหาก หน้า `/events` ของ F-01 แสดง identity/role และแจ้งว่ารายการกิจกรรมอยู่ระหว่างพัฒนา; ยังไม่มี event/registration endpoints ของ #2–4
+E2E เปิด server/Vite บน ports 3001/5173 โดย default และ seed password สุ่มเฉพาะ process ลง test DB จึงต้องให้ ports ว่าง หรือกำหนด E2E_API_PORT/E2E_WEB_PORT เพื่อใช้ 3011/5183 ชุดทดสอบครอบคลุม Auth เดิมและ Event create/preview/publish/browse รวม permission/conflict/late-response/session-focus races; proof ของ server expiry อยู่ใน API integration แยกต่างหาก หน้า `/events` มี identity/role และรายการกิจกรรมแล้ว ยังไม่รวม Registration backend/own records/roster ของ #3–4
 
-ตรวจ compiled artifacts หลัง build ด้วย `npm run test:built`; ตรวจรายละเอียดก่อน PR/ผลรันล่าสุดใน [auth pre-PR review](docs/sprints/sprint-1/auth-pre-pr-review.md) Source snapshots/ผลแดงเดิมเป็นประวัติของแต่ละ version ไม่ใช่ผลของ working tree ล่าสุด
+ตรวจ compiled artifacts หลัง build ด้วย `npm run test:built`; ผลล่าสุดอยู่ใน [Event verification](docs/events/verification.md) และ [spec audit](docs/events/audit.md) ส่วน [auth pre-PR review](docs/sprints/sprint-1/auth-pre-pr-review.md) เป็นประวัติ F-01 Source snapshots/ผลแดงเดิมเป็นประวัติของแต่ละ version ไม่ใช่ผลของ working tree ล่าสุด
 
 หลัง migrate/seed และ build แล้ว ใช้ `npm run test:local-db` เพื่อตรวจ app DB จริงจาก `server/.env`: health, anonymous rejection และ Login/Identity/Logout ของ Participant/Organizer คำสั่งนี้ใช้ demo accounts ที่ seed ไว้และไม่ reset/delete ข้อมูลผู้ใช้ ส่วน unit/API/E2E ชุดหลักยังใช้ test DB แยก ห้ามเปลี่ยน `.env.test` ให้ชี้ฐานแอป
 

@@ -26,7 +26,7 @@ Modules: accounts (auth/seed), events (create/publish/list; S2 edit/close), regi
 
 ### Planned source layout
 
-Layout ด้านล่างเป็นแผนทั้ง Sprint 1; setup/F-01 เพิ่ม workspace, frontend auth, backend accounts/session, Prisma config/User+session migration และ tests แล้วบน `feature/auth` ส่วน events/registrations ยังเป็นแผน ดู [auth work record](sprints/sprint-1/auth-work-record.md)
+Layout ด้านล่างเป็นแผนทั้ง Sprint 1; setup/F-01 รวม staging แล้ว Event module/UI/tests implement บน feature/events พร้อม shared schema/migration จาก #3 ส่วน backend Registration/own records/roster ยังไม่รวมใน branch นี้ ดู [Event integration](events/integration.md) และ [Auth historical record](sprints/sprint-1/auth-work-record.md)
 
 ```text
 LoungCheu/
@@ -90,6 +90,7 @@ Concurrency tests ใช้ separate connections/transactions และ barrier 
 | /login | Username/password และ generic credential error | 1 |
 | /events, /events/{id} | Authenticated users ดู PUBLISHED/CLOSED; Participant ลงทะเบียน | 1 |
 | /my/registrations, /my/registrations/{id} | Participant อ่าน list/detail ของตน | 1 |
+| /organizer | Organizer overview จาก own event list เดิม: จำนวน Event ตามสถานะ, สามรายการล่าสุด และลิงก์สร้าง/ดูทั้งหมด; F-02 UI presentation | 1 |
 | /organizer/events, /organizer/events/new | Organizer ดูของตนรวม DRAFT และสร้างกิจกรรม | 1 |
 | /organizer/events/{id} | เจ้าของ preview/publish/roster/count | 1 |
 | หน้าเดิมเพิ่ม Cancel/Close/Edit | ตาม role/ownership/deadline | 2 |
@@ -148,6 +149,10 @@ Cookie: HttpOnly, SameSite=Lax, Secure บน HTTPS; server expiry 2 ชั่�
 
 Frontend ใช้ลำดับ request ป้องกัน response เก่ามาแสดง private identity หลัง response ใหม่ยืนยันว่า session ใช้ไม่ได้; เมื่อ browser ส่ง persisted pageshow จะล้าง identity และตรวจ session ใหม่ รายละเอียด regression/หลักฐานอยู่ใน auth pre-PR review
 
+F-02 audit เพิ่ม session epoch แยกแต่ละ Login/Logout เพื่อไม่ให้ late mutation/identity responses ข้ามบัญชี Background identity network failure คงหน้าปัจจุบันและแสดง warning/retry เพื่อรักษา RegistrationAction state; 401 ของ current epoch ต้องล้างข้อมูลแม้มี temporary failure ของ request ใหม่กว่า Persisted pageshow และ Logout ยังล้างข้อมูลก่อนตรวจใหม่ Event read/publish 403/404 ล้าง cached record และ invalidate stale responses; conflict publish 409 refresh ข้อมูลโดยไม่ retry mutation ดู [audit evidence](events/audit.md)
+
+Organizer overview เป็น frontend read view ของ Event module ใช้ own-list response ที่ scope/session/snapshot ตาม API เดิม คำนวณ total/DRAFT/PUBLISHED จาก array เดียวกันและแสดงสามแถวแรกตาม server order ไม่มี registration/attendance rollup หรือ schema/migration เพิ่ม แยก abortable reads ตาม identity/role; loading ใช้ placeholder แทน 0, errors มี retry และ 401/403/404 ล้าง protected data Login/shared list/detail และ RegistrationAction host คงพฤติกรรมเดิม
+
 Seed ใช้ Participant A/B/C, Organizer A/B และ inactive account จากข้อมูลสังเคราะห์ Username trim แล้วเทียบ case-sensitive ตาม seed รับ demo password ผ่าน environment/private handoff แล้ว hash ไม่ commit/log credentials Demo events ใช้เวลาที่ยังเป็นอนาคตขณะ seed/สร้างผ่าน UI; fixed t0 ใช้เฉพาะ automated fixtures
 
 ## 7. Setup / reproduction design
@@ -190,3 +195,9 @@ Delivery: PR build/tests gate → teammate review → staging integration → re
 | Data loss | Local restart; Lab 5 restart/redeploy |
 | SPA/API session integration | Cookie/CSRF API tests และ browser journey |
 | เวลาก่อน D1 | จำกัด F-01–05, seed accounts และ backend เดียว |
+
+## 10. F-02 implementation update — 6 พฤศจิกายน 2026
+
+Event module แยก router/input/service ใช้ Auth/session/role/CSRF/error convention เดิม Shared schema/migration reuse จาก #3 โดยตรง Owner queries scope ด้วย session; shared คืนเฉพาะ PUBLISHED/CLOSED พร้อม ACTIVE count จริง Read/create ใช้ REPEATABLE READ snapshot; publish ใช้ READ COMMITTED + Event row lock แล้วอ่าน server clock ใหม่ ตรวจ status ก่อน deadline และคืนผลหลัง commit
+
+Frontend มี owner list/create/preview/publish และ shared list/detail โดย reuse RegistrationAction ของ #3 และคง action mounted ระหว่าง focus/refresh รวม read failure Backend Registration ยังเป็น dependency ที่ต้องนำมาต่อ รายละเอียดไฟล์/transaction/composition และผลทดสอบจริงอยู่ใน [integration](events/integration.md) และ [verification](events/verification.md) ไม่เปลี่ยน SRS/AC baseline และไม่เพิ่ม edit/close/cancel/roster/check-in

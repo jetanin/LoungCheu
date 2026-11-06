@@ -1,0 +1,21 @@
+
+> loungcheu@0.1.0 build
+> npm run build -w client && npm run build -w server
+
+
+> @loungcheu/client@0.1.0 build
+> tsc --noEmit && vite build
+
+vite v6.4.5 building for production...
+transforming...
+✓ 37 modules transformed.
+rendering chunks...
+computing gzip size...
+dist/index.html                   0.42 kB │ gzip:  0.31 kB
+dist/assets/index-Cxb1Ua4K.css  231.90 kB │ gzip: 31.10 kB
+dist/assets/index-Ba1wyHO-.js   247.26 kB │ gzip: 76.25 kB
+✓ built in 1.25s
+
+> @loungcheu/server@0.1.0 build
+> tsc -p tsconfig.build.json
+
