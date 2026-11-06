@@ -11,12 +11,12 @@ export function emptyInput(body: unknown) {
 // Reject calendar rollover, missing offset, and precision loss before Date parses it.
 export function timestamp(value: unknown): Date | null {
   if (typeof value !== 'string') return null;
-  const m = /^(\d{4})-(\d{2})-(\d{2})T(\d{2}):(\d{2}):(\d{2})(?:\.(\d{1,3}))?(Z|[+-]\d{2}:\d{2})$/.exec(value);
+  const m = /^(\d{4})-(\d{2})-(\d{2})T(\d{2}):(\d{2})(?::(\d{2})(?:\.(\d{1,3}))?)?(Z|[+-]\d{2}:\d{2})$/.exec(value);
   if (!m) return null;
   const [, y, mo, d, h, mi, s, , zone] = m;
   const year = Number(y), month = Number(mo), day = Number(d);
   const days = [31, year % 4 === 0 && (year % 100 !== 0 || year % 400 === 0) ? 29 : 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31];
-  if (year < 1 || month < 1 || month > 12 || day < 1 || day > days[month - 1] || Number(h) > 23 || Number(mi) > 59 || Number(s) > 59
+  if (year < 1 || month < 1 || month > 12 || day < 1 || day > days[month - 1] || Number(h) > 23 || Number(mi) > 59 || Number(s ?? '0') > 59
     || (zone !== 'Z' && (Number(zone.slice(1, 3)) > 23 || Number(zone.slice(4)) > 59))) return null;
   const date = new Date(value);
   // Keep the contract's four digit UTC output year even at offset boundaries.
@@ -30,6 +30,9 @@ export function eventInput(body: unknown) {
   function text(key: string, max: number) {
     const value = b[key];
     if (typeof value !== 'string' || !value.trim() || [...value.trim()].length > max) { fields[key] = [`กรุณากรอก 1–${max} ตัวอักษร`]; return ''; }
+    // PostgreSQL TEXT cannot store NUL; reject unpaired UTF-16 surrogates
+    // before the driver silently replaces them. Paired emoji remain valid.
+    if (/[\u0000\uD800-\uDFFF]/u.test(value)) { fields[key] = ['มีอักขระที่ไม่รองรับ กรุณากรอกข้อความใหม่']; return ''; }
     return value.trim();
   }
   const title = text('title', 120), description = text('description', 2000), location = text('location', 200);

@@ -113,7 +113,8 @@ describe('F-01 API with real PostgreSQL sessions', () => {
   });
   it('TEST-02 uses one credential error for unknown, wrong, inactive and case-mismatched accounts', async () => {
     const bodies: unknown[] = [];
-    for (const [username, submittedPassword] of [['unknown', password], ['participant.a', 'wrong'], ['inactive.x', password], ['Participant.a', password]]) {
+    for (const [username, submittedPassword] of [['unknown', password], ['participant.a', 'wrong'], ['inactive.x', password], ['Participant.a', password],
+      ['participant.a\u0000', password], ['unknown\u0000name', password]]) {
       const agent = request.agent(runtime.app), pre = await csrf(agent);
       const result = await agent.post('/api/auth/login').set('X-CSRF-Token', pre.token).send({ username, password: submittedPassword });
       expectError(result, 401, 'INVALID_CREDENTIALS'); bodies.push(result.body);

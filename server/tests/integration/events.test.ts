@@ -267,3 +267,62 @@ it('TEST-07 event and session survive recreating createApp against the same Post
   const restored = await request(runtime.app).get(`/api/organizer/events/${r.body.data.id}`).set('Cookie', cookie).expect(200);
   expect(restored.body).toEqual(r.body);
 });
+
+it('TEST-08/36 accepts minute-precision ISO timestamps with offsets and normalizes seconds', async () => {
+  const { agent, token } = await login();
+  const r = await agent.post('/api/organizer/events').set('X-CSRF-Token', token).send({ ...input(),
+    starts_at: '2028-02-29T00:30+07:00', ends_at: '2028-02-28T18:30Z', registration_closes_at: '2028-02-28T12:30-05:00' });
+  if (r.status === 201) ids.push(r.body.data.id);
+  expect(r.status).toBe(201);
+  expect(r.body.data).toMatchObject({ starts_at: '2028-02-28T17:30:00.000Z', ends_at: '2028-02-28T18:30:00.000Z', registration_closes_at: '2028-02-28T17:30:00.000Z' });
+});
+
+it('TEST-08 rejects NUL and unpaired surrogates instead of DB errors or lossy inserts', async () => {
+  const { agent, token } = await login(), before = await db.event.count();
+  const responses: request.Response[] = [];
+  for (const key of ['title', 'description', 'location']) for (const invalid of [String.fromCharCode(0), String.fromCharCode(0xD800), String.fromCharCode(0xDC00)]) {
+    const r = await agent.post('/api/organizer/events').set('X-CSRF-Token', token).send({ ...input(), [key]: `text${invalid}` });
+    if (r.status === 201) ids.push(r.body.data.id);
+    responses.push(r);
+  }
+  for (const r of responses) error(r, 400, 'INVALID_INPUT');
+  expect(await db.event.count()).toBe(before);
+});
+
+it('F-02/F-03 create, publish, register and recreate app preserve reference and consistent counts', async () => {
+  const oa = await login(), pa = await login('participant.a');
+  const created = await oa.agent.post('/api/organizer/events').set('X-CSRF-Token', oa.token).send({ ...input(), capacity: 1 }).expect(201);
+  const id = created.body.data.id; ids.push(id);
+  error(await pa.agent.get(`/api/events/${id}`), 404, 'EVENT_NOT_FOUND');
+  await oa.agent.post(`/api/organizer/events/${id}/publish`).set('X-CSRF-Token', oa.token).send({}).expect(200);
+  const registered = await pa.agent.post(`/api/events/${id}/registrations`).set('X-CSRF-Token', pa.token).send({}).expect(201);
+  const record = await db.registration.findUniqueOrThrow({ where: { id: registered.body.data.id } });
+  expect(record).toMatchObject({ eventId: id, participantId: participant, status: 'ACTIVE', registeredAt: new Date(clock) });
+  const duplicate = await pa.agent.post(`/api/events/${id}/registrations`).set('X-CSRF-Token', pa.token).send({});
+  error(duplicate, 409, 'ALREADY_REGISTERED');
+  const pb = await login('participant.b');
+  error(await pb.agent.post(`/api/events/${id}/registrations`).set('X-CSRF-Token', pb.token).send({}), 409, 'EVENT_FULL');
+  await runtime.close(); runtime = await createApp(appConfig, db, () => clock);
+  for (const [cookie, path] of [[pa.cookie, `/api/events/${id}`], [oa.cookie, `/api/organizer/events/${id}`],
+    [pa.cookie, '/api/events'], [oa.cookie, '/api/organizer/events']]) {
+    const read = (await request(runtime.app).get(path).set('Cookie', cookie).expect(200)).body.data;
+    const event = Array.isArray(read) ? read.find(e => e.id === id) : read;
+    expect(event).toMatchObject({ id, status: 'PUBLISHED', capacity: 1, active_count: 1, available_seats: 0, registration_open: false });
+  }
+  expect(await db.registration.findUniqueOrThrow({ where: { id: record.id } })).toEqual(record);
+  expect(await db.registration.count({ where: { eventId: id } })).toBe(1);
+});
+
+it('TEST-08 accepts max-length Unicode text encoded as JSON escapes without truncation', async () => {
+  const { agent, token } = await login();
+  const body = { ...input(), title: '🌱'.repeat(120), description: '🌱'.repeat(2000), location: '🌱'.repeat(200) };
+  // JSON Unicode escapes encode the same valid code points using more bytes
+  // than literal UTF-8. The payload remains within all BR-01 field limits.
+  const escaped = JSON.stringify(body).replace(/[\u007f-\uffff]/g, char => `\\u${char.charCodeAt(0).toString(16).padStart(4, '0')}`);
+  expect(Buffer.byteLength(escaped)).toBeGreaterThan(16 * 1024);
+  const r = await agent.post('/api/organizer/events').set('X-CSRF-Token', token).type('json').send(escaped);
+  if (r.status === 201) ids.push(r.body.data.id);
+  expect(r.status).toBe(201);
+  expect(r.body.data).toMatchObject({ title: body.title, description: body.description, location: body.location });
+  expect(await db.event.findUniqueOrThrow({ where: { id: r.body.data.id } })).toMatchObject({ title: body.title, description: body.description, location: body.location });
+});

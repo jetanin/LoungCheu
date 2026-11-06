@@ -24,14 +24,19 @@ export function EventPage({ path, identity, onAuthRequired, onNavigate }: {
       const result = await api<EventView | EventView[]>(id ? `${base}/${encodeURIComponent(id)}` : base);
       if (version === generation.current) setData(result);
     } catch (failure) {
-      if (version !== generation.current) return;
-      if (failure instanceof ApiError && failure.status === 401) onAuthRequired();
-      else {
-        // Access failures clear protected data. Transient refresh errors keep the
-        // mounted action and its pending/success/uncertain outcome intact.
-        if (failure instanceof ApiError && [403, 404].includes(failure.status)) { scopeVersion.current++; setData(null); }
-        if (!preserveError) setError(failure instanceof ApiError ? failure.message : 'โหลดข้อมูลไม่สำเร็จ กรุณาลองใหม่');
+      if (!mounted.current) return;
+      // A received 401 rejects this mounted session even if a newer read only
+      // failed to connect. Unmounted account/route instances cannot sign out
+      // the next login. Still discard stale non-auth read results below.
+      if (failure instanceof ApiError && failure.status === 401) {
+        generation.current++; scopeVersion.current++; setData(null); setLoading(false);
+        onAuthRequired(); return;
       }
+      if (version !== generation.current) return;
+      // Access failures clear protected data. Transient refresh errors keep the
+      // mounted action and its pending/success/uncertain outcome intact.
+      if (failure instanceof ApiError && [403, 404].includes(failure.status)) { scopeVersion.current++; setData(null); }
+      if (!preserveError) setError(failure instanceof ApiError ? failure.message : 'โหลดข้อมูลไม่สำเร็จ กรุณาลองใหม่');
     } finally { if (version === generation.current) setLoading(false); }
   }, [base, creating, id, onAuthRequired]);
   useEffect(() => {
@@ -61,40 +66,42 @@ export function EventPage({ path, identity, onAuthRequired, onNavigate }: {
       }
     } finally { publishInFlight.current = false; if (mounted.current) setPublishing(false); }
   }
-  if (owner && identity.role !== 'ORGANIZER') return <p role="alert">ไม่มีสิทธิ์ใช้งาน</p>;
+  if (owner && identity.role !== 'ORGANIZER') return <section className="card page-panel" role="alert"><h1 className="page-title">ไม่มีสิทธิ์ใช้งาน</h1></section>;
   if (creating) return <EventForm onAuthRequired={onAuthRequired} onCreated={event => onNavigate(`${base}/${event.id}`)}/>;
   const event = data && !Array.isArray(data) ? data : null;
-  return <section aria-label={owner ? 'จัดการกิจกรรม' : 'กิจกรรม'}>
-    {!id && <h1 className="h2">{owner ? 'กิจกรรมของฉัน' : 'กิจกรรมในมหาวิทยาลัย'}</h1>}
-    {owner && !id && <a className="btn btn-success mb-4" href="/organizer/events/new">สร้างกิจกรรม</a>}
-    {loading && <p role="status">{data ? 'กำลังรีเฟรชกิจกรรม…' : 'กำลังโหลดกิจกรรม…'}</p>}
+  return <section className={id ? 'event-detail-page' : undefined} aria-label={owner ? 'จัดการกิจกรรม' : 'กิจกรรม'}>
+    {!id && <div className="page-heading">
+      {owner ? <h1 className="page-title">กิจกรรมของฉัน</h1> : <h2 className="section-title">กิจกรรมในมหาวิทยาลัย</h2>}
+      {owner && <a className="btn btn-success" href="/organizer/events/new">สร้างกิจกรรม</a>}
+    </div>}
+    {id && !event && <h1 className="page-title mb-3">รายละเอียดกิจกรรม</h1>}
+    {loading && <p className="event-meta" role="status">{data ? 'กำลังรีเฟรชกิจกรรม…' : 'กำลังโหลดกิจกรรม…'}</p>}
     {error && <div className="alert alert-warning" role="alert">{error} <button className="btn btn-outline-secondary btn-sm" onClick={() => void refresh()}>ลองใหม่</button></div>}
-    {!loading && Array.isArray(data) && !data.length && <p>ยังไม่มีกิจกรรม {owner ? <a href="/organizer/events/new">เริ่มสร้างกิจกรรม</a> : <span>กลับมาดูกิจกรรมใหม่ได้ภายหลัง</span>}</p>}
-    {Array.isArray(data) && <div className="row g-3">{data.map(item => <div className="col-md-6" key={item.id}><article className="card h-100 shadow-sm border-0 p-4">
-      <span className="small text-secondary">{item.status}</span><h2 className="h4 mt-2"><a className="link-success" href={`${base}/${item.id}`}>{item.title}</a></h2>
-      <p>{item.location}</p><p className="small">{bangkokTime(item.starts_at)} · Asia/Bangkok</p>
-      <p className="mb-0">ว่าง {item.available_seats} / {item.capacity} ที่นั่ง · {item.registration_open ? 'เปิดรับลงทะเบียน' : 'ยังไม่เปิดรับ / ปิดรับแล้ว'}</p>
+    {!loading && Array.isArray(data) && !data.length && <p className="page-state">ยังไม่มีกิจกรรม {owner ? <a href="/organizer/events/new">เริ่มสร้างกิจกรรม</a> : <span>กลับมาดูกิจกรรมใหม่ได้ภายหลัง</span>}</p>}
+    {Array.isArray(data) && <div className="row g-3">{data.map(item => <div className="col-md-6" key={item.id}><article className="card h-100 event-card">
+      <span className="event-status" data-status={item.status}>{item.status}</span><h2 className="event-card-title"><a className="link-success" href={`${base}/${item.id}`}>{item.title}</a></h2>
+      <p className="event-meta">{item.location}</p><p className="event-meta">{bangkokTime(item.starts_at)} · Asia/Bangkok</p>
+      <p className="event-card-availability">ว่าง {item.available_seats} / {item.capacity} ที่นั่ง · {item.registration_open ? 'เปิดรับลงทะเบียน' : 'ยังไม่เปิดรับ / ปิดรับแล้ว'}</p>
     </article></div>)}</div>}
-    {event && <article className="card border-0 shadow-sm p-4 p-md-5" style={{ maxWidth: 860 }}>
-      <span className="text-secondary">{event.status}</span><h1 className="h2 mt-2">{event.title}</h1>
+    {event && <article className="card page-panel event-detail">
+      <span className="event-status mb-3" data-status={event.status}>{event.status}</span><h1 className="page-title">{event.title}</h1>
       {owner && event.status === 'DRAFT' && <p className="text-secondary">ตัวอย่างกิจกรรม · กิจกรรมนี้จะปรากฏในรายการทั่วไปหลังเผยแพร่</p>}
-      <p style={{ whiteSpace: 'pre-wrap' }}>{event.description}</p>
-      <dl className="row">
-        <dt className="col-sm-4">สถานที่</dt><dd className="col-sm-8">{event.location}</dd>
-        <dt className="col-sm-4">เริ่มกิจกรรม</dt><dd className="col-sm-8" data-testid="starts-at">{bangkokTime(event.starts_at)}</dd>
-        <dt className="col-sm-4">สิ้นสุดกิจกรรม</dt><dd className="col-sm-8">{bangkokTime(event.ends_at)}</dd>
-        <dt className="col-sm-4">ปิดรับลงทะเบียน</dt><dd className="col-sm-8">{bangkokTime(event.registration_closes_at)}</dd>
+      <p className="event-description">{event.description}</p>
+      <dl className="event-details">
+        <dt>สถานที่</dt><dd>{event.location}</dd>
+        <dt>เริ่มกิจกรรม</dt><dd data-testid="starts-at">{bangkokTime(event.starts_at)}</dd>
+        <dt>สิ้นสุดกิจกรรม</dt><dd>{bangkokTime(event.ends_at)}</dd>
+        <dt>ปิดรับลงทะเบียน</dt><dd>{bangkokTime(event.registration_closes_at)}</dd>
       </dl>
       <p className="small text-secondary">เวลาประเทศไทย (Asia/Bangkok) · ปิดรับเมื่อถึงกำหนดตามเวลาเซิร์ฟเวอร์</p>
       <p>ว่าง {event.available_seats} / {event.capacity} ที่นั่ง</p><p>ลงทะเบียน ACTIVE {event.active_count} คน</p>
-      <div className="d-flex gap-2 mb-4">
+      <div className="event-actions">
         <button className="btn btn-outline-secondary" onClick={() => void refresh()}>รีเฟรชที่นั่ง</button>
         {owner && event.status === 'DRAFT' && <button className="btn btn-success" disabled={publishing} onClick={() => void publish()}>{publishing ? 'กำลังเผยแพร่…' : 'เผยแพร่กิจกรรม'}</button>}
         {owner && event.status !== 'DRAFT' && <a className="btn btn-outline-success" href={`/events/${event.id}`}>ดูหน้ากิจกรรมทั่วไป</a>}
       </div>
       {!owner && <RegistrationAction event={event} identity={identity} getCsrfToken={async signal => (await api<{ csrf_token: string }>('/auth/csrf', { signal })).csrf_token}
         refreshEvent={refresh} onAuthRequired={onAuthRequired}/>}
-      <a className="mt-4" href={base}>กลับรายการกิจกรรม</a>
     </article>}
   </section>;
 }
