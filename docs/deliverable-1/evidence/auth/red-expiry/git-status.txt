@@ -1,0 +1,16 @@
+## feature/auth
+ M .gitignore
+ M README.md
+ M docs/changelog.md
+ M docs/decisions.md
+ M docs/sprints/plan.md
+?? .env.test.example
+?? backend/
+?? docs/sprints/sprint-1/auth-work-record.md
+?? frontend/
+?? package-lock.json
+?? package.json
+?? playwright.config.ts
+?? scripts/
+?? tests/
+?? vitest.config.ts

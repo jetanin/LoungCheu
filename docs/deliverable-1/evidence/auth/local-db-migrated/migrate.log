@@ -1,0 +1,31 @@
+
+> loungcheu@0.1.0 db:migrate
+> npm run db:migrate -w server
+
+
+> @loungcheu/server@0.1.0 db:migrate
+> prisma migrate deploy
+
+npm.cmd : Loaded Prisma config from prisma.config.ts.
+At line:2 char:93
++ ... migrated-verification | Out-Null; npm.cmd run db:migrate 2>&1 | Tee-O ...
++                                       ~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : NotSpecified: (Loaded Prisma c...isma.config.ts.:String) [], RemoteException
+    + FullyQualifiedErrorId : NativeCommandError
+ 
+
+Prisma schema loaded from prisma\schema.prisma.
+Datasource "db": PostgreSQL database "loung-cheu-database", schema "public" at "localhost:5432"
+
+1 migration found in prisma/migrations
+
+Applying migration `202611060001_auth`
+
+The following migration(s) have been applied:
+
+migrations/
+  └─ 202611060001_auth/
+    └─ migration.sql
+
+All migrations have been successfully applied.
+Exit code: 0

@@ -1,5 +1,30 @@
 # F-03 — actual verification
 
+## Current integration with staging (6 พ.ย. 2026)
+
+ฐาน `6e8a24c` จาก origin/sprint-1-staging ขณะบันทึกยังเป็น merge working tree ที่ผู้ใช้จะ stage/commit เอง
+
+- db:generate/typecheck/build: PASS ตาม scripts ของเพื่อน; Vite 6.4.5/React 19.3.1/Bootstrap 5.3.8 ของ staging
+- `npm test`: **9 files / 110 passed / 0 failed/skipped**, 09:54:57 Asia/Bangkok; 62 unit/HTTP/UI + 31 auth integration + 17 registration integration
+- Registration integration ใช้ HTTP Login/session cookie/fresh CSRF ของเพื่อนจริง เพิ่ม token rotation/logout/inactive/absolute-expiry checks ไม่ inject auth guards ใน DB suite
+- Concurrency/lock-wait ใช้ PostgreSQL จริงและ independent connections บน events; ORM camelCase และ DB snake_case ตาม staging
+- Migrate/seed: PASS Docker app DB loung-cheu-database และ test DB loungcheu_test ที่ 5432 โดยเก็บฐานเก่าไว้
+- test:built: PASS 3 checks; test:local-db: PASS health/anonymous/both-role Login/Identity/Logout
+- Dependency audit: 0 vulnerabilities
+- `npm run test:e2e`: **7 passed (10.9s)** หลังติดตั้ง Chromium ตรง Playwright เป็น browser regression ของ auth เดิม ยังไม่ใช่ full registration UI journey
+
+Environment เป็น Node 24.15.0 ของเครื่อง ขณะที่ package ของเพื่อนประกาศ Node >=22.16 <23 จึงมี EBADENGINE warning; คง runtime policy ของ staging ยังไม่อ้าง clean reproduction บน Node 22 ในรอบนี้
+
+Attempts: Docker Desktop เริ่มไม่ได้จาก dockerInference socket; ผู้ใช้แก้ให้รันได้แล้วจึงทำ DB checks ต่อ Empty legacy migration directories ทำให้ migrate ครั้งแรก P3015; นำ directories ว่างออกแล้ว migrations ทั้งสอง DB ผ่าน Browser regression ครั้งแรก fail ก่อนเข้า assertions เพราะยังไม่มี Chromium binary รุ่นที่ตรง Playwright; ติดตั้งและ rerun ผ่านทั้ง 7 tests แล้ว
+
+ยังรอ #2 Event APIs และ #4 views เพื่อทำ complete UI journey/restart/teammate acceptance ส่วน unit router tests ยังคง isolated harness ตามปกติ
+
+---
+
+## Historical record — ก่อนใช้ staging เป็น base
+
+เนื้อหาด้านล่างเป็นผลของโครงเดิม ไม่ใช่ runtime/commands ปัจจุบัน SHA และคำว่า unchanged ใน TDD record อ้าง snapshot ณ เวลานั้น หลัง merge ปรับ assertions ให้ตรวจ error.code ของ error class เพื่อน
+
 วันที่ 6 พ.ย. 2026 (Asia/Bangkok) | ทำงานบน `feature/registration`, base `dafbf4f`
 
 ทดสอบ working tree ที่ยังไม่ commit เพราะผู้ใช้จะรัน Git/GitHub commands เอง ต้องเติม commit จริงหลัง commit และยืนยัน checks บน revision นั้นก่อนส่งรายงาน

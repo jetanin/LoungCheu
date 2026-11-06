@@ -4,7 +4,7 @@ services:
     environment:
       POSTGRES_USER: loungcheu
       POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-local_only}
-      POSTGRES_DB: loungcheu
+      POSTGRES_DB: loung-cheu-database
     ports:
       - "127.0.0.1:${POSTGRES_PORT:-5432}:5432"
     volumes:

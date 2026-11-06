@@ -1,6 +1,7 @@
 import { useEffect, useRef, useState } from 'react';
 import { RegistrationAction, type RegistrationActionProps } from './RegistrationAction.js';
 import { RegistrationFailure } from './api.js';
+import { api, ApiError } from '../../lib/api';
 
 interface SharedEvent {
   id: string;
@@ -13,19 +14,22 @@ interface SharedEvent {
 }
 type Identity = RegistrationActionProps['identity'];
 type PageState = { kind: 'loading' | 'auth' | 'missing' | 'error' }
-  | { kind: 'ready'; identity: Identity; event: SharedEvent };
+  | { kind: 'ready'; event: SharedEvent };
 
 async function read<T>(path: string, signal: AbortSignal): Promise<T> {
-  const response = await fetch(path, { credentials: 'same-origin', signal, cache: 'no-store' });
-  const payload = await response.json();
-  if (!response.ok) throw new RegistrationFailure(payload?.error?.code ?? 'INTERNAL_ERROR');
-  return payload.data as T;
+  try { return await api<T>(path.replace(/^\/api/, ''), { signal }); }
+  catch (error) {
+    if (error instanceof ApiError) throw new RegistrationFailure(error.code);
+    throw error;
+  }
 }
 const bangkok = new Intl.DateTimeFormat('th-TH', { dateStyle: 'medium', timeStyle: 'short', timeZone: 'Asia/Bangkok' });
 
 // Small F-03 host using #1 identity/CSRF and #2 event-read contracts.
 // The teammate's shared app shell can render RegistrationAction directly instead.
-export function RegistrationPage({ eventId }: { eventId?: string }) {
+export function RegistrationPage({ eventId, identity, onAuthRequired }: {
+  eventId: string; identity: Identity; onAuthRequired: () => void;
+}) {
   const [state, setState] = useState<PageState>({ kind: 'loading' });
   const [revision, setRevision] = useState(0);
   const activeRequest = useRef<AbortController | null>(null);
@@ -36,10 +40,10 @@ export function RegistrationPage({ eventId }: { eventId?: string }) {
     setState({ kind: 'loading' });
     void (async () => {
       try {
-        const identity = await read<Identity>('/api/auth/me', controller.signal);
         const event = await read<SharedEvent>(`/api/events/${encodeURIComponent(eventId)}`, controller.signal);
-        if (!controller.signal.aborted) setState({ kind: 'ready', identity, event });
+        if (!controller.signal.aborted) setState({ kind: 'ready', event });
       } catch (error) {
+        if (!controller.signal.aborted && error instanceof RegistrationFailure && error.code === 'AUTH_REQUIRED') onAuthRequired();
         if (!controller.signal.aborted) setState({ kind: error instanceof RegistrationFailure
           && error.code === 'AUTH_REQUIRED' ? 'auth' : error instanceof RegistrationFailure
           && error.code === 'EVENT_NOT_FOUND' ? 'missing' : 'error' });
@@ -50,8 +54,8 @@ export function RegistrationPage({ eventId }: { eventId?: string }) {
     return () => { controller.abort(); window.removeEventListener('focus', refreshIdentity); };
   }, [eventId, revision]);
 
-  return <main className="container py-5" style={{ maxWidth: 760 }}>
-    <header className="mb-4"><a className="text-decoration-none" href="/events">LoungCheu</a><h1 className="mt-3">ลงทะเบียนกิจกรรม</h1></header>
+  return <section aria-label="รายละเอียดการลงทะเบียน" style={{ maxWidth: 760 }}>
+    <h1 className="mb-4">ลงทะเบียนกิจกรรม</h1>
     {!eventId ? <div className="card card-body"><p className="mb-0">เลือกกิจกรรมที่ต้องการจาก <a href="/events">รายการกิจกรรม</a> เพื่อลงทะเบียน</p></div>
       : state.kind === 'loading' ? <p role="status">กำลังโหลดกิจกรรม…</p>
       : state.kind === 'auth' ? <div className="alert alert-warning" role="alert">กรุณา <a href="/login">เข้าสู่ระบบ</a> ก่อนลงทะเบียน</div>
@@ -65,7 +69,7 @@ export function RegistrationPage({ eventId }: { eventId?: string }) {
           <dt className="col-sm-4">ปิดรับลงทะเบียน</dt><dd className="col-sm-8">{bangkok.format(new Date(state.event.registration_closes_at))}</dd>
         </dl>
         <p className="small text-body-secondary">เวลาประเทศไทย (Asia/Bangkok)</p>
-        <RegistrationAction event={state.event} identity={state.identity}
+        <RegistrationAction event={state.event} identity={identity}
           getCsrfToken={async (signal) => {
             const data = await read<{ csrf_token: string }>('/api/auth/csrf', signal);
             if (typeof data.csrf_token !== 'string' || !data.csrf_token) throw new Error('Missing CSRF token');
@@ -78,11 +82,11 @@ export function RegistrationPage({ eventId }: { eventId?: string }) {
               const event = await read<SharedEvent>(`/api/events/${encodeURIComponent(eventId)}`, signal);
               if (!signal.aborted) setState((current) => current.kind === 'ready' ? { ...current, event } : current);
             } catch (error) {
-              if (!signal.aborted && error instanceof RegistrationFailure && error.code === 'AUTH_REQUIRED') setState({ kind: 'auth' });
+              if (!signal.aborted && error instanceof RegistrationFailure && error.code === 'AUTH_REQUIRED') { setState({ kind: 'auth' }); onAuthRequired(); }
               throw error;
             }
           }}
-          onAuthRequired={() => setState({ kind: 'auth' })} />
+          onAuthRequired={() => { setState({ kind: 'auth' }); onAuthRequired(); }} />
       </div></article>}
-  </main>;
+  </section>;
 }

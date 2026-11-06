@@ -1,8 +1,10 @@
 import { describe, expect, it, vi } from 'vitest';
 import request from 'supertest';
-import { createRegistrationApp } from '../../src/app.js';
-import { ApiError } from '../../src/shared/errors.js';
-import type { RegistrationIdentity } from '../../src/modules/registrations/router.js';
+import express from 'express';
+import { ApiError, errorHandler } from '../../src/shared/errors.js';
+import { createRegistrationRouter } from '../../src/modules/registrations/router.js';
+
+interface RegistrationIdentity { id: string; role: 'PARTICIPANT' | 'ORGANIZER'; is_active: boolean; }
 
 const participant = { id: '11111111-1111-4111-8111-111111111111', role: 'PARTICIPANT' as const, is_active: true };
 const eventId = '22222222-2222-4222-8222-222222222222';
@@ -11,11 +13,17 @@ const record = { id: '33333333-3333-4333-8333-333333333333', event_id: eventId, 
 // Only checks the registration router boundary; these injected guards are NOT #1 auth tests.
 function setup(identity: RegistrationIdentity | null = participant, csrf = true) {
   const register = vi.fn().mockResolvedValue(record);
-  const app = createRegistrationApp({
-    authenticate: (_req, res, next) => { res.locals.identity = identity; next(); },
+  const app = express();
+  app.use('/api', createRegistrationRouter({
+    authenticate: (_req, res, next) => {
+      if (!identity?.is_active) return next(new ApiError(401, 'AUTH_REQUIRED', 'กรุณาเข้าสู่ระบบ'));
+      res.locals.identity = { id: identity.id, displayName: 'PA', role: identity.role }; next();
+    },
     verifyCsrf: (_req, _res, next) => next(csrf ? undefined : new ApiError(403, 'CSRF_FAILED', 'invalid csrf')),
     register,
-  });
+  }));
+  app.use((_req, _res, next) => next(new ApiError(404, 'ROUTE_NOT_FOUND', 'ไม่พบเส้นทาง')));
+  app.use(errorHandler);
   return { app, register };
 }
 

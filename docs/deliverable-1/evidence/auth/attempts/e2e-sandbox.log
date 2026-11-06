@@ -1,0 +1,43 @@
+
+> loungcheu@0.1.0 test:e2e
+> playwright test
+
+npm.cmd : [WebServer] (node:34668) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+At line:2 char:20
++ $env:NO_COLOR='1'; npm.cmd run test:e2e 2>&1 | Tee-Object -FilePath . ...
++                    ~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : NotSpecified: ([WebServer] (no... env being set.:String) [], RemoteException
+    + FullyQualifiedErrorId : NativeCommandError
+ 
+[WebServer] (Use `node --trace-warnings ...` to show where the warning was created)
+[WebServer] (node:7500) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+[WebServer] (Use `node --trace-warnings ...` to show where the warning was created)
+[WebServer] (node:37576) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+[WebServer] (Use `node --trace-warnings ...` to show where the warning was created)
+[WebServer] node:os:305
+[WebServer]     throw new ERR_SYSTEM_ERROR(ctx);
+[WebServer]           ^
+[WebServer] 
+[WebServer] SystemError [ERR_SYSTEM_ERROR]: A system error occurred: uv_os_get_passwd returned ENOMEM (not enough 
+memory)
+[WebServer]     at Object.userInfo (node:os:305:11)
+[WebServer]     at 
+file:///C:/Kmutt/Senior/CPE334/Final/LoungCheu/node_modules/tsx/dist/temporary-directory-Du7LpLp9.mjs:1:659
+[WebServer]     at ModuleJob.run (node:internal/modules/esm/module_job:274:25)
+[WebServer]     at async onImport.tracePromise.__proto__ (node:internal/modules/esm/loader:644:26)
+[WebServer]     at async asyncRunEntryPointWithESMLoader (node:internal/modules/run_main:117:5) {
+[WebServer]   code: 'ERR_SYSTEM_ERROR',
+[WebServer]   info: {
+[WebServer]     errno: -4057,
+[WebServer]     code: 'ENOMEM',
+[WebServer]     message: 'not enough memory',
+[WebServer]     syscall: 'uv_os_get_passwd'
+[WebServer]   },
+[WebServer]   errno: [Getter/Setter],
+[WebServer]   syscall: [Getter/Setter]
+[WebServer] }
+[WebServer] 
+[WebServer] Node.js v22.16.0
+Error: Process from config.webServer was not able to start. Exit code: 1
+
+Exit code: 1

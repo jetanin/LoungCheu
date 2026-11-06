@@ -1,0 +1,35 @@
+{
+  "connection": "ok",
+  "database": "loung-cheu-database",
+  "postgres_version": "17.6",
+  "public_tables": [
+    "_prisma_migrations",
+    "sessions",
+    "users"
+  ],
+  "migrations": [
+    {
+      "migration_name": "202611060001_auth",
+      "finished": true,
+      "not_rolled_back": true
+    }
+  ],
+  "synthetic_users": [
+    {
+      "role": "PARTICIPANT",
+      "is_active": false,
+      "count": 1
+    },
+    {
+      "role": "PARTICIPANT",
+      "is_active": true,
+      "count": 3
+    },
+    {
+      "role": "ORGANIZER",
+      "is_active": true,
+      "count": 2
+    }
+  ],
+  "credentials": "omitted"
+}

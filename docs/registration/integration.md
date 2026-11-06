@@ -1,83 +1,65 @@
-# F-03 Registration — integration contract
+# Registration เป็น extension ของ staging
 
-6 พ.ย. 2026 | Issue #3 | Branch `feature/registration`
+6 พ.ย. 2026 | feature/registration รวมฐาน origin/sprint-1-staging `6e8a24c`
 
-อิง FR-06, BR-03–07/10/14, AC-12–17 และ TEST-15–21 จาก baseline v0.5 บน `docs/deliverable-1-baseline` (`f5339b9`) Source layout ปรับจาก frontend/backend ในแผนมาเป็น client/server ตามผู้ใช้กำหนด
+## Base ที่คงไว้
 
-## Backend composition กับ Authentication (#1)
+ใช้ package/layout/scripts ของเพื่อน, React App/Login/API client, Express createApp, PostgreSQL sessions, requireAuth/requireRole, CSRF, error handler, config, seed และ migration 202611060001_auth เป็นฐาน ไม่มี runtime identity bypass หรือ app harness แยกของ Registration
+
+client/index.html, client/src/main.tsx, Vite/TypeScript configs, Prisma config และ shared errors ยึด staging ส่วน App เพิ่มเฉพาะ authenticated route /events/{id} และคง route นี้เมื่อ refresh session; server startup เก็บการรายงาน listener error ที่แก้ไว้ก่อนหน้า
+
+## Backend composition
+
+ภายใน createApp ก่อน unknown-API handler:
 
 ```typescript
-import { createDatabaseClient } from './db/client.js';
-import { createRegistrationRouter } from './modules/registrations/router.js';
-import { createRegistrationService } from './modules/registrations/service.js';
-import { apiErrorHandler } from './shared/errors.js';
-
-const prisma = createDatabaseClient(config.DATABASE_URL);
-// Mount session middleware ของ #1 ก่อน router นี้
 app.use('/api', createRegistrationRouter({
-  authenticate: requireActiveSession,
-  verifyCsrf: verifySessionCsrfAndOrigin,
-  register: createRegistrationService(prisma),
+  authenticate: auth,
+  verifyCsrf: csrf,
+  register: createRegistrationService(db, () => new Date(now())),
 }));
-// error handler อยู่ท้าย routers ของแอปรวม
-app.use(apiErrorHandler);
 ```
 
-`requireActiveSession` ของ #1 ต้องอ่าน user ปัจจุบันจาก session + DB, ตรวจ expiry/is_active แล้วใส่ `res.locals.identity = { id, role, is_active }` ไม่รับ identity จาก body/header ฝั่ง client Router ตรวจ active/UUID/Participant ซ้ำก่อน CSRF ไม่มี default middleware ที่อนุญาตทุกคน
+auth คือ requireAuth(db, now) ของเพื่อน ตรวจ current user/isActive/absolute expiry และให้ identity จาก DB Router ใช้ requireRole('PARTICIPANT') ก่อน CSRF → JSON/input → transaction ไม่มี client-supplied user/role และไม่เปลี่ยน Login/Logout implementation
 
-`verifySessionCsrfAndOrigin` ต้องตรวจ `X-CSRF-Token` ว่าผูกกับ session ปัจจุบัน และ Origin (ถ้ามี) ต้องตรง APP_ORIGIN ใช้ ApiError(403, 'CSRF_FAILED', ...) เมื่อไม่ผ่าน การตรวจ session จริง, token rotation, logout/expiry และ inactive session เป็นงาน #1 ที่ต้องรันร่วมอีกครั้ง
+POST /api/events/{UUID}/registrations รับ EmptyInput + session cookie + X-CSRF-Token คืน 201 `{ data: { id, event_id, status: 'ACTIVE', registered_at } }` ตาม error/success envelope ของ staging
 
-ลำดับ route นี้: authenticate → Participant role → CSRF → JSON/body/UUID → domain transaction อย่าวาง global JSON parser ที่ reject malformed input ก่อน auth/role ถ้าต้องการรักษา precedence ตาม baseline โดย router มี JSON parser ของตนแล้ว `createRegistrationApp` เป็น composition harness สำหรับ #3/tests
+Service ใช้ READ COMMITTED และ parameterized SELECT ... FROM events ... FOR UPDATE ก่อนอ่าน application clock ใหม่ ตรวจ scope → open/deadline → duplicate → ACTIVE capacity แล้ว insert และคืน response หลัง commit ทุก seat mutation ของ #2/Sprint ถัดไปต้องใช้ Event → Registration lock order เดียวกัน
 
-`server/src/server.ts` เปิด HTTP listener ด้วย `npm run start -w server` หลัง build โดย guards เริ่มต้นปฏิเสธ auth ด้วย 401 และ CSRF ด้วย 403 จนกว่าจะเชื่อม middleware จริงของ #1 ไม่มี auth/event endpoints หรือ runtime test identity แฝงไว้
+## Schema / database
 
-Success 201: `{ data: { id, event_id, status: 'ACTIVE', registered_at } }`; error envelope `{ error: { code, message, fields: {} } }` ทุกครั้ง ข้อมูล participant มาจาก trusted identity ไม่คืน participant_id/session/password
+คง User/users/passwordHash/displayName/isActive ของเพื่อน เพิ่ม Event/Registration ด้วย ORM camelCase, DB snake_case และ @@map เป็น events/registrations Migration 202611060002_registration_extension ต่อจาก auth โดยไม่สร้าง users/sessions/Role ซ้ำ มี FK/unique/index/capacity/time-order checks ตาม SDS
 
-## Shared schema และ Event Management (#2)
+นำ legacy migrations ที่สร้าง User/Role อีกชุดออกจาก source ใหม่ ฐานที่ใช้ legacy migrations ต้องไม่ migrate ทับโดยไม่มีแผนย้ายข้อมูล รอบนี้เก็บ lou​ngcheu เดิมไว้และสร้าง loung-cheu-database ใหม่บน Docker instance เดียวกัน .env.test ชี้ loungcheu_test ที่ 5432 จาก db:setup:test ของเพื่อน ไม่มี reset/drop ฐานเก่า
 
-เพราะ staging เดิมมีเพียง README จึงเพิ่ม shared foundation migration สำหรับ User/Event ตาม SDS และแยก Registration เป็น migration ถัดไป ไม่มี implementation ของ auth หรือ event-management actions
+Event Management (#2) ยังไม่อยู่ใน staging นี้ โมเดล Event ที่เพิ่มเป็น prerequisite ของ #3 ไม่มี create/publish/list/detail APIs ให้ประสาน fields/migrations กับเจ้าของ #2 ก่อนรวมงานนั้น
 
-ก่อนรวมกับงานเพื่อน ให้ใช้ **User/Event foundation ชุดเดียว** ร่วมกัน: ตรวจชื่อ Prisma models/columns, FK, enums และ migration history ก่อน merge หากเพื่อนมี migrations อยู่แล้ว ให้ reconcile บน integration branch ก่อน deploy ห้ามนำ migration สร้าง User/Event ซ้ำไปลงฐานเดิมโดยไม่ตรวจ
+## Frontend
 
-Registration มี UUID PK, FK Event/User, unique `(event_id, participant_id)`, status ACTIVE/CANCELLED, `registered_at` แบบ timestamptz(3) และ indexes ตาม SDS ไม่มี cancel/reactivate ใน Sprint 1 ถ้าพบคู่เดิมแม้เป็น CANCELLED จะ reject ALREADY_REGISTERED เพื่อไม่เปลี่ยน record โดยไม่มี Sprint 2 workflow
+App ของเพื่อนรับผิดชอบ Login/Logout/identity/session polling เช่นเดิม เมื่ออยู่ /events/{id} ส่ง identity/onAuthRequired ให้ RegistrationPage หน้า registration ใช้ API client client/src/lib/api.ts ของเพื่อนเพื่ออ่าน event/CSRF และส่ง registration
 
-`createRegistrationService` ใช้ Prisma interactive transaction READ COMMITTED:
+RegistrationAction ปิดปุ่มขณะส่ง, แสดง reference, อธิบาย conflict/refresh availability, abort/ล้างผลเมื่อ user/event เปลี่ยน และให้ตรวจ own records ก่อน retry เมื่อ network/timeout หลังเริ่ม mutation ไม่มี automatic mutation retry
 
-1. Parameterized `SELECT ... FROM "Event" WHERE id = ... FOR UPDATE`
-2. อ่าน application clock ใหม่หลัง lock
-3. Missing/DRAFT → EVENT_NOT_FOUND; CLOSED/at-or-after deadline → REGISTRATION_CLOSED
-4. คู่เดิม → ALREADY_REGISTERED; ACTIVE count เต็ม → EVENT_FULL
-5. สร้าง ACTIVE ด้วย participant จาก session และ registered_at จาก clock เดียวกัน แล้วคืน response หลัง commit
+เมื่อ #2 มี Event Detail สามารถนำ RegistrationAction ไป render ในหน้านั้นโดยตรงโดย reuse identity/API client ของ app ไม่ต้องทำ auth/app shell ซ้ำ
 
-Publish/close/cancel/reactivate/capacity edits ของเพื่อนและ Sprint ถัดไปต้องใช้ Event → Registration lock order เดียวกัน Unique constraint เป็นแนวป้องกันซ้ำเพิ่มเติม กรณี constraint conflict ของ unique pair แปลงเป็น ALREADY_REGISTERED โดยไม่ส่ง SQL ออก HTTP
+## รันจาก root
 
-## Frontend composition
+เตรียม private server/.env และ PostgreSQL Docker ตาม README ก่อน:
 
-`client/vite.config.ts`: Vite + official React plugin, `/api` proxy คง Origin; Bootstrap CSS import ใน `client/src/main.tsx` ไม่มี DB/session secrets เข้า frontend
-
-`RegistrationPage` เป็น F-03 host แบบบางสำหรับ `/events/{id}`: ใช้ GET `/api/auth/me`, GET `/api/events/{id}`, GET `/api/auth/csrf` ตาม contracts โดยไม่ implement APIs เหล่านั้น หน้า Login/list/own registrations/roster ยังเป็นงาน #1/#2/#4
-
-เมื่อเพื่อนมี Event Detail/app shell แล้ว ให้นำ `RegistrationAction` ไป render ในหน้านั้นได้โดยตรง ไม่จำเป็นต้องใช้ host page ซ้ำ:
-
-```tsx
-<RegistrationAction
-  event={event}
-  identity={identity}
-  getCsrfToken={getCurrentSessionCsrfToken}
-  refreshEvent={reloadEventAvailability}
-  onAuthRequired={clearPrivateStateAndGoToLogin}
-/>
+```powershell
+npm ci
+npm run db:generate
+npm run db:migrate
+npm run db:setup:test
+npm run db:migrate:test
+npm run db:seed
+npm run dev
 ```
 
-Props identity มี `{id, role}` จาก /me; event ต้องมี `{id, registration_open, available_seats}`; `getCsrfToken(signal)` ต้องส่ง signal ให้ fetch และคืน token ปัจจุบันหลัง login rotate
+Demo password คือ DEMO_SEED_PASSWORD ในไฟล์ local หลัง build ใช้ npm start หรือ npm run start -w server ไม่เปิด backend ซ้อนกัน Runtime/scripts/engine policy ยึด staging (Node 22.x)
 
-Component ปิดปุ่มขณะส่ง, แสดง reference/ลิงก์ own list, อธิบาย conflict แล้ว refresh availability, timeout/network หลังเริ่ม POST ให้ตรวจ own list ก่อน retry ไม่มี auto retry mutation; เปลี่ยน user/event แล้วล้าง private result และ abort request เก่า การซ่อน UI ไม่แทน backend authorization
+## Verification / งานต่อ
 
-## ก่อนรับ Issue #3
+npm test รัน auth และ Registration บน PostgreSQL จริง Registration integration Login ผ่าน HTTP/cookies/CSRF จริง รวม token rotation/logout/inactive/expiry และ separate connections สำหรับ races ผล/attempts/ข้อจำกัดดู verification.md
 
-- เชื่อมและรันทดสอบด้วย session/CSRF จริงของ #1 และ Event APIs ของ #2
-- #4 เพิ่ม own list/detail และ organizer roster บน branch แยก
-- รัน browser journey และ manual restart/teammate clean reproduction
-- เพื่อน review PR, บันทึก tested commit/test results/traceability และ integration evidence จริง
-
-ตอนนี้รับรองเฉพาะ feature-module tests ที่ระบุใน verification.md ยังไม่อ้าง Product DoD หรือ cross-feature journey ผ่าน
+Full browser publish → detail → register → own list → roster ยังรอ Event APIs (#2) และ Registration Views (#4) ยังไม่อ้าง Product DoD/release ผ่าน

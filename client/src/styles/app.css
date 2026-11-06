@@ -1,0 +1,11 @@
+:root { color-scheme: light; font-family: system-ui, sans-serif; }
+body { margin: 0; background: #f4f7f5; color: #203c33; }
+.app-shell { min-height: 100vh; display: flex; flex-direction: column; }
+main { flex: 1; }
+.brand { color: #145c47; font-size: 1.25rem; font-weight: 750; letter-spacing: -.02em; }
+.brand-mark { display: inline-grid; place-items: center; width: 2.25rem; height: 2.25rem; background: #126b56; color: white; border-radius: .75rem; margin-right: .35rem; font-size: .85rem; }
+.login-card { max-width: 31rem; margin: 2rem auto; border-radius: 1.25rem; }
+.eyebrow { color: #126b56; font-weight: 650; font-size: .8rem; letter-spacing: .04em; }
+.btn-success { --bs-btn-bg: #126b56; --bs-btn-border-color: #126b56; --bs-btn-hover-bg: #0b5140; }
+.form-control:focus { border-color: #126b56; box-shadow: 0 0 0 .2rem #126b5620; }
+.card { border-radius: 1.25rem; }

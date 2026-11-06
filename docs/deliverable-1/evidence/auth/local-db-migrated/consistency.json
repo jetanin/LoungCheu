@@ -1,0 +1,10 @@
+{
+  "source_files": 45,
+  "manifest_mismatches": [],
+  "missing_markdown_targets": [],
+  "private_config_matches": [],
+  "root_runtime_env_exists": false,
+  "root_duplicate_template_exists": false,
+  "server_runtime_env_exists": true,
+  "separate_test_env_exists": true
+}

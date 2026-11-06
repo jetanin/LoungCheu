@@ -1,26 +1,25 @@
-Registration ต้องป้องกันลงซ้ำและเกินความจุเมื่อคำขอเข้าพร้อมกัน การเปลี่ยนแปลงนี้เพิ่ม F-03 API ที่ lock Event ก่อนตรวจ deadline → duplicate → capacity แล้ว insert ACTIVE ภายใน transaction เดียว และเพิ่มหน้า/component ลงทะเบียนด้วย React + TypeScript + Vite + Bootstrap ใน client/
+เพิ่ม Registration เป็น extension ของ staging `6e8a24c` โดยใช้ Authentication/session/CSRF, React app shell, API client, Prisma naming และ package scripts ของเพื่อนเป็นฐาน ผู้เข้าร่วมที่ Login จริงลงทะเบียนผ่าน transaction ที่ lock Event ก่อนตรวจ deadline → duplicate → capacity จน commit
 
 Refs #3 — FR-06, AC-12–17, TEST-15–21, BR-03–07/10/14
 
 ## Changes
 
-- server/: registration router/service/rules, generic JSON errors, shared schema foundation + registration migration
-- client/: Vite build/dev/proxy, Bootstrap, registration action/page, availability refresh และ network-timeout guidance
-- Docker Compose PostgreSQL local/test แยก volume/port และ fixture cleanup เฉพาะรอบทดสอบ
-- Tests และบันทึก TDD/traceability ใน docs/registration/verification.md
+- Mount registration router/service ใน createApp เดิม ใช้ requireAuth/requireRole/CSRF เดิม ไม่มี runtime auth bypass หรือ app harness แยก
+- คง auth migration/User/users แล้วเพิ่ม migration ต่อสำหรับ Event foundation/Registration ด้วย camelCase ORM และ snake_case DB
+- Registration UI อยู่ใน App ของเพื่อนและ reuse client/src/lib/api.ts; loading/conflict/availability/network-timeout/account isolation
+- เก็บฐาน Docker legacy ไว้ ใช้ app/test databases แยกบน instance เดียวกับ scripts ของ staging
 
 ## Validation
 
-- npm run typecheck / npm run build: passed
-- npm test: 39 passed
-- npm run test:db: 15 passed บน PostgreSQL 17.11 Docker จริง รวม lock-wait deadline/last-seat/duplicate races
-- Vite dev HTTP smoke: passed; dependency audit: 0 vulnerabilities
-- Tested working tree ยังไม่มี commit; เติม revision จริงหลัง commit/rerun checks
+- db:generate/typecheck/build: passed
+- npm test: 110 passed รวม auth suite เดิมและ Registration กับ real Login/cookies/CSRF บน PostgreSQL Docker
+- test:built: 3 passed; test:local-db: passed
+- test:e2e: 7 passed (auth browser regression ของเพื่อน)
+- Dependency audit: 0 vulnerabilities
+- Browser regression/attempts และผลล่าสุด: docs/registration/verification.md
 
-## Integration before acceptance
+## Remaining integration
 
-Draft PR: Authentication/Event Management ของ #1/#2 ยังไม่รวมใน branch นี้ Auth/CSRF ใน tests เป็น injected guards ไม่มี runtime test-login endpoint และยังไม่อ้าง full session/browser integration ผ่าน ดู docs/registration/integration.md สำหรับ middleware identity, CSRF/Origin, schema และ Event lock convention
+Event Management (#2) ยังไม่มีใน staging ชุดนี้ จึงยังรอ event read/create/publish/list APIs และต้องประสาน Event schema foundation กับเจ้าของ #2 ส่วน Registration Views (#4) เป็นงานถัดไป Complete UI journey/restart/teammate review/release ยังไม่อ้างผ่าน จึงใช้ Refs #3 แทนปิด Issue อัตโนมัติ
 
-Staging เดิมมีเพียง README จึงเพิ่ม User/Event schema foundation ตาม SDS ต้อง reconcile migrations ร่วมกับเพื่อนก่อน deploy หาก #1/#2 มี foundation ของตนเองแล้ว
-
-Registration Views (#4), browser journey, restart/clean reproduction, teammate review และ Product DoD ยังรอ จึงยังไม่ปิด Issue #3 อัตโนมัติ
+Merge resolution/ผลทดสอบยังเป็น working tree ให้เติม commit จริงหลังผู้ใช้ stage/commit/rerun checks

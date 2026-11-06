@@ -1,4 +1,4 @@
-import { Prisma, type PrismaClient } from '../../generated/prisma/client.js';
+import { Prisma, type PrismaClient } from '@prisma/client';
 import { ApiError } from '../../shared/errors.js';
 import { assertRegistrationOpen, assertSeatAvailable, type RegistrationEvent } from './rules.js';
 
@@ -15,23 +15,23 @@ export function createRegistrationService(prisma: PrismaClient, clock: () => Dat
       return await prisma.$transaction(async (tx) => {
         const events = await tx.$queryRaw<RegistrationEvent[]>`
           SELECT "status", "registration_closes_at", "capacity"
-          FROM "Event" WHERE "id" = ${eventId}::uuid FOR UPDATE
+          FROM "events" WHERE "id" = ${eventId}::uuid FOR UPDATE
         `;
         // Read application time only AFTER acquiring the lock, including lock-wait time.
         const now = clock();
         assertRegistrationOpen(events[0] ?? null, now);
         const existing = await tx.registration.findUnique({
-          where: { event_id_participant_id: { event_id: eventId, participant_id: participantId } },
+          where: { eventId_participantId: { eventId, participantId } },
           select: { id: true },
         });
-        const count = await tx.registration.count({ where: { event_id: eventId, status: 'ACTIVE' } });
+        const count = await tx.registration.count({ where: { eventId, status: 'ACTIVE' } });
         // Sprint 1 cannot reactivate CANCELLED; preserve the unique pair for Sprint 2.
         assertSeatAvailable(existing !== null, count, events[0].capacity);
         const record = await tx.registration.create({
-          data: { event_id: eventId, participant_id: participantId, status: 'ACTIVE', registered_at: now },
-          select: { id: true, event_id: true, status: true, registered_at: true },
+          data: { eventId, participantId, status: 'ACTIVE', registeredAt: now },
+          select: { id: true, eventId: true, status: true, registeredAt: true },
         });
-        return { ...record, registered_at: record.registered_at.toISOString() };
+        return { id: record.id, event_id: record.eventId, status: record.status, registered_at: record.registeredAt.toISOString() };
       }, { isolationLevel: Prisma.TransactionIsolationLevel.ReadCommitted, maxWait: 5_000, timeout: 15_000 });
     } catch (error) {
       if (error instanceof Prisma.PrismaClientKnownRequestError && error.code === 'P2002') {

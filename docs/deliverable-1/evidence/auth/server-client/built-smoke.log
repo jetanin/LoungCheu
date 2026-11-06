@@ -1,0 +1,6 @@
+
+> loungcheu@0.1.0 test:built
+> node scripts/smoke-built.mjs
+
+Built production app smoke: SPA /login, database health/version, unknown API JSON 404: 3 passed.
+Exit code: 0

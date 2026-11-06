@@ -1,0 +1,10 @@
+
+> loungcheu@0.1.0 db:seed
+> npm run db:seed -w backend
+
+
+> @loungcheu/backend@0.1.0 db:seed
+> tsx prisma/seed.ts
+
+Synthetic accounts seeded (credentials omitted).
+Exit code: 0

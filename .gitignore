@@ -1,9 +1,63 @@
+# Dependencies
 node_modules/
-**/dist/
-**/coverage/
+server/src/generated/
+.local/
+
+# Build output
+/dist/
+/build/
+/client/dist/
+/client/build/
+/server/dist/
+/server/build/
+
+# Caches
+.vite/
+.cache/
+*.tsbuildinfo
+
+# Local environment values
 .env
 .env.*
 !.env.example
-*.tsbuildinfo
-*.log
-server/src/generated/
+!.env.*.example
+
+# Generated reports (selected copies under docs remain trackable)
+/coverage/
+/.nyc_output/
+/playwright-report/
+/test-results/
+/blob-report/
+/client/coverage/
+/client/.nyc_output/
+/client/playwright-report/
+/client/test-results/
+/client/blob-report/
+/server/coverage/
+/server/.nyc_output/
+/server/playwright-report/
+/server/test-results/
+/server/blob-report/
+/tests/**/test-results/
+/tests/**/playwright-report/
+/tests/**/blob-report/
+
+# Runtime and package-manager logs
+/logs/
+/server/logs/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+lerna-debug.log*
+
+# Local editor and OS files
+.idea/
+*.swp
+*.swo
+*~
+.DS_Store
+Thumbs.db
+Desktop.ini
+
+# Keep lockfiles, Prisma schema/migrations, and selected docs evidence in Git.

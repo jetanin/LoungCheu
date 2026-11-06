@@ -1,96 +1,146 @@
-# LoungCheu
-CPE334-Project (Event Registration)
+# LoungCheu — ระบบลงทะเบียนกิจกรรมและเช็กชื่อ
 
-Issue #3 / F-03: atomic event registration ตาม documentation baseline v0.5 (อ่านจาก branch `docs/deliverable-1-baseline`, commit `f5339b9`)
+Documentation baseline v0.5 | ปรับปรุง 5 พฤศจิกายน 2026
+Deliverable 1: ส่ง 8 พฤศจิกายน 2026 เวลา 23:59 (Asia/Bangkok)
 
-โครงสร้างใช้ **client/** สำหรับ frontend และ **server/** สำหรับ backend ตามข้อตกลงทีม
+**สถานะ: baseline v0.5 รับแล้วผ่าน [PR #5](https://github.com/jetanin/LoungCheu/pull/5)** setup/F-01 ผ่าน local pre-PR verification แล้วบน `feature/auth` จาก staging `5395942`; รอ commit/push/feature PR และ teammate review ยังไม่มี application release บน main ผลจริงดู [auth pre-PR review](docs/sprints/sprint-1/auth-pre-pr-review.md) ส่วน F-02–09 ยัง PLANNED
 
-| ส่วน | Stack |
+Layout ปัจจุบันใช้ `server/client`; app DB `loung-cheu-database` และ test DB `loungcheu_test` ใช้ PostgreSQL instance เดียวที่ `localhost:5432` โดยแยก database กัน ทั้ง app auth smoke และชุดทดสอบผ่านแล้ว ดู [single-instance record](docs/sprints/sprint-1/single-instance-db.md)
+
+ระบบกิจกรรมภายในมหาวิทยาลัยสำหรับ Participant และ Organizer ครอบคลุมการเผยแพร่ ลงทะเบียน ยกเลิก เช็กชื่อ และรายงานการเข้าร่วม
+
+## ทีมและ repository
+
+| สมาชิก | ชื่อ / รหัส |
 |---|---|
-| Frontend | React 19.2, TypeScript 5.9, Vite 8.3, Bootstrap 5.3 |
-| Backend | Node.js, Express 5.3, TypeScript |
-| Database | PostgreSQL 17 บน Docker, Prisma 7.10 + PostgreSQL adapter |
-| Tests | Vitest 5.1, Supertest, React Testing Library; concurrency ใช้ PostgreSQL จริง |
+| M1 | Jetanin Naitho — 67070501011 |
+| M2 | Paphangkorn Luanseng — 67070501083 |
 
-พัฒนา/ตรวจบน Node 24.15.0, npm 11.11.0, PostgreSQL 17.11; dependency versions ถูก pin ใน package files/lockfile
+| ข้อมูลส่งงาน | ค่า |
+|---|---|
+| Theme | 3 — ใช้สิทธิ์จากรหัส M2 ที่ลงท้าย 3 |
+| Repository | https://github.com/jetanin/LoungCheu |
+| Submitted application tag/commit | ยังไม่มี |
 
-## ขอบเขต branch นี้
+## Stack และ workflow
 
-- `POST /api/events/{id}/registrations`: role/input checks, event lock, deadline, duplicate, capacity และ persisted reference
-- RegistrationAction และหน้า frontend `/events/{id}` สำหรับลงทะเบียน โดยอ่าน identity/event ผ่าน APIs ของ #1/#2
-- Schema/migrations พื้นฐานตาม SDS, Docker databases แยก local/test, tests และหลักฐาน TDD
+| Area | Technology |
+|---|---|
+| Frontend | React + TypeScript + Vite + Bootstrap |
+| Backend | Node.js + Express + TypeScript; REST JSON |
+| Database | PostgreSQL + Prisma |
+| Testing | Vitest + Supertest; Playwright สำหรับ selected browser E2E |
+| Workflow | GitHub Issues/Projects, feature branches, PRs และ teammate review |
 
-Authentication (#1) และ Event Management (#2) ยังเป็นงานเพื่อน: branch นี้ไม่มี login/session implementation, seed demo accounts หรือ create/publish/list APIs หน้า `/login`, `/events`, `/my/registrations` ต้องเชื่อมกับงานทีม; Registration Views (#4) เป็นงานถัดไป **ยังไม่ใช่แอปที่ทำ journey รวมได้ครบ**
+Sprint 1 ใช้ `feature/* → sprint-1-staging → main` ทุก feature PR ต้องมีเพื่อน review และทดสอบรวมก่อน release PR เข้า main ดู Issues #1–4, project board และ baseline integration ใน [Sprint plan](docs/sprints/plan.md)
 
-## ติดตั้งและฐานข้อมูล
+## เอกสาร Deliverable 1
 
-รัน PowerShell ที่ root ของ repository; ต้องมี Node >=22.12 และเปิด Docker Desktop ก่อน
+| Part | คะแนน | เอกสาร |
+|---|---:|---|
+| A | 10 | [SRS](docs/srs.md) |
+| B | 10 | [Features](docs/features.md), [Traceability](docs/traceability.md) |
+| C | 15 | [System SDS](docs/system-sds.md) |
+| D | 5 | [Three-sprint plan](docs/sprints/plan.md) |
+| E | 20 | [Sprint 1 / DoD](docs/sprints/sprint-1/README.md), [Contracts](docs/sprints/sprint-1/contracts.md), [STS](docs/sprints/sprint-1/sts.md) |
+| F | 20 | [Evidence register](docs/deliverable-1/evidence-register.md), [Submission checklist](docs/deliverable-1/report-plan.md) |
+
+[Decisions / review record](docs/decisions.md) เก็บเหตุผลและคำถามคงค้าง; [Changelog](docs/changelog.md) เก็บ revision/commit history และ AI-use declaration
+
+## การใช้งานและส่งงาน
+
+1. ทีมตรวจ scope/design/contracts แล้ว version เอกสารก่อน implementation
+2. พัฒนาและทดสอบตาม Issue/AC เก็บ TDD red→green สำหรับกฎสำคัญ และ teammate review
+3. เติม actual test file/name, command, result และ tested commit ใน traceability/evidence
+4. Release บน main พร้อม setup/migration/seed/build/run/test instructions
+5. รวมเนื้อหา Parts A–F และหลักฐานลง PDF เดียว พร้อมสารบัญ/เลขหน้า ส่งผ่าน LEB2
+
+Docker/CI/CD/GCP ต้องเสร็จใน Lab 5 ส่วน D1 ต้องมี local release และแผน deployment
+
+## Local setup — Issue #1 / F-01
+
+### Registration extension — Issue #3
+
+Registration ใช้ staging `6e8a24c` เป็นฐาน: คง auth/session/CSRF, React app shell, API client, scripts และ auth migration ของเพื่อน แล้วเพิ่ม `POST /api/events/{id}/registrations` กับ UI ภายใน `/events/{id}` ไม่มี auth bypass หรือ server แยก
+
+Prisma ใช้ camelCase และ map เป็น `users`, `events`, `registrations` ตาม staging Migration `202611060002_registration_extension` เพิ่ม Event foundation/Registration โดยไม่สร้าง users/sessions ซ้ำ Event Management (#2) ยังไม่มีใน staging นี้ จึงยังรอ GET event detail/create/publish/list APIs เพื่อทำ UI journey ครบ; Registration Views (#4) เป็นงานถัดไป
+
+`npm test` รวม auth และ Registration; `npm run test:registration` รัน Registration DB suite, `npm test -w server` รัน server unit/HTTP และ `npm run test:db -w server` รัน server integration ทั้งสอง feature ดู [จุดเชื่อมต่อ](docs/registration/integration.md) และ [ผลล่าสุด](docs/registration/verification.md)
+
+### PostgreSQL Docker สำหรับ branch นี้
+
+```powershell
+docker compose up -d --wait db
+```
+
+ตั้ง private `server/.env` ให้ตรง container เช่น `DATABASE_URL=postgresql://loungcheu:local_only@localhost:5432/loung-cheu-database` แล้วใช้ scripts migrate/setup-test/seed ด้านล่าง App/test ใช้ Docker instance เดียวที่ 5432 แต่คนละ database; db-test profile เดิมที่ 55433 ไม่ใช้ใน workflow ปัจจุบัน
+
+รอบนี้สร้าง `loung-cheu-database` ใหม่และเก็บฐาน `loungcheu` เก่าไว้ ไม่ reset/drop ข้อมูลเดิม Private config เก่าสำรองที่ `.local/registration-before-staging.env`; session secret/demo password ใหม่อยู่ใน `server/.env` เท่านั้น ถ้าใช้ Docker volume เดิมจากโครงเก่า ต้องสร้างฐานแอปใหม่ก่อน migrate อย่าทับ migration history เดิม
+
+ใช้ Node.js **22.16.0** (รองรับ 22.x ตั้งแต่ 22.16.0), npm **11.11.0**, PostgreSQL **17**; dependency versions pin ใน package.json และ package-lock.json รันคำสั่งต่อไปนี้จาก repository root
 
 ```powershell
 npm ci
-npm run generate
-docker compose --profile test up -d --wait
-Copy-Item server/.env.example server/.env
-Copy-Item client/.env.example client/.env
-npm run migrate -w server
 ```
 
-`db`: `127.0.0.1:5432/loungcheu`, volume ถาวร `db-data`; `db-test`: `127.0.0.1:55433/loungcheu_test`, tmpfs แยกทิ้งได้เมื่อ container หยุด ต้อง migrate test DB ใหม่หลังเริ่มใหม่
+หากใช้ PostgreSQL ที่สร้างเองในเครื่อง ให้ตั้ง `DATABASE_URL` ใน `server/.env` ไปยัง **`loung-cheu-database`** โดยใช้ host/port/user/password จริงของ service Template ใช้ placeholders ให้แทนค่าตามเครื่อง; app DB ปัจจุบันใช้ `localhost:5432` และ schema `public` จากนั้นรัน `npm run db:generate` และ `npm run db:migrate` เก็บฐาน `loungcheu_test` แยกสำหรับ tests เสมอ
 
-ค่ารหัสผ่านใน Compose เป็นข้อมูลสังเคราะห์สำหรับ local เท่านั้น ถ้าเปลี่ยน `POSTGRES_PASSWORD`/`POSTGRES_PORT` ให้ปรับ `server/.env` ให้ตรง ห้ามใส่ secrets ของ backend ในตัวแปร `VITE_*`
-
-## รัน frontend ด้วย Vite
+เมื่อ `server/.env` เชื่อมต่อฐานแอปได้แล้ว `npm run db:setup:test` จะสร้าง `loungcheu_test` บน instance เดียวกันถ้ายังไม่มี และตั้ง private `.env.test` โดยใช้ host/port/credentials เดียวกันพร้อมเปลี่ยนชื่อ database เท่านั้น คำสั่งไม่แก้ `server/.env` และสำรอง `.env.test` เดิมใน `.local/test-env-before-single-instance.env` เมื่อมีไฟล์เดิม ต้องมีสิทธิ์สร้าง database หรือให้ผู้ดูแลสร้าง test DB และเตรียม `.env.test` เองตาม template
 
 ```powershell
+npm run db:generate
+npm run db:migrate
+npm run db:setup:test
+npm run db:migrate:test
+```
+
+หากใช้ PostgreSQL ของตนเอง (รวม macOS/Linux) ให้สร้าง empty database สำหรับแอปและอีก database ชื่อ `loungcheu_test` ที่แยกต่างหาก คัดลอก `server/.env.example` เป็น `server/.env` และ `.env.test.example` เป็น `.env.test`; ใส่ connection URLs/SESSION_SECRET จริงในไฟล์ local เท่านั้น `APP_ORIGIN` ต้องตรง origin ของ browser แบบไม่มี trailing slash และ production ต้อง HTTPS/secure cookie
+
+ตำแหน่ง config: server/Prisma/seed ใช้ `server/.env` เพราะ npm workspace รันจาก `server/`; Vitest/E2E/test migration ใช้ `.env.test` ที่ root Template ที่ต้องใช้มี `server/.env.example` และ `.env.test.example` ไม่มี runtime `.env` หรือ template `.env.example` ซ้ำที่ root ฝั่ง client ไม่อ่าน DB/session/seed secrets การตรวจ test target ใช้ชื่อ database ใน URL จริง จึงไม่รับ URL ของ dev ที่เพียงใส่คำว่า `loungcheu_test` ใน query string
+
+Seed รับ password ผ่าน environment แบบ private ไม่มี default และไม่ print credentials กำหนด `DEMO_SEED_PASSWORD` ใน `server/.env` ก่อน seed และใช้ค่าเดียวกันสำหรับ local auth smoke รอบ setup นี้เตรียมค่าสุ่มไว้ในไฟล์ local แล้ว; อ่านค่าใน IDE เพื่อใช้กับบัญชี demo โดยไม่ส่งรหัสผ่านในแชต หากเปลี่ยนค่าให้รัน seed อีกครั้งเพื่ออัปเดต hash
+
+```powershell
+npm run db:seed
 npm run dev
 ```
 
-เปิด `http://localhost:5173` หรือ `/events/{event UUID}`; Vite proxy `/api` ไป `API_PROXY_TARGET` (ค่าเริ่มต้น `http://localhost:3000`) โดยคง Origin เพื่อให้ backend ตรวจ CSRF ได้ ตั้ง `APP_ORIGIN=http://localhost:5173` ใน auth backend ให้ตรงกับ origin ที่เปิดจริง
-
-เมื่อ #1/#2 ยังไม่เชื่อม หน้า root เปิดได้ แต่หน้า registration จะแสดง error/retry หาก backend ไม่พร้อม ไม่มี mock login หรือ test identity ใน production entry
+เปิด **http://127.0.0.1:5173/login** (ใช้ hostname นี้ให้ตรง APP_ORIGIN) API port 3000; Vite proxy `/api` ไป backend บัญชีสังเคราะห์: `participant.a`, `participant.b`, `participant.c`, `organizer.a`, `organizer.b`, `inactive.x` โดยบัญชีสุดท้าย Login ไม่ได้ Password ใช้ค่าที่ส่งเข้า seed ผ่าน private handoff; seed ทำซ้ำแล้วคง IDs และ hash เดิมเมื่อ password ไม่เปลี่ยน ห้ามใส่ demo password/session secret ใน Git หรือ PDF
 
 ```powershell
 npm run typecheck
-npm run build
-npm run preview
-```
-
-Frontend build อยู่ `client/dist` เพื่อให้ Express ของแอปรวม serve แบบ same-origin; backend module build อยู่ `server/dist` Preview ที่ port 4173 มี API proxy เช่นกัน และต้องตั้ง auth `APP_ORIGIN` ให้ตรงหากทดสอบผ่าน preview
-
-## ทดสอบ
-
-```powershell
 npm test
-$env:TEST_DATABASE_URL = 'postgresql://loungcheu:test_only@127.0.0.1:55433/loungcheu_test?schema=public'
-$env:DATABASE_URL = $env:TEST_DATABASE_URL
-npm run migrate -w server
-npm run test:db
-Remove-Item Env:DATABASE_URL
+npm run build
 ```
 
-`npm test`: unit/HTTP boundary/React component tests; `npm run test:db`: API + persistence + lock-wait + last-seat/duplicate race ผ่านคนละ PostgreSQL connections โดยมี lock barrier จริง ไม่ skip เงียบหากไม่มี test DB และจะปฏิเสธ DB name ที่ไม่ลงท้าย `_test` Fixtures ใช้ UUID เฉพาะรอบและ cleanup เฉพาะ records ที่สร้าง
+Unit/API suite ใช้ PostgreSQL จริงจาก `TEST_DATABASE_URL` และ reset users/sessions เฉพาะ `loungcheu_test`; อย่ารันพร้อม E2E ที่ใช้ฐานข้อมูลเดียวกัน `npm test` ต้องมี test DB ที่ migrate แล้ว และจะ fail ถ้า config ขาด ไม่รายงาน skip เป็น pass
 
-เฉพาะ backend ใช้ `npm test -w server` (Vitest + Supertest, ไม่ต้องมี DB) และ `npm run test:db -w server` (Vitest + Supertest + PostgreSQL จริง โดยตั้ง TEST_DATABASE_URL/migrate ตามด้านบน)
+### Tests กับ PostgreSQL ที่ติดตั้งอยู่
 
-ผลล่าสุด 6 พ.ย. 2026: **39 + 15 = 54 tests passed**, typecheck/build ผ่าน; ดู [ผลทดสอบและข้อจำกัด](docs/registration/verification.md) และ [จุดเชื่อมต่อกับเพื่อน](docs/registration/integration.md)
+ตาม baseline ของโปรเจกต์ [DOD-02/DOD-06](docs/sprints/sprint-1/README.md) ต้องมี executed tests และ meaningful TDD; [STS](docs/sprints/sprint-1/sts.md) กำหนดให้ API integration ใช้ PostgreSQL จริงและแยก test database จาก demo/deployment การมี PostgreSQL ช่วยให้รัน persistence/session tests ได้ ส่วน test code ตรวจว่า Login/Logout/expiry/CSRF/permissions ทำงานตาม AC
 
-การทดสอบ API ของ #3 inject guards เฉพาะ tests เพื่อแยกจาก #1 จึงยังไม่ถือว่าผ่าน real session/CSRF integration หรือ browser E2E ของแอปรวม
+จำเป็นต้องแยก **database** สำหรับ fixtures ที่ reset ข้อมูล ปัจจุบันใช้ PostgreSQL **instance เดียวกัน** ที่ 5432: app DB `loung-cheu-database` และ test DB `loungcheu_test` โดย `.env.test` ชี้ฐาน tests และ migrate ด้วย `npm run db:migrate:test`
 
-## รัน backend
-
-หลังติดตั้ง/generate/migrate และเตรียม server/.env ตามด้านบน:
+Cluster 55432 เดิมหยุดแล้วและไม่ใช้ใน workflow ปัจจุบัน `scripts/local-db.ps1` เป็น compatibility wrapper สำหรับ setup test database บน instance ที่ตั้งใน `server/.env` เท่านั้น ไม่มีการ init/start/stop PostgreSQL เพิ่ม Vitest/Supertest/Playwright เป็นเครื่องมือที่ทีมเลือกและบันทึกใน baseline; จำนวน 54 unit/API กับ 7 browser cases เป็นผลของ implementation ปัจจุบัน ข้อกำหนดหลักคือ coverage ตาม AC และหลักฐานรันจริง ไม่ใช่จำนวน runner cases ตายตัว
 
 ```powershell
-npm run build -w server
-npm run start -w server
+npx playwright install chromium
+npm run test:e2e
 ```
 
-เปิด HTTP listener ที่ `http://127.0.0.1:3000` (ปรับ PORT ใน server/.env ได้) และเชื่อม PostgreSQL บน Docker ก่อนเริ่มรับคำขอ ใช้ Ctrl+C เพื่อหยุด; แก้ source แล้วต้อง build/start ใหม่
+E2E เปิด server/Vite บน ports 3001/5173 และ seed password สุ่มเฉพาะ process ลง test DB จึงต้องให้ ports ว่าง ทดสอบ UI Login/refresh/Logout สำหรับสอง role, expired-session UI, failed Logout/retry, response ที่มาถึงสลับลำดับ และ page restore; proof ของ server expiry อยู่ใน TEST-06 แยกต่างหาก หน้า `/events` ของ F-01 แสดง identity/role และแจ้งว่ารายการกิจกรรมอยู่ระหว่างพัฒนา; ยังไม่มี event/registration endpoints ของ #2–4
 
-server/src/server.ts ยังใช้ guards ที่ปฏิเสธคำขอทั้งหมดจนกว่า #1 จะนำ middleware session/CSRF จริงมาเชื่อม ดังนั้น Registration API ตอบ `401 AUTH_REQUIRED` เป็นพฤติกรรมที่คาดไว้ ไม่มี login bypass ส่วน auth/event/own-list APIs ยังไม่มีใน branch นี้
+ตรวจ compiled artifacts หลัง build ด้วย `npm run test:built`; ตรวจรายละเอียดก่อน PR/ผลรันล่าสุดใน [auth pre-PR review](docs/sprints/sprint-1/auth-pre-pr-review.md) Source snapshots/ผลแดงเดิมเป็นประวัติของแต่ละ version ไม่ใช่ผลของ working tree ล่าสุด
 
-## Git / review
+หลัง migrate/seed และ build แล้ว ใช้ `npm run test:local-db` เพื่อตรวจ app DB จริงจาก `server/.env`: health, anonymous rejection และ Login/Identity/Logout ของ Participant/Organizer คำสั่งนี้ใช้ demo accounts ที่ seed ไว้และไม่ reset/delete ข้อมูลผู้ใช้ ส่วน unit/API/E2E ชุดหลักยังใช้ test DB แยก ห้ามเปลี่ยน `.env.test` ให้ชี้ฐานแอป
 
-Branch `feature/registration` → draft PR เข้า `sprint-1-staging`, อ้าง #3 และรอเพื่อน review/integration ก่อนปิด Issue ใช้ [PR body](docs/registration/pr.md) ได้ ไม่มีการ commit/push/เปิด PR อัตโนมัติ
+Express serve frontend build แบบ same-origin ใน production หลังตั้ง environment จริง: `NODE_ENV=production`, `APP_ORIGIN=https://...`, `SESSION_COOKIE_SECURE=true`, DATABASE_URL, SESSION_SECRET, PORT, APP_VERSION แล้วรัน `npm start` ตั้งค่า reverse proxy ให้ตรง deployment ก่อนใช้จริง การ deploy ยังไม่ได้ทดสอบในงาน #1
 
-AI assistance: Codex สร้างโค้ด/tests/เอกสารใน branch นี้และรัน checks ที่บันทึกไว้ ทีมยังต้อง review integration และบันทึก commit จริงก่อนส่งงาน
+PostgreSQL ใช้ service เดิมของเครื่องที่ 5432 ข้อมูล cluster 55432 เก่ายังคงอยู่ใน `.local/postgres` สำหรับ rollback แต่ไม่ต้องเปิดเพื่อรันแอปหรือ tests
+
+## เอกสารอ้างอิง
+
+- `group_work_specs_v1.pdf` (15 หน้า): Theme assignment หน้า 4, Theme 3 หน้า 5, Sprint/workflow หน้า 9–11, checkpoints/Labs หน้า 12–15
+- `project_deliverable_1_v1.pdf` (8 หน้า): Parts A–E หน้า 1–4, working Sprint 1 และ submission/evidence หน้า 5–8
+
+ใช้ master กำหนดขอบเขต และ handout D1 กำหนดเนื้อหา PDF ไฟล์ต้นทางแจกแยกจาก repository; รายละเอียด handout D2/Final/Labs ให้ตรวจเพิ่มเมื่อได้รับ

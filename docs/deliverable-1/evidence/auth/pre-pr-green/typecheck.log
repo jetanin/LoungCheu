@@ -1,0 +1,13 @@
+
+> loungcheu@0.1.0 typecheck
+> npm run typecheck --workspaces && tsc --noEmit -p tsconfig.tools.json
+
+
+> @loungcheu/backend@0.1.0 typecheck
+> tsc --noEmit
+
+
+> @loungcheu/frontend@0.1.0 typecheck
+> tsc --noEmit
+
+Exit code: 0

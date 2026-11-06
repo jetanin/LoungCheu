@@ -19,4 +19,3 @@ export function assertSeatAvailable(alreadyRegistered: boolean, count: number, c
   if (alreadyRegistered) throw new ApiError(409, 'ALREADY_REGISTERED', 'คุณลงทะเบียนกิจกรรมนี้แล้ว');
   if (count >= capacity) throw new ApiError(409, 'EVENT_FULL', 'กิจกรรมเต็มแล้ว');
 }
-

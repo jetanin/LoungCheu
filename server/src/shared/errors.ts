@@ -1,20 +1,19 @@
 import type { ErrorRequestHandler } from 'express';
 
 export class ApiError extends Error {
-  constructor(public readonly status: number, public readonly code: string,
-    public readonly publicMessage: string, public readonly fields: Record<string, string[]> = {}) {
-    super(code);
-  }
+  constructor(public status: number, public code: string, message: string,
+    public fields: Record<string, string[]> = {}) { super(message); }
 }
 
-export const invalidInput = () => new ApiError(400, 'INVALID_INPUT', 'ข้อมูลคำขอไม่ถูกต้อง');
+export const invalidInput = (fields: Record<string, string[]> = {}) =>
+  new ApiError(400, 'INVALID_INPUT', 'ข้อมูลไม่ถูกต้อง', fields);
 
-export const apiErrorHandler: ErrorRequestHandler = (error, _req, res, _next) => {
-  const failure = error instanceof ApiError ? error
-    : error?.type === 'entity.parse.failed' || error?.type === 'entity.too.large'
-      ? invalidInput()
-      : new ApiError(500, 'INTERNAL_ERROR', 'ระบบขัดข้อง กรุณาลองใหม่');
-  res.status(failure.status).json({ error: {
-    code: failure.code, message: failure.publicMessage, fields: failure.fields,
-  } });
+export const errorHandler: ErrorRequestHandler = (error, _req, res, _next) => {
+  if (error instanceof ApiError) {
+    res.status(error.status).json({ error: { code: error.code, message: error.message, fields: error.fields } });
+  } else if (typeof error?.type === 'string' && [400, 413, 415].includes(error.status)) {
+    res.status(400).json({ error: { code: 'INVALID_INPUT', message: 'ข้อมูลไม่ถูกต้อง', fields: {} } });
+  } else {
+    res.status(500).json({ error: { code: 'INTERNAL_ERROR', message: 'ระบบขัดข้อง กรุณาลองใหม่', fields: {} } });
+  }
 };

@@ -19,7 +19,7 @@ describe('Vite registration page integration adapter', () => {
       eventReads++;
       return reply(true, { data: eventReads === 1 ? event : { ...event, available_seats: 0, registration_open: false } });
     }));
-    render(<RegistrationPage eventId={eventId} />);
+    render(<RegistrationPage eventId={eventId} identity={{ id: identity.id, role: 'PARTICIPANT' }} onAuthRequired={vi.fn()} />);
     expect(await screen.findByText(event.title)).toBeTruthy();
     expect(screen.getByText('เวลาประเทศไทย (Asia/Bangkok)')).toBeTruthy();
     fireEvent.click(screen.getByRole('button', { name: 'ลงทะเบียน' }));
@@ -31,17 +31,18 @@ describe('Vite registration page integration adapter', () => {
   it('does not load event data when identity is unauthenticated', async () => {
     const fetchMock = vi.fn().mockResolvedValue(reply(false, { error: { code: 'AUTH_REQUIRED' } }));
     vi.stubGlobal('fetch', fetchMock);
-    render(<RegistrationPage eventId={eventId} />);
+    const onAuthRequired = vi.fn();
+    render(<RegistrationPage eventId={eventId} identity={{ id: identity.id, role: 'PARTICIPANT' }} onAuthRequired={onAuthRequired} />);
     expect(await screen.findByRole('link', { name: 'เข้าสู่ระบบ' })).toBeTruthy();
     expect(fetchMock).toHaveBeenCalledTimes(1);
+    expect(onAuthRequired).toHaveBeenCalledTimes(1);
     expect(screen.queryByRole('button', { name: 'ลงทะเบียน' })).toBeNull();
   });
   it('retries failed reads without exposing stale private data', async () => {
     const fetchMock = vi.fn().mockRejectedValueOnce(new TypeError('offline'))
-      .mockResolvedValueOnce(reply(true, { data: identity }))
       .mockResolvedValueOnce(reply(true, { data: event }));
     vi.stubGlobal('fetch', fetchMock);
-    render(<RegistrationPage eventId={eventId} />);
+    render(<RegistrationPage eventId={eventId} identity={{ id: identity.id, role: 'PARTICIPANT' }} onAuthRequired={vi.fn()} />);
     fireEvent.click(await screen.findByRole('button', { name: 'ลองใหม่' }));
     expect(await screen.findByText(event.title)).toBeTruthy();
   });
