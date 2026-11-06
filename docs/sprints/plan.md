@@ -1,6 +1,10 @@
 # Part D — Three-Sprint Plan
 
-Documentation baseline v0.5 | 5 พฤศจิกายน 2026 | Execution update 6 พ.ย.: F-01 รวม staging แล้วที่ 6e8a24c; F-02 implement/test/audit บน feature/events รอ review/integration/release ดู [verification](../events/verification.md); F-03–09 ยังไม่รวมใน branch นี้ และยังไม่มี main release
+**UI consistency follow-up:** ล่าสุด 145 Vitest / 35 Chromium, typecheck/build/compiled smoke PASS รวม typography/layout/state checks ที่1280/390/320px ดู [current UI evidence](../events/visual-consistency.md) ผล141/32 และ seed follow-up ด้านล่างเป็น historical runs
+
+**Seed follow-up (6 พ.ย.):** full Vitest **145 PASS** รวม seed integration ใหม่4 และ typecheck PASS; 141/32 ใน feature audit ด้านล่างเป็นรอบก่อนเพิ่ม seed โดย Chromium/build ไม่ได้ rerun รอบ seed ดู [latest seed results](../events/demo-seed.md) ไม่มี AC/scope ใหม่
+
+Documentation baseline v0.5 | 5 พฤศจิกายน 2026 | Execution update 6 พ.ย.: F-01/F-03 อยู่ใน staging@ada659b และรวมกับ F-02 บน feature/events merge working tree แล้ว ผล 141 Vitest / 32 Chromium PASS ดู [combined verification](../events/consistency-review.md); รอ merge commit/teammate review, Issue #4 (F-04/F-05) และ main release; F-06–09 อยู่ Sprint 2/3
 
 | Sprint | เป้าหมาย / Features | Dependencies | Completion outcome / Checkpoint |
 |---|---|---|---|

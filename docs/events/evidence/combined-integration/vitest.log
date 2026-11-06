@@ -1,0 +1,15 @@
+
+> loungcheu@0.1.0 test
+> vitest run
+
+
+ RUN  v5.1.0 C:/Kmutt/Senior/CPE334/Final/LoungCheu
+
+
+ Test Files  11 passed (11)
+      Tests  140 passed (140)
+   Start at  22:14:30
+   Duration  25.27s (tests 68%, environment 16%, import 15%, transform 1%)
+
+    Isolate  11 workers spawned · ~526ms startup each (spawn + environment, per file)
+             at least ~5.26s faster with isolate: false — reuses workers across files instead of one per file

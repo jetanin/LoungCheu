@@ -1,0 +1,939 @@
+[
+  {
+    "page": "login",
+    "logo": {
+      "x": 12,
+      "y": 16,
+      "width": 36,
+      "height": 36
+    },
+    "logoStyle": {
+      "font": "system-ui, -apple-system, \"Segoe UI\", Roboto, \"Helvetica Neue\", \"Noto Sans\", \"Liberation Sans\", Arial, sans-serif, \"Apple Color Emoji\", \"Segoe UI Emoji\", \"Segoe UI Symbol\", \"Noto Color Emoji\"",
+      "size": 13.6,
+      "weight": "750",
+      "height": 36,
+      "background": "rgb(18, 107, 86)"
+    },
+    "brand": {
+      "font": "system-ui, -apple-system, \"Segoe UI\", Roboto, \"Helvetica Neue\", \"Noto Sans\", \"Liberation Sans\", Arial, sans-serif, \"Apple Color Emoji\", \"Segoe UI Emoji\", \"Segoe UI Symbol\", \"Noto Color Emoji\"",
+      "size": 20,
+      "weight": "750",
+      "height": 36,
+      "background": "rgba(0, 0, 0, 0)"
+    },
+    "headings": [
+      {
+        "font": "system-ui, -apple-system, \"Segoe UI\", Roboto, \"Helvetica Neue\", \"Noto Sans\", \"Liberation Sans\", Arial, sans-serif, \"Apple Color Emoji\", \"Segoe UI Emoji\", \"Segoe UI Symbol\", \"Noto Color Emoji\"",
+        "size": 24.08,
+        "weight": "500",
+        "height": 28.890625,
+        "background": "rgba(0, 0, 0, 0)"
+      }
+    ],
+    "body": {
+      "font": "system-ui, -apple-system, \"Segoe UI\", Roboto, \"Helvetica Neue\", \"Noto Sans\", \"Liberation Sans\", Arial, sans-serif, \"Apple Color Emoji\", \"Segoe UI Emoji\", \"Segoe UI Symbol\", \"Noto Color Emoji\"",
+      "size": 16,
+      "weight": "400",
+      "height": 900,
+      "background": "rgb(244, 247, 245)"
+    },
+    "controls": [
+      {
+        "font": "system-ui, -apple-system, \"Segoe UI\", Roboto, \"Helvetica Neue\", \"Noto Sans\", \"Liberation Sans\", Arial, sans-serif, \"Apple Color Emoji\", \"Segoe UI Emoji\", \"Segoe UI Symbol\", \"Noto Color Emoji\"",
+        "size": 20,
+        "weight": "400",
+        "height": 48,
+        "background": "rgb(255, 255, 255)"
+      },
+      {
+        "font": "system-ui, -apple-system, \"Segoe UI\", Roboto, \"Helvetica Neue\", \"Noto Sans\", \"Liberation Sans\", Arial, sans-serif, \"Apple Color Emoji\", \"Segoe UI Emoji\", \"Segoe UI Symbol\", \"Noto Color Emoji\"",
+        "size": 20,
+        "weight": "400",
+        "height": 48,
+        "background": "rgb(255, 255, 255)"
+      }
+    ],
+    "labels": [
+      {
+        "font": "system-ui, -apple-system, \"Segoe UI\", Roboto, \"Helvetica Neue\", \"Noto Sans\", \"Liberation Sans\", Arial, sans-serif, \"Apple Color Emoji\", \"Segoe UI Emoji\", \"Segoe UI Symbol\", \"Noto Color Emoji\"",
+        "size": 16,
+        "weight": "400",
+        "height": 24,
+        "background": "rgba(0, 0, 0, 0)"
+      },
+      {
+        "font": "system-ui, -apple-system, \"Segoe UI\", Roboto, \"Helvetica Neue\", \"Noto Sans\", \"Liberation Sans\", Arial, sans-serif, \"Apple Color Emoji\", \"Segoe UI Emoji\", \"Segoe UI Symbol\", \"Noto Color Emoji\"",
+        "size": 16,
+        "weight": "400",
+        "height": 24,
+        "background": "rgba(0, 0, 0, 0)"
+      }
+    ],
+    "primary": [
+      {
+        "font": "system-ui, -apple-system, \"Segoe UI\", Roboto, \"Helvetica Neue\", \"Noto Sans\", \"Liberation Sans\", Arial, sans-serif, \"Apple Color Emoji\", \"Segoe UI Emoji\", \"Segoe UI Symbol\", \"Noto Color Emoji\"",
+        "size": 20,
+        "weight": "400",
+        "height": 48,
+        "background": "rgb(18, 107, 86)"
+      }
+    ],
+    "main": {
+      "x": 0,
+      "y": 69,
+      "width": 320,
+      "height": 786
+    },
+    "panel": {
+      "x": 12,
+      "y": 149,
+      "width": 296,
+      "height": 436.890625
+    },
+    "scrollWidth": 320,
+    "viewport": 320
+  },
+  {
+    "page": "overview",
+    "logo": {
+      "x": 12,
+      "y": 16,
+      "width": 36,
+      "height": 36
+    },
+    "logoStyle": {
+      "font": "system-ui, -apple-system, \"Segoe UI\", Roboto, \"Helvetica Neue\", \"Noto Sans\", \"Liberation Sans\", Arial, sans-serif, \"Apple Color Emoji\", \"Segoe UI Emoji\", \"Segoe UI Symbol\", \"Noto Color Emoji\"",
+      "size": 13.6,
+      "weight": "750",
+      "height": 36,
+      "background": "rgb(18, 107, 86)"
+    },
+    "brand": {
+      "font": "system-ui, -apple-system, \"Segoe UI\", Roboto, \"Helvetica Neue\", \"Noto Sans\", \"Liberation Sans\", Arial, sans-serif, \"Apple Color Emoji\", \"Segoe UI Emoji\", \"Segoe UI Symbol\", \"Noto Color Emoji\"",
+      "size": 20,
+      "weight": "750",
+      "height": 66,
+      "background": "rgba(0, 0, 0, 0)"
+    },
+    "headings": [
+      {
+        "font": "system-ui, -apple-system, \"Segoe UI\", Roboto, \"Helvetica Neue\", \"Noto Sans\", \"Liberation Sans\", Arial, sans-serif, \"Apple Color Emoji\", \"Segoe UI Emoji\", \"Segoe UI Symbol\", \"Noto Color Emoji\"",
+        "size": 22.72,
+        "weight": "700",
+        "height": 27.25,
+        "background": "rgba(0, 0, 0, 0)"
+      }
+    ],
+    "body": {
+      "font": "system-ui, -apple-system, \"Segoe UI\", Roboto, \"Helvetica Neue\", \"Noto Sans\", \"Liberation Sans\", Arial, sans-serif, \"Apple Color Emoji\", \"Segoe UI Emoji\", \"Segoe UI Symbol\", \"Noto Color Emoji\"",
+      "size": 16,
+      "weight": "400",
+      "height": 1331.921875,
+      "background": "rgb(244, 247, 245)"
+    },
+    "controls": [],
+    "labels": [],
+    "primary": [
+      {
+        "font": "system-ui, -apple-system, \"Segoe UI\", Roboto, \"Helvetica Neue\", \"Noto Sans\", \"Liberation Sans\", Arial, sans-serif, \"Apple Color Emoji\", \"Segoe UI Emoji\", \"Segoe UI Symbol\", \"Noto Color Emoji\"",
+        "size": 16,
+        "weight": "400",
+        "height": 53.1875,
+        "background": "rgb(18, 107, 86)"
+      }
+    ],
+    "main": {
+      "x": 0,
+      "y": 99,
+      "width": 320,
+      "height": 1187.921875
+    },
+    "panel": {
+      "x": 12,
+      "y": 446.8125,
+      "width": 296,
+      "height": 129.328125
+    },
+    "scrollWidth": 320,
+    "viewport": 320
+  },
+  {
+    "page": "owner-list",
+    "logo": {
+      "x": 12,
+      "y": 16,
+      "width": 36,
+      "height": 36
+    },
+    "logoStyle": {
+      "font": "system-ui, -apple-system, \"Segoe UI\", Roboto, \"Helvetica Neue\", \"Noto Sans\", \"Liberation Sans\", Arial, sans-serif, \"Apple Color Emoji\", \"Segoe UI Emoji\", \"Segoe UI Symbol\", \"Noto Color Emoji\"",
+      "size": 13.6,
+      "weight": "750",
+      "height": 36,
+      "background": "rgb(18, 107, 86)"
+    },
+    "brand": {
+      "font": "system-ui, -apple-system, \"Segoe UI\", Roboto, \"Helvetica Neue\", \"Noto Sans\", \"Liberation Sans\", Arial, sans-serif, \"Apple Color Emoji\", \"Segoe UI Emoji\", \"Segoe UI Symbol\", \"Noto Color Emoji\"",
+      "size": 20,
+      "weight": "750",
+      "height": 66,
+      "background": "rgba(0, 0, 0, 0)"
+    },
+    "headings": [
+      {
+        "font": "system-ui, -apple-system, \"Segoe UI\", Roboto, \"Helvetica Neue\", \"Noto Sans\", \"Liberation Sans\", Arial, sans-serif, \"Apple Color Emoji\", \"Segoe UI Emoji\", \"Segoe UI Symbol\", \"Noto Color Emoji\"",
+        "size": 24.08,
+        "weight": "500",
+        "height": 28.890625,
+        "background": "rgba(0, 0, 0, 0)"
+      }
+    ],
+    "body": {
+      "font": "system-ui, -apple-system, \"Segoe UI\", Roboto, \"Helvetica Neue\", \"Noto Sans\", \"Liberation Sans\", Arial, sans-serif, \"Apple Color Emoji\", \"Segoe UI Emoji\", \"Segoe UI Symbol\", \"Noto Color Emoji\"",
+      "size": 16,
+      "weight": "400",
+      "height": 920.953125,
+      "background": "rgb(244, 247, 245)"
+    },
+    "controls": [],
+    "labels": [],
+    "primary": [
+      {
+        "font": "system-ui, -apple-system, \"Segoe UI\", Roboto, \"Helvetica Neue\", \"Noto Sans\", \"Liberation Sans\", Arial, sans-serif, \"Apple Color Emoji\", \"Segoe UI Emoji\", \"Segoe UI Symbol\", \"Noto Color Emoji\"",
+        "size": 16,
+        "weight": "400",
+        "height": 38,
+        "background": "rgb(18, 107, 86)"
+      }
+    ],
+    "main": {
+      "x": 0,
+      "y": 99,
+      "width": 320,
+      "height": 776.953125
+    },
+    "panel": {
+      "x": 12,
+      "y": 363.078125,
+      "width": 296,
+      "height": 237.25
+    },
+    "scrollWidth": 320,
+    "viewport": 320
+  },
+  {
+    "page": "create",
+    "logo": {
+      "x": 12,
+      "y": 16,
+      "width": 36,
+      "height": 36
+    },
+    "logoStyle": {
+      "font": "system-ui, -apple-system, \"Segoe UI\", Roboto, \"Helvetica Neue\", \"Noto Sans\", \"Liberation Sans\", Arial, sans-serif, \"Apple Color Emoji\", \"Segoe UI Emoji\", \"Segoe UI Symbol\", \"Noto Color Emoji\"",
+      "size": 13.6,
+      "weight": "750",
+      "height": 36,
+      "background": "rgb(18, 107, 86)"
+    },
+    "brand": {
+      "font": "system-ui, -apple-system, \"Segoe UI\", Roboto, \"Helvetica Neue\", \"Noto Sans\", \"Liberation Sans\", Arial, sans-serif, \"Apple Color Emoji\", \"Segoe UI Emoji\", \"Segoe UI Symbol\", \"Noto Color Emoji\"",
+      "size": 20,
+      "weight": "750",
+      "height": 66,
+      "background": "rgba(0, 0, 0, 0)"
+    },
+    "headings": [
+      {
+        "font": "system-ui, -apple-system, \"Segoe UI\", Roboto, \"Helvetica Neue\", \"Noto Sans\", \"Liberation Sans\", Arial, sans-serif, \"Apple Color Emoji\", \"Segoe UI Emoji\", \"Segoe UI Symbol\", \"Noto Color Emoji\"",
+        "size": 24.08,
+        "weight": "500",
+        "height": 28.890625,
+        "background": "rgba(0, 0, 0, 0)"
+      }
+    ],
+    "body": {
+      "font": "system-ui, -apple-system, \"Segoe UI\", Roboto, \"Helvetica Neue\", \"Noto Sans\", \"Liberation Sans\", Arial, sans-serif, \"Apple Color Emoji\", \"Segoe UI Emoji\", \"Segoe UI Symbol\", \"Noto Color Emoji\"",
+      "size": 16,
+      "weight": "400",
+      "height": 1323,
+      "background": "rgb(244, 247, 245)"
+    },
+    "controls": [
+      {
+        "font": "system-ui, -apple-system, \"Segoe UI\", Roboto, \"Helvetica Neue\", \"Noto Sans\", \"Liberation Sans\", Arial, sans-serif, \"Apple Color Emoji\", \"Segoe UI Emoji\", \"Segoe UI Symbol\", \"Noto Color Emoji\"",
+        "size": 16,
+        "weight": "400",
+        "height": 38,
+        "background": "rgb(255, 255, 255)"
+      },
+      {
+        "font": "system-ui, -apple-system, \"Segoe UI\", Roboto, \"Helvetica Neue\", \"Noto Sans\", \"Liberation Sans\", Arial, sans-serif, \"Apple Color Emoji\", \"Segoe UI Emoji\", \"Segoe UI Symbol\", \"Noto Color Emoji\"",
+        "size": 16,
+        "weight": "400",
+        "height": 38,
+        "background": "rgb(255, 255, 255)"
+      },
+      {
+        "font": "system-ui, -apple-system, \"Segoe UI\", Roboto, \"Helvetica Neue\", \"Noto Sans\", \"Liberation Sans\", Arial, sans-serif, \"Apple Color Emoji\", \"Segoe UI Emoji\", \"Segoe UI Symbol\", \"Noto Color Emoji\"",
+        "size": 16,
+        "weight": "400",
+        "height": 38,
+        "background": "rgb(255, 255, 255)"
+      },
+      {
+        "font": "system-ui, -apple-system, \"Segoe UI\", Roboto, \"Helvetica Neue\", \"Noto Sans\", \"Liberation Sans\", Arial, sans-serif, \"Apple Color Emoji\", \"Segoe UI Emoji\", \"Segoe UI Symbol\", \"Noto Color Emoji\"",
+        "size": 16,
+        "weight": "400",
+        "height": 38,
+        "background": "rgb(255, 255, 255)"
+      },
+      {
+        "font": "system-ui, -apple-system, \"Segoe UI\", Roboto, \"Helvetica Neue\", \"Noto Sans\", \"Liberation Sans\", Arial, sans-serif, \"Apple Color Emoji\", \"Segoe UI Emoji\", \"Segoe UI Symbol\", \"Noto Color Emoji\"",
+        "size": 16,
+        "weight": "400",
+        "height": 38,
+        "background": "rgb(255, 255, 255)"
+      },
+      {
+        "font": "system-ui, -apple-system, \"Segoe UI\", Roboto, \"Helvetica Neue\", \"Noto Sans\", \"Liberation Sans\", Arial, sans-serif, \"Apple Color Emoji\", \"Segoe UI Emoji\", \"Segoe UI Symbol\", \"Noto Color Emoji\"",
+        "size": 16,
+        "weight": "400",
+        "height": 38,
+        "background": "rgb(255, 255, 255)"
+      },
+      {
+        "font": "system-ui, -apple-system, \"Segoe UI\", Roboto, \"Helvetica Neue\", \"Noto Sans\", \"Liberation Sans\", Arial, sans-serif, \"Apple Color Emoji\", \"Segoe UI Emoji\", \"Segoe UI Symbol\", \"Noto Color Emoji\"",
+        "size": 16,
+        "weight": "400",
+        "height": 38,
+        "background": "rgb(255, 255, 255)"
+      },
+      {
+        "font": "system-ui, -apple-system, \"Segoe UI\", Roboto, \"Helvetica Neue\", \"Noto Sans\", \"Liberation Sans\", Arial, sans-serif, \"Apple Color Emoji\", \"Segoe UI Emoji\", \"Segoe UI Symbol\", \"Noto Color Emoji\"",
+        "size": 16,
+        "weight": "400",
+        "height": 38,
+        "background": "rgb(255, 255, 255)"
+      },
+      {
+        "font": "system-ui, -apple-system, \"Segoe UI\", Roboto, \"Helvetica Neue\", \"Noto Sans\", \"Liberation Sans\", Arial, sans-serif, \"Apple Color Emoji\", \"Segoe UI Emoji\", \"Segoe UI Symbol\", \"Noto Color Emoji\"",
+        "size": 16,
+        "weight": "400",
+        "height": 38,
+        "background": "rgb(255, 255, 255)"
+      }
+    ],
+    "labels": [
+      {
+        "font": "system-ui, -apple-system, \"Segoe UI\", Roboto, \"Helvetica Neue\", \"Noto Sans\", \"Liberation Sans\", Arial, sans-serif, \"Apple Color Emoji\", \"Segoe UI Emoji\", \"Segoe UI Symbol\", \"Noto Color Emoji\"",
+        "size": 16,
+        "weight": "400",
+        "height": 24,
+        "background": "rgba(0, 0, 0, 0)"
+      },
+      {
+        "font": "system-ui, -apple-system, \"Segoe UI\", Roboto, \"Helvetica Neue\", \"Noto Sans\", \"Liberation Sans\", Arial, sans-serif, \"Apple Color Emoji\", \"Segoe UI Emoji\", \"Segoe UI Symbol\", \"Noto Color Emoji\"",
+        "size": 16,
+        "weight": "400",
+        "height": 24,
+        "background": "rgba(0, 0, 0, 0)"
+      },
+      {
+        "font": "system-ui, -apple-system, \"Segoe UI\", Roboto, \"Helvetica Neue\", \"Noto Sans\", \"Liberation Sans\", Arial, sans-serif, \"Apple Color Emoji\", \"Segoe UI Emoji\", \"Segoe UI Symbol\", \"Noto Color Emoji\"",
+        "size": 16,
+        "weight": "400",
+        "height": 24,
+        "background": "rgba(0, 0, 0, 0)"
+      },
+      {
+        "font": "system-ui, -apple-system, \"Segoe UI\", Roboto, \"Helvetica Neue\", \"Noto Sans\", \"Liberation Sans\", Arial, sans-serif, \"Apple Color Emoji\", \"Segoe UI Emoji\", \"Segoe UI Symbol\", \"Noto Color Emoji\"",
+        "size": 16,
+        "weight": "400",
+        "height": 24,
+        "background": "rgba(0, 0, 0, 0)"
+      },
+      {
+        "font": "system-ui, -apple-system, \"Segoe UI\", Roboto, \"Helvetica Neue\", \"Noto Sans\", \"Liberation Sans\", Arial, sans-serif, \"Apple Color Emoji\", \"Segoe UI Emoji\", \"Segoe UI Symbol\", \"Noto Color Emoji\"",
+        "size": 14,
+        "weight": "400",
+        "height": 21,
+        "background": "rgba(0, 0, 0, 0)"
+      },
+      {
+        "font": "system-ui, -apple-system, \"Segoe UI\", Roboto, \"Helvetica Neue\", \"Noto Sans\", \"Liberation Sans\", Arial, sans-serif, \"Apple Color Emoji\", \"Segoe UI Emoji\", \"Segoe UI Symbol\", \"Noto Color Emoji\"",
+        "size": 14,
+        "weight": "400",
+        "height": 21,
+        "background": "rgba(0, 0, 0, 0)"
+      },
+      {
+        "font": "system-ui, -apple-system, \"Segoe UI\", Roboto, \"Helvetica Neue\", \"Noto Sans\", \"Liberation Sans\", Arial, sans-serif, \"Apple Color Emoji\", \"Segoe UI Emoji\", \"Segoe UI Symbol\", \"Noto Color Emoji\"",
+        "size": 14,
+        "weight": "400",
+        "height": 21,
+        "background": "rgba(0, 0, 0, 0)"
+      }
+    ],
+    "primary": [
+      {
+        "font": "system-ui, -apple-system, \"Segoe UI\", Roboto, \"Helvetica Neue\", \"Noto Sans\", \"Liberation Sans\", Arial, sans-serif, \"Apple Color Emoji\", \"Segoe UI Emoji\", \"Segoe UI Symbol\", \"Noto Color Emoji\"",
+        "size": 16,
+        "weight": "400",
+        "height": 38,
+        "background": "rgb(18, 107, 86)"
+      }
+    ],
+    "main": {
+      "x": 0,
+      "y": 99,
+      "width": 320,
+      "height": 1179
+    },
+    "panel": {
+      "x": 12,
+      "y": 264.1875,
+      "width": 296,
+      "height": 965.8125
+    },
+    "scrollWidth": 320,
+    "viewport": 320
+  },
+  {
+    "page": "create-invalid",
+    "logo": {
+      "x": 12,
+      "y": 16,
+      "width": 36,
+      "height": 36
+    },
+    "logoStyle": {
+      "font": "system-ui, -apple-system, \"Segoe UI\", Roboto, \"Helvetica Neue\", \"Noto Sans\", \"Liberation Sans\", Arial, sans-serif, \"Apple Color Emoji\", \"Segoe UI Emoji\", \"Segoe UI Symbol\", \"Noto Color Emoji\"",
+      "size": 13.6,
+      "weight": "750",
+      "height": 36,
+      "background": "rgb(18, 107, 86)"
+    },
+    "brand": {
+      "font": "system-ui, -apple-system, \"Segoe UI\", Roboto, \"Helvetica Neue\", \"Noto Sans\", \"Liberation Sans\", Arial, sans-serif, \"Apple Color Emoji\", \"Segoe UI Emoji\", \"Segoe UI Symbol\", \"Noto Color Emoji\"",
+      "size": 20,
+      "weight": "750",
+      "height": 66,
+      "background": "rgba(0, 0, 0, 0)"
+    },
+    "headings": [
+      {
+        "font": "system-ui, -apple-system, \"Segoe UI\", Roboto, \"Helvetica Neue\", \"Noto Sans\", \"Liberation Sans\", Arial, sans-serif, \"Apple Color Emoji\", \"Segoe UI Emoji\", \"Segoe UI Symbol\", \"Noto Color Emoji\"",
+        "size": 24.08,
+        "weight": "500",
+        "height": 28.890625,
+        "background": "rgba(0, 0, 0, 0)"
+      }
+    ],
+    "body": {
+      "font": "system-ui, -apple-system, \"Segoe UI\", Roboto, \"Helvetica Neue\", \"Noto Sans\", \"Liberation Sans\", Arial, sans-serif, \"Apple Color Emoji\", \"Segoe UI Emoji\", \"Segoe UI Symbol\", \"Noto Color Emoji\"",
+      "size": 16,
+      "weight": "400",
+      "height": 1498,
+      "background": "rgb(244, 247, 245)"
+    },
+    "controls": [
+      {
+        "font": "system-ui, -apple-system, \"Segoe UI\", Roboto, \"Helvetica Neue\", \"Noto Sans\", \"Liberation Sans\", Arial, sans-serif, \"Apple Color Emoji\", \"Segoe UI Emoji\", \"Segoe UI Symbol\", \"Noto Color Emoji\"",
+        "size": 16,
+        "weight": "400",
+        "height": 38,
+        "background": "rgb(255, 255, 255)"
+      },
+      {
+        "font": "system-ui, -apple-system, \"Segoe UI\", Roboto, \"Helvetica Neue\", \"Noto Sans\", \"Liberation Sans\", Arial, sans-serif, \"Apple Color Emoji\", \"Segoe UI Emoji\", \"Segoe UI Symbol\", \"Noto Color Emoji\"",
+        "size": 16,
+        "weight": "400",
+        "height": 38,
+        "background": "rgb(255, 255, 255)"
+      },
+      {
+        "font": "system-ui, -apple-system, \"Segoe UI\", Roboto, \"Helvetica Neue\", \"Noto Sans\", \"Liberation Sans\", Arial, sans-serif, \"Apple Color Emoji\", \"Segoe UI Emoji\", \"Segoe UI Symbol\", \"Noto Color Emoji\"",
+        "size": 16,
+        "weight": "400",
+        "height": 38,
+        "background": "rgb(255, 255, 255)"
+      },
+      {
+        "font": "system-ui, -apple-system, \"Segoe UI\", Roboto, \"Helvetica Neue\", \"Noto Sans\", \"Liberation Sans\", Arial, sans-serif, \"Apple Color Emoji\", \"Segoe UI Emoji\", \"Segoe UI Symbol\", \"Noto Color Emoji\"",
+        "size": 16,
+        "weight": "400",
+        "height": 38,
+        "background": "rgb(255, 255, 255)"
+      },
+      {
+        "font": "system-ui, -apple-system, \"Segoe UI\", Roboto, \"Helvetica Neue\", \"Noto Sans\", \"Liberation Sans\", Arial, sans-serif, \"Apple Color Emoji\", \"Segoe UI Emoji\", \"Segoe UI Symbol\", \"Noto Color Emoji\"",
+        "size": 16,
+        "weight": "400",
+        "height": 38,
+        "background": "rgb(255, 255, 255)"
+      },
+      {
+        "font": "system-ui, -apple-system, \"Segoe UI\", Roboto, \"Helvetica Neue\", \"Noto Sans\", \"Liberation Sans\", Arial, sans-serif, \"Apple Color Emoji\", \"Segoe UI Emoji\", \"Segoe UI Symbol\", \"Noto Color Emoji\"",
+        "size": 16,
+        "weight": "400",
+        "height": 38,
+        "background": "rgb(255, 255, 255)"
+      },
+      {
+        "font": "system-ui, -apple-system, \"Segoe UI\", Roboto, \"Helvetica Neue\", \"Noto Sans\", \"Liberation Sans\", Arial, sans-serif, \"Apple Color Emoji\", \"Segoe UI Emoji\", \"Segoe UI Symbol\", \"Noto Color Emoji\"",
+        "size": 16,
+        "weight": "400",
+        "height": 38,
+        "background": "rgb(255, 255, 255)"
+      },
+      {
+        "font": "system-ui, -apple-system, \"Segoe UI\", Roboto, \"Helvetica Neue\", \"Noto Sans\", \"Liberation Sans\", Arial, sans-serif, \"Apple Color Emoji\", \"Segoe UI Emoji\", \"Segoe UI Symbol\", \"Noto Color Emoji\"",
+        "size": 16,
+        "weight": "400",
+        "height": 38,
+        "background": "rgb(255, 255, 255)"
+      },
+      {
+        "font": "system-ui, -apple-system, \"Segoe UI\", Roboto, \"Helvetica Neue\", \"Noto Sans\", \"Liberation Sans\", Arial, sans-serif, \"Apple Color Emoji\", \"Segoe UI Emoji\", \"Segoe UI Symbol\", \"Noto Color Emoji\"",
+        "size": 16,
+        "weight": "400",
+        "height": 38,
+        "background": "rgb(255, 255, 255)"
+      }
+    ],
+    "labels": [
+      {
+        "font": "system-ui, -apple-system, \"Segoe UI\", Roboto, \"Helvetica Neue\", \"Noto Sans\", \"Liberation Sans\", Arial, sans-serif, \"Apple Color Emoji\", \"Segoe UI Emoji\", \"Segoe UI Symbol\", \"Noto Color Emoji\"",
+        "size": 16,
+        "weight": "400",
+        "height": 24,
+        "background": "rgba(0, 0, 0, 0)"
+      },
+      {
+        "font": "system-ui, -apple-system, \"Segoe UI\", Roboto, \"Helvetica Neue\", \"Noto Sans\", \"Liberation Sans\", Arial, sans-serif, \"Apple Color Emoji\", \"Segoe UI Emoji\", \"Segoe UI Symbol\", \"Noto Color Emoji\"",
+        "size": 16,
+        "weight": "400",
+        "height": 24,
+        "background": "rgba(0, 0, 0, 0)"
+      },
+      {
+        "font": "system-ui, -apple-system, \"Segoe UI\", Roboto, \"Helvetica Neue\", \"Noto Sans\", \"Liberation Sans\", Arial, sans-serif, \"Apple Color Emoji\", \"Segoe UI Emoji\", \"Segoe UI Symbol\", \"Noto Color Emoji\"",
+        "size": 16,
+        "weight": "400",
+        "height": 24,
+        "background": "rgba(0, 0, 0, 0)"
+      },
+      {
+        "font": "system-ui, -apple-system, \"Segoe UI\", Roboto, \"Helvetica Neue\", \"Noto Sans\", \"Liberation Sans\", Arial, sans-serif, \"Apple Color Emoji\", \"Segoe UI Emoji\", \"Segoe UI Symbol\", \"Noto Color Emoji\"",
+        "size": 16,
+        "weight": "400",
+        "height": 24,
+        "background": "rgba(0, 0, 0, 0)"
+      },
+      {
+        "font": "system-ui, -apple-system, \"Segoe UI\", Roboto, \"Helvetica Neue\", \"Noto Sans\", \"Liberation Sans\", Arial, sans-serif, \"Apple Color Emoji\", \"Segoe UI Emoji\", \"Segoe UI Symbol\", \"Noto Color Emoji\"",
+        "size": 14,
+        "weight": "400",
+        "height": 21,
+        "background": "rgba(0, 0, 0, 0)"
+      },
+      {
+        "font": "system-ui, -apple-system, \"Segoe UI\", Roboto, \"Helvetica Neue\", \"Noto Sans\", \"Liberation Sans\", Arial, sans-serif, \"Apple Color Emoji\", \"Segoe UI Emoji\", \"Segoe UI Symbol\", \"Noto Color Emoji\"",
+        "size": 14,
+        "weight": "400",
+        "height": 21,
+        "background": "rgba(0, 0, 0, 0)"
+      },
+      {
+        "font": "system-ui, -apple-system, \"Segoe UI\", Roboto, \"Helvetica Neue\", \"Noto Sans\", \"Liberation Sans\", Arial, sans-serif, \"Apple Color Emoji\", \"Segoe UI Emoji\", \"Segoe UI Symbol\", \"Noto Color Emoji\"",
+        "size": 14,
+        "weight": "400",
+        "height": 21,
+        "background": "rgba(0, 0, 0, 0)"
+      }
+    ],
+    "primary": [
+      {
+        "font": "system-ui, -apple-system, \"Segoe UI\", Roboto, \"Helvetica Neue\", \"Noto Sans\", \"Liberation Sans\", Arial, sans-serif, \"Apple Color Emoji\", \"Segoe UI Emoji\", \"Segoe UI Symbol\", \"Noto Color Emoji\"",
+        "size": 16,
+        "weight": "400",
+        "height": 38,
+        "background": "rgb(18, 107, 86)"
+      }
+    ],
+    "main": {
+      "x": 0,
+      "y": 99,
+      "width": 320,
+      "height": 1354
+    },
+    "panel": {
+      "x": 12,
+      "y": 264.1875,
+      "width": 296,
+      "height": 1140.8125
+    },
+    "scrollWidth": 320,
+    "viewport": 320
+  },
+  {
+    "page": "draft-detail",
+    "logo": {
+      "x": 12,
+      "y": 16,
+      "width": 36,
+      "height": 36
+    },
+    "logoStyle": {
+      "font": "system-ui, -apple-system, \"Segoe UI\", Roboto, \"Helvetica Neue\", \"Noto Sans\", \"Liberation Sans\", Arial, sans-serif, \"Apple Color Emoji\", \"Segoe UI Emoji\", \"Segoe UI Symbol\", \"Noto Color Emoji\"",
+      "size": 13.6,
+      "weight": "750",
+      "height": 36,
+      "background": "rgb(18, 107, 86)"
+    },
+    "brand": {
+      "font": "system-ui, -apple-system, \"Segoe UI\", Roboto, \"Helvetica Neue\", \"Noto Sans\", \"Liberation Sans\", Arial, sans-serif, \"Apple Color Emoji\", \"Segoe UI Emoji\", \"Segoe UI Symbol\", \"Noto Color Emoji\"",
+      "size": 20,
+      "weight": "750",
+      "height": 66,
+      "background": "rgba(0, 0, 0, 0)"
+    },
+    "headings": [
+      {
+        "font": "system-ui, -apple-system, \"Segoe UI\", Roboto, \"Helvetica Neue\", \"Noto Sans\", \"Liberation Sans\", Arial, sans-serif, \"Apple Color Emoji\", \"Segoe UI Emoji\", \"Segoe UI Symbol\", \"Noto Color Emoji\"",
+        "size": 24.08,
+        "weight": "500",
+        "height": 28.890625,
+        "background": "rgba(0, 0, 0, 0)"
+      }
+    ],
+    "body": {
+      "font": "system-ui, -apple-system, \"Segoe UI\", Roboto, \"Helvetica Neue\", \"Noto Sans\", \"Liberation Sans\", Arial, sans-serif, \"Apple Color Emoji\", \"Segoe UI Emoji\", \"Segoe UI Symbol\", \"Noto Color Emoji\"",
+      "size": 16,
+      "weight": "400",
+      "height": 1066.078125,
+      "background": "rgb(244, 247, 245)"
+    },
+    "controls": [],
+    "labels": [],
+    "primary": [
+      {
+        "font": "system-ui, -apple-system, \"Segoe UI\", Roboto, \"Helvetica Neue\", \"Noto Sans\", \"Liberation Sans\", Arial, sans-serif, \"Apple Color Emoji\", \"Segoe UI Emoji\", \"Segoe UI Symbol\", \"Noto Color Emoji\"",
+        "size": 16,
+        "weight": "400",
+        "height": 38,
+        "background": "rgb(18, 107, 86)"
+      }
+    ],
+    "main": {
+      "x": 0,
+      "y": 99,
+      "width": 320,
+      "height": 922.078125
+    },
+    "panel": {
+      "x": 12,
+      "y": 264.1875,
+      "width": 296,
+      "height": 708.890625
+    },
+    "scrollWidth": 320,
+    "viewport": 320
+  },
+  {
+    "page": "owner-detail",
+    "logo": {
+      "x": 12,
+      "y": 16,
+      "width": 36,
+      "height": 36
+    },
+    "logoStyle": {
+      "font": "system-ui, -apple-system, \"Segoe UI\", Roboto, \"Helvetica Neue\", \"Noto Sans\", \"Liberation Sans\", Arial, sans-serif, \"Apple Color Emoji\", \"Segoe UI Emoji\", \"Segoe UI Symbol\", \"Noto Color Emoji\"",
+      "size": 13.6,
+      "weight": "750",
+      "height": 36,
+      "background": "rgb(18, 107, 86)"
+    },
+    "brand": {
+      "font": "system-ui, -apple-system, \"Segoe UI\", Roboto, \"Helvetica Neue\", \"Noto Sans\", \"Liberation Sans\", Arial, sans-serif, \"Apple Color Emoji\", \"Segoe UI Emoji\", \"Segoe UI Symbol\", \"Noto Color Emoji\"",
+      "size": 20,
+      "weight": "750",
+      "height": 66,
+      "background": "rgba(0, 0, 0, 0)"
+    },
+    "headings": [
+      {
+        "font": "system-ui, -apple-system, \"Segoe UI\", Roboto, \"Helvetica Neue\", \"Noto Sans\", \"Liberation Sans\", Arial, sans-serif, \"Apple Color Emoji\", \"Segoe UI Emoji\", \"Segoe UI Symbol\", \"Noto Color Emoji\"",
+        "size": 24.08,
+        "weight": "500",
+        "height": 57.78125,
+        "background": "rgba(0, 0, 0, 0)"
+      }
+    ],
+    "body": {
+      "font": "system-ui, -apple-system, \"Segoe UI\", Roboto, \"Helvetica Neue\", \"Noto Sans\", \"Liberation Sans\", Arial, sans-serif, \"Apple Color Emoji\", \"Segoe UI Emoji\", \"Segoe UI Symbol\", \"Noto Color Emoji\"",
+      "size": 16,
+      "weight": "400",
+      "height": 1030.96875,
+      "background": "rgb(244, 247, 245)"
+    },
+    "controls": [],
+    "labels": [],
+    "primary": [],
+    "main": {
+      "x": 0,
+      "y": 99,
+      "width": 320,
+      "height": 886.96875
+    },
+    "panel": {
+      "x": 12,
+      "y": 264.1875,
+      "width": 296,
+      "height": 673.78125
+    },
+    "scrollWidth": 320,
+    "viewport": 320
+  },
+  {
+    "page": "shared-list",
+    "logo": {
+      "x": 12,
+      "y": 16,
+      "width": 36,
+      "height": 36
+    },
+    "logoStyle": {
+      "font": "system-ui, -apple-system, \"Segoe UI\", Roboto, \"Helvetica Neue\", \"Noto Sans\", \"Liberation Sans\", Arial, sans-serif, \"Apple Color Emoji\", \"Segoe UI Emoji\", \"Segoe UI Symbol\", \"Noto Color Emoji\"",
+      "size": 13.6,
+      "weight": "750",
+      "height": 36,
+      "background": "rgb(18, 107, 86)"
+    },
+    "brand": {
+      "font": "system-ui, -apple-system, \"Segoe UI\", Roboto, \"Helvetica Neue\", \"Noto Sans\", \"Liberation Sans\", Arial, sans-serif, \"Apple Color Emoji\", \"Segoe UI Emoji\", \"Segoe UI Symbol\", \"Noto Color Emoji\"",
+      "size": 20,
+      "weight": "750",
+      "height": 66,
+      "background": "rgba(0, 0, 0, 0)"
+    },
+    "headings": [
+      {
+        "font": "system-ui, -apple-system, \"Segoe UI\", Roboto, \"Helvetica Neue\", \"Noto Sans\", \"Liberation Sans\", Arial, sans-serif, \"Apple Color Emoji\", \"Segoe UI Emoji\", \"Segoe UI Symbol\", \"Noto Color Emoji\"",
+        "size": 24.08,
+        "weight": "500",
+        "height": 28.890625,
+        "background": "rgba(0, 0, 0, 0)"
+      },
+      {
+        "font": "system-ui, -apple-system, \"Segoe UI\", Roboto, \"Helvetica Neue\", \"Noto Sans\", \"Liberation Sans\", Arial, sans-serif, \"Apple Color Emoji\", \"Segoe UI Emoji\", \"Segoe UI Symbol\", \"Noto Color Emoji\"",
+        "size": 24.08,
+        "weight": "500",
+        "height": 28.890625,
+        "background": "rgba(0, 0, 0, 0)"
+      }
+    ],
+    "body": {
+      "font": "system-ui, -apple-system, \"Segoe UI\", Roboto, \"Helvetica Neue\", \"Noto Sans\", \"Liberation Sans\", Arial, sans-serif, \"Apple Color Emoji\", \"Segoe UI Emoji\", \"Segoe UI Symbol\", \"Noto Color Emoji\"",
+      "size": 16,
+      "weight": "400",
+      "height": 900,
+      "background": "rgb(244, 247, 245)"
+    },
+    "controls": [],
+    "labels": [],
+    "primary": [],
+    "main": {
+      "x": 0,
+      "y": 99,
+      "width": 320,
+      "height": 756
+    },
+    "panel": {
+      "x": 12,
+      "y": 334.578125,
+      "width": 296,
+      "height": 237.25
+    },
+    "scrollWidth": 320,
+    "viewport": 320
+  },
+  {
+    "page": "shared-list-slash",
+    "logo": {
+      "x": 12,
+      "y": 16,
+      "width": 36,
+      "height": 36
+    },
+    "logoStyle": {
+      "font": "system-ui, -apple-system, \"Segoe UI\", Roboto, \"Helvetica Neue\", \"Noto Sans\", \"Liberation Sans\", Arial, sans-serif, \"Apple Color Emoji\", \"Segoe UI Emoji\", \"Segoe UI Symbol\", \"Noto Color Emoji\"",
+      "size": 13.6,
+      "weight": "750",
+      "height": 36,
+      "background": "rgb(18, 107, 86)"
+    },
+    "brand": {
+      "font": "system-ui, -apple-system, \"Segoe UI\", Roboto, \"Helvetica Neue\", \"Noto Sans\", \"Liberation Sans\", Arial, sans-serif, \"Apple Color Emoji\", \"Segoe UI Emoji\", \"Segoe UI Symbol\", \"Noto Color Emoji\"",
+      "size": 20,
+      "weight": "750",
+      "height": 66,
+      "background": "rgba(0, 0, 0, 0)"
+    },
+    "headings": [
+      {
+        "font": "system-ui, -apple-system, \"Segoe UI\", Roboto, \"Helvetica Neue\", \"Noto Sans\", \"Liberation Sans\", Arial, sans-serif, \"Apple Color Emoji\", \"Segoe UI Emoji\", \"Segoe UI Symbol\", \"Noto Color Emoji\"",
+        "size": 24.08,
+        "weight": "500",
+        "height": 28.890625,
+        "background": "rgba(0, 0, 0, 0)"
+      }
+    ],
+    "body": {
+      "font": "system-ui, -apple-system, \"Segoe UI\", Roboto, \"Helvetica Neue\", \"Noto Sans\", \"Liberation Sans\", Arial, sans-serif, \"Apple Color Emoji\", \"Segoe UI Emoji\", \"Segoe UI Symbol\", \"Noto Color Emoji\"",
+      "size": 16,
+      "weight": "400",
+      "height": 900,
+      "background": "rgb(244, 247, 245)"
+    },
+    "controls": [],
+    "labels": [],
+    "primary": [],
+    "main": {
+      "x": 0,
+      "y": 99,
+      "width": 320,
+      "height": 756
+    },
+    "panel": {
+      "x": 12,
+      "y": 249.6875,
+      "width": 296,
+      "height": 237.25
+    },
+    "scrollWidth": 320,
+    "viewport": 320
+  },
+  {
+    "page": "shared-detail",
+    "logo": {
+      "x": 12,
+      "y": 16,
+      "width": 36,
+      "height": 36
+    },
+    "logoStyle": {
+      "font": "system-ui, -apple-system, \"Segoe UI\", Roboto, \"Helvetica Neue\", \"Noto Sans\", \"Liberation Sans\", Arial, sans-serif, \"Apple Color Emoji\", \"Segoe UI Emoji\", \"Segoe UI Symbol\", \"Noto Color Emoji\"",
+      "size": 13.6,
+      "weight": "750",
+      "height": 36,
+      "background": "rgb(18, 107, 86)"
+    },
+    "brand": {
+      "font": "system-ui, -apple-system, \"Segoe UI\", Roboto, \"Helvetica Neue\", \"Noto Sans\", \"Liberation Sans\", Arial, sans-serif, \"Apple Color Emoji\", \"Segoe UI Emoji\", \"Segoe UI Symbol\", \"Noto Color Emoji\"",
+      "size": 20,
+      "weight": "750",
+      "height": 66,
+      "background": "rgba(0, 0, 0, 0)"
+    },
+    "headings": [
+      {
+        "font": "system-ui, -apple-system, \"Segoe UI\", Roboto, \"Helvetica Neue\", \"Noto Sans\", \"Liberation Sans\", Arial, sans-serif, \"Apple Color Emoji\", \"Segoe UI Emoji\", \"Segoe UI Symbol\", \"Noto Color Emoji\"",
+        "size": 24.08,
+        "weight": "500",
+        "height": 57.78125,
+        "background": "rgba(0, 0, 0, 0)"
+      }
+    ],
+    "body": {
+      "font": "system-ui, -apple-system, \"Segoe UI\", Roboto, \"Helvetica Neue\", \"Noto Sans\", \"Liberation Sans\", Arial, sans-serif, \"Apple Color Emoji\", \"Segoe UI Emoji\", \"Segoe UI Symbol\", \"Noto Color Emoji\"",
+      "size": 16,
+      "weight": "400",
+      "height": 1057.578125,
+      "background": "rgb(244, 247, 245)"
+    },
+    "controls": [],
+    "labels": [],
+    "primary": [
+      {
+        "font": "system-ui, -apple-system, \"Segoe UI\", Roboto, \"Helvetica Neue\", \"Noto Sans\", \"Liberation Sans\", Arial, sans-serif, \"Apple Color Emoji\", \"Segoe UI Emoji\", \"Segoe UI Symbol\", \"Noto Color Emoji\"",
+        "size": 16,
+        "weight": "400",
+        "height": 38,
+        "background": "rgb(13, 110, 253)"
+      }
+    ],
+    "main": {
+      "x": 0,
+      "y": 99,
+      "width": 320,
+      "height": 913.578125
+    },
+    "panel": {
+      "x": 12,
+      "y": 212.796875,
+      "width": 296,
+      "height": 751.78125
+    },
+    "scrollWidth": 320,
+    "viewport": 320
+  },
+  {
+    "page": "registration-success",
+    "logo": {
+      "x": 12,
+      "y": 16,
+      "width": 36,
+      "height": 36
+    },
+    "logoStyle": {
+      "font": "system-ui, -apple-system, \"Segoe UI\", Roboto, \"Helvetica Neue\", \"Noto Sans\", \"Liberation Sans\", Arial, sans-serif, \"Apple Color Emoji\", \"Segoe UI Emoji\", \"Segoe UI Symbol\", \"Noto Color Emoji\"",
+      "size": 13.6,
+      "weight": "750",
+      "height": 36,
+      "background": "rgb(18, 107, 86)"
+    },
+    "brand": {
+      "font": "system-ui, -apple-system, \"Segoe UI\", Roboto, \"Helvetica Neue\", \"Noto Sans\", \"Liberation Sans\", Arial, sans-serif, \"Apple Color Emoji\", \"Segoe UI Emoji\", \"Segoe UI Symbol\", \"Noto Color Emoji\"",
+      "size": 20,
+      "weight": "750",
+      "height": 66,
+      "background": "rgba(0, 0, 0, 0)"
+    },
+    "headings": [
+      {
+        "font": "system-ui, -apple-system, \"Segoe UI\", Roboto, \"Helvetica Neue\", \"Noto Sans\", \"Liberation Sans\", Arial, sans-serif, \"Apple Color Emoji\", \"Segoe UI Emoji\", \"Segoe UI Symbol\", \"Noto Color Emoji\"",
+        "size": 24.08,
+        "weight": "500",
+        "height": 57.78125,
+        "background": "rgba(0, 0, 0, 0)"
+      }
+    ],
+    "body": {
+      "font": "system-ui, -apple-system, \"Segoe UI\", Roboto, \"Helvetica Neue\", \"Noto Sans\", \"Liberation Sans\", Arial, sans-serif, \"Apple Color Emoji\", \"Segoe UI Emoji\", \"Segoe UI Symbol\", \"Noto Color Emoji\"",
+      "size": 16,
+      "weight": "400",
+      "height": 1141.578125,
+      "background": "rgb(244, 247, 245)"
+    },
+    "controls": [],
+    "labels": [],
+    "primary": [],
+    "main": {
+      "x": 0,
+      "y": 99,
+      "width": 320,
+      "height": 997.578125
+    },
+    "panel": {
+      "x": 12,
+      "y": 212.796875,
+      "width": 296,
+      "height": 835.78125
+    },
+    "scrollWidth": 320,
+    "viewport": 320
+  }
+]

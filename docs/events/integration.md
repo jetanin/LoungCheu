@@ -1,19 +1,19 @@
 # F-02 / Issue #2 integration
 
-6 พฤศจิกายน 2026 · `feature/events` working tree บน `6e8a24c45e66eb4b8df9939d5cb364c316948af4` (`sprint-1-staging` ที่มี Auth)
+6 พฤศจิกายน 2026 · `feature/events` merge working tree: HEAD `04106ff` + incoming `sprint-1-staging@ada659b` (รวม #3) ดู [ผลรวม 141 Vitest / 32 Chromium](consistency-review.md) ยังไม่มี merge commit
 
-เริ่มต้น branch ถูกต้องและ working tree สะอาด ไม่พบ AGENTS.md ใน repo (รวม hidden paths ยกเว้น dependencies/Git) หรือ ancestor directories ที่เกี่ยวข้อง ไม่มี commit/push/merge/GitHub write ในงานนี้
+ผู้ใช้ commit F-02 และเริ่ม merge staging ระหว่าง audit จากนั้นอนุญาตให้แก้ conflict/รวม #2/#3 ไม่พบ AGENTS.md ที่เกี่ยวข้อง Codex แก้ composition/validation/tests/docs โดยไม่ abort merge หรือ commit/push/GitHub write
 
 ## Shared foundation
 
-Staging ไม่มี Event/Registration models จึง reuse ไฟล์ต่อไปนี้จาก `feature/registration` ที่ `afa5c72` โดยเนื้อหาตรงกันทุก byte:
+Historical F-02 prerequisite: staging ตอน `6e8a24c` ไม่มี Event/Registration models จึง reuse ไฟล์ต่อไปนี้จาก `feature/registration@afa5c72`; incoming #3 ปัจจุบันยังใช้ foundation เนื้อหาเดียวกัน:
 
 - `server/prisma/schema.prisma`
 - `server/prisma/migrations/202611060002_registration_extension/migration.sql`
 
 ชื่อ migration/checksum คงเดิม ไม่แก้ `202611060001_auth` และไม่สร้าง migration ที่สร้าง events/enums ซ้ำ Test DB มีทั้งสอง migration ใช้อยู่แล้ว; `npm run db:migrate:test` ยืนยัน no pending migrations ใช้เฉพาะ `loungcheu_test` ไม่มี migrate/reset/drop ฐานแอปในงานนี้
 
-เอกสาร [integration ของ #3](../registration/integration.md) นำมาจาก branch เพื่อนโดยไม่แก้ไข เป็นคำอธิบาย branch #3 ไม่ใช่สถานะ implementation ทั้งหมดของ branch นี้
+เอกสาร [integration ของ #3](../registration/integration.md) อัปเดตให้ตรง combined branch แล้ว ผลเดิม 110 tests/7 Auth browser เป็น historical #3; ผลปัจจุบันและ source hashes อยู่ใน [combined record](consistency-review.md)
 
 ## Backend composition
 
@@ -24,8 +24,11 @@ app.use('/api', createEventRouter({
   authenticate: auth, verifyCsrf: csrf, json,
   service: createEventService(db, now),
 }));
-// เมื่อนำ #3 มารวม: เพิ่ม createRegistrationRouter ณ จุดเดียวกัน
-// ก่อน app.use('/api', unknownApiHandler) โดยคง Event router นี้ไว้
+app.use('/api', createRegistrationRouter({
+  authenticate: auth, verifyCsrf: csrf,
+  register: createRegistrationService(db, () => new Date(now())),
+}));
+// ทั้งสอง routers อยู่ก่อน unknown-API fallback
 ```
 
 `GET /api/events/{id}` คืน SharedEvent ครบตาม contracts โดยไม่มี owner/system/private roster fields OwnerEvent เพิ่ม organizer_id/created_at/updated_at Owner queries scope ด้วย session เสมอ
@@ -42,12 +45,14 @@ Routes: `/events`, `/events/{id}`, `/organizer/events`, `/organizer/events/new`,
 
 ลำดับช่องตามเวลาเกิดจริงคือ registration_closes_at → starts_at → ends_at ทั้ง desktop/mobile โดยช่อง date/time ทั้งสามแถวกว้างเท่ากันและตรงแนวเดียวกัน; timezone panel อยู่ข้างทั้งสามแถวบน desktop และอยู่หลังสามแถวบน mobile
 
-นำเฉพาะ `RegistrationAction.tsx` และ `registrations/api.ts` จาก `feature/registration` มา reuse โดยเนื้อหาตรงกันทุก byte ไม่มีการแก้ internals ของ #3 Shared detail render RegistrationAction โดยตรง แทนการใช้ RegistrationPage ของ #3
+Reuse `RegistrationAction.tsx` และ `registrations/api.ts` โดยคง implementation ของ #3 ไม่มีแก้ internals Shared detail render RegistrationAction โดยตรง RegistrationPage และ component tests ของ #3 คงไว้เป็น standalone host แต่ไม่ใช้ซ้อนใน App
 
 EventPage คง article/action ไว้ระหว่าง refresh/focus รวม transient read error ไม่สลับทั้งหน้าเป็น loading เมื่อมีข้อมูลแล้ว App identity polling/focus คง route และ component key; key เปลี่ยนเมื่อ user/role/path เปลี่ยนเพื่อแยก private state ส่วน 401 และ 403/404 ล้าง protected data ตามสิทธิ์
 
 หลัง [spec audit](audit.md) background identity network failure แสดง warning/retry โดยคง action mounted; definitive 401 ของ session เดิมยังล้างข้อมูลเสมอ ใช้ session epoch ป้องกัน response ของบัญชีก่อนหน้ากระทบบัญชีใหม่ Event mutations รับ optional AbortSignal จาก API client และ abort/ignore callbacks เมื่อ unmount; read/publish 403/404 invalidates scope เพื่อไม่ให้ response เก่าคืน private record; publish 409 refresh ข้อมูลโดยคงเหตุผล conflict ไว้ ไม่มี automatic mutation retry
 
-**ยังต้องนำ backend Registration router/service/rules และ tests ของ #3 มารวม** branch นี้ไม่มี `POST /api/events/{id}/registrations` กดลงทะเบียนก่อนรวม #3 จะยังไม่ได้ผลสำเร็จ อย่าเพิ่ม service หรือ RegistrationPage ซ้ำในหน้ารายละเอียด ให้คง RegistrationAction host ของ F-02 และรวม registration router ก่อน unknown-API fallback ความขัดแย้งที่คาดไว้คือ App.tsx/createApp และเอกสาร; schema/migration/API adapter/action ใช้ไฟล์เดียวกันอยู่แล้ว
+**รวม backend Registration router/service/rules และ tests ของ #3 แล้ว** `POST /api/events/{id}/registrations` ทำงานร่วมกับ Event APIs ใน createApp เดียวกัน แก้ conflicts ใน App.tsx/server app/traceability โดยเก็บ Auth lifecycle และ Event host ของ #2 พร้อม service จริงของ #3 มี API composition test ตรวจ DB readback/reference/count หลัง recreateApp และ Chromium real create→publish→register journey ไม่ใช้ mocked backend เพื่ออ้าง integration สำเร็จ
 
-My Registrations (#4), roster (#5), cancel/edit/close/check-in, full publish→register→own list→roster journey และ teammate review/release อยู่นอกงานนี้ ผลจริง/ข้อจำกัดอยู่ใน [verification](verification.md)
+My Registrations และ roster อยู่ใน **Issue #4 (F-04/F-05)** ลิงก์ `/my/registrations` ยังรอ implementation นี้ Cancel/edit/close/check-in, full own-list/roster journey และ teammate review/release อยู่นอกงานนี้ ผลจริง/ข้อจำกัดอยู่ใน [combined verification](consistency-review.md)
+
+Consistency re-audit: Event reads รับ definitive401 ของ mounted session ก่อน generation guard เพื่อไม่ให้ newer network failure กลบ session rejection; mounted guard กัน old-account read callback ตาม [current evidence](consistency-review.md) Event JSON budget32 KiB รองรับ BR-01 max-length escaped Unicode; Auth16 KiB/Registration1 KiB คงเดิม Username NUL ใช้ generic credential rejection/dummy scrypt ตาม Auth contract ไม่แก้ #3 internals

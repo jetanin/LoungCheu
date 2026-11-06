@@ -1,6 +1,10 @@
 # Part E — Sprint 1 Engineering Baseline และ Product DoD
 
-Documentation baseline v0.5 | 5 พฤศจิกายน 2026 | Execution update 6 พ.ย.: F-01 รวม staging แล้ว; F-02 implement/test/audit บน feature/events ตาม [verification](../../events/verification.md); Sprint 1 ยังไม่ผ่าน Product DoD ทั้งชุด
+**UI consistency follow-up:** ล่าสุด 145 Vitest / 35 Chromium, typecheck/build/compiled smoke PASS รวม typography/layout/state checks ที่1280/390/320px ดู [current UI evidence](../../events/visual-consistency.md) ผล141/32 และ seed follow-up ด้านล่างเป็น historical runs
+
+**Seed follow-up (6 พ.ย.):** full Vitest **145 PASS** รวม seed integration ใหม่4 และ typecheck PASS; 141/32 ใน feature audit ด้านล่างเป็นรอบก่อนเพิ่ม seed โดย Chromium/build ไม่ได้ rerun รอบ seed ดู [latest seed results](../../events/demo-seed.md) ไม่มี AC/scope ใหม่
+
+Documentation baseline v0.5 | 5 พฤศจิกายน 2026 | Execution update 6 พ.ย.: F-01/F-02/F-03 รวมและทดสอบบน feature/events merge working tree ดู [combined verification](../../events/consistency-review.md); Sprint 1 ยังไม่ผ่าน Product DoD ทั้งชุด
 
 ## Sprint goal
 
@@ -31,7 +35,7 @@ Version contracts/STS ก่อน implementation และดำเนิน re
 | DOD-09 | ระบุ limitations/failed/skipped/incomplete งานและไม่ใส่ secrets ใน Git/PDF | Defect register และ safe access review |
 | DOD-10 | ตั้งแต่ Lab 5 เป็นต้นไปมี CI gate, Docker/GCP version และ post-deploy verification; final มี independent acceptance และส่งมอบครบ | Pipeline/deployment/UAT records ตาม checkpoint; D1 ส่วนนี้เป็น PLANNED ไม่อ้างผ่าน |
 
-DOD-01/02/04/06/08/09 มีหลักฐานส่วน F-01/F-02 แล้วใน [Event verification/audit](../../events/verification.md) รวม Event domain/permission/publish concurrency และ UI lifecycle แต่ DOD ทั้ง Sprint ยังไม่ complete: ขาด backend F-03–05 integration, registration last-seat/duplicate tests, full journey/restart, teammate review/reproduction และ main release; DOD-10 ตรวจตั้งแต่ Lab 5 ไม่ถือว่า AI review แทน teammate approval
+DOD-01/02/04/06/08/09 มีหลักฐานส่วน F-01–03 ใน [combined verification](../../events/consistency-review.md): Event permission/publish/snapshot, Registration last-seat/duplicate concurrency และ real UI lifecycle/journey รวม 141 Vitest/32 Chromium PASS แต่ DOD ทั้ง Sprint ยังไม่ complete: ขาด F-04/F-05 (Issue #4), full own-list/roster journey, process restart, teammate review/reproduction และ main release; DOD-10 ตรวจตั้งแต่ Lab 5 ไม่ถือว่า AI review แทน teammate approval
 
 ## Review gate ก่อนรับ implementation
 

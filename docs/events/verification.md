@@ -1,5 +1,9 @@
 # F-02 / Issue #2 verification
 
+**ผลล่าสุดหลังรวม #2/#3:** 141 Vitest / 32 Chromium / typecheck / build / compiled smoke 3 checks PASS บน feature/events merge working tree (04106ff + ada659b) ดู [combined verification + TDD findings](consistency-review.md) และ [source manifest](evidence/consistency-review/manifest.json) ยังไม่มี merge commit; Issue #4/UAT/process restart/review/release ยัง pending
+
+## Historical — F-02 ก่อนรวม backend #3
+
 ทดสอบและ audit 6 พฤศจิกายน 2026 (Asia/Bangkok) บน `feature/events` working tree จาก parent `6e8a24c45e66eb4b8df9939d5cb364c316948af4` ยังไม่ commit Full regression รอบ overview ผ่าน **74 Vitest / 26 browser**; ล่าสุดปรับความกว้างช่องวัน/เวลาให้ตรงกัน ตรวจ focused create/publish/shared-detail journey **1 PASS** และ typecheck/build PASS ดู [latest alignment manifest](evidence/time-alignment/manifest.json) และ [full regression manifest](evidence/overview/manifest.json); ผลรอบก่อนเก็บเป็น historical evidence
 
 FR-03–05, FR-08 เฉพาะ own event list และ AC-06–11 implement แล้ว รอ teammate review/integration/release ไม่อ้าง Product DoD ของ Sprint 1 ทั้งระบบ

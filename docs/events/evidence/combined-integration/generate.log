@@ -1,0 +1,21 @@
+
+> loungcheu@0.1.0 db:generate
+> npm run db:generate -w server
+
+
+> @loungcheu/server@0.1.0 db:generate
+> prisma generate
+
+npm.cmd : Loaded Prisma config from prisma.config.ts.
+At line:2 char:168
++ ... ui-red.log; npm.cmd run db:generate *> docs/events/evidence/combined- ...
++                 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : NotSpecified: (Loaded Prisma c...isma.config.ts.:String) [], RemoteException
+    + FullyQualifiedErrorId : NativeCommandError
+
+
+Prisma schema loaded from prisma\schema.prisma.
+
+✔ Generated Prisma Client (v7.10.1) to .\..\node_modules\@prisma\client in 112ms
+
+Start by importing your Prisma Client (See: https://pris.ly/d/importing-client)

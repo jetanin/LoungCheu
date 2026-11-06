@@ -1,0 +1,111 @@
+
+ RUN  v5.1.0 C:/Kmutt/Senior/CPE334/Final/LoungCheu
+
+ ❯ server/tests/integration/demo-seed.test.ts (4 tests | 4 failed) 1195ms
+   × seeds six Bangkok scenarios with real availability, scoped browsing and a working registration 20ms
+   × rerunning preserves edited events, consumed seats, references and removed examples even a month later 3ms
+   × rejects incomplete demo accounts without adding partial event data 11ms
+   × concurrent seed calls create each fixture once without duplicating or overfilling registrations 4ms
+node :
+At line:2 char:80
++ ... | Out-Null; node node_modules/vitest/vitest.mjs run server/tests/inte ...
++                 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : NotSpecified: (:String) [], RemoteException
+    + FullyQualifiedErrorId : NativeCommandError
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 4 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  server/tests/integration/demo-seed.test.ts > seeds six Bangkok scenarios with real availability, scoped
+browsing and a working registration
+AssertionError: expected { createdEvents: +0, …(2) } to deeply equal { createdEvents: 6, …(2) }
+
+- Expected
++ Received
+
+  {
+-   "createdEvents": 6,
+-   "createdRegistrations": 4,
++   "createdEvents": 0,
++   "createdRegistrations": 0,
+    "skippedEvents": 0,
+  }
+
+ ❯ server/tests/integration/demo-seed.test.ts:36:41
+     34|
+     35| it('seeds six Bangkok scenarios with real availability, scoped browsin…
+     36|   expect(await seedDemoEvents(db, now)).toEqual({ createdEvents: 6, cr…
+       |                                         ^
+     37|   const oa = await login('organizer.a'), ob = await login('organizer.b…
+     38|   const shared = (await pa.agent.get('/api/events').expect(200)).body.…
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/4]⎯
+
+ FAIL  server/tests/integration/demo-seed.test.ts > rerunning preserves edited events, consumed seats, references and
+removed examples even a month later
+AssertionError: expected +0 to be 6 // Object.is equality
+
+- Expected
++ Received
+
+- 6
++ 0
+
+ ❯ server/tests/integration/demo-seed.test.ts:60:57
+     58|
+     59| it('rerunning preserves edited events, consumed seats, references and …
+     60|   expect((await seedDemoEvents(db, now)).createdEvents).toBe(6);
+       |                                                         ^
+     61|   const pa = await login('participant.a');
+     62|   await pa.agent.post(`/api/events/${demoEventIds.open}/registrations`…
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[2/4]⎯
+
+ FAIL  server/tests/integration/demo-seed.test.ts > rejects incomplete demo accounts without adding partial event data
+AssertionError: promise resolved "{ createdEvents: +0, …(2) }" instead of rejecting
+
+- Expected
++ Received
+
+- Error {
+-   "message": "rejected promise",
++ {
++   "createdEvents": 0,
++   "createdRegistrations": 0,
++   "skippedEvents": 0,
+  }
+
+ ❯ server/tests/integration/demo-seed.test.ts:76:41
+     74|   await db.user.update({ where: { id: user.id }, data: { username: `se…
+     75|   try {
+     76|     await expect(seedDemoEvents(db, now)).rejects.toThrow(/demo accoun…
+       |                                         ^
+     77|     expect(await db.event.count({ where: { id: { in: ids } } })).toBe(…
+     78|   } finally { await db.user.update({ where: { id: user.id }, data: { u…
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[3/4]⎯
+
+ FAIL  server/tests/integration/demo-seed.test.ts > concurrent seed calls create each fixture once without duplicating
+or overfilling registrations
+AssertionError: expected +0 to be 6 // Object.is equality
+
+- Expected
++ Received
+
+- 6
++ 0
+
+ ❯ server/tests/integration/demo-seed.test.ts:83:60
+     81| it('concurrent seed calls create each fixture once without duplicating…
+     82|   const results = await Promise.all([seedDemoEvents(db, now), seedDemo…
+     83|   expect(results.reduce((n, r) => n + r.createdEvents, 0)).toBe(6);
+       |                                                            ^
+     84|   expect(results.reduce((n, r) => n + r.createdRegistrations, 0)).toBe…
+     85|   expect(results.reduce((n, r) => n + r.skippedEvents, 0)).toBe(6);
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[4/4]⎯
+
+
+ Test Files  1 failed (1)
+      Tests  4 failed (4)
+   Start at  23:25:40
+   Duration  2.20s (tests 61%, import 31%, transform 8%)

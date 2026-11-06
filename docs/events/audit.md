@@ -1,5 +1,9 @@
 # F-02 spec / consistency audit
 
+Audit เดิมด้านล่างเป็น historical F-02 ก่อนรวม #3; ผลปัจจุบันและ consistency fixes เพิ่มเติมดู [combined integration](consistency-review.md) (141 Vitest / 32 Chromium PASS)
+
+## Historical audit
+
 6 พฤศจิกายน 2026 (Asia/Bangkok) · working tree `feature/events` จาก `6e8a24c` · ยังไม่ commit/push/merge
 
 ตรวจต่อจากผลเดิม 64 Vitest / 13 browser โดยรักษา diff เดิมทั้งหมด เทียบ `docs/{srs,system-sds,traceability}.md`, Sprint 1 contracts/STS, schema/migration, Event/Auth composition, API/UI tests และเอกสารส่งงาน พบข้อผิดพลาดที่ coverage เดิมยังตรวจไม่ถึง ผลเดิมเป็น historical run ไม่ใช่หลักฐานว่าครอบคลุมทุก race ใน UI

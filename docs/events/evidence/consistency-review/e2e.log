@@ -1,0 +1,64 @@
+
+> loungcheu@0.1.0 test:e2e
+> playwright test
+
+npm.cmd : [WebServer] (node:58796) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+At line:2 char:53
++ ... ORT='3011'; npm.cmd run test:e2e *> docs/events/evidence/consistency- ...
++                 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : NotSpecified: ([WebServer] (no... env being set.:String) [], RemoteException
+    + FullyQualifiedErrorId : NativeCommandError
+
+[WebServer] (Use `node --trace-warnings ...` to show where the warning was created)
+[WebServer] (node:37256) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+[WebServer] (Use `node --trace-warnings ...` to show where the warning was created)
+[WebServer] (node:8088) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+[WebServer] (Use `node --trace-warnings ...` to show where the warning was created)
+[WebServer] (node:50908) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+[WebServer] (Use `node --trace-warnings ...` to show where the warning was created)
+[WebServer] (node:50908) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+[WebServer] (Use `node --trace-warnings ...` to show where the warning was created)
+[WebServer] (node:37140) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+[WebServer] (Use `node --trace-warnings ...` to show where the warning was created)
+[WebServer] (node:13644) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+[WebServer] (Use `node --trace-warnings ...` to show where the warning was created)
+
+Running 32 tests using 1 worker
+
+(node:22448) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ok  1 tests\e2e\auth.spec.ts:3:3 › F-01 participant.a: login, refresh, logout and browser back (1.4s)
+  ok  2 tests\e2e\auth.spec.ts:3:3 › F-01 organizer.a: login, refresh, logout and browser back (730ms)
+  ok  3 tests\e2e\auth.spec.ts:18:1 › F-01 invalid form, generic credentials and pending submit (1.3s)
+  ok  4 tests\e2e\auth.spec.ts:29:1 › F-01 expired session clears private UI on focus (418ms)
+  ok  5 tests\e2e\auth.spec.ts:37:1 › F-01 failed logout clears private UI and offers a working retry (573ms)
+  ok  6 tests\e2e\auth.spec.ts:50:1 › F-01 ignores an older successful session response after a newer 401 (524ms)
+  ok  7 tests\e2e\auth.spec.ts:76:1 › F-01 rechecks a restored page after its session was logged out elsewhere (424ms)
+  ok  8 tests\e2e\consistency.spec.ts:10:1 › F-02 consistency: field errors follow corrected values and dependent time ordering (1.0s)
+  ok  9 tests\e2e\consistency.spec.ts:37:1 › F-02 consistency: CLOSED totals and forbidden refresh discard older private overview data (685ms)
+  ok 10 tests\e2e\events-audit.spec.ts:20:36 › TEST-03/14 owner event read 401 clears the session after a newer refresh fails (846ms)
+  ok 11 tests\e2e\events-audit.spec.ts:20:36 › TEST-03/14 shared event read 401 clears the session after a newer refresh fails (1.1s)
+  ok 12 tests\e2e\events-audit.spec.ts:51:1 › TEST-03/14 a late event read 401 cannot clear the next signed-in account (841ms)
+  ok 13 tests\e2e\events-audit.spec.ts:66:34 › TEST-14 publish 403 removes cached private record even if an old refresh returns later (676ms)
+  ok 14 tests\e2e\events-audit.spec.ts:66:34 › TEST-14 publish 404 removes cached private record even if an old refresh returns later (670ms)
+  ok 15 tests\e2e\events-audit.spec.ts:83:34 › TEST-14 read 403 cannot be overwritten by an earlier publish success (689ms)
+  ok 16 tests\e2e\events-audit.spec.ts:83:34 › TEST-14 read 404 cannot be overwritten by an earlier publish success (688ms)
+  ok 17 tests\e2e\events-audit.spec.ts:102:1 › TEST-09/14 publish conflict explains rejection and refreshes the committed event status (616ms)
+  ok 18 tests\e2e\events-audit.spec.ts:113:1 › TEST-14 a late create success cannot navigate the next signed-in account to the previous owner record (913ms)
+  ok 19 tests\e2e\events-audit.spec.ts:134:1 › TEST-14 a late publish 401 cannot clear the next account session (854ms)
+  ok 20 tests\e2e\events-audit.spec.ts:149:1 › TEST-14 canonical detail and create routes work with a trailing slash (584ms)
+  ok 21 tests\e2e\events-audit.spec.ts:155:1 › TEST-14 a definitive session 401 still wins over a later temporary identity failure (543ms)
+  ok 22 tests\e2e\events-registration.spec.ts:11:1 › real #1/#2/#3 journey: publish, register across focus refresh, keep reference and reject stale full attempt (2.7s)
+  ok 23 tests\e2e\events.spec.ts:10:1 › TEST-07/09/14/36 Organizer creates, previews, publishes; Participant browses persisted shared detail (3.4s)
+  ok 24 tests\e2e\events.spec.ts:103:1 › TEST-14 list loading, empty, failure and retry; detail 404 and publish conflict (1.3s)
+  ok 25 tests\e2e\events.spec.ts:128:1 › TEST-09/14 an older availability refresh cannot overwrite a successful publish (614ms)
+  ok 26 tests\e2e\events.spec.ts:149:69 › F-02/#3 focus and availability refresh preserve RegistrationAction pending (1.3s)
+  ok 27 tests\e2e\events.spec.ts:149:69 › F-02/#3 focus and availability refresh preserve RegistrationAction success (1.3s)
+  ok 28 tests\e2e\events.spec.ts:149:69 › F-02/#3 focus and availability refresh preserve RegistrationAction uncertain (1.3s)
+  ok 29 tests\e2e\overview.spec.ts:17:1 › F-02 overview empty state, active navigation and create entry work on desktop and mobile (901ms)
+  ok 30 tests\e2e\overview.spec.ts:35:1 › F-02 overview uses real owner-list counts/order, excludes another owner and preserves all-list/detail routes (1.7s)
+  ok 31 tests\e2e\overview.spec.ts:69:1 › F-02 overview distinguishes loading/error from zero and retries; 401 clears private overview (667ms)
+  ok 32 tests\e2e\overview.spec.ts:89:1 › F-02 Participant keeps shared browsing and cannot open Organizer overview (500ms)
+
+  32 passed (45.7s)
+native exit code: 0

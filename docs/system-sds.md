@@ -26,7 +26,7 @@ Modules: accounts (auth/seed), events (create/publish/list; S2 edit/close), regi
 
 ### Planned source layout
 
-Layout ด้านล่างเป็นแผนทั้ง Sprint 1; setup/F-01 รวม staging แล้ว Event module/UI/tests implement บน feature/events พร้อม shared schema/migration จาก #3 ส่วน backend Registration/own records/roster ยังไม่รวมใน branch นี้ ดู [Event integration](events/integration.md) และ [Auth historical record](sprints/sprint-1/auth-work-record.md)
+Layout ด้านล่างเป็นแผนทั้ง Sprint 1; F-01/F-02/F-03 รวมและทดสอบใน feature/events merge working tree แล้ว ส่วน own registrations/roster (Issue #4) ยังไม่รวม ดู [Event integration](events/integration.md) และ [combined verification](events/consistency-review.md)
 
 ```text
 LoungCheu/
@@ -98,6 +98,8 @@ Concurrency tests ใช้ separate connections/transactions และ barrier 
 
 Loading ปิดปุ่มซ้ำ; empty มีทางเลือกดู/สร้างกิจกรรม; field errors อยู่ใต้ input; conflicts อธิบายเหตุผลและ refresh availability; network errors retry ได้; expired session กลับ Login และล้าง private state; 403/404 ไม่เปิดเผยข้อมูลนอกสิทธิ์ เวลา UI แสดง Asia/Bangkok
 
+UI presentation ใช้ shared type/layout classes ใน client/src/styles/app.css: page title28px desktop/24px mobile, section20px/card18px, body/input/action16px, labels/metadata14px และ status12px Input44px/primary actionอย่างน้อย44px; create/detail panel max800px centered, Login max496px Header logo36px/wordmark20px ไม่แตกบรรทัด บนมือถือชื่อบัญชี/Logout เรียงขวา และชื่อยาว truncateพร้อมtitle; role/pending/error semantics คงเดิม ดู [measured UI evidence](events/visual-consistency.md)
+
 Express SPA fallback ใช้เฉพาะ frontend routes; unknown API คืน JSON 404
 
 ## 4. API conventions
@@ -107,8 +109,9 @@ Express SPA fallback ใช้เฉพาะ frontend routes; unknown API ค�
 - Success: 200 read/update, 201 create, 204 Logout; error codes ตามตารางด้านล่าง
 - ตรวจ auth/role ก่อน CSRF สำหรับ protected mutations แล้ว validate input และ record scope/domain rules; Login ใช้ pre-auth CSRF token Permission tests แยกจาก CSRF failures
 - Body ตรง JSON object schema; malformed JSON, array/null/primitive, wrong type หรือ unknown fields รวม owner/participant/status ที่ไม่อนุญาต ตอบ 400 INVALID_INPUT; EmptyInput ตาม contract อนุญาตไม่มี body
+- JSON parser budgets: Auth 16 KiB, Event 32 KiB, Registration 1 KiB; เกิน budget ได้ 400 INVALID_INPUT โดยคง auth→role→CSRF→input precedence Event budget รองรับ strings ที่ยาวสุดตาม BR-01 แม้ JSON ใช้ surrogate escapes (~28 KiB) ไม่เปลี่ยนจำนวน code points ที่ยอมรับ
 - UUID path ผิดรูปแบบ=400 INVALID_INPUT หลัง auth/role; valid UUID ที่ไม่พบ/นอก scope=404
-- Input timestamp มี offset (Z หรือ ±HH:mm) และเศษวินาที 0–3 หลัก; เกินหรือไม่มี offset=400 INVALID_INPUT; output UTC `YYYY-MM-DDTHH:mm:ss.SSSZ` ตาม BR-14
+- Input timestamp ใช้ `YYYY-MM-DDTHH:mm[:ss[.SSS]]` มี offset (Z หรือ ±HH:mm); ไม่ระบุวินาทีได้ (=00), ไม่รับ fractional minutes/เศษวินาทีเกิน 3 หลัก/ไม่มี offset/invalid calendar (=400 INVALID_INPUT); output UTC `YYYY-MM-DDTHH:mm:ss.SSSZ` ตาม BR-14 Event strings ต้องเป็น well-formed Unicode ไม่มี NUL/unpaired surrogate ที่ PostgreSQL TEXT เก็บไม่ได้ โดยยังนับ length หลัง trim ตาม BR-01
 - Own queries scope จาก session ก่อนคืนข้อมูล; named schemas/endpoints อยู่ใน [Contracts](sprints/sprint-1/contracts.md)
 - เมื่อมี Origin header ต้องตรง APP_ORIGIN; หากไม่มี header ยังต้องผ่าน CSRF token สำหรับ mutations
 
@@ -149,11 +152,17 @@ Cookie: HttpOnly, SameSite=Lax, Secure บน HTTPS; server expiry 2 ชั่�
 
 Frontend ใช้ลำดับ request ป้องกัน response เก่ามาแสดง private identity หลัง response ใหม่ยืนยันว่า session ใช้ไม่ได้; เมื่อ browser ส่ง persisted pageshow จะล้าง identity และตรวจ session ใหม่ รายละเอียด regression/หลักฐานอยู่ใน auth pre-PR review
 
+Username ที่มี NUL เป็น unknown account ที่ PostgreSQL เก็บไม่ได้ จึงไม่ส่งเป็น DB query แต่ยังใช้ dummy scrypt verification แล้วคืน generic 401 INVALID_CREDENTIALS เหมือน unknown/wrong/inactive ไม่เพิ่มข้อมูลระบุบัญชีหรือสร้าง authenticated session
+
 F-02 audit เพิ่ม session epoch แยกแต่ละ Login/Logout เพื่อไม่ให้ late mutation/identity responses ข้ามบัญชี Background identity network failure คงหน้าปัจจุบันและแสดง warning/retry เพื่อรักษา RegistrationAction state; 401 ของ current epoch ต้องล้างข้อมูลแม้มี temporary failure ของ request ใหม่กว่า Persisted pageshow และ Logout ยังล้างข้อมูลก่อนตรวจใหม่ Event read/publish 403/404 ล้าง cached record และ invalidate stale responses; conflict publish 409 refresh ข้อมูลโดยไม่ retry mutation ดู [audit evidence](events/audit.md)
+
+Consistency re-audit ขยาย definitive-401 rule มายัง Event reads ของ mounted session: 401 ที่รับได้ล้าง cached Event/invalidate reads และ publish scope แม้ request ใหม่กว่า network failure; mounted guard ป้องกัน response ของบัญชีที่ออกจากหน้าแล้วกระทบบัญชีใหม่ Non-auth stale responses ยังใช้ generation ordering ตามเดิม ดู [current evidence](events/consistency-review.md)
 
 Organizer overview เป็น frontend read view ของ Event module ใช้ own-list response ที่ scope/session/snapshot ตาม API เดิม คำนวณ total/DRAFT/PUBLISHED จาก array เดียวกันและแสดงสามแถวแรกตาม server order ไม่มี registration/attendance rollup หรือ schema/migration เพิ่ม แยก abortable reads ตาม identity/role; loading ใช้ placeholder แทน 0, errors มี retry และ 401/403/404 ล้าง protected data Login/shared list/detail และ RegistrationAction host คงพฤติกรรมเดิม
 
 Seed ใช้ Participant A/B/C, Organizer A/B และ inactive account จากข้อมูลสังเคราะห์ Username trim แล้วเทียบ case-sensitive ตาม seed รับ demo password ผ่าน environment/private handoff แล้ว hash ไม่ commit/log credentials Demo events ใช้เวลาที่ยังเป็นอนาคตขณะ seed/สร้างผ่าน UI; fixed t0 ใช้เฉพาะ automated fixtures
+
+Local demo seed เพิ่ม 6 Event scenarios (open/full/deadline-expired/DRAFT/CLOSED/other owner) และ 4 ACTIVE examples ใน `server/prisma/demo-data.ts` ใช้ Bangkok calendar days/future dates ตอนสร้างครั้งแรก; expired/CLOSED เป็น fixtures สำหรับดู state Seed สร้างเฉพาะ Event ID ที่ยังไม่มีและสร้าง registrations พร้อมกันใน transaction จึงไม่ทับค่าหรือเติม registrations เมื่อ rerun; PostgreSQL advisory lock ประสานเฉพาะ seed runs ไม่เปลี่ยน application lock order ดู [setup/results](events/demo-seed.md)
 
 ## 7. Setup / reproduction design
 
@@ -200,4 +209,4 @@ Delivery: PR build/tests gate → teammate review → staging integration → re
 
 Event module แยก router/input/service ใช้ Auth/session/role/CSRF/error convention เดิม Shared schema/migration reuse จาก #3 โดยตรง Owner queries scope ด้วย session; shared คืนเฉพาะ PUBLISHED/CLOSED พร้อม ACTIVE count จริง Read/create ใช้ REPEATABLE READ snapshot; publish ใช้ READ COMMITTED + Event row lock แล้วอ่าน server clock ใหม่ ตรวจ status ก่อน deadline และคืนผลหลัง commit
 
-Frontend มี owner list/create/preview/publish และ shared list/detail โดย reuse RegistrationAction ของ #3 และคง action mounted ระหว่าง focus/refresh รวม read failure Backend Registration ยังเป็น dependency ที่ต้องนำมาต่อ รายละเอียดไฟล์/transaction/composition และผลทดสอบจริงอยู่ใน [integration](events/integration.md) และ [verification](events/verification.md) ไม่เปลี่ยน SRS/AC baseline และไม่เพิ่ม edit/close/cancel/roster/check-in
+Frontend มี owner list/create/preview/publish และ shared list/detail โดย reuse RegistrationAction ของ #3 และคง action mounted ระหว่าง focus/refresh รวม transient read failure Backend Event/Registration routers mount ร่วมกันก่อน unknown-API fallback ใช้ session/CSRF/clock เดียวกัน รายละเอียดใน [integration](events/integration.md) และ [combined verification](events/consistency-review.md) ไม่เพิ่ม edit/close/cancel/roster/check-in
