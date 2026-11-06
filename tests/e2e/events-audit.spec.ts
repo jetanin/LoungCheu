@@ -17,6 +17,52 @@ async function draft(page: Page) {
 }
 const settle = (page: Page) => page.evaluate(() => new Promise<void>(resolve => requestAnimationFrame(() => requestAnimationFrame(() => resolve()))));
 
+for (const owner of [true, false]) test(`TEST-03/14 ${owner ? 'owner' : 'shared'} event read 401 clears the session after a newer refresh fails`, async ({ page }) => {
+  await signIn(page); const event = await draft(page);
+  if (!owner) {
+    const token = (await (await page.request.get('/api/auth/csrf')).json()).data.csrf_token;
+    expect((await page.request.post(`/api/organizer/events/${event.id}/publish`, { headers: { 'X-CSRF-Token': token }, data: {} })).status()).toBe(200);
+    await page.getByRole('button', { name: 'ออกจากระบบ', exact: true }).click();
+    await signIn(page, 'participant.a', false);
+  }
+  const path = `${owner ? '/organizer' : ''}/events/${event.id}`;
+  await page.goto(path); await expect(page.getByRole('heading', { name: event.title })).toBeVisible();
+  // Invalidate the real session elsewhere without notifying this mounted UI.
+  const token = (await (await page.request.get('/api/auth/csrf')).json()).data.csrf_token;
+  expect((await page.request.post('/api/auth/logout', { headers: { 'X-CSRF-Token': token }, data: {} })).status()).toBe(204);
+  let held!: Route, seen!: () => void, payload: unknown, reads = 0;
+  const captured = new Promise<void>(resolve => { seen = resolve; });
+  await page.route(`**/api${path}`, async route => {
+    if (++reads > 1) return route.abort();
+    const response = await route.fetch(); expect(response.status()).toBe(401);
+    held = route; payload = await response.json(); seen();
+  });
+  await page.getByRole('button', { name: 'รีเฟรชที่นั่ง', exact: true }).click(); await captured;
+  await page.getByRole('button', { name: 'รีเฟรชที่นั่ง', exact: true }).click();
+  await expect(page.getByRole('alert')).toContainText('โหลดข้อมูลไม่สำเร็จ');
+  await held.fulfill({ status: 401, json: payload });
+  await expect(page).toHaveURL(/\/login$/);
+  await expect(page.getByRole('heading', { name: event.title })).toHaveCount(0);
+  await expect(page.getByText(event.description, { exact: true })).toHaveCount(0);
+  await signIn(page, 'organizer.b', false);
+  await expect(page.getByRole('heading', { name: 'สวัสดี Organizer B' })).toBeVisible();
+});
+
+test('TEST-03/14 a late event read 401 cannot clear the next signed-in account', async ({ page }) => {
+  await signIn(page); const event = await draft(page);
+  await page.goto(`/organizer/events/${event.id}`); await expect(page.getByRole('heading', { name: event.title })).toBeVisible();
+  let held!: Route, ready!: () => void;
+  const captured = new Promise<void>(resolve => { ready = resolve; });
+  await page.route(`**/api/organizer/events/${event.id}`, route => { held = route; ready(); });
+  await page.getByRole('button', { name: 'รีเฟรชที่นั่ง', exact: true }).click(); await captured;
+  await page.getByRole('button', { name: 'ออกจากระบบ', exact: true }).click();
+  await signIn(page, 'organizer.b', false);
+  await held.fulfill({ status: 401, json: { error: { code: 'AUTH_REQUIRED', message: 'กรุณาเข้าสู่ระบบ', fields: {} } } });
+  await settle(page);
+  await expect(page).toHaveURL(/\/events$/);
+  await expect(page.getByRole('heading', { name: 'สวัสดี Organizer B' })).toBeVisible();
+});
+
 for (const status of [403, 404]) test(`TEST-14 publish ${status} removes cached private record even if an old refresh returns later`, async ({ page }) => {
   await signIn(page); const event = await draft(page);
   await page.goto(`/organizer/events/${event.id}`); await expect(page.getByRole('heading', { name: event.title })).toBeVisible();
