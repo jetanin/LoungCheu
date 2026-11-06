@@ -1,62 +1,267 @@
-import { useCallback, useEffect, useRef, useState } from 'react';
-import { ApiError, getIdentity, mutate, type Identity } from '../lib/api';
-import { Login } from '../features/auth/Login';
+import { useCallback, useEffect, useRef, useState } from "react";
+import { ApiError, getIdentity, mutate, type Identity } from "../lib/api";
+import { Login } from "../features/auth/Login";
+import { EventPage } from "../features/events/EventPage";
+import { EventOverview } from "../features/events/EventOverview";
 
-function navigate(path: string) { if (window.location.pathname !== path) window.history.replaceState({}, '', path); }
+function navigate(path: string) {
+  if (window.location.pathname !== path)
+    window.history.replaceState({}, "", path);
+}
 export function App() {
-  const [identity, setIdentity] = useState<Identity | null>(null), [loading, setLoading] = useState(true);
-  const [error, setError] = useState(''), [loggingOut, setLoggingOut] = useState(false), [logoutFailed, setLogoutFailed] = useState(false);
-  const generation = useRef(0);
-  const check = useCallback(async () => {
-    // A newer check supersedes every older response, including a stale 200
-    // arriving after the current session has already been rejected.
-    const requestGeneration = ++generation.current;
-    try {
-      const user = await getIdentity();
-      if (requestGeneration === generation.current) { setIdentity(user); setError(''); navigate('/events'); }
-    } catch (failure) {
-      if (requestGeneration !== generation.current) return;
-      setIdentity(null);
-      if (failure instanceof ApiError && failure.status === 401) { navigate('/login'); setError(''); }
-      else setError('ตรวจสอบการเข้าสู่ระบบไม่สำเร็จ กรุณาลองใหม่');
-    } finally { if (requestGeneration === generation.current) setLoading(false); }
+  const [identity, setIdentity] = useState<Identity | null>(null),
+    [loading, setLoading] = useState(true);
+  const [error, setError] = useState(""),
+    [loggingOut, setLoggingOut] = useState(false),
+    [logoutFailed, setLogoutFailed] = useState(false);
+  const [sessionWarning, setSessionWarning] = useState("");
+  const generation = useRef(0),
+    sessionEpoch = useRef(0);
+  const [path, setPath] = useState(window.location.pathname);
+  const isOverview = /^\/organizer\/?$/.test(path);
+  const go = useCallback((target: string) => {
+    navigate(target);
+    setPath(target);
   }, []);
-  useEffect(() => { void check(); return () => { generation.current++; }; }, [check]);
+  const authRequired = useCallback(() => {
+    generation.current++;
+    sessionEpoch.current++;
+    setIdentity(null);
+    setError("");
+    setSessionWarning("");
+    go("/login");
+  }, [go]);
+  const check = useCallback(
+    async (background = false) => {
+      // A newer check supersedes every older response, including a stale 200
+      // arriving after the current session has already been rejected.
+      const requestGeneration = ++generation.current;
+      const epoch = sessionEpoch.current;
+      try {
+        const user = await getIdentity();
+        if (requestGeneration === generation.current) {
+          setIdentity(user);
+          setError("");
+          setSessionWarning("");
+          // Preserve the current detail/form route during identity polling/focus.
+          const current = window.location.pathname;
+          if (
+            /^\/organizer\/?$/.test(current) ||
+            /^\/(?:organizer\/)?events(?:\/[^/]+)?\/?$/.test(current)
+          )
+            setPath(current);
+          else go("/events");
+        }
+      } catch (failure) {
+        if (epoch !== sessionEpoch.current) return;
+        // A definitive rejection of this session must still clear private state
+        // when a newer background read only failed to connect. A different login
+        // has a new epoch and cannot be invalidated by the previous account.
+        if (failure instanceof ApiError && failure.status === 401) {
+          authRequired();
+          setLoading(false);
+          return;
+        }
+        if (requestGeneration !== generation.current) return;
+        if (background)
+          setSessionWarning("ตรวจสอบการเข้าสู่ระบบไม่สำเร็จ กรุณาลองใหม่");
+        else {
+          setIdentity(null);
+          setError("ตรวจสอบการเข้าสู่ระบบไม่สำเร็จ กรุณาลองใหม่");
+        }
+      } finally {
+        if (requestGeneration === generation.current) setLoading(false);
+      }
+    },
+    [authRequired, go],
+  );
+  useEffect(() => {
+    void check();
+    return () => {
+      generation.current++;
+    };
+  }, [check]);
   useEffect(() => {
     const restored = (event: PageTransitionEvent) => {
       if (!event.persisted) return;
       // A history-cache snapshot may belong to a session logged out elsewhere.
-      setIdentity(null); setLoading(true); void check();
+      sessionEpoch.current++;
+      setIdentity(null);
+      setSessionWarning("");
+      setLoading(true);
+      void check();
     };
-    window.addEventListener('pageshow', restored);
-    return () => window.removeEventListener('pageshow', restored);
+    window.addEventListener("pageshow", restored);
+    return () => window.removeEventListener("pageshow", restored);
   }, [check]);
   useEffect(() => {
     if (!identity) return;
-    const refresh = () => { void check(); };
+    const refresh = () => {
+      void check(true);
+    };
     const interval = window.setInterval(refresh, 60000);
-    window.addEventListener('focus', refresh); window.addEventListener('popstate', refresh);
-    return () => { window.clearInterval(interval); window.removeEventListener('focus', refresh); window.removeEventListener('popstate', refresh); };
+    window.addEventListener("focus", refresh);
+    window.addEventListener("popstate", refresh);
+    return () => {
+      window.clearInterval(interval);
+      window.removeEventListener("focus", refresh);
+      window.removeEventListener("popstate", refresh);
+    };
   }, [identity, check]);
   async function logout() {
-    generation.current++; setIdentity(null); setLoggingOut(true); setLogoutFailed(false); setError(''); navigate('/login');
-    try { await mutate('/auth/logout'); }
-    catch (failure) {
-      if (!(failure instanceof ApiError && failure.status === 401)) { setError('ออกจากระบบไม่สำเร็จ กรุณาลองอีกครั้ง'); setLogoutFailed(true); }
-    } finally { setLoggingOut(false); }
+    generation.current++;
+    sessionEpoch.current++;
+    setIdentity(null);
+    setSessionWarning("");
+    setLoggingOut(true);
+    setLogoutFailed(false);
+    setError("");
+    go("/login");
+    try {
+      await mutate("/auth/logout");
+    } catch (failure) {
+      if (!(failure instanceof ApiError && failure.status === 401)) {
+        setError("ออกจากระบบไม่สำเร็จ กรุณาลองอีกครั้ง");
+        setLogoutFailed(true);
+      }
+    } finally {
+      setLoggingOut(false);
+    }
   }
-  return <div className="app-shell">
-    <header className="border-bottom bg-white"><nav className="container d-flex align-items-center justify-content-between py-3" aria-label="เมนูหลัก">
-      <a className="brand text-decoration-none" href={identity ? '/events' : '/login'}><span className="brand-mark" aria-hidden="true">ลช</span> LoungCheu</a>
-      {identity && <div className="d-flex align-items-center gap-3"><span className="small text-secondary">{identity.display_name}</span><button className="btn btn-outline-success btn-sm" onClick={() => void logout()}>ออกจากระบบ</button></div>}
-    </nav></header>
-    <main className="container py-5">
-      {loading || loggingOut ? <p role="status" className="text-center py-5">{loggingOut ? 'กำลังออกจากระบบ…' : 'กำลังตรวจสอบการเข้าสู่ระบบ…'}</p>
-        : error ? <div className="card mx-auto login-card p-4"><p role="alert">{error}</p><button className="btn btn-success" onClick={() => { if (logoutFailed) void logout(); else { setLoading(true); void check(); } }}>ลองใหม่</button></div>
-        : identity ? <section className="card border-0 shadow-sm p-4 p-md-5" aria-labelledby="welcome-title"><span className="eyebrow">เข้าสู่ระบบแล้ว</span>
-          <h1 id="welcome-title" className="h2 mt-2">สวัสดี {identity.display_name}</h1><p className="text-secondary mb-4">{identity.role === 'ORGANIZER' ? 'ผู้จัดกิจกรรม' : 'ผู้เข้าร่วมกิจกรรม'}</p>
-          <div className="rounded bg-light p-4"><h2 className="h5">กิจกรรมในมหาวิทยาลัย</h2><p className="mb-0 text-secondary">ระบบรายการกิจกรรมอยู่ระหว่างพัฒนา</p></div></section>
-          : <Login onLogin={user => { generation.current++; setIdentity(user); navigate('/events'); }}/>}
-    </main><footer className="container pb-4 small text-secondary">LoungCheu · กิจกรรมดี ๆ เริ่มที่การลงชื่อ</footer>
-  </div>;
+  return (
+    <div className="app-shell">
+      <header className="border-bottom bg-white">
+        <nav
+          className="container d-flex align-items-center justify-content-between py-3"
+          aria-label="เมนูหลัก"
+        >
+          <a
+            className="brand text-decoration-none"
+            href={identity ? "/events" : "/login"}
+          >
+            <span className="brand-mark" aria-hidden="true">
+              ลช
+            </span>{" "}
+            LoungCheu
+          </a>
+          {identity && (
+            <div className="d-flex align-items-center gap-3">
+              <span className="small text-secondary">
+                {identity.display_name}
+              </span>
+              <button
+                className="btn btn-outline-success btn-sm"
+                onClick={() => void logout()}
+              >
+                ออกจากระบบ
+              </button>
+            </div>
+          )}
+        </nav>
+      </header>
+      <main className="container py-5">
+        {sessionWarning && (
+          <div className="alert alert-warning" role="alert">
+            {sessionWarning}{" "}
+            <button
+              className="btn btn-outline-secondary btn-sm"
+              onClick={() => void check(true)}
+            >
+              ตรวจสอบอีกครั้ง
+            </button>
+          </div>
+        )}
+        {loading || loggingOut ? (
+          <p role="status" className="text-center py-5">
+            {loggingOut ? "กำลังออกจากระบบ…" : "กำลังตรวจสอบการเข้าสู่ระบบ…"}
+          </p>
+        ) : error ? (
+          <div className="card mx-auto login-card p-4">
+            <p role="alert">{error}</p>
+            <button
+              className="btn btn-success"
+              onClick={() => {
+                if (logoutFailed) void logout();
+                else {
+                  setLoading(true);
+                  void check();
+                }
+              }}
+            >
+              ลองใหม่
+            </button>
+          </div>
+        ) : identity ? (
+          <>
+            <nav className="event-nav" aria-label="เมนูกิจกรรม">
+              {identity.role === "ORGANIZER" && (
+                <a
+                  href="/organizer"
+                  aria-current={isOverview ? "page" : undefined}
+                >
+                  ภาพรวม
+                </a>
+              )}
+              <a
+                href="/events"
+                aria-current={path.startsWith("/events") ? "page" : undefined}
+              >
+                กิจกรรมทั้งหมด
+              </a>
+              {identity.role === "ORGANIZER" && (
+                <a
+                  href="/organizer/events"
+                  aria-current={
+                    path.startsWith("/organizer/events") ? "page" : undefined
+                  }
+                >
+                  กิจกรรมของฉัน
+                </a>
+              )}
+            </nav>
+            {path === "/events" && (
+              <section className="mb-4" aria-labelledby="welcome-title">
+                <h1 id="welcome-title" className="h2 mt-2">
+                  สวัสดี {identity.display_name}
+                </h1>
+                <p className="text-secondary mb-4">
+                  {identity.role === "ORGANIZER"
+                    ? "ผู้จัดกิจกรรม"
+                    : "ผู้เข้าร่วมกิจกรรม"}
+                </p>
+              </section>
+            )}
+            {isOverview ? (
+              <EventOverview
+                key={`${identity.id}:${identity.role}:overview`}
+                identity={identity}
+                onAuthRequired={authRequired}
+              />
+            ) : (
+              <EventPage
+                key={`${identity.id}:${identity.role}:${path}`}
+                path={path}
+                identity={identity}
+                onAuthRequired={authRequired}
+                onNavigate={go}
+              />
+            )}
+          </>
+        ) : (
+          <Login
+            onLogin={(user) => {
+              generation.current++;
+              sessionEpoch.current++;
+              setSessionWarning("");
+              setIdentity(user);
+              go("/events");
+            }}
+          />
+        )}
+      </main>
+      <footer className="container pb-4 small text-secondary">
+        LoungCheu · กิจกรรมดี ๆ เริ่มที่การลงชื่อ
+      </footer>
+    </div>
+  );
 }

@@ -9,3 +9,53 @@ main { flex: 1; }
 .btn-success { --bs-btn-bg: #126b56; --bs-btn-border-color: #126b56; --bs-btn-hover-bg: #0b5140; }
 .form-control:focus { border-color: #126b56; box-shadow: 0 0 0 .2rem #126b5620; }
 .card { border-radius: 1.25rem; }
+.event-schedule-grid { display: grid; grid-template-columns: minmax(0, 1fr) 10.5rem; gap: 1rem; }
+.event-schedule-field { min-width: 0; margin: 0; padding: 0; border: 0; }
+.event-schedule-field legend { float: none; width: auto; margin-bottom: .4rem; font-size: .875rem; }
+.event-date-time-row { display: grid; grid-template-columns: minmax(0, 1fr) 8rem; gap: .5rem; }
+.event-date-time-row input { min-width: 0; }
+.event-schedule-zone { grid-column: 2; grid-row: 1 / span 3; display: flex; flex-direction: column; justify-content: center; gap: .6rem; padding: 1rem; border: 1px solid #dce7e1; border-radius: .75rem; background: #f4f7f5; color: #145c47; }
+.event-schedule-zone strong, .event-schedule-zone span, .event-schedule-zone small { display: block; }
+.event-schedule-zone strong { font-variant-numeric: tabular-nums; }
+.event-schedule-zone span, .event-schedule-zone small { font-size: .8rem; margin-top: .2rem; }
+.event-schedule-zone small { color: #6c757d; }
+@media (max-width: 575.98px) {
+  .event-schedule-grid { grid-template-columns: minmax(0, 1fr); }
+  .event-schedule-zone { grid-column: 1; grid-row: 4; flex-direction: row; align-items: center; justify-content: flex-start; gap: .75rem; padding: .75rem 1rem; }
+}
+.event-nav { display: flex; flex-wrap: wrap; gap: .4rem; margin-bottom: 1.3rem; }
+.event-nav a { padding: .75rem 1rem; border-radius: .75rem; color: #64758a; font-size: .875rem; text-decoration: none; }
+.event-nav a:hover { color: #126b56; background: #eaf3ee; }
+.event-nav a[aria-current="page"] { color: #145c47; background: #e0f1e9; font-weight: 600; }
+.overview-heading { display: flex; align-items: center; justify-content: space-between; gap: 1.5rem; margin-bottom: 1.3rem; }
+.overview-heading h1 { font-weight: 700; }
+.overview-eyebrow { color: #126b56; font-size: .85rem; margin-bottom: .5rem; }
+.overview-heading .text-secondary, .overview-empty .text-secondary { font-size: .875rem; }
+.overview-create { padding: .85rem 1rem; white-space: nowrap; border-radius: .75rem; }
+.overview-stats { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 1rem; }
+.overview-stat { padding: 1.25rem; border-color: #dce5e0; }
+.overview-stat svg { color: #12826a; }
+.overview-stat-value { font-size: 2rem; font-weight: 700; line-height: 1.2; margin: .9rem 0 .6rem; font-variant-numeric: tabular-nums; }
+.overview-stat-label { font-size: .8rem; font-weight: 400; color: #64758a; margin: 0; }
+.overview-events { border-color: #dce5e0; padding: 1.5rem; margin-top: 1.25rem; }
+.overview-events-heading { display: flex; align-items: center; justify-content: space-between; gap: 1rem; padding-bottom: 1.5rem; border-bottom: 1px solid #dce5e0; }
+.overview-events-heading h2 { font-weight: 650; }
+.overview-events-heading a { font-size: .875rem; text-decoration: none; }
+.overview-empty { text-align: center; padding: 2.5rem 1rem 1rem; }
+.overview-empty-icon { display: inline-flex; width: 4rem; height: 4rem; align-items: center; justify-content: center; border-radius: 50%; color: #126b56; background: #e0f1e9; }
+.overview-event-list { list-style: none; padding: 0; margin: 0; }
+.overview-event-list li { display: flex; justify-content: space-between; align-items: center; gap: 1.5rem; padding: 1.4rem 0; }
+.overview-event-list li + li { border-top: 1px solid #edf1ee; }
+.overview-event-list h3 a { text-decoration: none; overflow-wrap: anywhere; }
+.overview-event-list p { overflow-wrap: anywhere; }
+.overview-event-status { flex-shrink: 0; color: #637369; background: #eff3f0; font-size: .7rem; padding: .4rem .65rem; border-radius: .5rem; }
+.overview-event-status.is-published { color: #126b56; background: #e0f1e9; }
+@media (max-width: 575.98px) {
+  .overview-heading { flex-direction: column; align-items: flex-start; }
+  .overview-stats { grid-template-columns: minmax(0, 1fr); gap: .75rem; }
+  .overview-stat { padding: 1rem 1.25rem; }
+  .overview-stat-value { margin-top: .5rem; }
+  .overview-events { padding: 1.25rem; }
+  .overview-event-list li { align-items: flex-start; gap: .75rem; }
+  .overview-event-list li > div { min-width: 0; }
+}

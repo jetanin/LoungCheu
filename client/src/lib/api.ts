@@ -10,8 +10,9 @@ export async function api<T>(path: string, init: RequestInit = {}): Promise<T> {
   return body.data as T;
 }
 export const getIdentity = () => api<Identity>('/auth/me');
-export async function mutate<T>(path: string, body?: object): Promise<T> {
+export async function mutate<T>(path: string, body?: object, signal?: AbortSignal): Promise<T> {
   // Always bootstrap against the current session, including after session rotation.
-  const { csrf_token } = await api<{ csrf_token: string }>('/auth/csrf');
-  return api<T>(path, { method: 'POST', headers: { 'Content-Type': 'application/json', 'X-CSRF-Token': csrf_token }, body: JSON.stringify(body ?? {}) });
+  const { csrf_token } = await api<{ csrf_token: string }>('/auth/csrf', { signal });
+  signal?.throwIfAborted();
+  return api<T>(path, { method: 'POST', signal, headers: { 'Content-Type': 'application/json', 'X-CSRF-Token': csrf_token }, body: JSON.stringify(body ?? {}) });
 }
