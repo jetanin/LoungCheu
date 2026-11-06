@@ -1,19 +1,24 @@
 import { useCallback, useEffect, useRef, useState } from 'react';
 import { ApiError, getIdentity, mutate, type Identity } from '../lib/api';
 import { Login } from '../features/auth/Login';
+import { RegistrationPage } from '../features/registrations/RegistrationPage';
 
 function navigate(path: string) { if (window.location.pathname !== path) window.history.replaceState({}, '', path); }
 export function App() {
   const [identity, setIdentity] = useState<Identity | null>(null), [loading, setLoading] = useState(true);
   const [error, setError] = useState(''), [loggingOut, setLoggingOut] = useState(false), [logoutFailed, setLogoutFailed] = useState(false);
   const generation = useRef(0);
+  const eventId = /^\/events\/([0-9a-f-]+)\/?$/i.exec(window.location.pathname)?.[1];
   const check = useCallback(async () => {
     // A newer check supersedes every older response, including a stale 200
     // arriving after the current session has already been rejected.
     const requestGeneration = ++generation.current;
     try {
       const user = await getIdentity();
-      if (requestGeneration === generation.current) { setIdentity(user); setError(''); navigate('/events'); }
+      if (requestGeneration === generation.current) {
+        setIdentity(user); setError('');
+        if (!/^\/events(?:\/[0-9a-f-]+\/?)?$/i.test(window.location.pathname)) navigate('/events');
+      }
     } catch (failure) {
       if (requestGeneration !== generation.current) return;
       setIdentity(null);
@@ -53,9 +58,11 @@ export function App() {
     <main className="container py-5">
       {loading || loggingOut ? <p role="status" className="text-center py-5">{loggingOut ? 'กำลังออกจากระบบ…' : 'กำลังตรวจสอบการเข้าสู่ระบบ…'}</p>
         : error ? <div className="card mx-auto login-card p-4"><p role="alert">{error}</p><button className="btn btn-success" onClick={() => { if (logoutFailed) void logout(); else { setLoading(true); void check(); } }}>ลองใหม่</button></div>
-        : identity ? <section className="card border-0 shadow-sm p-4 p-md-5" aria-labelledby="welcome-title"><span className="eyebrow">เข้าสู่ระบบแล้ว</span>
+        : identity ? (eventId ? <RegistrationPage key={`${identity.id}:${eventId}`} eventId={eventId} identity={identity}
+            onAuthRequired={() => { generation.current++; setIdentity(null); setError(''); navigate('/login'); }} />
+          : <section className="card border-0 shadow-sm p-4 p-md-5" aria-labelledby="welcome-title"><span className="eyebrow">เข้าสู่ระบบแล้ว</span>
           <h1 id="welcome-title" className="h2 mt-2">สวัสดี {identity.display_name}</h1><p className="text-secondary mb-4">{identity.role === 'ORGANIZER' ? 'ผู้จัดกิจกรรม' : 'ผู้เข้าร่วมกิจกรรม'}</p>
-          <div className="rounded bg-light p-4"><h2 className="h5">กิจกรรมในมหาวิทยาลัย</h2><p className="mb-0 text-secondary">ระบบรายการกิจกรรมอยู่ระหว่างพัฒนา</p></div></section>
+          <div className="rounded bg-light p-4"><h2 className="h5">กิจกรรมในมหาวิทยาลัย</h2><p className="mb-0 text-secondary">ระบบรายการกิจกรรมอยู่ระหว่างพัฒนา</p></div></section>)
           : <Login onLogin={user => { generation.current++; setIdentity(user); navigate('/events'); }}/>}
     </main><footer className="container pb-4 small text-secondary">LoungCheu · กิจกรรมดี ๆ เริ่มที่การลงชื่อ</footer>
   </div>;

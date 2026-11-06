@@ -24,6 +24,7 @@ Documentation baseline v0.5 | 5 พฤศจิกายน 2026
 | App DB migration/env cleanup — 6 พ.ย. 2026 | ผู้ใช้แก้ connection แล้วและสั่งรัน: migrate `202611060001_auth`/seed บน `loung-cheu-database` สำเร็จ, เพิ่ม `test:local-db` ตรวจ actual app DB และสอง-role auth lifecycle, rerun suites/build/typecheck; ลบ root `.env.example` ที่ซ้ำ เก็บ `server/.env` กับ root `.env.test` แยกหน้าที่ รหัส demo อยู่เฉพาะไฟล์ local; ผลก่อนหน้านี้เป็น historical evidence |
 | Single PostgreSQL instance — 6 พ.ย. 2026 | ตามคำสั่งผู้ใช้ ย้าย test DB ไป localhost:5432 ที่เดียวกับแอปโดยแยกชื่อ database; เพิ่ม db:setup:test, เปลี่ยน local-db.ps1 เป็น wrapper ที่ไม่ start cluster, migrate/rerun suites ผ่าน, หยุด 55432 และเก็บข้อมูลเดิม; ตรวจ User rows ของแอปไม่เปลี่ยน ดู [record](sprints/sprint-1/single-instance-db.md) |
 | Application release | ยังไม่มี |
+| Registration extension — 6 พ.ย. 2026 | ใช้ staging `6e8a24c` เป็นฐานและต่อ F-03 กับ auth/session/CSRF/App/API client ของเพื่อน เพิ่ม additive Event/Registration migration; 110 Vitest + 7 auth browser tests ผ่าน พร้อม build/typecheck/built/app-DB smoke; เก็บฐานเก่าและใช้ฐาน Docker ใหม่ ดู [current verification](registration/verification.md); merge working tree รอผู้ใช้ stage/commit และเพื่อน review |
 
 เมื่อเปลี่ยน baseline ให้บันทึกเหตุผล IDs ที่กระทบ และ revision ก่อน implementation เก็บผลทดสอบ/review ตาม commit จริง; การย้ายขอบเขตที่กระทบข้อกำหนดรายวิชาต้องมีการตกลงที่เกี่ยวข้อง
 

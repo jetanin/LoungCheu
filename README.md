@@ -59,6 +59,24 @@ Docker/CI/CD/GCP ต้องเสร็จใน Lab 5 ส่วน D1 ต้�
 
 ## Local setup — Issue #1 / F-01
 
+### Registration extension — Issue #3
+
+Registration ใช้ staging `6e8a24c` เป็นฐาน: คง auth/session/CSRF, React app shell, API client, scripts และ auth migration ของเพื่อน แล้วเพิ่ม `POST /api/events/{id}/registrations` กับ UI ภายใน `/events/{id}` ไม่มี auth bypass หรือ server แยก
+
+Prisma ใช้ camelCase และ map เป็น `users`, `events`, `registrations` ตาม staging Migration `202611060002_registration_extension` เพิ่ม Event foundation/Registration โดยไม่สร้าง users/sessions ซ้ำ Event Management (#2) ยังไม่มีใน staging นี้ จึงยังรอ GET event detail/create/publish/list APIs เพื่อทำ UI journey ครบ; Registration Views (#4) เป็นงานถัดไป
+
+`npm test` รวม auth และ Registration; `npm run test:registration` รัน Registration DB suite, `npm test -w server` รัน server unit/HTTP และ `npm run test:db -w server` รัน server integration ทั้งสอง feature ดู [จุดเชื่อมต่อ](docs/registration/integration.md) และ [ผลล่าสุด](docs/registration/verification.md)
+
+### PostgreSQL Docker สำหรับ branch นี้
+
+```powershell
+docker compose up -d --wait db
+```
+
+ตั้ง private `server/.env` ให้ตรง container เช่น `DATABASE_URL=postgresql://loungcheu:local_only@localhost:5432/loung-cheu-database` แล้วใช้ scripts migrate/setup-test/seed ด้านล่าง App/test ใช้ Docker instance เดียวที่ 5432 แต่คนละ database; db-test profile เดิมที่ 55433 ไม่ใช้ใน workflow ปัจจุบัน
+
+รอบนี้สร้าง `loung-cheu-database` ใหม่และเก็บฐาน `loungcheu` เก่าไว้ ไม่ reset/drop ข้อมูลเดิม Private config เก่าสำรองที่ `.local/registration-before-staging.env`; session secret/demo password ใหม่อยู่ใน `server/.env` เท่านั้น ถ้าใช้ Docker volume เดิมจากโครงเก่า ต้องสร้างฐานแอปใหม่ก่อน migrate อย่าทับ migration history เดิม
+
 ใช้ Node.js **22.16.0** (รองรับ 22.x ตั้งแต่ 22.16.0), npm **11.11.0**, PostgreSQL **17**; dependency versions pin ใน package.json และ package-lock.json รันคำสั่งต่อไปนี้จาก repository root
 
 ```powershell

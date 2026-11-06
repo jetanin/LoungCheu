@@ -13,7 +13,7 @@ Documentation baseline v0.5 | 5 พฤศจิกายน 2026
 | FR-03 | F-02 | 1 | AC-06–07,10–11 | TEST-07,08,12–14,36 | — |
 | FR-04 | F-02 | 1 | AC-08,10 | TEST-09,10,12,13 | — |
 | FR-05 | F-02 | 1 | AC-09,11 | TEST-11,14,36 | — |
-| FR-06 | F-03 | 1 | AC-12–17 | TEST-15–21 | — |
+| FR-06 | F-03 | 1 | AC-12–17 | TEST-15–21 | server/tests/integration/registration.test.ts: 17 PASS ผ่าน real session/CSRF; [current results](registration/verification.md); own GET/UI journey รอ #2/#4; commit pending |
 | FR-07 | F-04 | 1 | AC-18–20 | TEST-22–25 | — |
 | FR-08 | F-02,F-05 | 1 | AC-09,21–23 | TEST-11,26–29 | — |
 | FR-09 | F-06 | 2 | V2-01: own ACTIVE cancel ก่อนปิดรับ คืนที่นั่ง; invalid cancel ไม่เปลี่ยนข้อมูล | กำหนด detailed STS ก่อน F-06 coding | — |
@@ -50,7 +50,7 @@ Documentation baseline v0.5 | 5 พฤศจิกายน 2026
 | NFR-01 | SYS-AUTH,F-01–09 | S1 และทุก Sprint | AC-03,10,16,19,22 | TEST-03,06,12,13,19,23,27 และ future endpoint matrix | F-01 session/current-active/current-role PASS; resource/ownership matrix ยัง pending; [auth evidence](deliverable-1/evidence/auth/README.md) |
 | NFR-02 | SYS-AUTH,F-01 | S1; HTTPS config Lab 5 | AC-01,03–05 | TEST-01,03–06; deployment cookie check | F-01 API/DB/unit + browser 7 cases PASS รวม cookie config/rotation/expiry/logout/UI response ordering; deployed HTTPS NOT EXECUTED |
 | NFR-03 | SYS-DATA,F-02–05 | S1; redeploy Lab 5 | AC-06,12,18,23,25 | TEST-07,15,22,29,31; Lab 5 persistence | — |
-| NFR-04 | SYS-DATA,F-03 | S1; regression S2 | AC-17 | TEST-20,21 และ S2 race expansion | — |
+| NFR-04 | SYS-DATA,F-03 | S1; regression S2 | AC-17 | TEST-20,21 และ S2 race expansion | registration.test.ts: last-seat/duplicate race PASS บน PostgreSQL Docker, separate connections + observed lock barrier; commit pending |
 | NFR-05 | SYS-DELIVERY | S1; Docker Lab 5 | AC-25 | TEST-35; fresh Docker build ใน Lab 5 | PARTIAL: F-01 clean npm dependency install/generate/build/test ตรวจโดย Codex; fresh machine/DB และ teammate TEST-35 ยัง pending |
 | NFR-06 | SYS-UX,ทุก feature | S1 และต่อเนื่อง | AC-11,20,26 | TEST-14,25,32,33,36 | PARTIAL: F-01 errors/loading/retry/stale-response UI PASS; cross-feature cases ยัง pending |
 | NFR-07 | SYS-DELIVERY | Lab 5; ทุก release หลังจากนั้น | CI gate / deployed version target | Controlled failed check + protected release path + version check | — |
@@ -72,12 +72,12 @@ Documentation baseline v0.5 | 5 พฤศจิกายน 2026
 | AC-09 | F-02 | TEST-11 | NOT IMPLEMENTED | — | NOT EXECUTED / — |
 | AC-10 | F-02 | TEST-12,13 | NOT IMPLEMENTED | — | NOT EXECUTED / — |
 | AC-11 | F-02 | TEST-14,36 | NOT IMPLEMENTED | — | NOT EXECUTED / — |
-| AC-12 | F-03 | TEST-15 | NOT IMPLEMENTED | — | NOT EXECUTED / — |
-| AC-13 | F-03 | TEST-16 | NOT IMPLEMENTED | — | NOT EXECUTED / — |
-| AC-14 | F-03 | TEST-17 | NOT IMPLEMENTED | — | NOT EXECUTED / — |
-| AC-15 | F-03 | TEST-18 | NOT IMPLEMENTED | — | NOT EXECUTED / — |
-| AC-16 | F-03 | TEST-19 | NOT IMPLEMENTED | — | NOT EXECUTED / — |
-| AC-17 | F-03 | TEST-20,21 | NOT IMPLEMENTED | — | NOT EXECUTED / — |
+| AC-12 | F-03 | TEST-15 | API/DB implemented; own GET รอ #4 | registration.test.ts — persists session-owned ACTIVE | API/DB PASS / merge commit pending |
+| AC-13 | F-03 | TEST-16 | IMPLEMENTED | registration.test.ts — rejects duplicate at capacity 1/2 | PASS / merge commit pending |
+| AC-14 | F-03 | TEST-17 | IMPLEMENTED | registration.test.ts — rejects full without loser insert | PASS / merge commit pending |
+| AC-15 | F-03 | TEST-18 | IMPLEMENTED | registration.test.ts — scope/deadline boundaries/lock-wait clock | PASS / merge commit pending |
+| AC-16 | F-03 | TEST-19 | IMPLEMENTED with staging auth | registration.test.ts — real session/role/CSRF/Origin/spoofing/expiry | PASS / merge commit pending |
+| AC-17 | F-03 | TEST-20,21 | IMPLEMENTED | registration.test.ts — PostgreSQL last-seat/duplicate races | PASS / merge commit pending |
 | AC-18 | F-04 | TEST-22,24 | NOT IMPLEMENTED | — | NOT EXECUTED / — |
 | AC-19 | F-04 | TEST-23 | NOT IMPLEMENTED | — | NOT EXECUTED / — |
 | AC-20 | F-04 | TEST-25 | NOT IMPLEMENTED | — | NOT EXECUTED / — |

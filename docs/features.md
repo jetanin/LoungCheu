@@ -2,6 +2,8 @@
 
 Documentation baseline v0.5 | 5 พฤศจิกายน 2026 | Execution update 6 พ.ย.: F-01 มี implementation/tests รอ PR/review/integration; F-02–09 ยัง PLANNED ดู [auth pre-PR review](sprints/sprint-1/auth-pre-pr-review.md)
 
+Registration integration update: F-01 รวมใน staging `6e8a24c` แล้ว; F-03 API/UI module ต่อเข้ากับฐานนั้นและทดสอบร่วมผ่าน 110 Vitest + 7 auth browser tests ใน merge working tree ดู [Registration verification](registration/verification.md) ยังรอ F-02 Event APIs/F-04–05 Views เพื่อทำ journey ครบ และรอ teammate review/release
+
 | ID | Feature / ผลลัพธ์ | Requirement / Rules | Dependency | Sprint |
 |---|---|---|---|---:|
 | F-01 | Login, identity และ Logout สำหรับ demo users | FR-01–02; BR-06–07; NFR-01–02 | Seed users, session store | 1 |

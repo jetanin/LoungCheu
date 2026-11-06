@@ -8,6 +8,8 @@
     "build": "tsc -p tsconfig.build.json",
     "typecheck": "tsc --noEmit",
     "start": "node dist/server.js",
+    "test": "cd .. && vitest run server/tests/unit",
+    "test:db": "cd .. && vitest run server/tests/integration",
     "db:generate": "prisma generate",
     "db:migrate": "prisma migrate deploy",
     "db:seed": "tsx prisma/seed.ts"
