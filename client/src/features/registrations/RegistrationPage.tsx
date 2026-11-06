@@ -37,16 +37,22 @@ export function RegistrationPage({ eventId, identity, onAuthRequired }: {
     if (!eventId) return;
     const controller = new AbortController();
     activeRequest.current = controller;
-    setState({ kind: 'loading' });
+    // Background refreshes must not unmount the form and erase timeout recovery.
+    setState((current) => current.kind === 'ready' && current.event.id === eventId
+      ? current : { kind: 'loading' });
     void (async () => {
       try {
         const event = await read<SharedEvent>(`/api/events/${encodeURIComponent(eventId)}`, controller.signal);
         if (!controller.signal.aborted) setState({ kind: 'ready', event });
       } catch (error) {
         if (!controller.signal.aborted && error instanceof RegistrationFailure && error.code === 'AUTH_REQUIRED') onAuthRequired();
-        if (!controller.signal.aborted) setState({ kind: error instanceof RegistrationFailure
-          && error.code === 'AUTH_REQUIRED' ? 'auth' : error instanceof RegistrationFailure
-          && error.code === 'EVENT_NOT_FOUND' ? 'missing' : 'error' });
+        if (!controller.signal.aborted) {
+          const kind = error instanceof RegistrationFailure && error.code === 'AUTH_REQUIRED' ? 'auth'
+            : error instanceof RegistrationFailure && error.code === 'EVENT_NOT_FOUND' ? 'missing' : 'error';
+          // Keep the form on transient refresh failures; access errors still clear it.
+          setState((current) => kind === 'error' && current.kind === 'ready' && current.event.id === eventId
+            ? current : { kind });
+        }
       }
     })();
     const refreshIdentity = () => setRevision((value) => value + 1);
