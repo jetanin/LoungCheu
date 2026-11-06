@@ -9,6 +9,8 @@ import type { AppConfig } from './config/env.js';
 import { ApiError, errorHandler, invalidInput } from './shared/errors.js';
 import { identity, requireAuth } from './middleware/auth.js';
 import { hashPassword, verifyPassword } from './modules/accounts/password.js';
+import { createEventRouter } from './modules/events/router.js';
+import { createEventService } from './modules/events/service.js';
 
 export const SESSION_MS = 2 * 60 * 60 * 1000;
 export const COOKIE_NAME = 'loungcheu.sid';
@@ -79,6 +81,7 @@ export async function createApp(config: AppConfig, db: PrismaClient, now: () => 
     await new Promise<void>((resolve, reject) => req.session.destroy(error => error ? reject(error) : resolve()));
     res.clearCookie(COOKIE_NAME, cookieOptions).status(204).end();
   });
+  app.use('/api', createEventRouter({ authenticate: auth, verifyCsrf: csrf, json, service: createEventService(db, now) }));
   app.use('/api', (_req, _res) => { throw new ApiError(404, 'ROUTE_NOT_FOUND', 'ไม่พบเส้นทาง'); });
   if (config.production) {
     const clientBuild = fileURLToPath(new URL('../../client/dist/', import.meta.url));
