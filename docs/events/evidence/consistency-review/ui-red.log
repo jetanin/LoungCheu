@@ -1,0 +1,88 @@
+
+> loungcheu@0.1.0 test:e2e
+> playwright test tests/e2e/events-audit.spec.ts --grep event read 401 --timeout 12000
+
+npm.cmd : [WebServer] (node:65648) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+At line:2 char:53
++ ... ORT='3011'; npm.cmd run test:e2e -- tests/e2e/events-audit.spec.ts -- ...
++                 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : NotSpecified: ([WebServer] (no... env being set.:String) [], RemoteException
+    + FullyQualifiedErrorId : NativeCommandError
+
+[WebServer] (Use `node --trace-warnings ...` to show where the warning was created)
+[WebServer] (node:43568) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+[WebServer] (Use `node --trace-warnings ...` to show where the warning was created)
+[WebServer] (node:55036) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+[WebServer] (Use `node --trace-warnings ...` to show where the warning was created)
+[WebServer] (node:11540) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+[WebServer] (Use `node --trace-warnings ...` to show where the warning was created)
+[WebServer] (node:11540) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+[WebServer] (Use `node --trace-warnings ...` to show where the warning was created)
+[WebServer] (node:47564) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+[WebServer] (Use `node --trace-warnings ...` to show where the warning was created)
+[WebServer] (node:36380) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+[WebServer] (Use `node --trace-warnings ...` to show where the warning was created)
+
+Running 2 tests using 1 worker
+
+(node:45636) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  x  1 tests\e2e\events-audit.spec.ts:20:36 › TEST-03/14 owner event read 401 clears the session after a newer refresh fails (6.3s)
+(node:21916) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  x  2 tests\e2e\events-audit.spec.ts:20:36 › TEST-03/14 shared event read 401 clears the session after a newer refresh fails (6.1s)
+
+
+  1) tests\e2e\events-audit.spec.ts:20:36 › TEST-03/14 owner event read 401 clears the session after a newer refresh fails
+
+    Error: expect(page).toHaveURL(expected) failed
+
+    Expected pattern: /\/login$/
+    Received string:  "http://127.0.0.1:5183/organizer/events/fb7209cb-1f7c-4045-ba6b-8f40d1467f29"
+    Timeout: 5000ms
+
+    Call log:
+      - Expect "toHaveURL" with timeout 5000ms
+        14 × locator resolved to <html lang="th">…</html>
+           - unexpected value "http://127.0.0.1:5183/organizer/events/fb7209cb-1f7c-4045-ba6b-8f40d1467f29"
+
+
+      42 |   await expect(page.getByRole('alert')).toContainText('โหลดข้อมูลไม่สำเร็จ');
+      43 |   await held.fulfill({ status: 401, json: payload });
+    > 44 |   await expect(page).toHaveURL(/\/login$/);
+         |                      ^
+      45 |   await expect(page.getByRole('heading', { name: event.title })).toHaveCount(0);
+      46 |   await expect(page.getByText(event.description, { exact: true })).toHaveCount(0);
+      47 |   await signIn(page, 'organizer.b', false);
+        at C:\Kmutt\Senior\CPE334\Final\LoungCheu\tests\e2e\events-audit.spec.ts:44:22
+
+    Error Context: test-results\events-audit-TEST-03-14-ow-e6cc5-after-a-newer-refresh-fails\error-context.md
+
+  2) tests\e2e\events-audit.spec.ts:20:36 › TEST-03/14 shared event read 401 clears the session after a newer refresh fails
+
+    Error: expect(page).toHaveURL(expected) failed
+
+    Expected pattern: /\/login$/
+    Received string:  "http://127.0.0.1:5183/events/739320b2-0ce4-4f6f-9f49-1fcbb148a883"
+    Timeout: 5000ms
+
+    Call log:
+      - Expect "toHaveURL" with timeout 5000ms
+        14 × locator resolved to <html lang="th">…</html>
+           - unexpected value "http://127.0.0.1:5183/events/739320b2-0ce4-4f6f-9f49-1fcbb148a883"
+
+
+      42 |   await expect(page.getByRole('alert')).toContainText('โหลดข้อมูลไม่สำเร็จ');
+      43 |   await held.fulfill({ status: 401, json: payload });
+    > 44 |   await expect(page).toHaveURL(/\/login$/);
+         |                      ^
+      45 |   await expect(page.getByRole('heading', { name: event.title })).toHaveCount(0);
+      46 |   await expect(page.getByText(event.description, { exact: true })).toHaveCount(0);
+      47 |   await signIn(page, 'organizer.b', false);
+        at C:\Kmutt\Senior\CPE334\Final\LoungCheu\tests\e2e\events-audit.spec.ts:44:22
+
+    Error Context: test-results\events-audit-TEST-03-14-sh-56199-after-a-newer-refresh-fails\error-context.md
+
+  2 failed
+    tests\e2e\events-audit.spec.ts:20:36 › TEST-03/14 owner event read 401 clears the session after a newer refresh fails
+    tests\e2e\events-audit.spec.ts:20:36 › TEST-03/14 shared event read 401 clears the session after a newer refresh fails

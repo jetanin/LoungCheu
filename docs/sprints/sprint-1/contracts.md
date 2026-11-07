@@ -2,16 +2,18 @@
 
 เอกสาร LC-S1-CONTRACT | Documentation baseline v0.5 | 5 พฤศจิกายน 2026
 
-ใช้ SRS/System SDS baseline v0.5 กติกา success/error/session/time ร่วมตาม System SDS และ IDs ตาม traceability; F-01 มี implementation บน `feature/auth` รอ teammate review/integration/release (ดู [work record](auth-work-record.md)) ส่วน F-02–05 ยัง PLANNED ไม่มีการเปลี่ยน AC จาก baseline
+ใช้ SRS/System SDS baseline v0.5 กติกา success/error/session/time ร่วมตาม System SDS และ IDs ตาม traceability; F-01/F-02/F-03 รวมและทดสอบใน feature/events merge working tree แล้ว ดู [combined verification](../../events/consistency-review.md) F-04/F-05 ยังไม่รวม รอ review/merge commit/release ไม่มีการเปลี่ยน AC จาก baseline
 
 ## Sprint 1 JSON schemas ร่วม
 
 Response fields เป็น required/non-null ใน Sprint 1 Success ครอบด้วย `{ "data": ... }`; list ว่างใช้ `[]`; Logout 204 ไม่มี body Mutations ส่ง CSRF ใน `X-CSRF-Token` ไม่ใส่ใน JSON body ทุก endpoint ใช้ error schema/codes/ลำดับ auth→role→CSRF→input→record scope/domain ตาม System SDS; body/path ผิด=400 INVALID_INPUT และ unexpected failure=500 INTERNAL_ERROR
 
+Technical JSON parser budgets: Auth 16 KiB, Event 32 KiB, Registration 1 KiB; เกิน budget=400 INVALID_INPUT หลัง auth/role/CSRF Event budget รองรับ valid BR-01 text ที่ JSON encode เป็น Unicode surrogate escapes ด้วย Domain field limits ไม่เปลี่ยน
+
 | Type | รูปแบบและข้อจำกัด |
 |---|---|
 | ID | UUID string ที่ server สร้าง; input path ที่ผิดรูปแบบตอบ 400 INVALID_INPUT หลังผ่าน auth/role; UUID ที่ไม่พบ/อยู่นอก record scope ตอบ 404 ตาม endpoint |
-| Timestamp | Input ISO 8601 พร้อม Z หรือ ±HH:mm และเศษวินาที 0–3 หลัก; เกิน 3 หลักหรือไม่มี offset = 400 INVALID_INPUT; output UTC `YYYY-MM-DDTHH:mm:ss.SSSZ` |
+| Timestamp | Input ISO 8601 `YYYY-MM-DDTHH:mm[:ss[.SSS]]` พร้อม Z หรือ ±HH:mm; ไม่ระบุวินาทีได้ (=00) แต่ fractional minutes ไม่รับ; เศษวินาที 0–3 หลัก เกิน 3 หลัก/ไม่มี offset/invalid calendar = 400 INVALID_INPUT; output UTC `YYYY-MM-DDTHH:mm:ss.SSSZ` |
 | EmptyInput | {} หรือไม่มี body; ค่าอื่น/field เพิ่มตอบ 400 INVALID_INPUT |
 | EventStatus | DRAFT, PUBLISHED หรือ CLOSED |
 | RegistrationStatus | ACTIVE ในผลจาก workflow Sprint 1; enum DB เตรียม CANCELLED ไว้สำหรับ Sprint 2 แต่ยังไม่มี action ยกเลิก |
@@ -19,7 +21,7 @@ Response fields เป็น required/non-null ใน Sprint 1 Success ครอ
 | Schema | Fields / types |
 |---|---|
 | Identity | id: ID, display_name: string, role: PARTICIPANT หรือ ORGANIZER |
-| EventInput | title/description/location: strings หลัง trim นับ code points ตาม BR-01; capacity: JSON integer 1–1000; starts_at/ends_at/registration_closes_at: Timestamp ตาม BR-02/14; required ทุก field และไม่ coercion/รับ field เพิ่ม |
+| EventInput | title/description/location: strings หลัง trim นับ code points ตาม BR-01 (well-formed Unicode ไม่มี NUL/unpaired UTF-16 surrogate ที่ PostgreSQL TEXT เก็บไม่ได้); capacity: JSON integer 1–1000; starts_at/ends_at/registration_closes_at: Timestamp ตาม BR-02/14; required ทุก field และไม่ coercion/รับ field เพิ่ม |
 | SharedEvent | id: ID; title/description/location: string; capacity: integer; starts_at/ends_at/registration_closes_at: Timestamp; status: PUBLISHED หรือ CLOSED; active_count/available_seats: integer; registration_open: boolean |
 | OwnerEvent | fields เหมือน SharedEvent แต่ status อนุญาต DRAFT เพิ่ม และมี organizer_id: ID, created_at: Timestamp, updated_at: Timestamp; DRAFT มี registration_open=false |
 | EventSummary | id: ID, title: string, location: string, starts_at/ends_at/registration_closes_at: Timestamp, status: EventStatus |
@@ -72,6 +74,8 @@ DoD: AC-01–05, auth/config tests และ Product DoD
 Organizer เปิดรายการของตน → Create → กรอก title/description/location/capacity/starts_at/ends_at/registration_closes_at → Save เป็น DRAFT → preview → Publish → event ปรากฏในรายการทั่วไป
 
 Shared list เรียง starts_at ASC, id ASC; own list เรียง created_at DESC, id ASC แสดงเวลา Asia/Bangkok และ availability DRAFT อ่านผ่าน owner routes เท่านั้น Shared API ต้อง Login
+
+UI presentation เพิ่มตาม feedback ผู้ใช้: Organizer เปิด `/organizer` จากแท็บภาพรวมได้ โดย reuse `GET /api/organizer/events` แสดงจำนวนกิจกรรมของตนทั้งหมด, DRAFT และ PUBLISHED พร้อมสามรายการล่าสุดตาม own-list order และทางลัด Create/ดูทั้งหมด ไม่มี API/schema/business rule ใหม่ Login ยังไป `/events` ตาม F-01 ตัวเลขนี้เป็นจำนวน Event records ไม่ใช่ยอด Participant/registration/attendance หรือรายงาน F-09
 
 ### API / data contract
 

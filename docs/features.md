@@ -1,8 +1,12 @@
 # Part B — Feature Inventory
 
-Documentation baseline v0.5 | 5 พฤศจิกายน 2026 | Execution update 6 พ.ย.: F-01 มี implementation/tests รอ PR/review/integration; F-02–09 ยัง PLANNED ดู [auth pre-PR review](sprints/sprint-1/auth-pre-pr-review.md)
+**UI consistency follow-up:** ล่าสุด 145 Vitest / 35 Chromium, typecheck/build/compiled smoke PASS รวม typography/layout/state checks ที่1280/390/320px ดู [current UI evidence](events/visual-consistency.md) ผล141/32 และ seed follow-up ด้านล่างเป็น historical runs
 
-Registration integration update: F-01 รวมใน staging `6e8a24c` แล้ว; F-03 API/UI module ต่อเข้ากับฐานนั้นและทดสอบร่วมผ่าน 110 Vitest + 7 auth browser tests ใน merge working tree ดู [Registration verification](registration/verification.md) ยังรอ F-02 Event APIs/F-04–05 Views เพื่อทำ journey ครบ และรอ teammate review/release
+**Seed follow-up (6 พ.ย.):** full Vitest **145 PASS** รวม seed integration ใหม่4 และ typecheck PASS; 141/32 ใน feature audit ด้านล่างเป็นรอบก่อนเพิ่ม seed โดย Chromium/build ไม่ได้ rerun รอบ seed ดู [latest seed results](events/demo-seed.md) ไม่มี AC/scope ใหม่
+
+Documentation baseline v0.5 | 5 พฤศจิกายน 2026 | Execution update 6 พ.ย.: F-01/F-02/F-03 รวมและทดสอบใน feature/events merge working tree แล้ว (141 Vitest / 32 Chromium PASS); F-04–09 ยังไม่รวม ดู [combined verification](events/consistency-review.md)
+
+Registration integration update: รวม staging@ada659b กับ HEAD 04106ff โดยคง EventPage host และ reuse RegistrationAction/real backend ของ #3; create/publish/register/reference/count journey ผ่าน รอ Issue #4 (F-04/F-05), teammate review, merge commit และ release ไม่อ้าง full Product DoD
 
 | ID | Feature / ผลลัพธ์ | Requirement / Rules | Dependency | Sprint |
 |---|---|---|---|---:|

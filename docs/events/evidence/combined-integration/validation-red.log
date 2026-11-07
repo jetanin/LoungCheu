@@ -1,0 +1,84 @@
+
+ RUN  v5.1.0 C:/Kmutt/Senior/CPE334/Final/LoungCheu
+
+ ❯ server/tests/integration/events.test.ts (16 tests | 2 failed) 4656ms
+   × TEST-08/36 accepts minute-precision ISO timestamps with offsets and normalizes seconds 88ms
+   × TEST-08 rejects NUL and unpaired surrogates instead of DB errors or lossy inserts 157ms
+ ❯ client/src/features/events/model.test.ts (9 tests | 3 failed) 29ms
+   ❯ F-02 form/time contract audit (9)
+     × TEST-08 rejects unrepresentable text in title and permits paired emoji 5ms
+     × TEST-08 rejects unrepresentable text in description and permits paired emoji 1ms
+     × TEST-08 rejects unrepresentable text in location and permits paired emoji 1ms
+node :
+At line:2 char:540
++ ...  --version; node node_modules/vitest/vitest.mjs run server/tests/inte ...
++                 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : NotSpecified: (:String) [], RemoteException
+    + FullyQualifiedErrorId : NativeCommandError
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 5 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  server/tests/integration/events.test.ts > TEST-08/36 accepts minute-precision ISO timestamps with offsets and
+normalizes seconds
+AssertionError: expected 400 to be 201 // Object.is equality
+
+- Expected
++ Received
+
+- 201
++ 400
+
+ ❯ server/tests/integration/events.test.ts:276:20
+    274|     starts_at: '2028-02-29T00:30+07:00', ends_at: '2028-02-28T18:30Z',…
+    275|   if (r.status === 201) ids.push(r.body.data.id);
+    276|   expect(r.status).toBe(201);
+       |                    ^
+    277|   expect(r.body.data).toMatchObject({ starts_at: '2028-02-28T17:30:00.…
+    278| });
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/5]⎯
+
+ FAIL  server/tests/integration/events.test.ts > TEST-08 rejects NUL and unpaired surrogates instead of DB errors or
+lossy inserts
+AssertionError: expected 500 to be 400 // Object.is equality
+
+- Expected
++ Received
+
+- 400
++ 500
+
+ ❯ error server/tests/integration/events.test.ts:29:20
+     27| }
+     28| function error(r: request.Response, status: number, code: string) {
+     29|   expect(r.status).toBe(status);
+       |                    ^
+     30|   expect(r.body).toEqual({ error: { code, message: expect.any(String),…
+     31| }
+ ❯ server/tests/integration/events.test.ts:288:30
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[2/5]⎯
+
+ FAIL  client/src/features/events/model.test.ts > F-02 form/time contract audit > TEST-08 rejects unrepresentable text
+in title and permits paired emoji
+ FAIL  client/src/features/events/model.test.ts > F-02 form/time contract audit > TEST-08 rejects unrepresentable text
+in description and permits paired emoji
+ FAIL  client/src/features/events/model.test.ts > F-02 form/time contract audit > TEST-08 rejects unrepresentable text
+in location and permits paired emoji
+AssertionError: expected undefined to be defined
+ ❯ client/src/features/events/model.test.ts:9:186
+      7| describe('F-02 form/time contract audit', () => {
+      8|   it.each(['title', 'description', 'location'] as const)('TEST-08 reje…
+      9|     for (const invalid of [String.fromCharCode(0), String.fromCharCode…
+       |
+                                                                           ^
+     10|     expect(validateForm({ ...values(), [key]: ' 🌱 ภาษาไทย ' }).fields…
+     11|   });
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[3/5]⎯
+
+
+ Test Files  2 failed (2)
+      Tests  5 failed | 20 passed (25)
+   Start at  22:09:40
+   Duration  5.74s (tests 87%, import 9%, transform 4%)

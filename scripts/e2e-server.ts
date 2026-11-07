@@ -8,8 +8,8 @@ config({ path: '.env.test', quiet: true });
 const url = readTestDatabaseUrl(process.env.TEST_DATABASE_URL);
 const db = createDatabaseClient(url);
 await seedUsers(db, process.env.E2E_PASSWORD ?? '');
-const runtime = await createApp(readConfig({ DATABASE_URL: url, SESSION_SECRET: 'e2e-only-secret-not-for-deployment-123456789', APP_ORIGIN: 'http://127.0.0.1:5173', NODE_ENV: 'test' }), db);
-const server = runtime.app.listen(3001, '127.0.0.1');
+const runtime = await createApp(readConfig({ DATABASE_URL: url, SESSION_SECRET: 'e2e-only-secret-not-for-deployment-123456789', APP_ORIGIN: `http://127.0.0.1:${process.env.E2E_WEB_PORT ?? '5173'}`, NODE_ENV: 'test' }), db);
+const server = runtime.app.listen(Number(process.env.E2E_API_PORT ?? '3001'), '127.0.0.1');
 for (const signal of ['SIGINT', 'SIGTERM'] as const) process.once(signal, () => {
   server.close(() => { void runtime.close().then(() => db.$disconnect()).then(() => process.exit(0)); });
 });

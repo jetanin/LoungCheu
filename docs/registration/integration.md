@@ -1,12 +1,12 @@
 # Registration เป็น extension ของ staging
 
-6 พ.ย. 2026 | feature/registration รวมฐาน origin/sprint-1-staging `6e8a24c`
+6 พ.ย. 2026 | Current: feature/events merge working tree HEAD 04106ff + staging@ada659b รวม #2/#3 แล้ว ดู [combined verification](../events/consistency-review.md); ข้อความ setup legacy ด้านล่างเป็น historical context ของ #3
 
 ## Base ที่คงไว้
 
 ใช้ package/layout/scripts ของเพื่อน, React App/Login/API client, Express createApp, PostgreSQL sessions, requireAuth/requireRole, CSRF, error handler, config, seed และ migration 202611060001_auth เป็นฐาน ไม่มี runtime identity bypass หรือ app harness แยกของ Registration
 
-client/index.html, client/src/main.tsx, Vite/TypeScript configs, Prisma config และ shared errors ยึด staging ส่วน App เพิ่มเฉพาะ authenticated route /events/{id} และคง route นี้เมื่อ refresh session; server startup เก็บการรายงาน listener error ที่แก้ไว้ก่อนหน้า
+client/index.html/main/Vite/TS/Prisma/shared errors ยึด staging App ใช้ Auth/session lifecycle + EventPage/EventOverview ของ #2 และ render RegistrationAction ของ #3 ใน shared detail โดยตรง RegistrationPage คงเป็น standalone host/component tests ไม่ใช้ซ้อนใน App; startup listener error handling ของ #3 คงไว้
 
 ## Backend composition
 
@@ -32,15 +32,15 @@ Service ใช้ READ COMMITTED และ parameterized SELECT ... FROM events 
 
 นำ legacy migrations ที่สร้าง User/Role อีกชุดออกจาก source ใหม่ ฐานที่ใช้ legacy migrations ต้องไม่ migrate ทับโดยไม่มีแผนย้ายข้อมูล รอบนี้เก็บ lou​ngcheu เดิมไว้และสร้าง loung-cheu-database ใหม่บน Docker instance เดียวกัน .env.test ชี้ loungcheu_test ที่ 5432 จาก db:setup:test ของเพื่อน ไม่มี reset/drop ฐานเก่า
 
-Event Management (#2) ยังไม่อยู่ใน staging นี้ โมเดล Event ที่เพิ่มเป็น prerequisite ของ #3 ไม่มี create/publish/list/detail APIs ให้ประสาน fields/migrations กับเจ้าของ #2 ก่อนรวมงานนั้น
+Event Management (#2) รวมแล้ว: ใช้ Event schema/migration foundation เดียวกัน ไม่มี duplicate migration หรือแก้ applied history Event router และ Registration router mount ก่อน unknown-API handler
 
 ## Frontend
 
-App ของเพื่อนรับผิดชอบ Login/Logout/identity/session polling เช่นเดิม เมื่ออยู่ /events/{id} ส่ง identity/onAuthRequired ให้ RegistrationPage หน้า registration ใช้ API client client/src/lib/api.ts ของเพื่อนเพื่ออ่าน event/CSRF และส่ง registration
+App รับผิดชอบ Login/Logout/identity/session polling และ route EventPage; /events/{id} อ่าน SharedEvent ครบตาม #2 แล้ว render RegistrationAction โดยตรง ใช้ API client/CSRF ของ #1
 
 RegistrationAction ปิดปุ่มขณะส่ง, แสดง reference, อธิบาย conflict/refresh availability, abort/ล้างผลเมื่อ user/event เปลี่ยน และให้ตรวจ own records ก่อน retry เมื่อ network/timeout หลังเริ่ม mutation ไม่มี automatic mutation retry
 
-เมื่อ #2 มี Event Detail สามารถนำ RegistrationAction ไป render ในหน้านั้นโดยตรงโดย reuse identity/API client ของ app ไม่ต้องทำ auth/app shell ซ้ำ
+EventPage คง RegistrationAction mounted ระหว่าง availability refresh/focus/transient error; account/event/role change และ definitive access failure ล้าง private state ตามสิทธิ์ Tests เดิมของ #3 และ host lifecycle browser tests ผ่าน
 
 ## รันจาก root
 
@@ -60,6 +60,6 @@ Demo password คือ DEMO_SEED_PASSWORD ในไฟล์ local หลัง
 
 ## Verification / งานต่อ
 
-npm test รัน auth และ Registration บน PostgreSQL จริง Registration integration Login ผ่าน HTTP/cookies/CSRF จริง รวม token rotation/logout/inactive/expiry และ separate connections สำหรับ races ผล/attempts/ข้อจำกัดดู verification.md
+npm test รัน Auth/Event/Registration และ unit/client component tests (141 PASS) บน PostgreSQL จริง; Chromium 32 PASS รวม create→publish→register จริงและ focus pending/success ดู [combined verification](../events/consistency-review.md) และ historical verification.md
 
-Full browser publish → detail → register → own list → roster ยังรอ Event APIs (#2) และ Registration Views (#4) ยังไม่อ้าง Product DoD/release ผ่าน
+Browser create→publish→detail→register/reference/count ผ่านแล้ว Own Registrations/roster ยังรอ Issue #4 (F-04/F-05); `/my/registrations` ยังไม่ implement ไม่อ้าง Product DoD/release หรือ independent UAT ผ่าน

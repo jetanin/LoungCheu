@@ -1,0 +1,190 @@
+
+ RUN  v5.1.0 C:/Kmutt/Senior/CPE334/Final/LoungCheu
+
+ ❯ server/tests/integration/events.test.ts (8 tests | 8 failed) 3893ms
+   × TEST-07 creates normalized DRAFT from session and reads it back 227ms
+   × TEST-08 strict schema rejects invalid fields without inserting 104ms
+   × TEST-08/36 accepts Unicode boundaries, capacities, fractions, equal closes/start and past DRAFT 87ms
+   × TEST-09 publishes and becomes shared with exactly the contracted public fields 103ms
+   × TEST-10/36 status precedes deadline; rejects deadline equality and +1ms, permits -1ms 97ms
+   × TEST-10 rereads clock after waiting for Event row lock; concurrent publish changes status once 1752ms
+   × TEST-11 shared visibility, real ACTIVE counts, availability and both sorting tie breaks 181ms
+   × TEST-12/13 auth → role → CSRF → input → scope and session ownership 252ms
+node.exe : 
+At C:\Program Files\nodejs\npm.ps1:29 char:3
++   & $NODE_EXE $NPM_CLI_JS $args
++   ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : NotSpecified: (:String) [], RemoteException
+    + FullyQualifiedErrorId : NativeCommandError
+ 
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 8 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  server/tests/integration/events.test.ts > TEST-07 creates normalized DRAFT from session and reads it back
+Error: expected 201 "Created", got 404 "Not Found"
+ ❯ server/tests/integration/events.test.ts:50:96
+     48| it('TEST-07 creates normalized DRAFT from session and reads it back', …
+     49|   const { agent, token } = await login();
+     50|   const r = await agent.post('/api/organizer/events').set('X-CSRF-Toke…
+       |                                                                                                ^
+     51|   ids.push(r.body.data.id);
+     52|   expect(r.body.data).toMatchObject({ title: 'กิจกรรม 🌱', description…
+ ❯ Test._assertStatus node_modules/supertest/lib/test.js:404:14
+ ❯ node_modules/supertest/lib/test.js:460:13
+ ❯ Test._assertFunction node_modules/supertest/lib/test.js:437:13
+ ❯ Test.assert node_modules/supertest/lib/test.js:302:23
+ ❯ localAssert node_modules/supertest/lib/test.js:220:38
+ ❯ Server.<anonymous> node_modules/supertest/lib/test.js:227:13
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/8]⎯
+
+ FAIL  server/tests/integration/events.test.ts > TEST-08 strict schema rejects invalid fields without inserting
+AssertionError: expected 404 to be 400 // Object.is equality
+
+- Expected
++ Received
+
+- 400
++ 404
+
+ ❯ error server/tests/integration/events.test.ts:27:20
+     25| }
+     26| function error(r: request.Response, status: number, code: string) {
+     27|   expect(r.status).toBe(status);
+       |                    ^
+     28|   expect(r.body).toEqual({ error: { code, message: expect.any(String),…
+     29| }
+ ❯ server/tests/integration/events.test.ts:70:31
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[2/8]⎯
+
+ FAIL  server/tests/integration/events.test.ts > TEST-08/36 accepts Unicode boundaries, capacities, fractions, equal 
+closes/start and past DRAFT
+Error: expected 201 "Created", got 404 "Not Found"
+ ❯ server/tests/integration/events.test.ts:81:95
+     79|     const body = { ...input(), title: ` ${'🌱'.repeat(120)} `, descrip…
+     80|       registration_closes_at: `2020-01-01T07:00:00${fraction}+07:00`, …
+     81|     const r = await agent.post('/api/organizer/events').set('X-CSRF-To…
+       |                                                                                               ^
+     82|     expect(r.body.data.starts_at).toBe(new Date(body.starts_at).toISOS…
+     83|     expect(r.body.data.registration_closes_at).toBe(r.body.data.starts…
+ ❯ Test._assertStatus node_modules/supertest/lib/test.js:404:14
+ ❯ node_modules/supertest/lib/test.js:460:13
+ ❯ Test._assertFunction node_modules/supertest/lib/test.js:437:13
+ ❯ Test.assert node_modules/supertest/lib/test.js:302:23
+ ❯ localAssert node_modules/supertest/lib/test.js:220:38
+ ❯ Server.<anonymous> node_modules/supertest/lib/test.js:227:13
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[3/8]⎯
+
+ FAIL  server/tests/integration/events.test.ts > TEST-09 publishes and becomes shared with exactly the contracted 
+public fields
+Error: expected 200 "OK", got 404 "Not Found"
+ ❯ server/tests/integration/events.test.ts:89:111
+     87| it('TEST-09 publishes and becomes shared with exactly the contracted p…
+     88|   const event = await fixture(); const { agent, token } = await login(…
+     89|   const r = await agent.post(`/api/organizer/events/${event.id}/publis…
+       |                                                                                                               
+^
+     90|   expect(r.body.data).toMatchObject({ status: 'PUBLISHED', organizer_i…
+     91|   const shared = (await agent.get(`/api/events/${event.id}`).expect(20…
+ ❯ Test._assertStatus node_modules/supertest/lib/test.js:404:14
+ ❯ node_modules/supertest/lib/test.js:460:13
+ ❯ Test._assertFunction node_modules/supertest/lib/test.js:437:13
+ ❯ Test.assert node_modules/supertest/lib/test.js:302:23
+ ❯ localAssert node_modules/supertest/lib/test.js:220:38
+ ❯ Server.<anonymous> node_modules/supertest/lib/test.js:227:13
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[4/8]⎯
+
+ FAIL  server/tests/integration/events.test.ts > TEST-10/36 status precedes deadline; rejects deadline equality and 
++1ms, permits -1ms
+Error: expected 200 "OK", got 404 "Not Found"
+ ❯ server/tests/integration/events.test.ts:100:104
+     98|   for (const status of ['DRAFT', 'PUBLISHED', 'CLOSED'] as const) for …
+     99|     const event = await fixture({ status, registrationClosesAt: new Da…
+    100|     const r = await agent.post(`/api/organizer/events/${event.id}/publ…
+       |                                                                                                        ^
+    101|     if (r.status === 409) {
+    102|       error(r, 409, status === 'DRAFT' ? 'DEADLINE_PASSED' : 'INVALID_…
+ ❯ Test._assertStatus node_modules/supertest/lib/test.js:404:14
+ ❯ node_modules/supertest/lib/test.js:460:13
+ ❯ Test._assertFunction node_modules/supertest/lib/test.js:437:13
+ ❯ Test.assert node_modules/supertest/lib/test.js:302:23
+ ❯ localAssert node_modules/supertest/lib/test.js:220:38
+ ❯ Server.<anonymous> node_modules/supertest/lib/test.js:227:13
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[5/8]⎯
+
+ FAIL  server/tests/integration/events.test.ts > TEST-10 rereads clock after waiting for Event row lock; concurrent 
+publish changes status once
+AssertionError: expected false to be true // Object.is equality
+
+- Expected
++ Received
+
+- true
++ false
+
+ ❯ server/tests/integration/events.test.ts:120:21
+    118|       if (!waiting) await new Promise(resolve => setTimeout(resolve, 1…
+    119|     }
+    120|     expect(waiting).toBe(true); clock = event.registrationClosesAt.get…
+       |                     ^
+    121|     await blocker.query('COMMIT'); error(await pending, 409, 'DEADLINE…
+    122|   } finally { await blocker.query('ROLLBACK'); blocker.release(); }
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[6/8]⎯
+
+ FAIL  server/tests/integration/events.test.ts > TEST-11 shared visibility, real ACTIVE counts, availability and both 
+sorting tie breaks
+AssertionError: expected { error: { …(3) } } to deeply equal { error: { …(3) } }
+
+- Expected
++ Received
+
+  {
+    "error": {
+-     "code": "EVENT_NOT_FOUND",
++     "code": "ROUTE_NOT_FOUND",
+      "fields": {},
+      "message": "ไม่พบเส้นทาง",
+    },
+  }
+
+ ❯ error server/tests/integration/events.test.ts:28:18
+
+ Test Files  1 failed (1)
+      Tests  8 failed (8)
+   Start at  13:49:33
+   Duration  4.87s (tests 84%, import 13%, transform 3%)
+
+     26| function error(r: request.Response, status: number, code: string) {
+     27|   expect(r.status).toBe(status);
+     28|   expect(r.body).toEqual({ error: { code, message: expect.any(String),…
+       |                  ^
+     29| }
+     30| async function fixture(data: Record<string, unknown> = {}) {
+ ❯ server/tests/integration/events.test.ts:136:3
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[7/8]⎯
+
+ FAIL  server/tests/integration/events.test.ts > TEST-12/13 auth → role → CSRF → input → scope and session ownership
+AssertionError: expected 404 to be 401 // Object.is equality
+
+- Expected
++ Received
+
+- 401
++ 404
+
+ ❯ error server/tests/integration/events.test.ts:27:20
+     25| }
+     26| function error(r: request.Response, status: number, code: string) {
+     27|   expect(r.status).toBe(status);
+       |                    ^
+     28|   expect(r.body).toEqual({ error: { code, message: expect.any(String),…
+     29| }
+ ❯ server/tests/integration/events.test.ts:151:128
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[8/8]⎯
+

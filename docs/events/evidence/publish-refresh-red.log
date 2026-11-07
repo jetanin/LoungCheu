@@ -1,0 +1,59 @@
+
+> loungcheu@0.1.0 test:e2e
+> playwright test tests/e2e/events.spec.ts -g older availability
+
+npm.cmd : [WebServer] (node:52992) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+At line:2 char:53
++ ... ORT='3011'; npm.cmd run test:e2e -- tests/e2e/events.spec.ts -g "olde ...
++                 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : NotSpecified: ([WebServer] (no... env being set.:String) [], RemoteException
+    + FullyQualifiedErrorId : NativeCommandError
+ 
+[WebServer] (Use `node --trace-warnings ...` to show where the warning was created)
+[WebServer] (node:12064) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+[WebServer] (Use `node --trace-warnings ...` to show where the warning was created)
+[WebServer] (node:41832) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+[WebServer] (Use `node --trace-warnings ...` to show where the warning was created)
+[WebServer] (node:21536) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+[WebServer] (Use `node --trace-warnings ...` to show where the warning was created)
+[WebServer] (node:21536) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+[WebServer] (Use `node --trace-warnings ...` to show where the warning was created)
+[WebServer] (node:7688) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+[WebServer] (Use `node --trace-warnings ...` to show where the warning was created)
+[WebServer] (node:29240) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+[WebServer] (Use `node --trace-warnings ...` to show where the warning was created)
+
+Running 1 test using 1 worker
+
+(node:53608) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  x  1 tests\e2e\events.spec.ts:79:1 › TEST-09/14 an older availability refresh cannot overwrite a successful publish (6.0s)
+
+
+  1) tests\e2e\events.spec.ts:79:1 › TEST-09/14 an older availability refresh cannot overwrite a successful publish 
+
+    Error: expect(locator).toBeVisible() failed
+
+    Locator: getByText('PUBLISHED', { exact: true })
+    Expected: visible
+    Timeout: 5000ms
+    Error: element(s) not found
+
+    Call log:
+      - Expect "toBeVisible" getByText('PUBLISHED', { exact: true }) with timeout 5000ms
+      - waiting for getByText('PUBLISHED', { exact: true })
+
+
+       95 |   release(); await response;
+       96 |   await expect(page.getByText('กำลังรีเฟรชกิจกรรม…')).toHaveCount(0);
+    >  97 |   await expect(page.getByText('PUBLISHED', { exact: true })).toBeVisible();
+          |                                                              ^
+       98 | });
+       99 |
+      100 | for (const outcome of ['pending', 'success', 'uncertain'] as const) test(`F-02/#3 focus and availability refresh preserve RegistrationAction ${outcome}`, async ({ page }) => {
+        at C:\Kmutt\Senior\CPE334\Final\LoungCheu\tests\e2e\events.spec.ts:97:62
+
+    Error Context: test-results\events-TEST-09-14-an-older-d7533-rwrite-a-successful-publish\error-context.md
+
+  1 failed
+    tests\e2e\events.spec.ts:79:1 › TEST-09/14 an older availability refresh cannot overwrite a successful publish 

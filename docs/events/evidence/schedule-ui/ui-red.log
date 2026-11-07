@@ -1,0 +1,54 @@
+
+> loungcheu@0.1.0 test:e2e
+> playwright test tests/e2e/events.spec.ts -g Organizer creates
+
+npm.cmd : [WebServer] (node:2632) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+At line:2 char:134
++ ... ORT='3011'; npm.cmd run test:e2e -- tests/e2e/events.spec.ts -g 'Orga ...
++                 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : NotSpecified: ([WebServer] (no... env being set.:String) [], RemoteException
+    + FullyQualifiedErrorId : NativeCommandError
+ 
+[WebServer] (Use `node --trace-warnings ...` to show where the warning was created)
+[WebServer] (node:49796) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+[WebServer] (Use `node --trace-warnings ...` to show where the warning was created)
+[WebServer] (node:12580) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+[WebServer] (Use `node --trace-warnings ...` to show where the warning was created)
+[WebServer] (node:22816) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+[WebServer] (Use `node --trace-warnings ...` to show where the warning was created)
+[WebServer] (node:22816) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+[WebServer] (Use `node --trace-warnings ...` to show where the warning was created)
+[WebServer] (node:2096) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+[WebServer] (Use `node --trace-warnings ...` to show where the warning was created)
+[WebServer] (node:6724) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+[WebServer] (Use `node --trace-warnings ...` to show where the warning was created)
+
+Running 1 test using 1 worker
+
+(node:8124) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  x  1 tests\e2e\events.spec.ts:10:1 › TEST-07/09/14/36 Organizer creates, previews, publishes; Participant browses persisted shared detail (30.0s)
+
+
+  1) tests\e2e\events.spec.ts:10:1 › TEST-07/09/14/36 Organizer creates, previews, publishes; Participant browses persisted shared detail 
+
+    Test timeout of 30000ms exceeded.
+
+    Error: locator.fill: Test timeout of 30000ms exceeded.
+    Call log:
+      - waiting for getByLabel('วันที่เริ่มกิจกรรม', { exact: true })
+
+
+      20 |     const date = page.getByLabel(`วันที่${label}`, { exact: true });
+      21 |     const field = page.getByLabel(`เวลา${label}`, { exact: true });
+    > 22 |     await date.fill('2099-01-01');
+         |                ^
+      23 |     await field.fill('09:00');
+      24 |     await field.evaluate((element: HTMLInputElement) => element.stepUp());
+      25 |     await expect.soft(field).toHaveValue('09:01');
+        at C:\Kmutt\Senior\CPE334\Final\LoungCheu\tests\e2e\events.spec.ts:22:16
+
+    Error Context: test-results\events-TEST-07-09-14-36-Or-fa34a-ses-persisted-shared-detail\error-context.md
+
+  1 failed
+    tests\e2e\events.spec.ts:10:1 › TEST-07/09/14/36 Organizer creates, previews, publishes; Participant browses persisted shared detail 

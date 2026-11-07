@@ -9,6 +9,8 @@ import type { AppConfig } from './config/env.js';
 import { ApiError, errorHandler, invalidInput } from './shared/errors.js';
 import { identity, requireAuth } from './middleware/auth.js';
 import { hashPassword, verifyPassword } from './modules/accounts/password.js';
+import { createEventRouter } from './modules/events/router.js';
+import { createEventService } from './modules/events/service.js';
 import { createRegistrationRouter } from './modules/registrations/router.js';
 import { createRegistrationService } from './modules/registrations/service.js';
 
@@ -18,6 +20,14 @@ export const COOKIE_NAME = 'loungcheu.sid';
 function objectInput(body: unknown, keys: string[]): Record<string, unknown> {
   if (!body || typeof body !== 'object' || Array.isArray(body) || Object.keys(body).some(k => !keys.includes(k))) throw invalidInput();
   return body as Record<string, unknown>;
+}
+function jsonBody(limit: string): RequestHandler {
+  const parse = express.json({ limit, strict: false });
+  return (req, res, next) => {
+    const hasBody = Number(req.get('Content-Length') ?? '0') > 0 || !!req.get('Transfer-Encoding');
+    if (hasBody && !req.is('application/json')) throw invalidInput();
+    parse(req, res, next);
+  };
 }
 export async function createApp(config: AppConfig, db: PrismaClient, now: () => number = Date.now) {
   const app = express();
@@ -43,12 +53,7 @@ export async function createApp(config: AppConfig, db: PrismaClient, now: () => 
       || !timingSafeEqual(tokenBytes, expectedBytes)) throw new ApiError(403, 'CSRF_FAILED', 'กรุณาลองใหม่');
     next();
   };
-  const parseJson = express.json({ limit: '16kb', strict: false });
-  const json: RequestHandler = (req, res, next) => {
-    const hasBody = Number(req.get('Content-Length') ?? '0') > 0 || !!req.get('Transfer-Encoding');
-    if (hasBody && !req.is('application/json')) throw invalidInput();
-    parseJson(req, res, next);
-  };
+  const json = jsonBody('16kb');
   const auth = requireAuth(db, now);
   // A dummy hash keeps unknown-account verification on the same scrypt path.
   const dummyHash = await hashPassword(randomBytes(32).toString('hex'));
@@ -65,7 +70,9 @@ export async function createApp(config: AppConfig, db: PrismaClient, now: () => 
     if (typeof body.password !== 'string' || !body.password.length) fields.password = ['กรุณากรอกรหัสผ่าน'];
     if (Object.keys(fields).length) throw invalidInput(fields);
     const username = (body.username as string).trim();
-    const user = await db.user.findUnique({ where: { username } });
+    // PostgreSQL usernames cannot contain NUL. Treat it like every unknown
+    // account while retaining the dummy password verification below.
+    const user = username.includes('\u0000') ? null : await db.user.findUnique({ where: { username } });
     const valid = await verifyPassword(body.password as string, user?.passwordHash ?? dummyHash);
     if (!user || !user.isActive || !valid) throw new ApiError(401, 'INVALID_CREDENTIALS', 'ชื่อผู้ใช้หรือรหัสผ่านไม่ถูกต้อง');
     await new Promise<void>((resolve, reject) => req.session.regenerate(error => error ? reject(error) : resolve()));
@@ -81,6 +88,9 @@ export async function createApp(config: AppConfig, db: PrismaClient, now: () => 
     await new Promise<void>((resolve, reject) => req.session.destroy(error => error ? reject(error) : resolve()));
     res.clearCookie(COOKIE_NAME, cookieOptions).status(204).end();
   });
+  // Max-length BR-01 strings need up to ~28 KiB when JSON uses surrogate
+  // escapes rather than literal UTF-8. Keep the Auth parser's existing limit.
+  app.use('/api', createEventRouter({ authenticate: auth, verifyCsrf: csrf, json: jsonBody('32kb'), service: createEventService(db, now) }));
   app.use('/api', createRegistrationRouter({ authenticate: auth, verifyCsrf: csrf,
     register: createRegistrationService(db, () => new Date(now())) }));
   app.use('/api', (_req, _res) => { throw new ApiError(404, 'ROUTE_NOT_FOUND', 'ไม่พบเส้นทาง'); });

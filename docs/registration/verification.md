@@ -1,5 +1,9 @@
 # F-03 — actual verification
 
+**ผลล่าสุดหลังรวมกับ Event #2:** 141 Vitest / 32 Chromium / typecheck / build / compiled smoke PASS บน Node 22.16.0, feature/events merge working tree (04106ff + ada659b) รวม real Login/create/publish/register/reference/count UI ดู [combined verification](../events/consistency-review.md) ผล 110/7 และข้อจำกัด Node 24 ด้านล่างเป็น historical branch ของ #3; own GET/list/roster ยังรอ Issue #4
+
+## Historical — F-03 ก่อนรวม Event #2
+
 ## Current integration with staging (6 พ.ย. 2026)
 
 ฐาน `6e8a24c` จาก origin/sprint-1-staging ขณะบันทึกยังเป็น merge working tree ที่ผู้ใช้จะ stage/commit เอง

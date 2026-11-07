@@ -1,0 +1,116 @@
+{
+  "date": "2026-11-06",
+  "timezone": "Asia/Bangkok",
+  "branch": "feature/events",
+  "parent": "6e8a24c45e66eb4b8df9939d5cb364c316948af4",
+  "registration_source": "afa5c72db7ee9da2a58a3c0259f0d98d7fd0aea7",
+  "node": "v22.16.0",
+  "packages": {
+    "prisma": "7.10.1",
+    "@prisma/client": "7.10.1",
+    "vitest": "5.1.0",
+    "@playwright/test": "1.64.1",
+    "typescript": "5.9.3",
+    "vite": "6.4.5"
+  },
+  "database": {
+    "database": "loungcheu_test",
+    "version": "PostgreSQL 17.6 on x86_64-windows, compiled by msvc-19.44.35213, 64-bit"
+  },
+  "migrations": [
+    {
+      "migration_name": "202611060001_auth",
+      "checksum": "3b2b7da952394a7ceabd194fe67a4a0fd38687413748dddfafe16826621497e9",
+      "finished_at": "2026-11-05T20:12:05.647Z",
+      "rolled_back_at": null
+    },
+    {
+      "migration_name": "202611060002_registration_extension",
+      "checksum": "2e25cd62bcef753cded44a6d2c7c4480a65bd2ac9facd270148c0ed43b5835ed",
+      "finished_at": "2026-11-06T06:29:51.679Z",
+      "rolled_back_at": null
+    }
+  ],
+  "foundation": {
+    "identical_to_registration_git_blob": true,
+    "hashes": {
+      "source_lf": "f4cbedc97f8b3e990ab1d55f9747fe612a3f446502eef3f0e0ba45c189fc801c",
+      "source_as_crlf": "2e25cd62bcef753cded44a6d2c7c4480a65bd2ac9facd270148c0ed43b5835ed",
+      "applied": "2e25cd62bcef753cded44a6d2c7c4480a65bd2ac9facd270148c0ed43b5835ed"
+    },
+    "applied_checksum_matches": "CRLF checkout of identical Git content; current file LF; no migration or DB history edited"
+  },
+  "source_sha256": {
+    "client/src/features/events/EventForm.tsx": "da9205a6815dcceff39e7e0c8c48ea1471abf7740df9e7c27dc9b0ae852d4121",
+    "client/src/features/events/EventPage.tsx": "774d37bf06cee9fdf83e77e0b7e811420bfbe2f12b8df012fb9c52eb4a959107",
+    "client/src/features/events/EventSchedule.tsx": "ab01097c5b0ee75d0775b01289ad6efb90f05dce00c4a5ac3794632c81ce2658",
+    "client/src/features/events/model.test.ts": "f34728c393cc374263ab92b0f03dc0b4680ba5439b202188291ddff440039598",
+    "client/src/features/events/model.ts": "5f8ab5032835351b5693f78c797d6e31c43f5ebe7ccd4c54e11f8997e9151689",
+    "client/src/features/registrations/RegistrationAction.tsx": "92b53f6ad87a9b81489aea935d7efe25eee4e80ea621339d52e8de066cc8a64b",
+    "client/src/features/registrations/api.ts": "0a52f6a8ca814aa8c683053c60b27e15525663e15ed8336d5717019b506f1d26",
+    "server/prisma/migrations/202611060002_registration_extension/migration.sql": "f4cbedc97f8b3e990ab1d55f9747fe612a3f446502eef3f0e0ba45c189fc801c",
+    "server/src/modules/events/input.ts": "5b3912c01a0d1de0dd1e40c74679ec486052fb33c07aa816d9aa9231218970ae",
+    "server/src/modules/events/router.ts": "e8cbe4b57bf3354b916d8ca9800f795df39d3c50c386af36c8592af495e24c57",
+    "server/src/modules/events/service.ts": "ed21841d4557f03dcdd6805ccfb4d81f73bbe842112ed5ef85caa94de0dff73a",
+    "server/tests/integration/events.test.ts": "c02f738c62ff15c87642996cc89c4f3a767990a5207ee692ce08a7d063a66b0f",
+    "tests/e2e/event-form.ts": "73f2c651a8612dc6f2d362a490998b8002f212cc82882092b17dd975b1237aa8",
+    "tests/e2e/events-audit.spec.ts": "c3e1bbba3d374e0e170555468f92201eadc80738816222db079d0f26297d6cce",
+    "tests/e2e/events.spec.ts": "3e69b88c5499d2a1d81094ed927ca058c2320bca665b2f718f6704731c2bc50f",
+    "client/src/app/App.tsx": "89e9a0835d807031c21f48aacf0d7f8593fdb533b7e5c1237f79ab87879e16d0",
+    "client/src/lib/api.ts": "4a743b12719753706a8481adf4072b3231bcc61d1a37d8ca89b0d488906f16df",
+    "client/src/styles/app.css": "9f3f4dbe07502934782f4988b9c46011122a6550a05fc8de68f9d5b00cb4fc85",
+    "playwright.config.ts": "376371ecab118b2838c9db3685c1e12319df5681760d4f01eb2a1e2535989565",
+    "scripts/e2e-server.ts": "750062683bd1cf339e39d6e613f9876dac0267d552caa648f3d546cbf7e1ed9a",
+    "server/prisma/schema.prisma": "fef38830a32e16ac28dc276ed6528c982449813201582c40033d15f5c1ff73be",
+    "server/src/app.ts": "26404d768e802cb6839d42894959009d668476dd446f6ab725b07383efefc00a"
+  },
+  "results": {
+    "focused_browser": {
+      "passed": 1,
+      "failed": 0,
+      "skipped": 0,
+      "native_exit_code": 0
+    },
+    "typecheck": "PASS",
+    "build": "PASS"
+  },
+  "audit": "F-02 field order: registration deadline, event start, event end",
+  "historical_results": "../schedule-ui/manifest.json",
+  "shared_files_identical_to_registration": [
+    "server/prisma/schema.prisma",
+    "server/prisma/migrations/202611060002_registration_extension/migration.sql",
+    "client/src/features/registrations/RegistrationAction.tsx",
+    "client/src/features/registrations/api.ts"
+  ],
+  "ui_checks": {
+    "field_order": [
+      "registration_closes_at",
+      "starts_at",
+      "ends_at"
+    ],
+    "dom_order": "PASS",
+    "desktop_visual_order": "PASS",
+    "mobile_visual_order": "PASS",
+    "create_publish_shared_detail": "PASS"
+  },
+  "previous_full_regression": {
+    "manifest": "../schedule-ui/manifest.json",
+    "results": {
+      "vitest": {
+        "passed": 74,
+        "failed": 0,
+        "skipped": 0,
+        "native_exit_code": 0
+      },
+      "playwright": {
+        "passed": 22,
+        "failed": 0,
+        "skipped": 0,
+        "native_exit_code": 0
+      },
+      "typecheck": "PASS",
+      "build": "PASS",
+      "built_smoke_assertions": 3
+    }
+  }
+}

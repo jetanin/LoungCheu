@@ -2,13 +2,13 @@
 
 เอกสาร LC-S1-STS | Documentation baseline v0.5 | 5 พฤศจิกายน 2026
 
-**TEST-01–06: มี actual API/DB/unit results** ดู [auth evidence](../../deliverable-1/evidence/auth/README.md) และ traceability; TEST-07–36 ส่วนที่เกิน F-01 ยัง PLANNED/NOT EXECUTED โดย TEST-32 มีเพียง partial JSON-404/generic-500 checks ของ auth foundation
+**TEST-01–21 และ TEST-36 มี actual coverage ตามขอบเขต F-01/F-02/F-03** ดู [combined verification](../../events/consistency-review.md) และ traceability; TEST-15 ส่วน own GET ยังรอ Issue #4, TEST-22–31/34–35 และ full acceptance ของ Sprint 1 ยังไม่ผ่าน ส่วน TEST-32/33 มี partial checks ของ Auth/Event/Registration ไม่อ้าง full matrix ของ F-04/F-05
 
 ## 1. Environment และ fixtures
 
 - Vitest เป็น runner สำหรับ unit และ API/database integration; Supertest เรียก Express app โดยตรง ใช้ cookie agents แยกผู้ใช้และขอ CSRF token ตาม session
 - Unit tests ตรวจ validation/service logic; API integration ใช้ Prisma กับ PostgreSQL จริง ไม่ mock data layer เพื่ออ้าง persistence/authorization
-- React component tests ด้วย React Testing Library ยังเป็นข้อเสนอและยังไม่ได้ติดตั้ง; เลือกใช้ Playwright แล้วสำหรับ selected auth browser journeys ใน tests/e2e/auth.spec.ts
+- React component tests ใช้ React Testing Library/jsdom ของ #3 (ติดตั้งแล้ว); Playwright รวม Auth/Event/audit/overview/consistency และ real Event→Registration journey; Vitest มี Event model validation/time และ RegistrationAction/RegistrationPage component tests
 - ทดสอบ auth ด้วย cookie jar/session lifecycle จริง; หลัง Login ที่ regenerate session ต้องขอ CSRF token ใหม่ ห้ามแก้ session store ตรง ๆ เพื่อข้าม authentication ใน end-to-end auth tests
 
 - ใช้ test database PostgreSQL แยกจาก demo/deployment; config ปัจจุบันใช้ instance 5432 เดียวกันสำหรับ app/test โดยแยก database Unit tests ใช้ clock ที่ควบคุมได้ ไม่ต้องเปิด cluster 55432 เก่า
@@ -16,7 +16,7 @@
 - เวลาอ้างอิง `t0 = 2026-11-06T03:00:00.000Z` (10:00 Bangkok) เป็น fixed fixture time ไม่ใช้วันที่จริงตัดสิน test
 - EOPEN: owner OA, PUBLISHED, capacity=2, closes=t0+1h, starts=t0+2h, ends=t0+4h, ไม่มี registrations
 - ELAST: เหมือน EOPEN แต่ capacity=1; EDRAFT: DRAFT; ECLOSED: CLOSED; EFULL: capacity=1 มี ACTIVE ของ PB
-- ทุก test reset fixture เป็นอิสระ; permission tests ใช้ valid CSRF token เพื่อแยกจาก CSRF failure
+- แต่ละ test ใช้ independent fixtures และ reset controlled clock; Event suite ใช้ UUID เฉพาะแต่ละกรณีและ cleanup เฉพาะ ids ที่สร้างหลัง suite โดยไม่ reset ข้อมูลทั้งฐาน; permission tests ใช้ valid CSRF token เพื่อแยกจาก CSRF failure
 - Domain IDs ใช้ UUID ตาม contracts; ทดสอบ malformed path ด้วย authorized session เพื่อแยก validation จาก auth/role rejection Schema assertions อ้าง contracts v0.5 รวม nested event/participant และไม่คืน field ลับ
 - Domain clock/DB timestamps ใช้ millisecond; test boundary ใช้ deadline-1 ms, deadline และ deadline+1 ms; input precision เกิน 3 หลักต้องถูกปฏิเสธ ไม่ปัดลงให้ผ่าน
 - สำหรับ expiry ใช้ time control ตาม server/session mechanism; ไม่ sleep รอจริง 2 ชั่วโมง
@@ -29,19 +29,19 @@
 | Test ID / AC | ระดับ | Preconditions / input | Action | Expected result |
 |---|---|---|---|---|
 | TEST-01 / AC-01 | API/DB | PA/OA active; anonymous session ก่อน Login; valid CSRF | Login แต่ละ role แล้ว /me | 200, role ตรง DB, authenticated session identifier ใหม่ต่างจากก่อน Login |
-| TEST-02 / AC-02 | API/DB | Anonymous/pre-auth CSRF; missing/empty/wrong-type/unknown fields รวม role ปลอม; unknown username/wrong password/IX; username มี outer spaces และ case ต่าง | Login แยก cases ตาม trim/case-sensitive seed | invalid input=400 INVALID_INPUT; credentials/inactive=401 INVALID_CREDENTIALS generic; case ต่างไม่ตรง seed=401; trimmed username ตรงและ password ถูก=200; failure ไม่สร้าง authenticated session |
+| TEST-02 / AC-02 | API/DB | Anonymous/pre-auth CSRF; missing/empty/wrong-type/unknown fields รวม role ปลอม; unknown username/wrong password/IX/NUL username; outer spaces และ case ต่าง | Login แยก cases ตาม trim/case-sensitive seed | invalid input=400 INVALID_INPUT; credentials/inactive/NUL username=401 INVALID_CREDENTIALS generic; case ต่างไม่ตรง seed=401; trimmed username ตรงและ password ถูก=200; failure ไม่สร้าง authenticated session |
 | TEST-03 / AC-03 | API/DB | PA/OA sessions และ anonymous client | เรียก /me แต่ละ session | Identity ตรงผู้ใช้และ schema; anonymous=401 AUTH_REQUIRED ไม่มี private payload |
 | TEST-04 / AC-04 | API/DB | PA/OA Login แยก cases แล้ว copy cookie; valid CSRF; อีก case anonymous | Logout แล้วใช้ cookie เก่ากับ /me/protected API; anonymous เรียก Logout | Logout=204/no body; cookie เก่า/anonymous=401 AUTH_REQUIRED; server session invalidate และ cookie ถูก clear |
 | TEST-05 / AC-05 | API/DB + config | Seed accounts และ production cookie config; Login pre-auth session; mutation ใช้ active authorized session | ตรวจ hash/cookie; Login/mutation ด้วย CSRF ถูก/ผิด/ขาด รวม token เก่าหลัง Login และ Origin ผิด | Salt/hash ต่างเมื่อ password เดียวกันและ verify ได้; HttpOnly/SameSite/Secure ตาม environment; valid token ผ่าน, ผิด/ขาด/เก่า/Origin ผิด=403 CSRF_FAILED ไม่เปลี่ยน domain data; bootstrap หลัง Login ให้ token ที่ใช้กับ session ใหม่ได้ |
 | TEST-06 / AC-03 | API/DB | PA Login ที่ t0 | เรียก /me ที่ก่อน t0+2h และที่ expiry; แยกกรณี user ถูก disable ระหว่าง session | ก่อน expiry ใช้ได้; ที่/หลัง expiry หรือ inactive=401 |
 | TEST-07 / AC-06 | API/DB | OA และ input event valid | Create แล้ว read ผ่าน own detail | 201 DRAFT, owner OA, fields ตรง input/UTC; DB/readback ตรงกัน |
-| TEST-08 / AC-07 | Unit + API/DB | capacity=0,-1,1.5,1001/string/boolean; valid 1/1000; strings ว่างหลัง trim/ผิด type, Thai/emoji code-point boundaries; malformed JSON/non-object/unknown fields; invalid date/offset/precision/ordering | Validate และ POST แยก cases รวม closes=starts และ fraction 0–3 หลักที่ถูกต้อง | invalid=400 INVALID_INPUT ไม่มี insert; valid boundaries ผ่าน; string normalization ตรง BR-01, ไม่ coercion capacity หรือปัด timestamps |
+| TEST-08 / AC-07 | Unit + API/DB | capacity=0,-1,1.5,1001/string/boolean; valid 1/1000; strings ว่างหลัง trim/ผิด type, Thai/emoji code-point boundaries, max-length JSON surrogate escapes, NUL/unpaired surrogate; malformed JSON/non-object/unknown fields; invalid date/offset/precision/ordering | Validate/POST แยก cases รวม closes=starts, minute ISO with offset และ fraction 0–3 หลัก | invalid=400 INVALID_INPUT ไม่มี insert; valid Unicode boundaries ผ่านทั้ง literal UTF-8/escaped JSON; normalization ตรง BR-01 ไม่ coercion capacity/ปัด timestamps/แทน invalid text เงียบ ๆ |
 | TEST-09 / AC-08 | API/DB | OA owns valid EDRAFT ก่อน closes | Publish แล้วอ่านใหม่/ตรวจ DB | 200 PUBLISHED; shared list มองเห็น; owner คงเดิม |
 | TEST-10 / AC-08 | API/DB | PUBLISHED/CLOSED ทั้งก่อน/หลัง closes; DRAFT ที่ closes=t0 หรือก่อน t0 | Publish แต่ละ fixture | status ไม่ใช่ DRAFT=409 INVALID_TRANSITION แม้ deadline ผ่าน; DRAFT ที่/หลัง closes=409 DEADLINE_PASSED; status/updated_at เดิม |
 | TEST-11 / AC-09 | API/DB | OA/OB มี DRAFT/PUBLISHED/CLOSED; open/full/deadline fixtures และ starts_at/created_at ties | Shared list/detail และ OA own list | SharedEvent ไม่มี DRAFT/private roster (DRAFT detail=404); OwnerEvent เฉพาะ OA; sort ตรง contract; available_seats/count และ registration_open ตรง state/time/seats |
 | TEST-12 / AC-10 | API/DB | Anonymous/PA; valid CSRF เมื่อจำเป็น | เรียก create, publish, own list/detail และ shared list/detail ที่ protected | anonymous=401 AUTH_REQUIRED; PA owner routes=403 ROLE_FORBIDDEN; shared สำหรับ PA ใช้ได้; DB ไม่เปลี่ยน |
 | TEST-13 / AC-10 | API/DB | OB เรียก OA own detail/publish; OA ส่ง organizer_id/status ปลอม | เรียก endpoints โดยตรง | OB=404 EVENT_NOT_FOUND; unexpected fields=400 INVALID_INPUT; owner/status ไม่ถูก spoof |
-| TEST-14 / AC-11 | E2E + manual UI | Organizer form; list ว่าง; slow/failing network จำลอง | Submit invalid, valid; browse empty/loading/error states | Field errors ชัด, loading/ปุ่มป้องกันกดซ้ำ, empty มีทางไปต่อ, retry ไม่แสดง stale private data |
+| TEST-14 / AC-11 | E2E + manual UI | Organizer form; list ว่าง; slow/failing network; real session ถูกยกเลิกและ received401 เก่าตามหลัง newer network failure | Submit/browse/retry/refresh owner/shared detail; แยก late read401 หลัง Login บัญชีใหม่ | Field errors/loading/empty/retry ชัด; received401 ของ mounted session ล้าง private data และกลับ Login; response ของบัญชีเก่าไม่ทำให้บัญชีใหม่หลุด |
 | TEST-15 / AC-12 | API/DB | PA, EOPEN, t0 | Register แล้ว query DB และอ่านผ่าน my endpoint | 201 ACTIVE ของ PA; registered_at server time; DB count=1; persisted reference อ่านได้ |
 | TEST-16 / AC-13 | API/DB | PA มี ACTIVE ใน PUBLISHED ก่อน deadline; แยก case ที่ยังมีที่นั่งและ capacity เต็มจาก PA เอง | Register ซ้ำ | 409 ALREADY_REGISTERED แม้เต็มด้วย; record/count/registered_at เดิม ไม่สร้างเพิ่ม |
 | TEST-17 / AC-14 | API/DB | PA และ EFULL | Register | 409 EVENT_FULL; ไม่มี PA registration; count ยัง 1 |
@@ -77,7 +77,7 @@
 
 | ประเภท | ผลปัจจุบัน | Actual command / file / commit |
 |---|---|---|
-| Unit/API/DB/concurrency | F-01 latest recorded run: 54 PASS (31 API/DB + 23 unit), 0 fail/skip; domain concurrency NOT EXECUTED | `npm.cmd test`; server/tests/integration/auth.test.ts และ unit/{password,config,database-url}.test.ts; current manifest/logs ใน [auth evidence](../../deliverable-1/evidence/auth/README.md), TDD corrections ใน [pre-PR review](auth-pre-pr-review.md) |
-| Browser E2E | F-01 latest recorded run: 7 PASS, 0 fail/skip; journeys F-02–05 NOT EXECUTED | `npm.cmd run test:e2e`; tests/e2e/auth.spec.ts; Chromium 156.0.8078.4; current logs/source manifest และ historical failures ใน auth evidence |
-| Manual restart/reproduction/UI | Teammate/manual NOT EXECUTED | มี runnable F-01 และ automated app-recreation session test แล้ว; ยังไม่มี full Sprint 1/main release หรือ independent clean reproduction |
-| Process review | Baseline review/merge VERIFIED; feature/release review NOT EXECUTED | PR #5 approved jetanin ที่ f5339b9, staging 5395942; feature Issue #1 ยัง open/unassigned และยังไม่มี feature PR |
+| Unit/API/DB/concurrency | UI follow-up: 12 files / 145 PASS, 0 fail/skip รวม seed4 และ feature regression เดิม | `npm.cmd test`; [latest UI regression](../../events/visual-consistency.md), [seed tests](../../events/demo-seed.md), [domain audit](../../events/consistency-review.md) |
+| Browser E2E | ล่าสุด35 PASS, 0 fail/skip; เดิม32 + typography/layout3 viewport cases (51 render contexts และ long-content checks) รวม browser Back | `npm.cmd run test:e2e` ports5183/3011; [current UI evidence](../../events/visual-consistency.md); F-04/F-05/full Sprint journey pending |
+| Manual restart/reproduction/UI | Teammate/manual NOT EXECUTED | automated createApp recreation คง session/Event/Registration reference/count; Chromium actual UI ใช้งานได้ แต่ไม่ใช่ OS process restart/full Sprint 1/main release/independent clean reproduction |
+| Process review | Baseline/Auth/Registration integration อ้าง local Git; F-02/release teammate review NOT EXECUTED | feature/events HEAD 04106ff + MERGE_HEAD ada659b ยังไม่มี merge commit; ไม่ได้ตรวจ GitHub live/board รอบนี้ |
