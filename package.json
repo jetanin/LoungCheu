@@ -18,6 +18,7 @@
     "test": "vitest run",
     "test:unit": "vitest run server/tests/unit client/src",
     "test:auth": "vitest run server/tests/integration/auth.test.ts",
+    "test:registration": "vitest run server/tests/integration/registration.test.ts",
     "test:e2e": "playwright test",
     "test:built": "node scripts/smoke-built.mjs",
     "test:local-db": "node scripts/smoke-local-db.mjs",
@@ -28,6 +29,8 @@
     "db:seed": "npm run db:seed -w server"
   },
   "devDependencies": {
+    "@testing-library/react": "16.3.0",
+    "jsdom": "27.1.0",
     "@playwright/test": "1.64.1",
     "@types/connect-pg-simple": "7.0.3",
     "@types/express": "5.0.6",
