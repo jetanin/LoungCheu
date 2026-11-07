@@ -1,5 +1,7 @@
 # Part E — Sprint 1 Feature Engineering Contracts
 
+Execution update 7 พ.ย. 2026: F-04/F-05 implement ตาม contract เดิมบน `feature/registration-views` แล้ว ดู [Issue #4 results](../../registration/views-verification.md) ข้อความ pending ด้านล่างเป็นประวัติก่อนงานนี้ ไม่มีการเปลี่ยน AC/schema
+
 เอกสาร LC-S1-CONTRACT | Documentation baseline v0.5 | 5 พฤศจิกายน 2026
 
 ใช้ SRS/System SDS baseline v0.5 กติกา success/error/session/time ร่วมตาม System SDS และ IDs ตาม traceability; F-01/F-02/F-03 รวมและทดสอบใน feature/events merge working tree แล้ว ดู [combined verification](../../events/consistency-review.md) F-04/F-05 ยังไม่รวม รอ review/merge commit/release ไม่มีการเปลี่ยน AC จาก baseline

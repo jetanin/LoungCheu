@@ -1,5 +1,7 @@
 # Part B — Feature Inventory
 
+7 พ.ย. 2026: F-04/F-05 implement บน `feature/registration-views` แล้ว ดู [current Issue #4 results](registration/views-verification.md); F-06–09 ยัง pending ข้อความ pending Issue #4 และผลก่อนวันนี้ด้านล่างเป็น historical records
+
 **UI consistency follow-up:** ล่าสุด 145 Vitest / 35 Chromium, typecheck/build/compiled smoke PASS รวม typography/layout/state checks ที่1280/390/320px ดู [current UI evidence](events/visual-consistency.md) ผล141/32 และ seed follow-up ด้านล่างเป็น historical runs
 
 **Seed follow-up (6 พ.ย.):** full Vitest **145 PASS** รวม seed integration ใหม่4 และ typecheck PASS; 141/32 ใน feature audit ด้านล่างเป็นรอบก่อนเพิ่ม seed โดย Chromium/build ไม่ได้ rerun รอบ seed ดู [latest seed results](events/demo-seed.md) ไม่มี AC/scope ใหม่

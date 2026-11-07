@@ -1,5 +1,7 @@
 # Part B — Requirements, Features และ Verification Traceability
 
+**Current — 7 พ.ย. 2026:** F-04/F-05 implement บน `feature/registration-views` (uncommitted จาก events@9fcbfc8), full Vitest159 PASS/typecheck/build PASS ดู [Issue #4 verification](registration/views-verification.md) สำหรับ browser status/ข้อจำกัด ข้อความ pending Issue #4 และ merge-working-tree/results วันที่6พ.ย. ด้านล่างเป็น historical records; ยังไม่อ้าง Sprint Product DoD/release
+
 **UI consistency follow-up:** ล่าสุด 145 Vitest / 35 Chromium, typecheck/build/compiled smoke PASS รวม typography/layout/state checks ที่1280/390/320px ดู [current UI evidence](events/visual-consistency.md) ผล141/32 และ seed follow-up ด้านล่างเป็น historical runs
 
 **Seed follow-up (6 พ.ย.):** full Vitest **145 PASS** รวม seed integration ใหม่4 และ typecheck PASS; 141/32 ใน feature audit ด้านล่างเป็นรอบก่อนเพิ่ม seed โดย Chromium/build ไม่ได้ rerun รอบ seed ดู [latest seed results](events/demo-seed.md) ไม่มี AC/scope ใหม่
@@ -20,8 +22,8 @@ Implementation/results อ้าง merge working tree บน feature/events: HE
 | FR-04 | F-02 | 1 | AC-08,10 | TEST-09,10,12,13 | events.test.ts publish/deadline/lock/permissions PASS; [evidence](events/verification.md) |
 | FR-05 | F-02 | 1 | AC-09,11 | TEST-11,14,36 | events.test.ts shared fields/visibility/sort/counts/snapshot + events.spec.ts browse/time PASS; [evidence](events/verification.md) |
 | FR-06 | F-03 | 1 | AC-12–17 | TEST-15–21 | registration.test.ts 17 PASS + events.test.ts combined DB readback + events-registration.spec.ts real journey PASS; [combined verification](events/consistency-review.md); own GET รอ Issue #4 |
-| FR-07 | F-04 | 1 | AC-18–20 | TEST-22–25 | — |
-| FR-08 | F-02,F-05 | 1 | AC-09,21–23 | TEST-11,26–29 | PARTIAL: F-02 own list/scoped detail + Organizer overview จาก own list PASS; F-05 roster TEST-26–29 NOT EXECUTED |
+| FR-07 | F-04 | 1 | AC-18–20 | TEST-22–25 | registration-views.test.ts + RegistrationViews.test.tsx PASS; browser status in [Issue #4](registration/views-verification.md) |
+| FR-08 | F-02,F-05 | 1 | AC-09,21–23 | TEST-11,26–29 | own event APIs/overview + F-05 scoped roster/count/order/refresh API/DB PASS; [Issue #4](registration/views-verification.md) |
 | FR-09 | F-06 | 2 | V2-01: own ACTIVE cancel ก่อนปิดรับ คืนที่นั่ง; invalid cancel ไม่เปลี่ยนข้อมูล | กำหนด detailed STS ก่อน F-06 coding | — |
 | FR-10 | F-06 | 2 | V2-02: owner close และ reject register ต่อ โดยคง registration เดิม | กำหนด detailed STS ก่อน F-06 coding | — |
 | FR-11 | F-07 | 2 | V2-03: owner edit ตาม status; capacity ไม่ต่ำกว่า active แม้มี concurrent registration | กำหนด detailed STS ก่อน F-07 coding | — |
@@ -84,13 +86,13 @@ Implementation/results อ้าง merge working tree บน feature/events: HE
 | AC-15 | F-03 | TEST-18 | IMPLEMENTED | registration.test.ts — scope/deadline boundaries/lock-wait clock | PASS / combined regression PASS; merge commit pending |
 | AC-16 | F-03 | TEST-19 | IMPLEMENTED with staging auth | registration.test.ts — real session/role/CSRF/Origin/spoofing/expiry | PASS / combined regression PASS; merge commit pending |
 | AC-17 | F-03 | TEST-20,21 | IMPLEMENTED | registration.test.ts — PostgreSQL last-seat/duplicate races | PASS / combined regression PASS; merge commit pending |
-| AC-18 | F-04 | TEST-22,24 | NOT IMPLEMENTED | — | NOT EXECUTED / — |
-| AC-19 | F-04 | TEST-23 | NOT IMPLEMENTED | — | NOT EXECUTED / — |
-| AC-20 | F-04 | TEST-25 | NOT IMPLEMENTED | — | NOT EXECUTED / — |
-| AC-21 | F-05 | TEST-26,28 | NOT IMPLEMENTED | — | NOT EXECUTED / — |
-| AC-22 | F-05 | TEST-27 | NOT IMPLEMENTED | — | NOT EXECUTED / — |
-| AC-23 | F-05 | TEST-29 | NOT IMPLEMENTED | — | NOT EXECUTED / — |
-| AC-24 | Cross-feature | TEST-30 | PARTIAL / F-01–03 | events-registration.spec.ts create/publish/register/reference/count | PASS subset; own GET/list/roster ของ Issue #4 ยังไม่รวม จึงไม่อ้าง full TEST-30/AC-24 ผ่าน |
+| AC-18 | F-04 | TEST-22,24 | IMPLEMENTED / review pending | registration-views.test.ts own schemas/order/re-login/recreation; registration-views.spec.ts | API/DB PASS; [browser status](registration/views-verification.md); uncommitted |
+| AC-19 | F-04 | TEST-23 | IMPLEMENTED / review pending | registration-views.test.ts cross-user/auth/role/UUID matrix | API/DB PASS; uncommitted |
+| AC-20 | F-04 | TEST-25 | IMPLEMENTED / review pending | RegistrationViews.test.tsx empty/error/retry/account-change/late reads | UI tests PASS; [browser status](registration/views-verification.md); uncommitted |
+| AC-21 | F-05 | TEST-26,28 | IMPLEMENTED / review pending | registration-views.test.ts minimal sorted roster/ACTIVE count/empty DRAFT; RegistrationViews.test.tsx | API/DB/UI tests PASS; uncommitted |
+| AC-22 | F-05 | TEST-27 | IMPLEMENTED / review pending | registration-views.test.ts foreign owner/role/anonymous/errors | API/DB PASS; uncommitted |
+| AC-23 | F-05 | TEST-29 | IMPLEMENTED / review pending | registration-views.test.ts fresh registration/count DB equality; RegistrationViews.test.tsx refresh | API/DB/UI tests PASS; uncommitted |
+| AC-24 | Cross-feature | TEST-30 | IMPLEMENTED / browser verification pending | registration-views.spec.ts real publish/register/own read/re-login/roster journey | [Current result](registration/views-verification.md); no full Sprint DoD claim |
 | AC-25 | Cross-feature | TEST-31,35 | PARTIAL / app recreation only | events.test.ts recreate createApp อ่าน session/Event/Registration reference/count เดิม | Automated subset PASS; manual process restart/clean reproduction/full TEST-31,35 NOT EXECUTED |
 | AC-26 | Cross-feature | TEST-32,33 | PARTIAL / F-01–03 | auth/events/registration integration + registration-router tests + browser error/retry/full conflict | F-01–03 subset PASS; F-04/F-05/full matrix pending; [combined verification](events/consistency-review.md) |
 | AC-27 | SYS-QA | TEST-34 | PARTIAL / process pending | baseline review + auth TDD/pre-PR records | Baseline/history verified; feature/main release chains และ full TEST-34 ยัง pending |
