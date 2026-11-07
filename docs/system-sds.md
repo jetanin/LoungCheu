@@ -1,5 +1,7 @@
 # Part C — System-Level Software Design Specification
 
+**Implementation update — 7 พ.ย. 2026:** F-04/F-05 implemented on `feature/registration-views`; see [Issue #4 verification](registration/views-verification.md) for current results/limitations. Historical pending-Issue-4 notes below predate this implementation. `registrations/queries.ts` selects session-scoped own records and owner-scoped roster; `read-router.ts` mounts the three protected GET routes. Roster rows/count share a REPEATABLE READ transaction. `RegistrationViews.tsx` provides own list/detail and roster; App preserves these routes during session checks and keys private views by account/role/resource. No schema/migration changes.
+
 เอกสาร LC-SYS-SDS | Documentation baseline v0.5 | 5 พฤศจิกายน 2026
 
 ## 1. Architecture

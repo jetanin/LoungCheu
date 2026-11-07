@@ -75,6 +75,8 @@
 
 ## 4. Actual execution summary
 
+7 พ.ย. 2026: Issue #4 เพิ่ม `registration-views.test.ts`, `registration-queries.test.ts`, `RegistrationViews.test.tsx` และ `registration-views.spec.ts` ตาม TEST-22–30; full Vitest159 PASS/typecheck/build PASS ดู [current execution](../../registration/views-verification.md) สำหรับ actual coverage/browser attempts ข้อมูลตารางด้านล่างเป็นรอบก่อน Issue #4
+
 | ประเภท | ผลปัจจุบัน | Actual command / file / commit |
 |---|---|---|
 | Unit/API/DB/concurrency | UI follow-up: 12 files / 145 PASS, 0 fail/skip รวม seed4 และ feature regression เดิม | `npm.cmd test`; [latest UI regression](../../events/visual-consistency.md), [seed tests](../../events/demo-seed.md), [domain audit](../../events/consistency-review.md) |

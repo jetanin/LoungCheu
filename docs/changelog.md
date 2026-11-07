@@ -50,6 +50,12 @@ UI consistency follow-up หลัง demo seed — ตรวจ Login/overview/
 
 เมื่อเปลี่ยน baseline ให้บันทึกเหตุผล IDs ที่กระทบ และ revision ก่อน implementation เก็บผลทดสอบ/review ตาม commit จริง; การย้ายขอบเขตที่กระทบข้อกำหนดรายวิชาต้องมีการตกลงที่เกี่ยวข้อง
 
+## Issue #4 — 7 พฤศจิกายน 2026
+
+สร้าง branch `feature/registration-views` จาก events@9fcbfc8 ตามคำสั่งผู้ใช้ เพิ่ม F-04 own list/detail และ F-05 owner roster ตาม baseline AC-18–23 พร้อม navigation, minimal response fields, database ownership filters, snapshot count, loading/empty/error/retry และ private-data lifecycle guards คืน optional connection limit ที่ถูกลบใน events เพื่อให้ typecheck/concurrency regression ทำงาน ไม่เพิ่ม migration หรือ actions ของ Sprint2/3
+
+Vitest159/typecheck/build/compiled smoke3 PASS; browser attempts เจอ ERR_NETWORK_ACCESS_DENIED ตอนโหลด React จาก Vite จึงไม่อ้าง browser/full TEST-30 PASS รายละเอียด runtime/results และข้อจำกัดที่ [Issue #4 verification](registration/views-verification.md) ยังไม่ commit/push/เปิด PR และไม่อ้าง teammate review/release
+
 ## AI-use declaration
 
 ใช้ Codex ช่วยอ่าน PDF ร่าง/ปรับเอกสาร วิเคราะห์ design และตรวจ IDs/links/traceability; ตั้งแต่ 6 พ.ย. 2026 ช่วย setup workspace, เขียน implementation/tests ของ F-01/F-02 และ audit/แก้ไขพร้อมเก็บผลรันจริงตาม [auth work record](sprints/sprint-1/auth-work-record.md) และ [F-02 audit](events/audit.md) ทีมรับผิดชอบตรวจรับและเข้าใจ code/tests และทำ teammate review เอง ผลที่ยังไม่รันไม่ถือว่าผ่าน

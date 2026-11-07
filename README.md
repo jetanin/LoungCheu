@@ -1,5 +1,7 @@
 # LoungCheu — ระบบลงทะเบียนกิจกรรมและเช็กชื่อ
 
+**Issue #4 — 7 พ.ย. 2026:** F-04/F-05 implement บน `feature/registration-views` แล้ว (ยังไม่ commit/review/release): Participant เปิด **รายการลงทะเบียนของฉัน** ที่ `/my/registrations` และ detail ตามเลขอ้างอิง; Organizer เปิดกิจกรรมของตนแล้วเลือก **ดูรายชื่อผู้ลงทะเบียน** เพื่ออ่าน roster/ACTIVE count ไม่มี migration ใหม่ ดู [current verification](docs/registration/views-verification.md) ข้อความรอ Issue #4/ผล145 tests ด้านล่างเป็น historical records
+
 **UI consistency follow-up:** ล่าสุด 145 Vitest / 35 Chromium, typecheck/build/compiled smoke PASS รวม typography/layout/state checks ที่1280/390/320px ดู [current UI evidence](docs/events/visual-consistency.md) ผล141/32 และ seed follow-up ด้านล่างเป็น historical runs
 
 Documentation baseline v0.5 | ปรับปรุง 5 พฤศจิกายน 2026
