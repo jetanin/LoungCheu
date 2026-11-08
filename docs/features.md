@@ -1,14 +1,14 @@
 # Part B — Feature Inventory
 
-7 พ.ย. 2026: F-04/F-05 implement บน `feature/registration-views` แล้ว ดู [current Issue #4 results](registration/views-verification.md); F-06–09 ยัง pending ข้อความ pending Issue #4 และผลก่อนวันนี้ด้านล่างเป็น historical records
+8 พ.ย.2026: F-04/F-05 committed in eeafc31 บน feature/registration-views + RV-01–03 working-tree correction; Vitest159/Chromium37/typecheck/build/smoke3 PASS ดู [source/results](registration/views-verification.md). PR10 OPEN/Draft เข้า staging/no reviews/no merge; F-06–09 และ independent process/release gates ยัง pending
 
-**UI consistency follow-up:** ล่าสุด 145 Vitest / 35 Chromium, typecheck/build/compiled smoke PASS รวม typography/layout/state checks ที่1280/390/320px ดู [current UI evidence](events/visual-consistency.md) ผล141/32 และ seed follow-up ด้านล่างเป็น historical runs
+**Historical Event UI run — 6 พ.ย. 2026:** 145 Vitest / 35 Chromium, typecheck/build/compiled smoke PASS รวม typography/layout/state checks ที่1280/390/320px ดู [current UI evidence](events/visual-consistency.md) ผล141/32 และ seed follow-up ด้านล่างเป็น historical runs
 
 **Seed follow-up (6 พ.ย.):** full Vitest **145 PASS** รวม seed integration ใหม่4 และ typecheck PASS; 141/32 ใน feature audit ด้านล่างเป็นรอบก่อนเพิ่ม seed โดย Chromium/build ไม่ได้ rerun รอบ seed ดู [latest seed results](events/demo-seed.md) ไม่มี AC/scope ใหม่
 
-Documentation baseline v0.5 | 5 พฤศจิกายน 2026 | Execution update 6 พ.ย.: F-01/F-02/F-03 รวมและทดสอบใน feature/events merge working tree แล้ว (141 Vitest / 32 Chromium PASS); F-04–09 ยังไม่รวม ดู [combined verification](events/consistency-review.md)
+Documentation baseline v0.5 | 5 พฤศจิกายน2026 | Current execution8พ.ย.ตาม Issue #4 source/results; results145/35 ด้านบนเป็น historical Event runs ไม่รวม review-fix patch
 
-Registration integration update: รวม staging@ada659b กับ HEAD 04106ff โดยคง EventPage host และ reuse RegistrationAction/real backend ของ #3; create/publish/register/reference/count journey ผ่าน รอ Issue #4 (F-04/F-05), teammate review, merge commit และ release ไม่อ้าง full Product DoD
+Registration integration update: F-01–05 รวมใน feature/registration-views แล้ว, F-04/F-05 commit eeafc31 และ tested RV-01 patch มี own read/re-login/roster journey PASS. Staging integration, teammate review และ accepted release ยังไม่ยืนยัน; historical Event runs ไม่ใช่ผลปัจจุบัน
 
 | ID | Feature / ผลลัพธ์ | Requirement / Rules | Dependency | Sprint |
 |---|---|---|---|---:|

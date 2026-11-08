@@ -1,0 +1,273 @@
+{
+  "verified_date": "2026-11-08",
+  "timezone": "Asia/Bangkok",
+  "branch": "feature/registration-views",
+  "implementation_commit": "eeafc313220fa9feda633b89cab8c4b90cb86f9e",
+  "tested_revision": "eeafc313220fa9feda633b89cab8c4b90cb86f9e plus RV-01 working-tree test-helper correction; RV-02/03 docs/evidence corrections",
+  "patch_committed": false,
+  "patch_pushed": false,
+  "environment": {
+    "os": "Windows",
+    "node": "22.23.2",
+    "npm": "11.11.0",
+    "postgresql": "17.11",
+    "test_database": "127.0.0.1:55433/loungcheu_test",
+    "container": "loungcheu-db-test-1",
+    "web_port": 5197,
+    "api_port": 3027,
+    "app_database_changed": false,
+    "env_test_file_changed": false
+  },
+  "results": {
+    "focused_browser": {
+      "passed": 2,
+      "failed": 0,
+      "skipped": 0,
+      "log": "focused.log"
+    },
+    "full_vitest": {
+      "files": 15,
+      "passed": 159,
+      "failed": 0,
+      "skipped": 0,
+      "log": "vitest.log"
+    },
+    "typecheck": {
+      "exit_code": 0,
+      "log": "typecheck.log"
+    },
+    "build": {
+      "exit_code": 0,
+      "log": "build.log"
+    },
+    "compiled_smoke": {
+      "passed": 3,
+      "exit_code": 0,
+      "log": "built-smoke.log"
+    },
+    "full_browser": {
+      "passed": 37,
+      "failed": 0,
+      "skipped": 0,
+      "exit_code": 0,
+      "log": "e2e.log"
+    }
+  },
+  "review_findings": {
+    "RV01": "Corrected helper ends/verifies server logout before login navigation; retained foreign/wrong-role assertions; focused2/full37 PASS",
+    "RV02": "Committed implementation and uncommitted fix patch distinguished; live PR10/PR9/Issue4 facts captured read-only; historical failures retained",
+    "RV03": "Current evidence-register, requirement/AC rows, Sprint plan and summaries updated; independent process gates retained"
+  },
+  "remaining_gates": [
+    "teammate approval",
+    "staging integration/merge",
+    "OS-process restart",
+    "independent clean reproduction/UAT",
+    "reviewed main release/deployment acceptance"
+  ],
+  "hash_convention": "sha256 hashes exact workspace bytes; sha256_utf8_lf normalizes CRLF to LF for Git/checkouts; manifest does not hash itself",
+  "files": [
+    {
+      "path": "tests/e2e/registration-views.spec.ts",
+      "bytes": 8167,
+      "sha256": "f46b057cd53cd800661add34966abf1bf2a0481839c3e560671392bd39969b69",
+      "sha256_utf8_lf": "16e98a39c403b21eb37067b39dc4f4d8bb86d31e60701acde4dd95edb6cec66d"
+    },
+    {
+      "path": "server/src/modules/registrations/queries.ts",
+      "bytes": 2666,
+      "sha256": "62dd5b5518b680cf7b071d6a1cbc0265ecfe1671e36a879d73eab36c6c9b01b3",
+      "sha256_utf8_lf": "d3f067f336e37d5c438af0024c6cddd949213d3bd04ba07884ad290c5c24dc0a"
+    },
+    {
+      "path": "server/src/modules/registrations/read-router.ts",
+      "bytes": 1006,
+      "sha256": "a97d1ce96cf134b08f3c17644d75e9a51959dc7a9d1a9c72e09918836b093157",
+      "sha256_utf8_lf": "2bbddb584e0431900f01e6dc39d916120dab4115a5c95662adb6471410920e79"
+    },
+    {
+      "path": "server/src/app.ts",
+      "bytes": 6991,
+      "sha256": "135f98b29fb0f71772f00349ad8c4901de85369599d2bed60b99d0b24d6dbe96",
+      "sha256_utf8_lf": "b33c7b2aa56b6506ee6d5c702d41a2957328fee2e884531513faf80ce2f0d588"
+    },
+    {
+      "path": "server/src/db/client.ts",
+      "bytes": 319,
+      "sha256": "c4bc5d5323f63567718d4fbcf2ffd9cef2b1cf8c92ec38fc2fb74dd3db09c211",
+      "sha256_utf8_lf": "555a6a1ef1b6df7b75b1d33e604040e7b8e7460f4d2d4640bba7530030f1db78"
+    },
+    {
+      "path": "client/src/features/registrations/RegistrationViews.tsx",
+      "bytes": 8418,
+      "sha256": "a0b05d50247f5a5b08939389080fe02a66d61bc3e01d23d03e5268c4fd796d8d",
+      "sha256_utf8_lf": "5d5d58835713a00791704d370cde63e88e7dd6706bf1194523757833d9a6b26d"
+    },
+    {
+      "path": "client/src/app/App.tsx",
+      "bytes": 10636,
+      "sha256": "c5ce3239f55ae7de23a996ef208b6909b83083eb48b114af70e57f21d7a0a4ec",
+      "sha256_utf8_lf": "fb4789cbe2e28af94d3442d36f7a65f055f2f3efe1175b58cb3f8453804b5e95"
+    },
+    {
+      "path": "client/src/features/events/EventPage.tsx",
+      "bytes": 9472,
+      "sha256": "be24c2b6af274213bc1bf62a623088516e26fa939800123e814efa808ca1bc58",
+      "sha256_utf8_lf": "aa1305e41896329eba6d0081916d2a01702d56c53b1f1d0c88610c01623fac55"
+    },
+    {
+      "path": "server/tests/integration/registration-views.test.ts",
+      "bytes": 8355,
+      "sha256": "fb90ad4424996495ac7fe7c9d6851347d82e4b0bb6e210e214321ba79170f7a0",
+      "sha256_utf8_lf": "874b63e6550732a2256319d0b2cc1f16cd5e05dec24cb03c504f1e8957921c2e"
+    },
+    {
+      "path": "server/tests/unit/registration-queries.test.ts",
+      "bytes": 3779,
+      "sha256": "b10b3b5ea92426838331e3b8a755268ce56c38969940e319cd8e1f916c462c6a",
+      "sha256_utf8_lf": "39aadd1edaf39a0ecdb6d072650b721d32222f22708b12466761b100666bb0f3"
+    },
+    {
+      "path": "client/src/features/registrations/RegistrationViews.test.tsx",
+      "bytes": 5520,
+      "sha256": "36852443a8d8b67822218fda205ac18d3c07e874a15d8c3824b992b20758d4e2",
+      "sha256_utf8_lf": "0c73a52907e66b84a8d5381edcd79e1f57eb69fa0416b7cac01099e2c5c9aa5d"
+    },
+    {
+      "path": "README.md",
+      "bytes": 21739,
+      "sha256": "9a0edee0d12912a5f6867664348db80071c7c1e8eb450b2083cef27169c24262",
+      "sha256_utf8_lf": "b88182fd52625f8f0a798929cbcc6972f0b56385000dd7e2d4892371a2cd0d2d"
+    },
+    {
+      "path": "docs/traceability.md",
+      "bytes": 17865,
+      "sha256": "b069d32f177d164bce92061a0f6135edd2e87f8bbc2eac3b5cc81b61e1c093b5",
+      "sha256_utf8_lf": "361850699214cd760f3d3545926812238495e76d29f0051eb1f13bc53b879d32"
+    },
+    {
+      "path": "docs/deliverable-1/evidence-register.md",
+      "bytes": 10403,
+      "sha256": "c656582fa4b60c98483446c093b2b69a9903731b774a642a27033fff178aa7b7",
+      "sha256_utf8_lf": "b2c821097ca4fa9c3a791f37096078bc6b7ca96c11935797012d65be89abab15"
+    },
+    {
+      "path": "docs/sprints/plan.md",
+      "bytes": 8662,
+      "sha256": "af601b60de24e5235b7f8916ac4d1456ee9ab1ce2db6d33dcea990884da69a97",
+      "sha256_utf8_lf": "ff12190cd981e088d7d51cf42631c0138a36b9d8759eda69213d0db476e8da64"
+    },
+    {
+      "path": "docs/features.md",
+      "bytes": 4929,
+      "sha256": "822bff48f00df1a44f70399a686a614c4c28bbbce7d756a91d8e424c8f2fc7d4",
+      "sha256_utf8_lf": "a42cdae8232999bfc1f2dd348a29f279ec993a6cce635653b571982ce52a6a65"
+    },
+    {
+      "path": "docs/sprints/sprint-1/contracts.md",
+      "bytes": 22735,
+      "sha256": "1d8c51de4790cb04dbbbcc9024dbdad6a95d9e67fe6a623855af7490da9d95a5",
+      "sha256_utf8_lf": "fcde53b4ca37ff3a0d3ba2e7bd0aea4090f71d9c3291110f53300df2cea34f54"
+    },
+    {
+      "path": "docs/sprints/sprint-1/README.md",
+      "bytes": 6116,
+      "sha256": "3aad079c6a5c399b2dde468b21e0641e05a8f984632ec618319155f3424c6b9f",
+      "sha256_utf8_lf": "affbe555bd18c6bb87ebe44b6969368043b1613f6bed5d26b1f1e1fa97759692"
+    },
+    {
+      "path": "docs/sprints/sprint-1/sts.md",
+      "bytes": 19379,
+      "sha256": "b44073b732456610dca016e66be9ab088c2f7bd2a73e8c103f9f831770871413",
+      "sha256_utf8_lf": "3847f094905e26c6ddc831d4974fb38029e5c8d55a7be3b2e89672f3a94cc67d"
+    },
+    {
+      "path": "docs/changelog.md",
+      "bytes": 16079,
+      "sha256": "934bd299be766ed84742b3dc186599a6259b0b51f966c52025cb3e00793111b6",
+      "sha256_utf8_lf": "990f015916076e3b9b329c7dea53b0deec3c541d01a12aea66afc51e664ad51a"
+    },
+    {
+      "path": "docs/registration/views-verification.md",
+      "bytes": 6755,
+      "sha256": "a6677f37a3b322a5c962b132b593b0bcf932ab06050be168225420d9964a6eb7",
+      "sha256_utf8_lf": "17a7e97c97691ec630b65a699149f6bf5cc744ed6a7e12d15f2c19ecde92ea20"
+    },
+    {
+      "path": "docs/registration/views-pr.md",
+      "bytes": 2121,
+      "sha256": "bda80d7f0f171567339c086ab294231083865ae6caaff6220db586c65d3cd54b",
+      "sha256_utf8_lf": "072b19eb192142fdd4feb5ea47c8f4df83401e4cc9c04082f809b36b25d3128a"
+    },
+    {
+      "path": "docs/system-sds.md",
+      "bytes": 23843,
+      "sha256": "9dfb8c8d1c186c3817b0c034e01fb405ebb510e65beb22e6a0cd8cb6172ce17d",
+      "sha256_utf8_lf": "f298c922a8fec9bfd6893ca9488659316f615a09da055e792437a712db4440ca"
+    },
+    {
+      "path": "docs/registration/evidence/review-fixes/build.log",
+      "bytes": 533,
+      "sha256": "574fdfed856242731f4469581ef773992e4ede1f45c72202728a3ee2ef25215a",
+      "sha256_utf8_lf": "574fdfed856242731f4469581ef773992e4ede1f45c72202728a3ee2ef25215a"
+    },
+    {
+      "path": "docs/registration/evidence/review-fixes/built-smoke.log",
+      "bytes": 159,
+      "sha256": "bc1fd7dbf37b5c7e50f13bf598d07f811368b513a9aedb80110560ea90da9401",
+      "sha256_utf8_lf": "bc1fd7dbf37b5c7e50f13bf598d07f811368b513a9aedb80110560ea90da9401"
+    },
+    {
+      "path": "docs/registration/evidence/review-fixes/e2e.log",
+      "bytes": 5939,
+      "sha256": "2d4cbdd9ae07f845aa08e3315a366613d64c364d2aa57b12ec17d78e70217210",
+      "sha256_utf8_lf": "2d4cbdd9ae07f845aa08e3315a366613d64c364d2aa57b12ec17d78e70217210"
+    },
+    {
+      "path": "docs/registration/evidence/review-fixes/focused.log",
+      "bytes": 1346,
+      "sha256": "f879b37285544790299d749a6b895f1d1c81848b4a7e55bbb3ca0856002c40f9",
+      "sha256_utf8_lf": "f879b37285544790299d749a6b895f1d1c81848b4a7e55bbb3ca0856002c40f9"
+    },
+    {
+      "path": "docs/registration/evidence/review-fixes/github-status.json",
+      "bytes": 1240,
+      "sha256": "584e9a58afb5303457defc2674776bcf014082403db0485e33e6a64209b1b71e",
+      "sha256_utf8_lf": "584e9a58afb5303457defc2674776bcf014082403db0485e33e6a64209b1b71e"
+    },
+    {
+      "path": "docs/registration/evidence/review-fixes/own-detail.png",
+      "bytes": 44563,
+      "sha256": "753820ce0c6909c9e7667bc35f4b6b986a4df352382f2917ee8fc87b157af192"
+    },
+    {
+      "path": "docs/registration/evidence/review-fixes/README.md",
+      "bytes": 2427,
+      "sha256": "cc4be147fdd47eebb59b3125f4336bb044d4de7719c15bc43580463f72761a9c",
+      "sha256_utf8_lf": "cc4be147fdd47eebb59b3125f4336bb044d4de7719c15bc43580463f72761a9c"
+    },
+    {
+      "path": "docs/registration/evidence/review-fixes/review-eeafc31.md",
+      "bytes": 7399,
+      "sha256": "17c31dc8ceb066a855a816e581e9ec1d5cb214f10879d86fe33a4e119ddbe2e0",
+      "sha256_utf8_lf": "2f92be3772006909c457e2195276a9f42dd2749ce8350bfdee4866f3f39e7360"
+    },
+    {
+      "path": "docs/registration/evidence/review-fixes/roster.png",
+      "bytes": 35689,
+      "sha256": "43f7934737dc3289abded51a6d28219d4532f7c96a14ac87e56f17c71a2736bc"
+    },
+    {
+      "path": "docs/registration/evidence/review-fixes/typecheck.log",
+      "bytes": 208,
+      "sha256": "7f501bad652b6ee1e0a6dd96d0ebdc4e979d227e882da6bf89a4a71623e647ec",
+      "sha256_utf8_lf": "7f501bad652b6ee1e0a6dd96d0ebdc4e979d227e882da6bf89a4a71623e647ec"
+    },
+    {
+      "path": "docs/registration/evidence/review-fixes/vitest.log",
+      "bytes": 451,
+      "sha256": "09000b2e31398ac7dfbd821a565fd1040cca7365893c0edc8109b7b2a4af07d6",
+      "sha256_utf8_lf": "09000b2e31398ac7dfbd821a565fd1040cca7365893c0edc8109b7b2a4af07d6"
+    }
+  ]
+}

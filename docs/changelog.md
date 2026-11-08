@@ -54,7 +54,11 @@ UI consistency follow-up หลัง demo seed — ตรวจ Login/overview/
 
 สร้าง branch `feature/registration-views` จาก events@9fcbfc8 ตามคำสั่งผู้ใช้ เพิ่ม F-04 own list/detail และ F-05 owner roster ตาม baseline AC-18–23 พร้อม navigation, minimal response fields, database ownership filters, snapshot count, loading/empty/error/retry และ private-data lifecycle guards คืน optional connection limit ที่ถูกลบใน events เพื่อให้ typecheck/concurrency regression ทำงาน ไม่เพิ่ม migration หรือ actions ของ Sprint2/3
 
-Vitest159/typecheck/build/compiled smoke3 PASS; browser attempts เจอ ERR_NETWORK_ACCESS_DENIED ตอนโหลด React จาก Vite จึงไม่อ้าง browser/full TEST-30 PASS รายละเอียด runtime/results และข้อจำกัดที่ [Issue #4 verification](registration/views-verification.md) ยังไม่ commit/push/เปิด PR และไม่อ้าง teammate review/release
+Historical 7พ.ย. initial work: Vitest159/typecheck/build/compiled smoke3 results and network-denied browser attempts as detailed in [history](registration/views-verification.md). Implementation was subsequently committed as eeafc31 and published in PR10; no longer an uncommitted implementation claim.
+
+## RV-01–03 corrections — 8 พฤศจิกายน2026
+
+Implementation commit eeafc313220fa9feda633b89cab8c4b90cb86f9e is committed; these corrections remain an uncommitted patch on it. RV-01 fixes account-switch setup by ending the real server session (including after mocked401) before Login. RV-02/03 update current revision/PR state, requirement rows and delivery evidence. Corrected source focused2/full Chromium37/Vitest159/typecheck/build/compiled smoke3 PASS on Node22.23.2/PostgreSQL17.11 isolated DB55433. [Logs/source manifest and retained failures](registration/views-verification.md). GitHub verified8พ.ย.: PR10 OPEN/Draft to sprint-1-staging/head eeafc31/no reviews/no merge; PR9 CLOSED. No commit/push/PR mutation in this pass. Teammate approval, staging integration, independent restart/reproduction/UAT and release acceptance remain pending.
 
 ## AI-use declaration
 

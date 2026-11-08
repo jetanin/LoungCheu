@@ -1,17 +1,17 @@
 # LoungCheu — ระบบลงทะเบียนกิจกรรมและเช็กชื่อ
 
-**Issue #4 — 7 พ.ย. 2026:** F-04/F-05 implement บน `feature/registration-views` แล้ว (ยังไม่ commit/review/release): Participant เปิด **รายการลงทะเบียนของฉัน** ที่ `/my/registrations` และ detail ตามเลขอ้างอิง; Organizer เปิดกิจกรรมของตนแล้วเลือก **ดูรายชื่อผู้ลงทะเบียน** เพื่ออ่าน roster/ACTIVE count ไม่มี migration ใหม่ ดู [current verification](docs/registration/views-verification.md) ข้อความรอ Issue #4/ผล145 tests ด้านล่างเป็น historical records
+**Issue #4 — 8 พ.ย. 2026:** F-04/F-05 commit แล้วที่ eeafc313220fa9feda633b89cab8c4b90cb86f9e บน feature/registration-views; RV-01–03 เป็น working-tree patch ที่ยังไม่ commit/push รอบนี้ Focused browser2/Vitest159/typecheck/build/smoke3 PASS; full Chromium37 PASS ดู [ผลและ source manifest](docs/registration/views-verification.md) PR #10 เป็น Draft เข้า sprint-1-staging ไม่มี review/merge จาก GitHub ที่ตรวจ8พ.ย.
 
-**UI consistency follow-up:** ล่าสุด 145 Vitest / 35 Chromium, typecheck/build/compiled smoke PASS รวม typography/layout/state checks ที่1280/390/320px ดู [current UI evidence](docs/events/visual-consistency.md) ผล141/32 และ seed follow-up ด้านล่างเป็น historical runs
+**Historical Event UI run — 6 พ.ย. 2026:** 145 Vitest / 35 Chromium, typecheck/build/compiled smoke PASS รวม typography/layout/state checks ที่1280/390/320px ดู [current UI evidence](docs/events/visual-consistency.md) ผล141/32 และ seed follow-up ด้านล่างเป็น historical runs
 
 Documentation baseline v0.5 | ปรับปรุง 5 พฤศจิกายน 2026
 Deliverable 1: ส่ง 8 พฤศจิกายน 2026 เวลา 23:59 (Asia/Bangkok)
 
-**สถานะ: baseline v0.5 รับแล้วผ่าน PR #5; F-01/F-03 อยู่ใน sprint-1-staging แล้วตาม local Git** feature/events รวม F-02 กับ staging@ada659b ใน merge working tree หลังแก้ conflict ยังไม่มี merge commit/main release ดู [ผล feature consistency 141 Vitest / 32 Chromium](docs/events/consistency-review.md); รอ teammate review และ Issue #4 (F-04/F-05)
+**สถานะปัจจุบัน:** own registrations/roster implement ใน eeafc31 แล้ว ดู [Draft PR #10](https://github.com/jetanin/LoungCheu/pull/10) และ [current verification](docs/registration/views-verification.md); teammate review, staging integration และ release acceptance ยังต้องมีหลักฐานแยก ผล Event เดิมด้านล่างเป็น historical records
 
 Layout ปัจจุบันใช้ `server/client`; app DB `loung-cheu-database` และ test DB `loungcheu_test` ใช้ PostgreSQL instance เดียวที่ `localhost:5432` โดยแยก database กัน ทั้ง app auth smoke และชุดทดสอบผ่านแล้ว ดู [single-instance record](docs/sprints/sprint-1/single-instance-db.md)
 
-6 พ.ย. 2026: feature/events รวม Event APIs/UI และ Registration backend/tests แล้ว หน้ารายละเอียดใช้ RegistrationAction โดยตรง สามารถสร้าง DRAFT → publish → Participant ลงทะเบียนและรับเลขอ้างอิงจริงได้ ดู [ผลทดสอบรวม](docs/events/consistency-review.md) และ [composition](docs/events/integration.md) Own Registrations/roster ยังเป็น Issue #4; ลิงก์ `/my/registrations` ยังรอ implementation นั้น ไม่อ้าง Sprint 1 ครบ
+6 พ.ย. 2026: feature/events รวม Event APIs/UI และ Registration backend/tests แล้ว หน้ารายละเอียดใช้ RegistrationAction โดยตรง สามารถสร้าง DRAFT → publish → Participant ลงทะเบียนและรับเลขอ้างอิงจริงได้ ดู [ผลทดสอบรวม](docs/events/consistency-review.md) และ [composition](docs/events/integration.md) Own Registrations/roster เพิ่มแล้วใน eeafc31 ตาม current verification; การทดสอบวันที่6พ.ย. นี้เป็นประวัติก่อน F-04/F-05
 
 F-02 ใช้คำสั่ง generate/migrate/build/test ด้านล่างชุดเดิม Shared migration คือ `202611060002_registration_extension` จาก #3 ใช้ migration เดิมร่วมกัน ห้ามเพิ่ม migration สร้าง events ซ้ำ การตรวจรอบนี้ migrate เฉพาะ test DB; เมื่อนำไปใช้กับ app DB ให้ใช้ `npm run db:migrate` ตามขั้นตอนเดิม Routes เริ่มที่ `/events` และ Organizer ไป `/organizer/events` เพื่อสร้าง DRAFT/preview/publish เวลา form และ detail เป็น Asia/Bangkok หากพอร์ต dev เดิมใช้อยู่ ให้กำหนด `E2E_WEB_PORT=5183` และ `E2E_API_PORT=3011` สำหรับ browser tests
 
@@ -144,7 +144,7 @@ npx playwright install chromium
 npm run test:e2e
 ```
 
-E2E เปิด server/Vite บน ports 3001/5173 โดย default และ seed password สุ่มเฉพาะ process ลง test DB จึงต้องให้ ports ว่าง หรือกำหนด E2E_API_PORT/E2E_WEB_PORT เพื่อใช้ 3011/5183 ชุดทดสอบครอบคลุม Auth/Event/Registration รวม create/publish/register, permissions/conflicts/late-response/session-focus races; proof ของ server expiry อยู่ใน API integration แยกต่างหาก Own records/roster ยังรอ Issue #4
+E2E เปิด server/Vite บน ports 3001/5173 โดย default และ seed password สุ่มเฉพาะ process ลง test DB จึงต้องให้ ports ว่าง หรือกำหนด E2E_API_PORT/E2E_WEB_PORT เพื่อใช้ 3011/5183 ชุดทดสอบครอบคลุม Auth/Event/Registration รวม create/publish/register, permissions/conflicts/late-response/session-focus races; proof ของ server expiry อยู่ใน API integration แยกต่างหาก Own records/roster มีใน Issue #4 แล้ว; current results ดู docs/registration/views-verification.md
 
 ตรวจ compiled artifacts หลัง build ด้วย `npm run test:built`; ผลล่าสุดอยู่ใน [Event verification](docs/events/verification.md) และ [spec audit](docs/events/audit.md) ส่วน [auth pre-PR review](docs/sprints/sprint-1/auth-pre-pr-review.md) เป็นประวัติ F-01 Source snapshots/ผลแดงเดิมเป็นประวัติของแต่ละ version ไม่ใช่ผลของ working tree ล่าสุด
 

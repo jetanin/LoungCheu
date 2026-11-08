@@ -9,6 +9,22 @@ test.beforeEach(async ({ page }) => {
 });
 
 async function login(page: Page, username: string) {
+  // /login restores a valid server session and redirects to /events. End that
+  // session before switching accounts, including after a UI-only mocked 401.
+  const identity = await page.request.get('/api/auth/me');
+  expect([200, 401]).toContain(identity.status());
+  if (identity.status() === 200) {
+    const csrf = await page.request.get('/api/auth/csrf');
+    expect(csrf.status()).toBe(200);
+    const token = (await csrf.json()).data.csrf_token;
+    const logout = await page.request.post('/api/auth/logout', {
+      headers: { 'X-CSRF-Token': token }, data: {},
+    });
+    // A UI logout already in flight can finish between the identity read and
+    // this request. Both responses mean this context is now signed out.
+    expect([204, 401]).toContain(logout.status());
+  }
+  expect((await page.request.get('/api/auth/me')).status()).toBe(401);
   await page.goto('/login');
   await page.getByLabel('ชื่อผู้ใช้').fill(username);
   await page.getByLabel('รหัสผ่าน', { exact: true }).fill(process.env.E2E_PASSWORD!);
