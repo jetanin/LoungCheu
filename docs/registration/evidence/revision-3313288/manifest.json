@@ -120,8 +120,8 @@
     ]
   },
   "local_link_check": {
-    "documents": 15,
-    "local_links_checked": 150,
+    "documents": 16,
+    "local_links_checked": 154,
     "broken_links": 0
   },
   "remaining_acceptance_gates": [
@@ -207,9 +207,9 @@
     },
     {
       "path": "docs/traceability.md",
-      "bytes": 17882,
-      "sha256": "33e0df16ce57e7a82a4f98c5c251d7b8d67e7820cdc1cd770a4920a1310dcece",
-      "sha256_utf8_lf": "e581a28c940410491a9745dffd0fb54660f98f413062148a1ac1bbf48b4b199f"
+      "bytes": 17972,
+      "sha256": "1c55ceece64a4606869adb801dba2add270f5b8148ce9101f8bf0e396347b1f4",
+      "sha256_utf8_lf": "6a40b6f535689cc2c371e7d6c24732a33bad94da613c6f4be44f65e180731686"
     },
     {
       "path": "docs/deliverable-1/evidence-register.md",
@@ -388,6 +388,13 @@
       "bytes": 3480,
       "sha256": "12ef634a44d306cd08348841667346eb0672c54ef82ca669eaa6e01f2cf587f7",
       "sha256_utf8_lf": "12ef634a44d306cd08348841667346eb0672c54ef82ca669eaa6e01f2cf587f7"
+    },
+    {
+      "path": "docs/registration/integration.md",
+      "bytes": 6568,
+      "sha256": "f86a5cd242bc27eb33eba22b18249c74958355d8405338bc647809e30ccfc478",
+      "sha256_utf8_lf": "e141d13a4012df3b31bfea4ba3aba566633a4dc2bd2f67d466852ce9a9050efe"
     }
-  ]
+  ],
+  "documentation_followup": "2026-11-10 P3: mark all of registration/integration.md historical; align AC-26 to F-01–05 automated subset, retain PARTIAL for unverified manual/full matrix."
 }

@@ -1,6 +1,8 @@
-# Registration เป็น extension ของ staging
+# Historical record — Registration integration (6 พ.ย. 2026)
 
-6 พ.ย. 2026 | Current: feature/events merge working tree HEAD 04106ff + staging@ada659b รวม #2/#3 แล้ว ดู [combined verification](../events/consistency-review.md); ข้อความ setup legacy ด้านล่างเป็น historical context ของ #3
+> เอกสารทั้งไฟล์เป็น historical record ของการรวม #2/#3 ณ 6 พ.ย. 2026 รวมขั้นตอน setup, ผลทดสอบ และงานที่ยังไม่ implement ในเวลานั้น ไม่ใช่สถานะหรือคำแนะนำ setup ปัจจุบัน ดู [current verification / revision](views-verification.md) และ [README ปัจจุบัน](../../README.md) สำหรับ F-04/F-05 ซึ่ง implement แล้วและรวม review fixes ใน commit 3313288
+
+สถานะ ณ 6 พ.ย. 2026: feature/events merge working tree HEAD 04106ff + staging@ada659b รวม #2/#3 แล้ว ดู [combined verification ของรอบนั้น](../events/consistency-review.md)
 
 ## Base ที่คงไว้
 
@@ -58,8 +60,8 @@ npm run dev
 
 Demo password คือ DEMO_SEED_PASSWORD ในไฟล์ local หลัง build ใช้ npm start หรือ npm run start -w server ไม่เปิด backend ซ้อนกัน Runtime/scripts/engine policy ยึด staging (Node 22.x)
 
-## Verification / งานต่อ
+## Verification / งานต่อ ณ 6 พ.ย. 2026
 
 npm test รัน Auth/Event/Registration และ unit/client component tests (141 PASS) บน PostgreSQL จริง; Chromium 32 PASS รวม create→publish→register จริงและ focus pending/success ดู [combined verification](../events/consistency-review.md) และ historical verification.md
 
-Browser create→publish→detail→register/reference/count ผ่านแล้ว Own Registrations/roster ยังรอ Issue #4 (F-04/F-05); `/my/registrations` ยังไม่ implement ไม่อ้าง Product DoD/release หรือ independent UAT ผ่าน
+**สถานะย้อนหลัง ณ 6 พ.ย. 2026:** Browser create→publish→detail→register/reference/count ผ่านแล้ว Own Registrations/roster ยังรอ Issue #4 (F-04/F-05); `/my/registrations` ยังไม่ implement ในเวลานั้น ไม่อ้าง Product DoD/release หรือ independent UAT ผ่าน
