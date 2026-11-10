@@ -2,7 +2,7 @@
 
 เอกสาร LC-S1-STS | Documentation baseline v0.5 | 5 พฤศจิกายน 2026
 
-**Current coverage — 8 พ.ย.2026:** TEST-01–30/36 มี automated coverage ตาม F-01–05 รวม own read/re-login/roster journey; Vitest159/Chromium37/typecheck/build/smoke3 PASS บน eeafc31 + RV-01 working-tree correction ดู [source/results](../../registration/views-verification.md). TEST-31/35 มีเพียง app recreation subset; independent restart/reproduction และ TEST-34/process acceptance ยังไม่ยืนยัน TEST-32/33มีautomatederror/accesschecks ไม่อ้าง exhaustive manualmatrix
+**Current coverage — 10 พ.ย.2026:** TEST-01–30/36 มี automated coverage ตาม F-01–05 รวม own read/re-login/roster journey; Vitest159/Chromium37/typecheck/build/smoke3 PASS บน 3313288 (committed/pushed RV-01–03) ดู [source/results](../../registration/views-verification.md). TEST-31/35 มีเพียง app recreation subset; independent restart/reproduction และ TEST-34/process acceptance ยังไม่ยืนยัน TEST-32/33มีautomatederror/accesschecks ไม่อ้าง exhaustive manualmatrix
 
 ## 1. Environment และ fixtures
 
@@ -75,11 +75,11 @@
 
 ## 4. Actual execution summary
 
-8 พ.ย.2026: Current execution/source คือ eeafc31 + RV-01–03 patch; current results ในตารางนี้และ [verification](../../registration/views-verification.md), retained historical failures แยกไว้ตามวันที่
+10 พ.ย.2026: Current committed/pushed source คือ 3313288; current results ในตารางนี้และ [verification](../../registration/views-verification.md), retained historical failures แยกไว้ตามวันที่
 
 | ประเภท | ผลปัจจุบัน | Actual command / file / commit |
 |---|---|---|
-| Unit/API/DB/concurrency | 15 files / 159 PASS, 0 FAIL/SKIP, real PostgreSQL17.11/Node22.23.2 | npm test; [vitest.log](../../registration/evidence/review-fixes/vitest.log); eeafc31 + RV-01 patch |
-| Browser E2E | Focused2 PASS, full37 PASS, 0 FAIL/SKIP; includes corrected account switch, real own read/re-login/roster and existing viewport regressions | npm run test:e2e, ports5197/3027 DB55433; [e2e.log](../../registration/evidence/review-fixes/e2e.log); eeafc31 + RV-01 patch |
+| Unit/API/DB/concurrency | 15 files / 159 PASS, 0 FAIL/SKIP, real PostgreSQL17.11/Node22.23.2 | npm test; [vitest.log](../../registration/evidence/review-fixes/vitest.log); 3313288 |
+| Browser E2E | Focused2 PASS, full37 PASS, 0 FAIL/SKIP; includes corrected account switch, real own read/re-login/roster and existing viewport regressions | npm run test:e2e, ports5197/3027 DB55433; [e2e.log](../../registration/evidence/review-fixes/e2e.log); 3313288 |
 | Manual restart/reproduction/UI | Independent teammate/OS-process restart NOT VERIFIED | Automated app recreation and full UI journey pass; not independent clean setup/UAT or process restart |
-| Process review | PR10 OPEN/Draft/head eeafc31, reviews=[], mergedAt=null verified8พ.ย.; RV-01–03 working-tree patch not pushed | [GitHub status capture](../../registration/evidence/review-fixes/github-status.json); teammate approval/integration/release gates pending |
+| Process review | PR10 OPEN/Draft/head3313288, reviews=[], mergedAt=null verified10พ.ย.; RV-01–03 committed/pushed at3313288 | [current GitHub status](../../registration/evidence/revision-3313288/github-status.json); teammate approval/integration/release gates pending |

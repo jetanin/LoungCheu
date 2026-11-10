@@ -1,14 +1,14 @@
 # Part B — Feature Inventory
 
-8 พ.ย.2026: F-04/F-05 committed in eeafc31 บน feature/registration-views + RV-01–03 working-tree correction; Vitest159/Chromium37/typecheck/build/smoke3 PASS ดู [source/results](registration/views-verification.md). PR10 OPEN/Draft เข้า staging/no reviews/no merge; F-06–09 และ independent process/release gates ยัง pending
+10 พ.ย.2026: F-04/F-05 และ RV-01–03 อยู่ใน committed/pushed3313288; Vitest159/Chromium37/typecheck/build/smoke3 PASS ดู [current revision/results](registration/views-verification.md). PR10 OPEN/Draft/head3313288/no reviews/no merge ตรวจ10พ.ย.; F-06–09 และ independent process/release gates ยัง pending
 
 **Historical Event UI run — 6 พ.ย. 2026:** 145 Vitest / 35 Chromium, typecheck/build/compiled smoke PASS รวม typography/layout/state checks ที่1280/390/320px ดู [current UI evidence](events/visual-consistency.md) ผล141/32 และ seed follow-up ด้านล่างเป็น historical runs
 
 **Seed follow-up (6 พ.ย.):** full Vitest **145 PASS** รวม seed integration ใหม่4 และ typecheck PASS; 141/32 ใน feature audit ด้านล่างเป็นรอบก่อนเพิ่ม seed โดย Chromium/build ไม่ได้ rerun รอบ seed ดู [latest seed results](events/demo-seed.md) ไม่มี AC/scope ใหม่
 
-Documentation baseline v0.5 | 5 พฤศจิกายน2026 | Current execution8พ.ย.ตาม Issue #4 source/results; results145/35 ด้านบนเป็น historical Event runs ไม่รวม review-fix patch
+Documentation baseline v0.5 | 5 พฤศจิกายน2026 | Current source3313288; execution8พ.ย./revision reconciliation10พ.ย.ตาม Issue #4 results; results145/35 ด้านบนเป็น historical Event runs ไม่รวม review-fix patch
 
-Registration integration update: F-01–05 รวมใน feature/registration-views แล้ว, F-04/F-05 commit eeafc31 และ tested RV-01 patch มี own read/re-login/roster journey PASS. Staging integration, teammate review และ accepted release ยังไม่ยืนยัน; historical Event runs ไม่ใช่ผลปัจจุบัน
+Registration integration update: F-01–05 รวมใน feature/registration-views แล้ว, F-04/F-05 เริ่มที่eeafc31 และรวม committed/pushed RV-01–03 ใน3313288 แล้ว มี own read/re-login/roster journey PASS. Staging integration, teammate review และ accepted release ยังไม่ยืนยัน; historical Event runs ไม่ใช่ผลปัจจุบัน
 
 | ID | Feature / ผลลัพธ์ | Requirement / Rules | Dependency | Sprint |
 |---|---|---|---|---:|

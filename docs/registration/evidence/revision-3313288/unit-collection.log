@@ -1,0 +1,26 @@
+server/tests/unit/config.test.ts > F-01 config > accepts local HTTP and requires explicit secure HTTPS in production
+server/tests/unit/config.test.ts > F-01 config > rejects invalid config %j
+server/tests/unit/database-url.test.ts > database target validation > accepts an explicit PostgreSQL target and its public-schema test URL
+server/tests/unit/database-url.test.ts > database target validation > refuses an invalid or non-test database %j
+server/tests/unit/password.test.ts > TEST-05 salted scrypt > uses independent salts, stores parameters, preserves password spaces and rejects a wrong password
+server/tests/unit/password.test.ts > TEST-05 salted scrypt > rejects unsupported or malformed hash %j
+server/tests/unit/registration-queries.test.ts > F-04/F-05 scoped reads > scopes own list in the query and serializes only contract fields (TEST-22)
+server/tests/unit/registration-queries.test.ts > F-04/F-05 scoped reads > scopes detail before retrieval and masks missing/foreign references (TEST-23)
+server/tests/unit/registration-queries.test.ts > F-04/F-05 scoped reads > scopes roster by event owner and returns minimal participants with ACTIVE count (TEST-26)
+server/tests/unit/registration-queries.test.ts > F-04/F-05 scoped reads > masks another organizer event before reading its roster (TEST-27)
+server/tests/unit/registration-queries.test.ts > F-04/F-05 scoped reads > returns empty list/count without fabricating registrations (TEST-28)
+server/tests/unit/registration-router.test.ts > F-03 HTTP boundary (TEST-19/32, injected auth guards) > takes participant from trusted identity and returns the success envelope
+server/tests/unit/registration-router.test.ts > F-03 HTTP boundary (TEST-19/32, injected auth guards) > allows absent body
+server/tests/unit/registration-router.test.ts > F-03 HTTP boundary (TEST-19/32, injected auth guards) > rejects missing/inactive identity before csrf/input
+server/tests/unit/registration-router.test.ts > F-03 HTTP boundary (TEST-19/32, injected auth guards) > checks role before csrf and malformed JSON
+server/tests/unit/registration-router.test.ts > F-03 HTTP boundary (TEST-19/32, injected auth guards) > checks csrf before input
+server/tests/unit/registration-router.test.ts > F-03 HTTP boundary (TEST-19/32, injected auth guards) > rejects invalid/spoofed body %s
+server/tests/unit/registration-router.test.ts > F-03 HTTP boundary (TEST-19/32, injected auth guards) > rejects malformed UUID and non-JSON bodies
+server/tests/unit/registration-router.test.ts > F-03 HTTP boundary (TEST-19/32, injected auth guards) > hides internal failures and returns JSON for unknown API paths
+server/tests/unit/registration-rules.test.ts > F-03 registration rules (TEST-16–18) > hides missing and DRAFT events
+server/tests/unit/registration-rules.test.ts > F-03 registration rules (TEST-16–18) > rejects CLOSED before deadline
+server/tests/unit/registration-rules.test.ts > F-03 registration rules (TEST-16–18) > rejects at deadline + %i ms
+server/tests/unit/registration-rules.test.ts > F-03 registration rules (TEST-16–18) > accepts deadline - 1 ms
+server/tests/unit/registration-rules.test.ts > F-03 registration rules (TEST-16–18) > reports duplicate before capacity when both fail
+server/tests/unit/registration-rules.test.ts > F-03 registration rules (TEST-16–18) > rejects full events without a duplicate
+server/tests/unit/registration-rules.test.ts > F-03 registration rules (TEST-16–18) > accepts an available seat

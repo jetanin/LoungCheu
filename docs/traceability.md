@@ -1,6 +1,6 @@
 # Part B — Requirements, Features และ Verification Traceability
 
-**Current — 8 พ.ย. 2026:** F-04/F-05 commit eeafc31 บน feature/registration-views + RV-01 working-tree correction; Vitest159/focused browser2/typecheck/build/smoke3 PASS ดู [current results/source manifest](registration/views-verification.md) Full Chromium37 PASS; GitHub PR #10 OPEN/Draft เข้า sprint-1-staging ไม่มี reviews/merge; ยังไม่อ้าง Product DoD/release
+**Current — 10 พ.ย. 2026:** Source `3313288` รวม F-04/F-05 และ RV-01–03 ที่ commit/push แล้ว; remote และ PR10 head ตรงกัน ตรวจ10พ.ย. ผลของ source นี้คือ Vitest159/Chromium37/typecheck/build/smoke3 PASS; ดู [current revision reconciliation](registration/views-verification.md). PR10 OPEN/Draft เข้า sprint-1-staging/no reviews/no merge; OS restart, independent clean reproduction/UAT, teammate approval และ integration/release acceptance ยัง pending
 
 **Historical Event UI run — 6 พ.ย. 2026:** 145 Vitest / 35 Chromium, typecheck/build/compiled smoke PASS รวม typography/layout/state checks ที่1280/390/320px ดู [current UI evidence](events/visual-consistency.md) ผล141/32 และ seed follow-up ด้านล่างเป็น historical runs
 
@@ -8,9 +8,9 @@
 
 Documentation baseline v0.5 | 5 พฤศจิกายน 2026
 
-Historical F-01–03 execution: parents04106ff + ada659b ตาม [combined verification](events/consistency-review.md) เป็นรอบก่อน Issue #4; ผลปัจจุบันอ้าง eeafc31 และ tested review-fix patch ตาม source manifest
+Historical F-01–03 execution: parents04106ff + ada659b ตาม [combined verification](events/consistency-review.md); F-04/F-05 เริ่มที่eeafc31 และ RV-01–03 รวมใน committed/pushed3313288 แล้ว ผลปัจจุบันอ้าง source3313288 โดยแยก execution record8พ.ย.กับ revision reconciliation10พ.ย.
 
-**สถานะ:** F-01–05 มี implementation และ API/DB coverage บน branch นี้; F-04/F-05 implementation commit eeafc31 และ RV-01–03 patch อยู่ระหว่าง review ดู [PR #10](https://github.com/jetanin/LoungCheu/pull/10) ข้อเท็จจริงนี้ไม่ใช่ staging/main acceptance; V2/V3 ยังเป็น verification targets
+**สถานะ:** F-01–05 implement บน branch นี้; F-04/F-05 และ review fixes อยู่ใน committed/pushed3313288 ดู [PR10](https://github.com/jetanin/LoungCheu/pull/10). Automated coverage ผ่าน แต่ไม่ใช่ staging/main acceptance; V2/V3 ยังเป็น targets
 
 ## 1. Functional requirements
 
@@ -22,7 +22,7 @@ Historical F-01–03 execution: parents04106ff + ada659b ตาม [combined ver
 | FR-04 | F-02 | 1 | AC-08,10 | TEST-09,10,12,13 | events.test.ts publish/deadline/lock/permissions PASS; [evidence](events/verification.md) |
 | FR-05 | F-02 | 1 | AC-09,11 | TEST-11,14,36 | events.test.ts shared fields/visibility/sort/counts/snapshot + events.spec.ts browse/time PASS; [evidence](events/verification.md) |
 | FR-06 | F-03 | 1 | AC-12–17 | TEST-15–21 | registration.test.ts 17 cases + combined event/registration journey; own GET readback implemented in registration-views.test.ts; [current results](registration/views-verification.md) |
-| FR-07 | F-04 | 1 | AC-18–20 | TEST-22–25 | eeafc31 + RV-01 patch: own API/DB/UI and focused browser readback/re-login PASS; [source/results](registration/views-verification.md) |
+| FR-07 | F-04 | 1 | AC-18–20 | TEST-22–25 | 3313288: own API/DB/UI and focused browser readback/re-login PASS; [source/results](registration/views-verification.md) |
 | FR-08 | F-02,F-05 | 1 | AC-09,21–23 | TEST-11,26–29 | F-02 own events + eeafc31 F-05 scoped roster/count/order/refresh API/DB/UI and focused real browser PASS; [source/results](registration/views-verification.md) |
 | FR-09 | F-06 | 2 | V2-01: own ACTIVE cancel ก่อนปิดรับ คืนที่นั่ง; invalid cancel ไม่เปลี่ยนข้อมูล | กำหนด detailed STS ก่อน F-06 coding | — |
 | FR-10 | F-06 | 2 | V2-02: owner close และ reject register ต่อ โดยคง registration เดิม | กำหนด detailed STS ก่อน F-06 coding | — |
@@ -41,8 +41,8 @@ Historical F-01–03 execution: parents04106ff + ada659b ตาม [combined ver
 | BR-03 | F-03,F-06 | 1/2 | AC-15; V2-01,02,04 | TEST-18 และ S2 lifecycle cases | F-03 status/deadline/equality/post-lock clock PASS; S2 pending |
 | BR-04 | F-03,F-06 | 1/2 | AC-13,17; V2-04: lifecycle fields/history | TEST-16,21 และ S2 reactivation cases | F-03 duplicate/unique-pair races PASS; S2 reactivation/history pending |
 | BR-05 | F-03,F-06,F-07 | 1/2 | AC-14,17; V2-01,03,04 | TEST-17,20 และ S2 concurrent mutations | F-03 full/last-seat race + consistent Event ACTIVE counts PASS; S2 pending |
-| BR-06 | F-01,F-03,F-04,F-06,F-08 | 1/2/3 | AC-16,19; V2-01,04; V3-02 | TEST-19,23; regression เมื่อเพิ่ม endpoints | S1 PASS: current session/role + session-owned creation and own-read scope; registration-views.test.ts TEST-23, focused browser foreign-reference denial; eeafc31 + RV-01 patch. S2/S3 endpoints pending |
-| BR-07 | F-01,F-02,F-03,F-05–09 | 1/2/3 | AC-10,16,22; V2-02,03; V3-01,03 | TEST-12,13,19,27 และ future owner tests | S1 PASS: event/roster owner scope and role matrix; registration-views.test.ts TEST-27 (foreign Organizer404/Participant403/anonymous401). eeafc31 + RV-01 patch; S2/S3 pending |
+| BR-06 | F-01,F-03,F-04,F-06,F-08 | 1/2/3 | AC-16,19; V2-01,04; V3-02 | TEST-19,23; regression เมื่อเพิ่ม endpoints | S1 PASS: current session/role + session-owned creation and own-read scope; registration-views.test.ts TEST-23, focused browser foreign-reference denial; 3313288. S2/S3 endpoints pending |
+| BR-07 | F-01,F-02,F-03,F-05–09 | 1/2/3 | AC-10,16,22; V2-02,03; V3-01,03 | TEST-12,13,19,27 และ future owner tests | S1 PASS: event/roster owner scope and role matrix; registration-views.test.ts TEST-27 (foreign Organizer404/Participant403/anonymous401). 3313288; S2/S3 pending |
 | BR-08 | F-06 | 2 | V2-01: deadline equality/closed/already cancelled | กำหนดใน S2 STS | — |
 | BR-09 | F-02,F-06 | 1/2 | AC-08; V2-02: close ซ้ำ/เปิดกลับไม่ได้ | TEST-09,10 และ S2 close tests | F-02 DRAFT publish/status precedence PASS; S2 close pending |
 | BR-10 | F-03,F-06,F-07 | 1/2 | AC-17; V2-01–04: interleaved transactions | TEST-20,21 และ S2 capacity/cancel/close races | F-03 PostgreSQL separate-connection last-seat/duplicate races PASS; S2 pending |
@@ -55,14 +55,14 @@ Historical F-01–03 execution: parents04106ff + ada659b ตาม [combined ver
 
 | Requirement | Responsibility | Establish / verify | AC / target | Planned verification | Actual measurement/result/version |
 |---|---|---|---|---|---|
-| NFR-01 | SYS-AUTH,F-01–09 | S1 และทุก Sprint | AC-03,10,16,19,22 | TEST-03,06,12,13,19,23,27 และ future endpoint matrix | S1 API/DB PASS includes F-04/F-05 TEST-23/27 privacy/role/ownership; focused browser foreign-reference/wrong-role PASS. eeafc31 + RV-01 patch; future endpoint/deployment checks pending |
+| NFR-01 | SYS-AUTH,F-01–09 | S1 และทุก Sprint | AC-03,10,16,19,22 | TEST-03,06,12,13,19,23,27 และ future endpoint matrix | S1 API/DB PASS includes F-04/F-05 TEST-23/27 privacy/role/ownership; focused browser foreign-reference/wrong-role PASS. 3313288; future endpoint/deployment checks pending |
 | NFR-02 | SYS-AUTH,F-01 | S1; HTTPS config Lab 5 | AC-01,03–05 | TEST-01,03–06; deployment cookie check | F-01 API/DB/unit + browser 7 cases PASS รวม cookie config/rotation/expiry/logout/UI response ordering; deployed HTTPS NOT EXECUTED |
 | NFR-03 | SYS-DATA,F-02–05 | S1; redeploy Lab 5 | AC-06,12,18,23,25 | TEST-07,15,22,29,31; Lab 5 persistence | PARTIAL: recreate createApp คง Event/session/Registration reference และ counts ผ่าน DB เดิม; OS process restart/redeploy pending |
 | NFR-04 | SYS-DATA,F-03 | S1; regression S2 | AC-17 | TEST-20,21 และ S2 race expansion | registration.test.ts last-seat/duplicate races PASS บน real PostgreSQL separate connections + observed lock barrier; [combined verification](events/consistency-review.md) |
 | NFR-05 | SYS-DELIVERY | S1; Docker Lab 5 | AC-25 | TEST-35; fresh Docker build ใน Lab 5 | PARTIAL: F-01 clean npm dependency install/generate/build/test ตรวจโดย Codex; fresh machine/DB และ teammate TEST-35 ยัง pending |
 | NFR-06 | SYS-UX,ทุก feature | S1 และต่อเนื่อง | AC-11,20,26 | TEST-14,25,32,33,36 | F-01–05 automated UI/error/retry/private-data lifecycle coverage PASS, including RegistrationViews.test.tsx and focused registration-views.spec.ts; manual/independent browser-device matrix remains pending; [current evidence](registration/views-verification.md) |
 | NFR-07 | SYS-DELIVERY | Lab 5; ทุก release หลังจากนั้น | CI gate / deployed version target | Controlled failed check + protected release path + version check | — |
-| NFR-08 | SYS-QA | S1; D2; Final | AC-27 | TEST-34; baseline-to-final verification audit | PARTIAL: RV-02/03 synchronize current docs/results/source revision; PR #10 OPEN/Draft/no reviews verified8พ.ย. Full process audit/teammate approval/release pending |
+| NFR-08 | SYS-QA | S1; D2; Final | AC-27 | TEST-34; baseline-to-final verification audit | PARTIAL: RV-02/03 synchronize current docs/results/source revision; PR #10 OPEN/Draft/no reviews verified10พ.ย. Full process audit/teammate approval/release pending |
 | NFR-09 | SYS-QA | Lab 6; Final re-tests | Independent UAT target | 4 UAT cases, accepted defect fix และ partner re-test | — |
 
 ## 4. Sprint 1 AC → planned/actual verification
@@ -79,24 +79,24 @@ Historical F-01–03 execution: parents04106ff + ada659b ตาม [combined ver
 | AC-08 | F-02 | TEST-09,10 | IMPLEMENTED / review pending | events.test.ts publish/status/deadline/lock wait/concurrent publish | API/DB/browser PASS; [evidence](events/verification.md) |
 | AC-09 | F-02 | TEST-11 | IMPLEMENTED / review pending | events.test.ts fields/visibility/sorting ties/ACTIVE/snapshot race; overview.spec.ts real owner-list counts/recent order/isolation | API/DB/browser PASS; [evidence](events/verification.md) |
 | AC-10 | F-02 | TEST-12,13 | IMPLEMENTED / review pending | events.test.ts auth/role/CSRF/input/scope matrix | API/DB PASS; [evidence](events/verification.md) |
-| AC-11 | F-02 | TEST-14,36 | IMPLEMENTED / review pending | events/events-audit/consistency/visual-consistency.spec.ts UI states, typography/layout, session races; model/API time tests | 145 Vitest/35 Chromium + typecheck/build/smoke PASS; [current UI evidence](events/visual-consistency.md); independent UAT NOT EXECUTED |
+| AC-11 | F-02 | TEST-14,36 | IMPLEMENTED / review pending | events/events-audit/consistency/visual-consistency.spec.ts UI states, typography/layout, session races; model/API time tests | Current source3313288:159 Vitest/37 Chromium + typecheck/build/smoke PASS; [current evidence](registration/views-verification.md); independent UAT NOT EXECUTED |
 | AC-12 | F-03 | TEST-15 | API/DB/browser implemented; own GET รอ #4 | registration.test.ts + events.test.ts composition + events-registration.spec.ts | PASS session-owned ACTIVE/reference readback/recreation + real UI success; full own-list acceptance pending |
 | AC-13 | F-03 | TEST-16 | IMPLEMENTED | registration.test.ts — rejects duplicate at capacity 1/2 | PASS / combined regression PASS; merge commit pending |
 | AC-14 | F-03 | TEST-17 | IMPLEMENTED | registration.test.ts — rejects full without loser insert | PASS / combined regression PASS; merge commit pending |
 | AC-15 | F-03 | TEST-18 | IMPLEMENTED | registration.test.ts — scope/deadline boundaries/lock-wait clock | PASS / combined regression PASS; merge commit pending |
 | AC-16 | F-03 | TEST-19 | IMPLEMENTED with staging auth | registration.test.ts — real session/role/CSRF/Origin/spoofing/expiry | PASS / combined regression PASS; merge commit pending |
 | AC-17 | F-03 | TEST-20,21 | IMPLEMENTED | registration.test.ts — PostgreSQL last-seat/duplicate races | PASS / combined regression PASS; merge commit pending |
-| AC-18 | F-04 | TEST-22,24 | IMPLEMENTED / review pending | registration-views.test.ts own schemas/order/re-login/recreation; registration-views.spec.ts | API/DB PASS; [browser/source results](registration/views-verification.md); eeafc31 + RV-01 working-tree patch |
-| AC-19 | F-04 | TEST-23 | IMPLEMENTED / review pending | registration-views.test.ts cross-user/auth/role/UUID matrix | API/DB PASS; eeafc31 + RV-01 working-tree patch |
-| AC-20 | F-04 | TEST-25 | IMPLEMENTED / review pending | RegistrationViews.test.tsx empty/error/retry/account-change/late reads | UI tests PASS; [browser/source results](registration/views-verification.md); eeafc31 + RV-01 working-tree patch |
-| AC-21 | F-05 | TEST-26,28 | IMPLEMENTED / review pending | registration-views.test.ts minimal sorted roster/ACTIVE count/empty DRAFT; RegistrationViews.test.tsx | API/DB/UI tests PASS; eeafc31 + RV-01 working-tree patch |
-| AC-22 | F-05 | TEST-27 | IMPLEMENTED / review pending | registration-views.test.ts foreign owner/role/anonymous/errors | API/DB PASS; eeafc31 + RV-01 working-tree patch |
-| AC-23 | F-05 | TEST-29 | IMPLEMENTED / review pending | registration-views.test.ts fresh registration/count DB equality; RegistrationViews.test.tsx refresh | API/DB/UI tests PASS; eeafc31 + RV-01 working-tree patch |
-| AC-24 | Cross-feature | TEST-30 | IMPLEMENTED / focused automated journey PASS; review pending | registration-views.spec.ts real publish/register/own read/re-login/roster journey | Focused corrected source suite2 PASS includes full real journey; full Chromium37 PASS; eeafc31 + RV-01 patch, not independent UAT; [results](registration/views-verification.md) |
+| AC-18 | F-04 | TEST-22,24 | IMPLEMENTED / review pending | registration-views.test.ts own schemas/order/re-login/recreation; registration-views.spec.ts | API/DB PASS; [browser/source results](registration/views-verification.md); 3313288 (committed/pushed RV-01–03) |
+| AC-19 | F-04 | TEST-23 | IMPLEMENTED / review pending | registration-views.test.ts cross-user/auth/role/UUID matrix | API/DB PASS; 3313288 (committed/pushed RV-01–03) |
+| AC-20 | F-04 | TEST-25 | IMPLEMENTED / review pending | RegistrationViews.test.tsx empty/error/retry/account-change/late reads | UI tests PASS; [browser/source results](registration/views-verification.md); 3313288 (committed/pushed RV-01–03) |
+| AC-21 | F-05 | TEST-26,28 | IMPLEMENTED / review pending | registration-views.test.ts minimal sorted roster/ACTIVE count/empty DRAFT; RegistrationViews.test.tsx | API/DB/UI tests PASS; 3313288 (committed/pushed RV-01–03) |
+| AC-22 | F-05 | TEST-27 | IMPLEMENTED / review pending | registration-views.test.ts foreign owner/role/anonymous/errors | API/DB PASS; 3313288 (committed/pushed RV-01–03) |
+| AC-23 | F-05 | TEST-29 | IMPLEMENTED / review pending | registration-views.test.ts fresh registration/count DB equality; RegistrationViews.test.tsx refresh | API/DB/UI tests PASS; 3313288 (committed/pushed RV-01–03) |
+| AC-24 | Cross-feature | TEST-30 | IMPLEMENTED / focused automated journey PASS; review pending | registration-views.spec.ts real publish/register/own read/re-login/roster journey | Focused corrected source suite2 PASS includes full real journey; full Chromium37 PASS; 3313288, not independent UAT; [results](registration/views-verification.md) |
 | AC-25 | Cross-feature | TEST-31,35 | PARTIAL / app recreation only | events.test.ts recreate createApp อ่าน session/Event/Registration reference/count เดิม | Automated subset PASS; manual process restart/clean reproduction/full TEST-31,35 NOT EXECUTED |
-| AC-26 | Cross-feature | TEST-32,33 | PARTIAL / F-01–03 | auth/events/registration integration + registration-router tests + browser error/retry/full conflict | F-01–05 API/DB access/error schemas and UI wrong-role/foreign/retry checks PASS; no claim of exhaustive manual/full matrix; eeafc31 + RV-01 patch |
+| AC-26 | Cross-feature | TEST-32,33 | PARTIAL / F-01–03 | auth/events/registration integration + registration-router tests + browser error/retry/full conflict | F-01–05 API/DB access/error schemas and UI wrong-role/foreign/retry checks PASS; no claim of exhaustive manual/full matrix; 3313288 |
 | AC-27 | SYS-QA | TEST-34 | PARTIAL / process pending | baseline review + auth TDD/pre-PR records | RV-02/03 docs/evidence/source aligned; PR10 Draft/no reviews captured8พ.ย.; independent process/review/integration/release gates pending |
 
 ## 5. Coverage gaps และการอัปเดต
 
-FR/BR/NFR allocation ครบ; F-04/F-05 implementation eeafc31 มี own GET/list/detail และ roster coverage แล้ว: Vitest159/focused Chromium2/typecheck/build/smoke3 PASS บน RV-01 working-tree correction ดู [current source manifest/results](registration/views-verification.md) Full Chromium37 PASS; process restart, independent clean reproduction/UAT, teammate review, staging integration และ release acceptance ยังคง pending. PR10 เป็น OPEN/Draft/head eeafc31 ณ8พ.ย.; patch รอบนี้ยังไม่ใช่ PR head. Sprint2/3 ต้องเพิ่ม contracts/AC/STS ก่อน implement
+FR/BR/NFR allocation ครบ; F-04/F-05 implementation และ RV-01–03 อยู่ใน committed/pushed3313288 แล้ว: Vitest159/Chromium37/typecheck/build/smoke3 PASS. [Revision/evidence reconciliation](registration/views-verification.md) แยก historical execution8พ.ย.และ documentation update10พ.ย. PR10 OPEN/Draft/head3313288/no reviews/no merge ตรวจ10พ.ย. OS-process restart, independent clean reproduction/UAT, teammate approval, staging integration และ release acceptance ยังคง pending

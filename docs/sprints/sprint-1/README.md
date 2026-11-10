@@ -1,12 +1,12 @@
 # Part E — Sprint 1 Engineering Baseline และ Product DoD
 
-8 พ.ย.2026: F-04/F-05 commit eeafc31 + RV-01–03 working-tree correction; Vitest159/Chromium37/typecheck/build/smoke3 PASS ดู [current source/results](../../registration/views-verification.md) Product DoD ยังรอ teammate approval, staging integration, process restart, independent reproduction/UAT และ accepted release
+10 พ.ย.2026: F-04/F-05 commit 3313288 (committed/pushed RV-01–03); Vitest159/Chromium37/typecheck/build/smoke3 PASS ดู [current source/results](../../registration/views-verification.md) Product DoD ยังรอ teammate approval, staging integration, process restart, independent reproduction/UAT และ accepted release
 
 **Historical Event UI run — 6 พ.ย. 2026:** 145 Vitest / 35 Chromium, typecheck/build/compiled smoke PASS รวม typography/layout/state checks ที่1280/390/320px ดู [current UI evidence](../../events/visual-consistency.md) ผล141/32 และ seed follow-up ด้านล่างเป็น historical runs
 
 **Seed follow-up (6 พ.ย.):** full Vitest **145 PASS** รวม seed integration ใหม่4 และ typecheck PASS; 141/32 ใน feature audit ด้านล่างเป็นรอบก่อนเพิ่ม seed โดย Chromium/build ไม่ได้ rerun รอบ seed ดู [latest seed results](../../events/demo-seed.md) ไม่มี AC/scope ใหม่
 
-Documentation baseline v0.5 | 5 พฤศจิกายน2026 | Current execution8พ.ย.ใน Issue #4 verification; Sprint1 ยังไม่ผ่าน Product DoD ทั้งชุด
+Documentation baseline v0.5 | 5 พฤศจิกายน2026 | Source3313288; execution8พ.ย./revision reconciliation10พ.ย.ใน Issue #4 verification; Sprint1 ยังไม่ผ่าน Product DoD ทั้งชุด
 
 ## Sprint goal
 
@@ -37,7 +37,7 @@ Version contracts/STS ก่อน implementation และดำเนิน re
 | DOD-09 | ระบุ limitations/failed/skipped/incomplete งานและไม่ใส่ secrets ใน Git/PDF | Defect register และ safe access review |
 | DOD-10 | ตั้งแต่ Lab 5 เป็นต้นไปมี CI gate, Docker/GCP version และ post-deploy verification; final มี independent acceptance และส่งมอบครบ | Pipeline/deployment/UAT records ตาม checkpoint; D1 ส่วนนี้เป็น PLANNED ไม่อ้างผ่าน |
 
-DOD-01/02/04 มี automated F-01–05 evidence: Vitest159/Chromium37/typecheck/build/smoke3 PASS รวม full own-list/roster journey ใน [current record](../../registration/views-verification.md). RV-02/03 ปรับ docs/evidence/revision ให้ตรงกันและเก็บ failed attempts; historical meaningful TDD อยู่ใน original records ไม่อ้าง environment errors เป็น RED. Product DoD ทั้งชุดยังไม่ครบ: OS-process restart, independent clean reproduction/UAT, teammate approval, staging integration และ release acceptance ยังต้องมีหลักฐาน; PR10ยังDraft/no reviews/no merge ณ8พ.ย. DOD-10ใช้ตั้งแต่Lab5 และ AI reviewไม่แทนteammateapproval
+DOD-01/02/04 มี automated F-01–05 evidence: Vitest159/Chromium37/typecheck/build/smoke3 PASS รวม full own-list/roster journey ใน [current record](../../registration/views-verification.md). RV-02/03 ปรับ docs/evidence/revision ให้ตรงกันและเก็บ failed attempts; historical meaningful TDD อยู่ใน original records ไม่อ้าง environment errors เป็น RED. Product DoD ทั้งชุดยังไม่ครบ: OS-process restart, independent clean reproduction/UAT, teammate approval, staging integration และ release acceptance ยังต้องมีหลักฐาน; PR10ยังDraft/no reviews/no merge ณ10พ.ย. DOD-10ใช้ตั้งแต่Lab5 และ AI reviewไม่แทนteammateapproval
 
 ## Review gate ก่อนรับ implementation
 

@@ -1,6 +1,6 @@
 # Part C — System-Level Software Design Specification
 
-**Implementation update — 8 พ.ย.2026:** F-04/F-05 committed in eeafc31; RV-01–03 working-tree patch tested with Vitest159/Chromium37/typecheck/build/smoke3 PASS. [Current source/results](registration/views-verification.md). Queries scope own records/owner roster and serialize only contract fields; roster rows/count share REPEATABLE READ. RegistrationViews supplies own list/detail and roster, with account/role/resource guards. RV-01 changes test setup only; no product/schema/AC changes. PR10 Draft/review/integration/release gates remain separate.
+**Implementation update — 10 พ.ย.2026:** F-04/F-05 เริ่มที่eeafc31 และ RV-01–03 รวมใน committed/pushed3313288 แล้ว; sourceนี้มี Vitest159/Chromium37/typecheck/build/smoke3 PASS ดู [revision/results](registration/views-verification.md). Query scope/response/snapshot contracts ไม่เปลี่ยน; PR10 Draft/head3313288/no reviews/no merge ตรวจ10พ.ย. Product DoD/process acceptance ยังไม่ครบ
 
 เอกสาร LC-SYS-SDS | Documentation baseline v0.5 | 5 พฤศจิกายน 2026
 
@@ -28,7 +28,7 @@ Modules: accounts (auth/seed), events (create/publish/list; S2 edit/close), regi
 
 ### Planned source layout
 
-Layout ด้านล่างเป็นแผนทั้ง Sprint 1; F-01/F-02/F-03 รวมและทดสอบใน feature/events merge working tree แล้ว ส่วน own registrations/roster (Issue #4) ยังไม่รวม ดู [Event integration](events/integration.md) และ [combined verification](events/consistency-review.md)
+Layout ด้านล่างแสดง Sprint1 responsibilities; F-01–05 รวม own registrations/roster implement แล้วบน feature/registration-views@3313288 ดู [current source/results](registration/views-verification.md). Event-only integration records เป็น historical runs; staging/main acceptance ต้องตรวจแยก
 
 ```text
 LoungCheu/

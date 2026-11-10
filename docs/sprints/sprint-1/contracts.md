@@ -1,6 +1,6 @@
 # Part E — Sprint 1 Feature Engineering Contracts
 
-Execution update8พ.ย.2026: F-04/F-05 implement ตาม contract เดิมใน commit eeafc31; tested RV-01–03 patch ยังไม่ commit/push ดู [source/results](../../registration/views-verification.md) Vitest159/Chromium37/typecheck/build/smoke3 PASS; PR10 Draft/review/integration/release pending ไม่มีการเปลี่ยน AC/schema
+Execution update10พ.ย.2026: F-04/F-05 implement ตาม contract เดิมในeeafc31 และ RV-01–03 commit/push แล้วใน3313288; Vitest159/Chromium37/typecheck/build/smoke3 PASS ดู [revision/results](../../registration/views-verification.md). PR10 OPEN/Draft/no reviews/no merge ตรวจ10พ.ย.; acceptance gates ยัง pending ไม่มีการเปลี่ยน AC/schema
 
 เอกสาร LC-S1-CONTRACT | Documentation baseline v0.5 | 5 พฤศจิกายน 2026
 

@@ -1,0 +1,13 @@
+server/tests/integration/registration.test.ts > F-03 real PostgreSQL / API (TEST-15–21) > persists session-owned ACTIVE and exact post-lock timestamp (TEST-15)
+server/tests/integration/registration.test.ts > F-03 real PostgreSQL / API (TEST-15–21) > rejects duplicate with unchanged record at capacity %i (TEST-16)
+server/tests/integration/registration.test.ts > F-03 real PostgreSQL / API (TEST-15–21) > rejects full event without inserting a loser (TEST-17)
+server/tests/integration/registration.test.ts > F-03 real PostgreSQL / API (TEST-15–21) > rejects %s before duplicate/full checks (TEST-18)
+server/tests/integration/registration.test.ts > F-03 real PostgreSQL / API (TEST-15–21) > returns 404 for a missing valid UUID (TEST-18)
+server/tests/integration/registration.test.ts > F-03 real PostgreSQL / API (TEST-15–21) > enforces deadline at offset %i ms (TEST-18)
+server/tests/integration/registration.test.ts > F-03 real PostgreSQL / API (TEST-15–21) > checks deadline ahead of duplicate/full for expired PUBLISHED (TEST-18)
+server/tests/integration/registration.test.ts > F-03 real PostgreSQL / API (TEST-15–21) > rejects role, missing identity, CSRF, Origin, and spoofing without DB writes (TEST-19)
+server/tests/integration/registration.test.ts > F-03 real PostgreSQL / API (TEST-15–21) > rejects when clock crosses deadline while waiting for the lock (TEST-18)
+server/tests/integration/registration.test.ts > F-03 real PostgreSQL / API (TEST-15–21) > allocates exactly one last seat across separate connections (TEST-20)
+server/tests/integration/registration.test.ts > F-03 real PostgreSQL / API (TEST-15–21) > inserts only one concurrent registration for the same participant (TEST-21)
+server/tests/integration/registration.test.ts > F-03 real PostgreSQL / API (TEST-15–21) > uses staging token rotation and logout enforcement for registration
+server/tests/integration/registration.test.ts > F-03 real PostgreSQL / API (TEST-15–21) > uses staging current-user and absolute-expiry checks before registration
