@@ -1,0 +1,59 @@
+server/tests/integration/auth.test.ts > F-01 API with real PostgreSQL sessions > seed is idempotent and preserves identities and salted hashes on repeated execution
+server/tests/integration/auth.test.ts > F-01 API with real PostgreSQL sessions > TEST-01/03 rotates session and returns only Identity for %s
+server/tests/integration/auth.test.ts > F-01 API with real PostgreSQL sessions > TEST-03 isolates two participants and logging one out preserves the other session
+server/tests/integration/auth.test.ts > F-01 API with real PostgreSQL sessions > TEST-03 rejects anonymous and tampered cookies without private data
+server/tests/integration/auth.test.ts > F-01 API with real PostgreSQL sessions > TEST-03 reads the same identity after recreating the app with PostgreSQL sessions
+server/tests/integration/auth.test.ts > F-01 API with real PostgreSQL sessions > TEST-02 rejects invalid body %j without authenticating
+server/tests/integration/auth.test.ts > F-01 API with real PostgreSQL sessions > TEST-02 rejects malformed JSON after valid CSRF
+server/tests/integration/auth.test.ts > F-01 API with real PostgreSQL sessions > TEST-02 rejects unsupported JSON charset as INVALID_INPUT
+server/tests/integration/auth.test.ts > F-01 API with real PostgreSQL sessions > TEST-02 uses one credential error for unknown, wrong, inactive and case-mismatched accounts
+server/tests/integration/auth.test.ts > F-01 API with real PostgreSQL sessions > TEST-02 trims username and preserves password exactly
+server/tests/integration/auth.test.ts > F-01 API with real PostgreSQL sessions > TEST-04 destroys server session and clears cookie for %s
+server/tests/integration/auth.test.ts > F-01 API with real PostgreSQL sessions > TEST-04 validates EmptyInput and accepts absent logout body
+server/tests/integration/auth.test.ts > F-01 API with real PostgreSQL sessions > TEST-05 rejects missing/wrong CSRF, cross-origin and old token after rotation without mutating users
+server/tests/integration/auth.test.ts > F-01 API with real PostgreSQL sessions > TEST-05 sets HttpOnly/SameSite and does not extend the database expiry on reads
+server/tests/integration/auth.test.ts > F-01 API with real PostgreSQL sessions > session cleanup removes expired infrastructure rows and preserves an active login
+server/tests/integration/auth.test.ts > F-01 API with real PostgreSQL sessions > TEST-05 emits Secure cookies on a trusted HTTPS production request
+server/tests/integration/auth.test.ts > F-01 API with real PostgreSQL sessions > TEST-06 rejects at absolute expiry even when a copied cookie is replayed after activity
+server/tests/integration/auth.test.ts > F-01 API with real PostgreSQL sessions > TEST-06 rejects an account disabled after login
+server/tests/integration/auth.test.ts > F-01 API with real PostgreSQL sessions > TEST-32 returns JSON for unknown API routes and generic dependency failure
+server/tests/integration/auth.test.ts > F-01 API with real PostgreSQL sessions > shared authorization checks current backend role before an action
+server/tests/integration/demo-seed.test.ts > seeds six Bangkok scenarios with real availability, scoped browsing and a working registration
+server/tests/integration/demo-seed.test.ts > rerunning preserves edited events, consumed seats, references and removed examples even a month later
+server/tests/integration/demo-seed.test.ts > rejects incomplete demo accounts without adding partial event data
+server/tests/integration/demo-seed.test.ts > concurrent seed calls create each fixture once without duplicating or overfilling registrations
+server/tests/integration/events.test.ts > TEST-07 creates normalized DRAFT from session and reads it back
+server/tests/integration/events.test.ts > TEST-08 strict schema rejects invalid fields without inserting
+server/tests/integration/events.test.ts > TEST-08/36 accepts Unicode boundaries, capacities, fractions, equal closes/start and past DRAFT
+server/tests/integration/events.test.ts > TEST-09 publishes and becomes shared with exactly the contracted public fields
+server/tests/integration/events.test.ts > TEST-10/36 status precedes deadline; rejects deadline equality and +1ms, permits -1ms
+server/tests/integration/events.test.ts > TEST-10 rereads clock after waiting for Event row lock; concurrent publish changes status once
+server/tests/integration/events.test.ts > TEST-11 shared visibility, real ACTIVE counts, availability and both sorting tie breaks
+server/tests/integration/events.test.ts > TEST-11/36 availability uses server clock at deadline -1ms/equality/+1ms
+server/tests/integration/events.test.ts > TEST-11 fields/counts use committed snapshots during concurrent capacity/registration commits
+server/tests/integration/events.test.ts > TEST-12/13 auth → role → CSRF → input → scope and session ownership
+server/tests/integration/events.test.ts > TEST-08/36 validates every timestamp field and normalizes leap-day instants with negative offsets
+server/tests/integration/events.test.ts > TEST-11 checks exact OwnerEvent fields on list/detail and CLOSED SharedEvent detail for both roles
+server/tests/integration/events.test.ts > TEST-12/13 event endpoints use current role/active state, rotated CSRF and absolute session expiry
+server/tests/integration/events.test.ts > TEST-07 event and session survive recreating createApp against the same PostgreSQL database
+server/tests/integration/events.test.ts > TEST-08/36 accepts minute-precision ISO timestamps with offsets and normalizes seconds
+server/tests/integration/events.test.ts > TEST-08 rejects NUL and unpaired surrogates instead of DB errors or lossy inserts
+server/tests/integration/events.test.ts > F-02/F-03 create, publish, register and recreate app preserve reference and consistent counts
+server/tests/integration/events.test.ts > TEST-08 accepts max-length Unicode text encoded as JSON escapes without truncation
+server/tests/integration/registration-views.test.ts > TEST-22: persists own list/detail with exact schemas, scope and timestamp/id order
+server/tests/integration/registration-views.test.ts > TEST-23/27/32: enforces auth → role → input → ownership without private data
+server/tests/integration/registration-views.test.ts > TEST-26/28/29: owner-only roster is sorted, minimal, empty for DRAFT and fresh after registration
+server/tests/integration/registration-views.test.ts > TEST-24: own reference survives logout/re-login and app recreation
+server/tests/integration/registration.test.ts > F-03 real PostgreSQL / API (TEST-15–21) > persists session-owned ACTIVE and exact post-lock timestamp (TEST-15)
+server/tests/integration/registration.test.ts > F-03 real PostgreSQL / API (TEST-15–21) > rejects duplicate with unchanged record at capacity %i (TEST-16)
+server/tests/integration/registration.test.ts > F-03 real PostgreSQL / API (TEST-15–21) > rejects full event without inserting a loser (TEST-17)
+server/tests/integration/registration.test.ts > F-03 real PostgreSQL / API (TEST-15–21) > rejects %s before duplicate/full checks (TEST-18)
+server/tests/integration/registration.test.ts > F-03 real PostgreSQL / API (TEST-15–21) > returns 404 for a missing valid UUID (TEST-18)
+server/tests/integration/registration.test.ts > F-03 real PostgreSQL / API (TEST-15–21) > enforces deadline at offset %i ms (TEST-18)
+server/tests/integration/registration.test.ts > F-03 real PostgreSQL / API (TEST-15–21) > checks deadline ahead of duplicate/full for expired PUBLISHED (TEST-18)
+server/tests/integration/registration.test.ts > F-03 real PostgreSQL / API (TEST-15–21) > rejects role, missing identity, CSRF, Origin, and spoofing without DB writes (TEST-19)
+server/tests/integration/registration.test.ts > F-03 real PostgreSQL / API (TEST-15–21) > rejects when clock crosses deadline while waiting for the lock (TEST-18)
+server/tests/integration/registration.test.ts > F-03 real PostgreSQL / API (TEST-15–21) > allocates exactly one last seat across separate connections (TEST-20)
+server/tests/integration/registration.test.ts > F-03 real PostgreSQL / API (TEST-15–21) > inserts only one concurrent registration for the same participant (TEST-21)
+server/tests/integration/registration.test.ts > F-03 real PostgreSQL / API (TEST-15–21) > uses staging token rotation and logout enforcement for registration
+server/tests/integration/registration.test.ts > F-03 real PostgreSQL / API (TEST-15–21) > uses staging current-user and absolute-expiry checks before registration

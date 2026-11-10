@@ -1,15 +1,17 @@
 # LoungCheu — ระบบลงทะเบียนกิจกรรมและเช็กชื่อ
 
-**UI consistency follow-up:** ล่าสุด 145 Vitest / 35 Chromium, typecheck/build/compiled smoke PASS รวม typography/layout/state checks ที่1280/390/320px ดู [current UI evidence](docs/events/visual-consistency.md) ผล141/32 และ seed follow-up ด้านล่างเป็น historical runs
+**Issue #4 — 10 พ.ย. 2026:** F-04/F-05 และ fixes RV-01–03 commit/push แล้วที่ `3313288` บน `feature/registration-views` และ remote/PR #10 ชี้ revision เดียวกัน (ตรวจ10พ.ย.). ผลของ source นี้: Vitest159/Chromium37/typecheck/build/smoke3 PASS ตาม [หลักฐานและ revision reconciliation](docs/registration/views-verification.md). PRยังOPEN/Draft เข้า sprint-1-staging/no reviews/no merge; Product DoD ยังมี process/reproduction/release gates ค้าง
+
+**Historical Event UI run — 6 พ.ย. 2026:** 145 Vitest / 35 Chromium, typecheck/build/compiled smoke PASS รวม typography/layout/state checks ที่1280/390/320px ดู [current UI evidence](docs/events/visual-consistency.md) ผล141/32 และ seed follow-up ด้านล่างเป็น historical runs
 
 Documentation baseline v0.5 | ปรับปรุง 5 พฤศจิกายน 2026
 Deliverable 1: ส่ง 8 พฤศจิกายน 2026 เวลา 23:59 (Asia/Bangkok)
 
-**สถานะ: baseline v0.5 รับแล้วผ่าน PR #5; F-01/F-03 อยู่ใน sprint-1-staging แล้วตาม local Git** feature/events รวม F-02 กับ staging@ada659b ใน merge working tree หลังแก้ conflict ยังไม่มี merge commit/main release ดู [ผล feature consistency 141 Vitest / 32 Chromium](docs/events/consistency-review.md); รอ teammate review และ Issue #4 (F-04/F-05)
+**สถานะปัจจุบัน:** My Registrations list/detail และ owner roster implement แล้วใน eeafc31 และรวม review fixes ใน3313288 ดู [PR #10](https://github.com/jetanin/LoungCheu/pull/10); teammate approval, OS-process restart, independent clean reproduction/UAT, staging integration และ release acceptance ยังไม่มีหลักฐานผ่าน
 
 Layout ปัจจุบันใช้ `server/client`; app DB `loung-cheu-database` และ test DB `loungcheu_test` ใช้ PostgreSQL instance เดียวที่ `localhost:5432` โดยแยก database กัน ทั้ง app auth smoke และชุดทดสอบผ่านแล้ว ดู [single-instance record](docs/sprints/sprint-1/single-instance-db.md)
 
-6 พ.ย. 2026: feature/events รวม Event APIs/UI และ Registration backend/tests แล้ว หน้ารายละเอียดใช้ RegistrationAction โดยตรง สามารถสร้าง DRAFT → publish → Participant ลงทะเบียนและรับเลขอ้างอิงจริงได้ ดู [ผลทดสอบรวม](docs/events/consistency-review.md) และ [composition](docs/events/integration.md) Own Registrations/roster ยังเป็น Issue #4; ลิงก์ `/my/registrations` ยังรอ implementation นั้น ไม่อ้าง Sprint 1 ครบ
+6 พ.ย. 2026: feature/events รวม Event APIs/UI และ Registration backend/tests แล้ว หน้ารายละเอียดใช้ RegistrationAction โดยตรง สามารถสร้าง DRAFT → publish → Participant ลงทะเบียนและรับเลขอ้างอิงจริงได้ ดู [ผลทดสอบรวม](docs/events/consistency-review.md) และ [composition](docs/events/integration.md) Own Registrations/roster เพิ่มแล้วใน eeafc31 ตาม current verification; การทดสอบวันที่6พ.ย. นี้เป็นประวัติก่อน F-04/F-05
 
 F-02 ใช้คำสั่ง generate/migrate/build/test ด้านล่างชุดเดิม Shared migration คือ `202611060002_registration_extension` จาก #3 ใช้ migration เดิมร่วมกัน ห้ามเพิ่ม migration สร้าง events ซ้ำ การตรวจรอบนี้ migrate เฉพาะ test DB; เมื่อนำไปใช้กับ app DB ให้ใช้ `npm run db:migrate` ตามขั้นตอนเดิม Routes เริ่มที่ `/events` และ Organizer ไป `/organizer/events` เพื่อสร้าง DRAFT/preview/publish เวลา form และ detail เป็น Asia/Bangkok หากพอร์ต dev เดิมใช้อยู่ ให้กำหนด `E2E_WEB_PORT=5183` และ `E2E_API_PORT=3011` สำหรับ browser tests
 
@@ -71,9 +73,18 @@ Docker/CI/CD/GCP ต้องเสร็จใน Lab 5 ส่วน D1 ต้�
 
 Registration จาก sprint-1-staging@ada659b รวมกับ F-02 แล้ว ใช้ auth/session/CSRF, React App/API client และ clock เดียวกัน เปิด POST /api/events/{id}/registrations ร่วมกับ GET detail และ create/publish/list ของ Event module ไม่มี auth bypass หรือ server แยก
 
-Prisma ใช้ camelCase และ map เป็น users/events/registrations Shared migration `202611060002_registration_extension` ใช้ร่วมกันทั้ง #2/#3 โดยไม่สร้าง users/sessions/events/enums ซ้ำ ยังไม่มี My Registrations/roster ของ Issue #4 (F-04/F-05)
+Prisma ใช้ camelCase และ map เป็น users/events/registrations Shared migration `202611060002_registration_extension` ใช้ร่วมกันทั้ง #2/#3 โดยไม่สร้าง users/sessions/events/enums ซ้ำ มี My Registrations list/detail และ owner-scoped roster ของ Issue #4 (F-04/F-05) แล้ว; ไม่เพิ่ม migration หรือ controls ของ Sprint2/3
 
-`npm test` รวม Auth/Event/Registration และ client unit/component tests (145 PASS หลังเพิ่ม seed integration; [demo seed verification](docs/events/demo-seed.md)); `npm run test:registration` รันเฉพาะ Registration DB suite, `npm test -w server` รัน server unit/HTTP และ `npm run test:db -w server` รันทุก server integration ดู [จุดเชื่อม](docs/events/integration.md), [ผลทดสอบรวม](docs/events/consistency-review.md) และ [ผล #3 เดิม](docs/registration/verification.md)
+`npm test` รวม Auth/Event/Registration/own reads/roster และ client unit/component tests (**159 PASS** ที่3313288; [current verification](docs/registration/views-verification.md)). คำสั่งด้านล่างรันจาก repository root และใช้ root test script ที่มีจริง ไม่ต้องใช้ workspace test aliases
+
+```powershell
+# เฉพาะ Registration API/PostgreSQL
+npm test -- server/tests/integration/registration.test.ts
+# เฉพาะ server unit/HTTP
+npm test -- server/tests/unit
+# ทุก server integration รวม auth/events/own reads/roster
+npm test -- server/tests/integration
+```
 
 ### PostgreSQL Docker สำหรับ branch นี้
 
@@ -119,7 +130,7 @@ npm run dev
 
 ลอง Login `participant.a` → กิจกรรมทั้งหมด → `[DEMO] React Workshop เริ่มสร้างเว็บด้วยกัน` เพื่อลงทะเบียน หรือ Login `organizer.a` → กิจกรรมของฉัน เพื่อ preview/publish DRAFT ได้ Seed รอบนี้เพิ่มข้อมูลในฐานแอปตามคำขอผู้ใช้ และตรวจว่ากิจกรรมเดิมยังคงอยู่
 
-Seed follow-up: full Vitest **145 PASS** (รวม seed integration ใหม่4) และ typecheck PASS; ผล **32 Chromium/build** ใน consistency review เป็นรอบก่อนเพิ่ม seed ซึ่งไม่ได้ rerun UI/build รอบนี้ ดู [seed verification](docs/events/demo-seed.md)
+Historical seed follow-up — 6 พ.ย.: full Vitest **145 PASS** (รวม seed integration ใหม่4) และ typecheck PASS; ผล **32 Chromium/build** ใน consistency review เป็นรอบก่อนเพิ่ม seed ซึ่งไม่ได้ rerun UI/build รอบนี้ ดู [seed verification](docs/events/demo-seed.md)
 
 ```powershell
 npm run typecheck
@@ -135,16 +146,16 @@ Unit/API suite ใช้ PostgreSQL จริงจาก `TEST_DATABASE_URL` �
 
 จำเป็นต้องแยก **database** สำหรับ fixtures ที่ reset ข้อมูล ปัจจุบันใช้ PostgreSQL **instance เดียวกัน** ที่ 5432: app DB `loung-cheu-database` และ test DB `loungcheu_test` โดย `.env.test` ชี้ฐาน tests และ migrate ด้วย `npm run db:migrate:test`
 
-Cluster 55432 เดิมหยุดแล้วและไม่ใช้ใน workflow ปัจจุบัน `scripts/local-db.ps1` เป็น compatibility wrapper สำหรับ setup test database บน instance ที่ตั้งใน `server/.env` เท่านั้น ไม่มีการ init/start/stop PostgreSQL เพิ่ม Vitest/Supertest/Playwright เป็นเครื่องมือที่ทีมเลือกและบันทึกใน baseline ผล feature consistency หลังรวม #2/#3 คือ 141 Vitest / 32 Chromium ผ่านก่อนเพิ่ม seed; ล่าสุด full Vitest รวม seed เป็น 145 PASS ดู [combined verification](docs/events/consistency-review.md) ข้อกำหนดหลักคือ coverage ตาม AC และหลักฐานรันจริง ไม่ใช่จำนวน runner cases ตายตัว
+Cluster 55432 เดิมหยุดแล้วและไม่ใช้ใน workflow ปัจจุบัน `scripts/local-db.ps1` เป็น compatibility wrapper สำหรับ setup test database บน instance ที่ตั้งใน `server/.env` เท่านั้น ไม่มีการ init/start/stop PostgreSQL เพิ่ม Vitest/Supertest/Playwright เป็นเครื่องมือที่ทีมเลือกและบันทึกใน baseline ผล feature consistency หลังรวม #2/#3 คือ 141 Vitest / 32 Chromium ผ่านก่อนเพิ่ม seed; ผล145 PASS หลังseedเป็น historical run; source3313288 ผ่าน159 Vitest/37 Chromium ดู [current verification](docs/registration/views-verification.md) ข้อกำหนดหลักคือ coverage ตาม AC และหลักฐานรันจริง ไม่ใช่จำนวน runner cases ตายตัว
 
 ```powershell
 npx playwright install chromium
 npm run test:e2e
 ```
 
-E2E เปิด server/Vite บน ports 3001/5173 โดย default และ seed password สุ่มเฉพาะ process ลง test DB จึงต้องให้ ports ว่าง หรือกำหนด E2E_API_PORT/E2E_WEB_PORT เพื่อใช้ 3011/5183 ชุดทดสอบครอบคลุม Auth/Event/Registration รวม create/publish/register, permissions/conflicts/late-response/session-focus races; proof ของ server expiry อยู่ใน API integration แยกต่างหาก Own records/roster ยังรอ Issue #4
+E2E เปิด server/Vite บน ports 3001/5173 โดย default และ seed password สุ่มเฉพาะ process ลง test DB จึงต้องให้ ports ว่าง หรือกำหนด E2E_API_PORT/E2E_WEB_PORT เพื่อใช้ 3011/5183 ชุดทดสอบครอบคลุม Auth/Event/Registration รวม create/publish/register, permissions/conflicts/late-response/session-focus races; proof ของ server expiry อยู่ใน API integration แยกต่างหาก Own records/roster มีใน Issue #4 แล้ว; current results ดู docs/registration/views-verification.md
 
-ตรวจ compiled artifacts หลัง build ด้วย `npm run test:built`; ผลล่าสุดอยู่ใน [Event verification](docs/events/verification.md) และ [spec audit](docs/events/audit.md) ส่วน [auth pre-PR review](docs/sprints/sprint-1/auth-pre-pr-review.md) เป็นประวัติ F-01 Source snapshots/ผลแดงเดิมเป็นประวัติของแต่ละ version ไม่ใช่ผลของ working tree ล่าสุด
+ตรวจ compiled artifacts หลัง build ด้วย `npm run test:built`; ผลปัจจุบันที่ source3313288 คือ3 checks PASS ดู [current verification](docs/registration/views-verification.md). Event/auth records เดิมเป็น historical execution ไม่ใช่ผลรอบใหม่
 
 หลัง migrate/seed และ build แล้ว ใช้ `npm run test:local-db` เพื่อตรวจ app DB จริงจาก `server/.env`: health, anonymous rejection และ Login/Identity/Logout ของ Participant/Organizer คำสั่งนี้ใช้ demo accounts ที่ seed ไว้และไม่ reset/delete ข้อมูลผู้ใช้ ส่วน unit/API/E2E ชุดหลักยังใช้ test DB แยก ห้ามเปลี่ยน `.env.test` ให้ชี้ฐานแอป
 

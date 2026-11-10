@@ -13,6 +13,8 @@ import { createEventRouter } from './modules/events/router.js';
 import { createEventService } from './modules/events/service.js';
 import { createRegistrationRouter } from './modules/registrations/router.js';
 import { createRegistrationService } from './modules/registrations/service.js';
+import { createRegistrationQueries } from './modules/registrations/queries.js';
+import { createRegistrationReadRouter } from './modules/registrations/read-router.js';
 
 export const SESSION_MS = 2 * 60 * 60 * 1000;
 export const COOKIE_NAME = 'loungcheu.sid';
@@ -93,6 +95,7 @@ export async function createApp(config: AppConfig, db: PrismaClient, now: () => 
   app.use('/api', createEventRouter({ authenticate: auth, verifyCsrf: csrf, json: jsonBody('32kb'), service: createEventService(db, now) }));
   app.use('/api', createRegistrationRouter({ authenticate: auth, verifyCsrf: csrf,
     register: createRegistrationService(db, () => new Date(now())) }));
+  app.use('/api', createRegistrationReadRouter(auth, createRegistrationQueries(db)));
   app.use('/api', (_req, _res) => { throw new ApiError(404, 'ROUTE_NOT_FOUND', 'ไม่พบเส้นทาง'); });
   if (config.production) {
     const clientBuild = fileURLToPath(new URL('../../client/dist/', import.meta.url));

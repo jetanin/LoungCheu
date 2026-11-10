@@ -50,6 +50,20 @@ UI consistency follow-up หลัง demo seed — ตรวจ Login/overview/
 
 เมื่อเปลี่ยน baseline ให้บันทึกเหตุผล IDs ที่กระทบ และ revision ก่อน implementation เก็บผลทดสอบ/review ตาม commit จริง; การย้ายขอบเขตที่กระทบข้อกำหนดรายวิชาต้องมีการตกลงที่เกี่ยวข้อง
 
+## Issue #4 — 7 พฤศจิกายน 2026
+
+สร้าง branch `feature/registration-views` จาก events@9fcbfc8 ตามคำสั่งผู้ใช้ เพิ่ม F-04 own list/detail และ F-05 owner roster ตาม baseline AC-18–23 พร้อม navigation, minimal response fields, database ownership filters, snapshot count, loading/empty/error/retry และ private-data lifecycle guards คืน optional connection limit ที่ถูกลบใน events เพื่อให้ typecheck/concurrency regression ทำงาน ไม่เพิ่ม migration หรือ actions ของ Sprint2/3
+
+Historical 7พ.ย. initial work: Vitest159/typecheck/build/compiled smoke3 results and network-denied browser attempts as detailed in [history](registration/views-verification.md). Implementation was subsequently committed as eeafc31 and published in PR10; no longer an uncommitted implementation claim.
+
+## RV-01–03 corrections — 8 พฤศจิกายน2026
+
+Historical8November verification: the RV-01–03 corrections were tested before their commit; they were subsequently committed as3313288 on8November22:39:43 Asia/Bangkok and remote publication was verified10November. RV-01 fixes account-switch setup by ending the real server session (including after mocked401) before Login. RV-02/03 update current revision/PR state, requirement rows and delivery evidence. Corrected source focused2/full Chromium37/Vitest159/typecheck/build/compiled smoke3 PASS on Node22.23.2/PostgreSQL17.11 isolated DB55433. [Logs/source manifest and retained failures](registration/views-verification.md). GitHub verified8พ.ย.: PR10 OPEN/Draft to sprint-1-staging/head eeafc31/no reviews/no merge; PR9 CLOSED. No commit/push/PR mutation in this pass. Teammate approval, staging integration, independent restart/reproduction/UAT and release acceptance remain pending.
+
+## Documentation reconciliation — 10 November2026
+
+Verified feature/registration-views remote and PR10 head at331328812092c04db84859c4ca00e9a6aa70b0fe. Corrected README to use root npm test filters that exist, removed stale absence of My Registrations/roster, and marked145-test seed results historical. Current documentation now identifies RV-01–03 as committed/pushed3313288. Preserved original8November logs/manifest and checked all34 entries before document changes; new revision manifest records current documentation/source hashes and command discovery. Application/test code is unchanged and no new application execution is claimed. User-supplied follow-up review reports159/37/typecheck/build/smoke3 PASS at3313288. PR10 remains OPEN/Draft with no reviews/merge verified10November; independent OS restart, clean reproduction/UAT, teammate approval and integration/release acceptance remain pending. [Current verification](registration/views-verification.md).
+
 ## AI-use declaration
 
 ใช้ Codex ช่วยอ่าน PDF ร่าง/ปรับเอกสาร วิเคราะห์ design และตรวจ IDs/links/traceability; ตั้งแต่ 6 พ.ย. 2026 ช่วย setup workspace, เขียน implementation/tests ของ F-01/F-02 และ audit/แก้ไขพร้อมเก็บผลรันจริงตาม [auth work record](sprints/sprint-1/auth-work-record.md) และ [F-02 audit](events/audit.md) ทีมรับผิดชอบตรวจรับและเข้าใจ code/tests และทำ teammate review เอง ผลที่ยังไม่รันไม่ถือว่าผ่าน

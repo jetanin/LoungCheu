@@ -1,0 +1,147 @@
+{
+  "checked_on": "2026-11-10",
+  "checked_checkout": "331328812092c04db84859c4ca00e9a6aa70b0fe",
+  "performed_before_document_edits": true,
+  "historical_manifest": "docs/registration/evidence/review-fixes/manifest.json",
+  "matching_files": 34,
+  "total_files": 34,
+  "hash_rule": "raw SHA256 or SHA256 of UTF8 text normalized CRLF to LF",
+  "files": [
+    {
+      "path": "tests/e2e/registration-views.spec.ts",
+      "match": true
+    },
+    {
+      "path": "server/src/modules/registrations/queries.ts",
+      "match": true
+    },
+    {
+      "path": "server/src/modules/registrations/read-router.ts",
+      "match": true
+    },
+    {
+      "path": "server/src/app.ts",
+      "match": true
+    },
+    {
+      "path": "server/src/db/client.ts",
+      "match": true
+    },
+    {
+      "path": "client/src/features/registrations/RegistrationViews.tsx",
+      "match": true
+    },
+    {
+      "path": "client/src/app/App.tsx",
+      "match": true
+    },
+    {
+      "path": "client/src/features/events/EventPage.tsx",
+      "match": true
+    },
+    {
+      "path": "server/tests/integration/registration-views.test.ts",
+      "match": true
+    },
+    {
+      "path": "server/tests/unit/registration-queries.test.ts",
+      "match": true
+    },
+    {
+      "path": "client/src/features/registrations/RegistrationViews.test.tsx",
+      "match": true
+    },
+    {
+      "path": "README.md",
+      "match": true
+    },
+    {
+      "path": "docs/traceability.md",
+      "match": true
+    },
+    {
+      "path": "docs/deliverable-1/evidence-register.md",
+      "match": true
+    },
+    {
+      "path": "docs/sprints/plan.md",
+      "match": true
+    },
+    {
+      "path": "docs/features.md",
+      "match": true
+    },
+    {
+      "path": "docs/sprints/sprint-1/contracts.md",
+      "match": true
+    },
+    {
+      "path": "docs/sprints/sprint-1/README.md",
+      "match": true
+    },
+    {
+      "path": "docs/sprints/sprint-1/sts.md",
+      "match": true
+    },
+    {
+      "path": "docs/changelog.md",
+      "match": true
+    },
+    {
+      "path": "docs/registration/views-verification.md",
+      "match": true
+    },
+    {
+      "path": "docs/registration/views-pr.md",
+      "match": true
+    },
+    {
+      "path": "docs/system-sds.md",
+      "match": true
+    },
+    {
+      "path": "docs/registration/evidence/review-fixes/build.log",
+      "match": true
+    },
+    {
+      "path": "docs/registration/evidence/review-fixes/built-smoke.log",
+      "match": true
+    },
+    {
+      "path": "docs/registration/evidence/review-fixes/e2e.log",
+      "match": true
+    },
+    {
+      "path": "docs/registration/evidence/review-fixes/focused.log",
+      "match": true
+    },
+    {
+      "path": "docs/registration/evidence/review-fixes/github-status.json",
+      "match": true
+    },
+    {
+      "path": "docs/registration/evidence/review-fixes/own-detail.png",
+      "match": true
+    },
+    {
+      "path": "docs/registration/evidence/review-fixes/README.md",
+      "match": true
+    },
+    {
+      "path": "docs/registration/evidence/review-fixes/review-eeafc31.md",
+      "match": true
+    },
+    {
+      "path": "docs/registration/evidence/review-fixes/roster.png",
+      "match": true
+    },
+    {
+      "path": "docs/registration/evidence/review-fixes/typecheck.log",
+      "match": true
+    },
+    {
+      "path": "docs/registration/evidence/review-fixes/vitest.log",
+      "match": true
+    }
+  ]
+}

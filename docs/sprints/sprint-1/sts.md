@@ -2,7 +2,7 @@
 
 เอกสาร LC-S1-STS | Documentation baseline v0.5 | 5 พฤศจิกายน 2026
 
-**TEST-01–21 และ TEST-36 มี actual coverage ตามขอบเขต F-01/F-02/F-03** ดู [combined verification](../../events/consistency-review.md) และ traceability; TEST-15 ส่วน own GET ยังรอ Issue #4, TEST-22–31/34–35 และ full acceptance ของ Sprint 1 ยังไม่ผ่าน ส่วน TEST-32/33 มี partial checks ของ Auth/Event/Registration ไม่อ้าง full matrix ของ F-04/F-05
+**Current coverage — 10 พ.ย.2026:** TEST-01–30/36 มี automated coverage ตาม F-01–05 รวม own read/re-login/roster journey; Vitest159/Chromium37/typecheck/build/smoke3 PASS บน 3313288 (committed/pushed RV-01–03) ดู [source/results](../../registration/views-verification.md). TEST-31/35 มีเพียง app recreation subset; independent restart/reproduction และ TEST-34/process acceptance ยังไม่ยืนยัน TEST-32/33มีautomatederror/accesschecks ไม่อ้าง exhaustive manualmatrix
 
 ## 1. Environment และ fixtures
 
@@ -75,9 +75,11 @@
 
 ## 4. Actual execution summary
 
+10 พ.ย.2026: Current committed/pushed source คือ 3313288; current results ในตารางนี้และ [verification](../../registration/views-verification.md), retained historical failures แยกไว้ตามวันที่
+
 | ประเภท | ผลปัจจุบัน | Actual command / file / commit |
 |---|---|---|
-| Unit/API/DB/concurrency | UI follow-up: 12 files / 145 PASS, 0 fail/skip รวม seed4 และ feature regression เดิม | `npm.cmd test`; [latest UI regression](../../events/visual-consistency.md), [seed tests](../../events/demo-seed.md), [domain audit](../../events/consistency-review.md) |
-| Browser E2E | ล่าสุด35 PASS, 0 fail/skip; เดิม32 + typography/layout3 viewport cases (51 render contexts และ long-content checks) รวม browser Back | `npm.cmd run test:e2e` ports5183/3011; [current UI evidence](../../events/visual-consistency.md); F-04/F-05/full Sprint journey pending |
-| Manual restart/reproduction/UI | Teammate/manual NOT EXECUTED | automated createApp recreation คง session/Event/Registration reference/count; Chromium actual UI ใช้งานได้ แต่ไม่ใช่ OS process restart/full Sprint 1/main release/independent clean reproduction |
-| Process review | Baseline/Auth/Registration integration อ้าง local Git; F-02/release teammate review NOT EXECUTED | feature/events HEAD 04106ff + MERGE_HEAD ada659b ยังไม่มี merge commit; ไม่ได้ตรวจ GitHub live/board รอบนี้ |
+| Unit/API/DB/concurrency | 15 files / 159 PASS, 0 FAIL/SKIP, real PostgreSQL17.11/Node22.23.2 | npm test; [vitest.log](../../registration/evidence/review-fixes/vitest.log); 3313288 |
+| Browser E2E | Focused2 PASS, full37 PASS, 0 FAIL/SKIP; includes corrected account switch, real own read/re-login/roster and existing viewport regressions | npm run test:e2e, ports5197/3027 DB55433; [e2e.log](../../registration/evidence/review-fixes/e2e.log); 3313288 |
+| Manual restart/reproduction/UI | Independent teammate/OS-process restart NOT VERIFIED | Automated app recreation and full UI journey pass; not independent clean setup/UAT or process restart |
+| Process review | PR10 OPEN/Draft/head3313288, reviews=[], mergedAt=null verified10พ.ย.; RV-01–03 committed/pushed at3313288 | [current GitHub status](../../registration/evidence/revision-3313288/github-status.json); teammate approval/integration/release gates pending |
