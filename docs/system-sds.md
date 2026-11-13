@@ -13,8 +13,8 @@ React SPA → REST JSON `/api` → Express application services → PostgreSQL �
 | React + TypeScript + Vite + Bootstrap | Screens, navigation, form validation และ loading/empty/error states |
 | Express + TypeScript | Routers, session/CSRF middleware, authorization, services และ JSON errors |
 | PostgreSQL + Prisma | Domain/session persistence, migrations, constraints และ transactions |
-| Vitest + Supertest | Unit และ API/database integration; concurrency ใช้ PostgreSQL จริง |
-| Browser E2E | Playwright สำหรับ selected auth journeys; cross-feature journeys ตาม STS ยัง pending |
+| Vitest + Supertest | Unit และ API/database integration; concurrency ใช้ PostgreSQL จริง รวม 159 tests |
+| Browser E2E | Playwright สำหรับ critical domain journeys (Auth, Events, Registrations, Views) รวม 37 tests ครอบคลุม responsive viewports |
 
 ```mermaid
 flowchart LR
