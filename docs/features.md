@@ -1,12 +1,12 @@
 # Part B — Feature Inventory
 
-10 พ.ย.2026: F-04/F-05 และ RV-01–03 อยู่ใน committed/pushed3313288; Vitest159/Chromium37/typecheck/build/smoke3 PASS ดู [current revision/results](registration/views-verification.md). PR10 OPEN/Draft/head3313288/no reviews/no merge ตรวจ10พ.ย.; F-06–09 และ independent process/release gates ยัง pending
+**Sprint 1 Staging Integration (10 พ.ย. 2026):** ฟีเจอร์ Sprint 1 ทั้งหมด (F-01 ถึง F-05) พร้อมแก้ไข RV-01–03 ได้รับการ Review และ Merge เข้าสู่ `sprint-1-staging` เรียบร้อยแล้ว (commit `97a5b91`) โดย Paphangkorn Luanseng; ผลการทดสอบ Vitest 159 PASS / Chromium 37 PASS / typecheck PASS / build PASS ครบถ้วนตาม [evidence register](deliverable-1/evidence-register.md)
 
 **Historical Event UI run — 6 พ.ย. 2026:** 145 Vitest / 35 Chromium, typecheck/build/compiled smoke PASS รวม typography/layout/state checks ที่1280/390/320px ดู [current UI evidence](events/visual-consistency.md) ผล141/32 และ seed follow-up ด้านล่างเป็น historical runs
 
 **Seed follow-up (6 พ.ย.):** full Vitest **145 PASS** รวม seed integration ใหม่4 และ typecheck PASS; 141/32 ใน feature audit ด้านล่างเป็นรอบก่อนเพิ่ม seed โดย Chromium/build ไม่ได้ rerun รอบ seed ดู [latest seed results](events/demo-seed.md) ไม่มี AC/scope ใหม่
 
-Documentation baseline v0.5 | 5 พฤศจิกายน2026 | Current source3313288; execution8พ.ย./revision reconciliation10พ.ย.ตาม Issue #4 results; results145/35 ด้านบนเป็น historical Event runs ไม่รวม review-fix patch
+Documentation baseline v1.0 | พฤศจิกายน 2026 | F-01 ถึง F-05 รวมเข้าสู่ `sprint-1-staging` ครบถ้วน พร้อมเปิด Release PR เข้าสู่ `main`
 
 Registration integration update: F-01–05 รวมใน feature/registration-views แล้ว, F-04/F-05 เริ่มที่eeafc31 และรวม committed/pushed RV-01–03 ใน3313288 แล้ว มี own read/re-login/roster journey PASS. Staging integration, teammate review และ accepted release ยังไม่ยืนยัน; historical Event runs ไม่ใช่ผลปัจจุบัน
 
