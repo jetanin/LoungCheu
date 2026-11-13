@@ -1,35 +1,41 @@
-# Deliverable 1 — PDF Assembly Checklist
+# Deliverable 1 — Report & PDF Assembly Guide
 
-Documentation baseline v0.5 | 5 พฤศจิกายน 2026 | คู่มือภายในสำหรับประกอบรายงาน
+Documentation baseline v1.0 | พฤศจิกายน 2026 | แผนและสารบัญรวมสำหรับจัดส่ง Deliverable 1
 
-ส่ง PDF เดียวต่อทีมผ่าน LEB2 ภายใน 8 พฤศจิกายน 2026 เวลา 23:59 รวม 80 คะแนน ไม่มี fixed page limit หน้าต้นระบุสมาชิก Theme/context, repository URL, submitted application tag/commit และสารบัญพร้อมเลขหน้าจริง
+ส่ง PDF เดียวต่อทีมผ่าน LEB2 รวม 80 คะแนน หน้าต้นระบุสมาชิก, Theme/Context, Repository URL, Submitted application tag/commit และสารบัญนำทาง (Navigation Table)
 
-## Contents / navigation
+## 1. Project & Submission Metadata
 
-| Part | คะแนน | เนื้อหาเต็มจาก | IDs | หน้า PDF |
-|---|---:|---|---|---|
-| A | 10 | SRS และ decisions ที่เกี่ยวข้อง | FR-01–15, BR-01–14, NFR-01–09 | รอจัดหน้า |
-| B | 10 | Feature inventory และ traceability | F-01–09, SYS responsibilities | รอจัดหน้า |
-| C | 15 | System SDS | Architecture/data/UI/API/access/deployment | รอจัดหน้า |
-| D | 5 | Three-sprint plan | Sprint 1–3 | รอจัดหน้า |
-| E | 20 | Sprint 1 overview/DoD, contracts และ STS | AC-01–27, TEST-01–36, DOD-01–10 | รอจัดหน้า |
-| F | 20 | Evidence register และ actual results ใน traceability | EV-01–12, Issue/PR/release IDs | รอจัดหน้า |
+| ข้อมูล | รายละเอียด |
+|---|---|
+| **Course** | CPE 334 Software Engineering (Semester 1/2026) |
+| **Deliverable** | Project Deliverable 1 — Engineering baseline and working Sprint 1 |
+| **Team Members** | 1. Jetanin Naitho (ID: 67070501011)<br>2. Paphangkorn Luanseng (ID: 67070501083) |
+| **Theme / Context** | LoungCheu — Community Event & Workshop Management Platform with Atomic Registration |
+| **Repository URL** | https://github.com/jetanin/LoungCheu |
+| **Target Release Tag** | `v1.0.0-sprint-1` (Merged staging candidate: `97a5b91`) |
 
-ใช้เลขหน้าอ้างอิงภายใน PDF; repository เก็บเอกสาร/source/tests ให้ตรวจซ้ำได้ ส่วนคู่มือไฟล์นี้ใช้จัดงาน ไม่ต้องแนบคำอธิบายวิธีประกอบรายงานทั้งหมด
+## 2. Navigation & Structure (Parts A–F)
 
-## Final checks
+| Part | หัวข้อ | คะแนน | แหล่งเอกสารอ้างอิง | ขอบเขต / IDs ที่เกี่ยวข้อง |
+|---|---|---:|---|---|
+| **A** | SRS and Product Scope | 10 | [`docs/srs.md`](../srs.md), [`docs/decisions.md`](../decisions.md) | FR-01–15, BR-01–14, NFR-01–09, Stakeholders, Actors |
+| **B** | Feature Inventory & Traceability | 10 | [`docs/features.md`](../features.md), [`docs/traceability.md`](../traceability.md) | F-01–09, System Responsibilities, Requirements Mapping |
+| **C** | System-Level SDS | 15 | [`docs/system-sds.md`](../system-sds.md) | Stack Architecture, ERD/Data Models, API Contracts, RBAC Matrix |
+| **D** | Three-Sprint Plan | 5 | [`docs/sprints/plan.md`](../sprints/plan.md) | Sprint 1–3 Goals, Feature Allocation, Dependencies |
+| **E** | Sprint 1 Engineering Contracts | 20 | [`docs/sprints/sprint-1/contracts.md`](../sprints/sprint-1/contracts.md), [`sts.md`](../sprints/sprint-1/sts.md), [`README.md`](../sprints/sprint-1/README.md) | AC-01–27, TEST-01–36, DoD-01–10 |
+| **F** | Working Sprint 1 & Verification | 20 | [`docs/deliverable-1/evidence-register.md`](evidence-register.md), [`traceability.md`](../traceability.md) | EV-01–12, PR Chains (#7, #10), 159 Vitest, 37 E2E, Contributions |
 
-- [ ] Metadata ถูกต้อง; submitted tag/commit เป็น working release บน main
-- [ ] Parts A–E อยู่ใน PDF ครบ รวม decisions และ revision history ที่เกี่ยวข้อง
-- [ ] ภาพ normal journey + persisted retrieval + rule rejection + login/logout/access restriction มี role, preconditions, steps, expected/actual และ tested commit
-- [ ] Build/test commands และ readable output ระบุ pass/fail/skipped และ tested commit
-- [ ] ทุก Sprint 1 AC มี planned test, actual file/name และ result; automated/manual แยกกัน
-- [ ] Actual automated test excerpts 2 กรณี: domain rule และ role/ownership พร้อม setup/assertion/results
-- [ ] TDD red→green ระบุ intended behavior และ versions
-- [ ] 2 completed Issue/PR chains มี substantive reviews และ integration เข้า staging/main
-- [ ] Board URL/final status/date, release reference, contributions และ AI-use declaration อยู่ใน PDF
-- [ ] Setup/migration/seed/build/run/test summary ทำซ้ำได้; demo access ส่งอย่างปลอดภัย
-- [ ] ระบุ failed/skipped/incomplete work และ limitations
-- [ ] สารบัญ/เลขหน้า/ภาพ/ตารางอ่านได้; repository accessible และไม่มี secrets
+---
 
-D1 ใช้ local release; completed Docker/CI/CD/GCP และ separate video ยังไม่ต้องส่ง ดูแหล่งข้อกำหนดใน [README](../../README.md)
+## 3. Checklist ก่อนการ Compile เล่มและ Release
+
+- [x] **Metadata ครบถ้วน:** ชื่อ นศ., รหัส นศ., Theme, GitHub URL, Target Release Tag
+- [x] **Parts A–E สมบูรณ์:** เนื้อหาครอบคลุมตาม master specs พร้อม architectural decisions และ changelog
+- [x] **Sprint 1 Engineering Contracts & STS:** ครอบคลุมทุก AC และจับคู่กับ Test ID ชัดเจน
+- [x] **Automated Tests Pass 100%:** 159 Vitest (Unit/Integration) และ 37 Playwright (E2E) ไม่มี skipped หรือ failing tests
+- [x] **PR & Teammate Review Evidence:** มีครบ 2 chains (PR #7 และ PR #10) โดยมีข้อเสนอแนะเชิงเทคนิคและการตรวจรับจริง
+- [x] **Contribution Table:** ระบุสัดส่วนงานของ Jetanin และ Paphangkorn ตรงตาม commit history
+- [x] **Safe Test Data:** ไม่มีการหลุดของ secret, token หรือ password จริงในเอกสาร
+- [ ] **Release PR Merge:** Merge `sprint-1-staging` เข้า `main` และ push tag `v1.0.0-sprint-1`
+- [ ] **PDF Export:** รวมเล่ม A–F เป็นไฟล์ PDF เดียวส่งเข้า LEB2
