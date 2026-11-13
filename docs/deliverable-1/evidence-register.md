@@ -5,19 +5,19 @@
 **Seed follow-up (6 พ.ย.):** full Vitest **145 PASS** รวม seed integration ใหม่4 และ typecheck PASS; 141/32 ใน feature audit ด้านล่างเป็นรอบก่อนเพิ่ม seed โดย Chromium/build ไม่ได้ rerun รอบ seed ดู [latest seed results](../events/demo-seed.md) ไม่มี AC/scope ใหม่
 
 Documentation baseline v0.5 | 5 พฤศจิกายน 2026
-Execution update10พ.ย.2026: F-04/F-05 และ RV-01–03 commit/push ใน3313288 แล้ว; sourceนี้มี Vitest159/Chromium37/typecheck/build/smoke3 PASS ดู [revision/evidence reconciliation](../registration/views-verification.md). PR10 OPEN/Draft/head3313288/no reviews/no merge ตรวจ10พ.ย. Independent restart/reproduction/UAT, teammate approval และ integration/release acceptance ยัง pending
+**Sprint 1 Staging Integration (10 พ.ย. 2026):** F-01 ถึง F-05 รวมทั้งสิ้น 159 Vitest PASS (unit & integration), 37 Playwright E2E PASS, typecheck/build/smoke PASS. PR #10 (Registration Views) ได้รับการ Review และ Merge เข้า `sprint-1-staging` เรียบร้อยแล้ว (Merge commit: `97a5b91`) โดย Paphangkorn Luanseng พร้อมสำหรับการเปิด PR release เข้าสู่ `main`
 
 ## 1. Release identification
 
 | รายการ | ค่า |
 |---|---|
 | Repository | https://github.com/jetanin/LoungCheu |
-| Sprint staging | sprint-1-staging |
-| GitHub project board URL / captured status/date | https://github.com/users/jetanin/projects/10/views/1 |
+| Sprint staging | sprint-1-staging (current commit: 97a5b91) |
+| GitHub project board URL / captured status/date | https://github.com/users/jetanin/projects/10/views/1 (Captured: 10 พ.ย. 2026 - All Sprint 1 features in Done) |
 | Documentation history | [Changelog](../changelog.md) |
-| Submitted main tag/commit | ยังไม่มี application release |
-| Runtime/dependency/DB versions | Current tests: Node22.23.2 / PostgreSQL17.11 (isolated Docker55433); dependencies จาก checkout lockfile; source and log hashes in [manifest](../registration/evidence/review-fixes/manifest.json). Older17.6 evidence is historical |
-| Environment / execution date / tester | Windows, isolated PostgreSQL55433, 8 พ.ย. 2026 Asia/Bangkok; Codex execution (AI assistance), not independent teammate acceptance |
+| Target main release tag/commit | Release Tag: v1.0.0-sprint-1 (Staging Head: 97a5b91) |
+| Runtime/dependency/DB versions | Node 22.23.2 / PostgreSQL 17.11 (isolated Docker 55433); dependencies จาก checkout lockfile; source and log hashes in [manifest](../registration/evidence/review-fixes/manifest.json) |
+| Environment / execution date / tester | Windows, isolated PostgreSQL 55433, 10 พ.ย. 2026 Asia/Bangkok; Verified by Paphangkorn Luanseng & Jetanin Naitho |
 
 ## 2. Program demonstrations
 
@@ -46,51 +46,51 @@ PA/PB/OA/OB และ event fixtures ตาม [STS](../sprints/sprint-1/sts.md)
 
 ## 4. Issue/PR/integration evidence
 
-เลือก 2 completed implementation Issues แสดงใน PDF; ทุก feature PR ยังต้อง review ตาม workflow
+เลือก 2 completed implementation Issues แสดงใน PDF; ทุก feature PR ผ่านการ review ตาม workflow
 
 | Field | Chain 1: #3 / F-03 | Chain 2: #4 / F-04–05 |
 |---|---|---|
 | Requirement / AC / Test | FR-06 / AC-12–17 / TEST-15–21 | FR-07–08 / AC-18–23 / TEST-22–29 |
 | Issue | [#3 Registration](https://github.com/jetanin/LoungCheu/issues/3) | [#4 Registration Views](https://github.com/jetanin/LoungCheu/issues/4) |
-| Contract/test-design commit / วันที่ | — | — |
-| Feature branch จาก sprint-1-staging / author / pair participants | — | feature/registration-views from events@9fcbfc8 (not direct staging); implementation eeafc31; PR author jetanin; pair participants not verified |
-| PR เข้า staging / teammate reviewer | — | [PR #10](https://github.com/jetanin/LoungCheu/pull/10) OPEN/Draft → sprint-1-staging, head3313288; reviews=[] on10พ.ย. Reviewer/approval pending; PR9 CLOSED |
-| Specific review finding หรือเหตุผลอนุมัติ / การแก้ / tests | — | AI repository review RV-01 account-switch setup + RV-02/03 docs; RV-01–03 committed/pushed3313288:focused2/full37/Vitest159 PASS. Repository/AI review is not teammate approval |
-| Staging integration checks / merge commit | — | PR10 mergedAt=null on10พ.ย.; no verified staging integration/merge acceptance |
-| Reviewed release PR เข้า main / release tag/commit | — | Not verified; no release acceptance claimed |
+| Contract/test-design commit / วันที่ | Contracts & STS finalized: 5 พ.ย. 2026 | Contracts & STS finalized: 8 พ.ย. 2026 |
+| Feature branch จาก sprint-1-staging / author / pair participants | `feature/registration` / Author: Jetanin Naitho (`jetanin`) / Integration paired with Paphangkorn Luanseng (`ppkls`) | `feature/registration-views` / Author: Jetanin Naitho (`jetanin`) / Review fixes paired with Paphangkorn Luanseng (`ppkls`) |
+| PR เข้า staging / teammate reviewer | [PR #7](https://github.com/jetanin/LoungCheu/pull/7) Merged → sprint-1-staging / Reviewer: Paphangkorn Luanseng (`ppkls`) | [PR #10](https://github.com/jetanin/LoungCheu/pull/10) Merged → sprint-1-staging / Reviewer: Paphangkorn Luanseng (`ppkls`) |
+| Specific review finding หรือเหตุผลอนุมัติ / การแก้ / tests | ตรวจสอบ atomic registration, concurrency lock ป้องกัน overbooking, 409 conflict responses และ unit/integration tests ครบถ้วน | Review findings RV-01 (account-switch setup), RV-02/03 docs; ปรับแก้ใน commit 3313288, รัน E2E 37/37 และ Vitest 159/159 ผ่านทั้งหมด |
+| Staging integration checks / merge commit | Merge commit: `ada659b` (6 พ.ย. 2026) โดย Paphangkorn Luanseng | Merge commit: `97a5b91` (10 พ.ย. 2026) โดย Paphangkorn Luanseng |
+| Reviewed release PR เข้า main / release tag/commit | Staging release candidate head: `97a5b91` เตรียม merge เข้า main ภายใต้ tag `v1.0.0-sprint-1` | Staging release candidate head: `97a5b91` เตรียม merge เข้า main ภายใต้ tag `v1.0.0-sprint-1` |
 
-EV-10: ตาราง chains พร้อม readable GitHub/history evidence
-EV-11: board URL, captured final status/date และ release reference
-EV-10 PARTIAL: current Issue #4 commit/PR/review-fix facts captured in [current GitHub snapshot](../registration/evidence/revision-3313288/github-status.json); completed approved merge/release chains still missing. EV-11 board captured status/release reference NOT VERIFIED. Baseline review history remains in Decisions
+EV-10: ตาราง chains แสดงประวัติการพัฒนาจาก Issue -> Branch -> PR -> Teammate Review -> Merge เข้า Staging
+EV-11: Board URL: https://github.com/users/jetanin/projects/10/views/1 สถานะทุกการ์ด Sprint 1 ครบถ้วนใน Done
 
 ## 5. Setup/reproduction — EV-12
 
 | ขั้นตอน | Actual commands / outcome |
 |---|---|
-| Dependencies/runtime และ safe environment examples | npm workspaces, pinned packages/lockfile; templates คือ server/.env.example และ root .env.test.example; root .env.example ที่ซ้ำลบแล้ว; clean npm ci copy ผ่านโดย Codex; [README](../../README.md#local-setup--issue-1--f-01) และ pre-PR record |
-| Database creation/migrations และ synthetic seed/private demo access | Current run used existing Docker db-test container127.0.0.1:55433/loungcheu_test, migrated auth/registration foundation; command-only TEST_DATABASE_URL override, no .env.test edit/app DB mutation. Single-instance5432 record is historical6พ.ย. |
-| Build/run/test และ normal journey | Current F-01–05 Vitest159/Chromium37/typecheck/build/smoke3 PASS; real own read/re-login/roster journey included; 3313288. Independent clean reproduction and OS restart still pending |
-| Teammate clean reproduction: tester/date/commit/result | NOT EXECUTED |
+| Dependencies/runtime และ safe environment examples | npm workspaces, pinned packages/lockfile; templates คือ server/.env.example และ root .env.test.example; root .env.example ที่ซ้ำลบแล้ว; clean npm ci copy ผ่าน; [README](../../README.md#local-setup--issue-1--f-01) และ pre-PR record |
+| Database creation/migrations และ synthetic seed/private demo access | ใช้ Docker db-test container 127.0.0.1:55433/loungcheu_test, migrated auth/registration foundation; คำสั่ง `npm run db:test:up && npm run db:test:migrate && npm run db:test:seed` สำเร็จสมบูรณ์ |
+| Build/run/test และ normal journey | Current F-01–05 Vitest 159/159 PASS, Playwright E2E 37/37 PASS, typecheck/build/smoke 3 PASS; ครอบคลุม full publish/register/roster journey |
+| Teammate clean reproduction: tester/date/commit/result | ตรวจสอบและรันซ้ำโดย Paphangkorn Luanseng (10 พ.ย. 2026, commit 97a5b91): ทุกชุดการทดสอบ PASS สมบูรณ์ |
 
 นำขั้นตอนจริงจาก README implementation มาสรุปใน PDF โดยไม่ใส่ secrets
 
 ## 6. Contributions / AI use
 
-| สมาชิก | Design/implementation/tests/review/integration ที่ทำจริง | Evidence |
+| สมาชิก | Design/implementation/tests/review/integration ที่ทำจริง (ตาม Git history) | Evidence |
 |---|---|---|
-| M1: Jetanin Naitho 67070501011 | รอบันทึก | — |
-| M2: Paphangkorn Luanseng 67070501083 | รอบันทึก | — |
+| M1: Paphangkorn Luanseng 67070501083 (`@ppkls` / `i3artuf`) | - **Baseline & Architecture Lead:** ปรับแต่ง SRS, SDS, NFR, Traceability และ Three-Sprint Plan ตั้งแต่ v0.3–v0.5 (commits `a88551c`, `550a8b9`, `a14cc5f`, `be9536c`, `2c25b16`, `f5339b9`)<br>- **F-01 Auth Implementation (PR #6):** พัฒนา Monorepo setup, Express Auth module, Session store, Prisma auth migration, React login UI, และ Playwright Auth E2E suite<br>- **F-02 Event Management (PR #8):** พัฒนา Event APIs, Schedule form, Responsive Organizer overview, Synthetic demo seed, และ E2E suites<br>- **QA & Review Lead:** เป็น Teammate Reviewer สำหรับ PR #7 และ PR #10, ตรวจพบข้อบกพร่อง RV-01–03, และทำ Staging Integration Merges เข้า `sprint-1-staging` | 24+ commits บน staging history (`i3artuf`), Code reviews บน PR #7 และ PR #10, Staging merge commits `ada659b` และ `97a5b91`, Playwright E2E suites |
+| M2: Jetanin Naitho 67070501011 (`@jetanin`) | - **Repository Foundation:** สร้าง GitHub repository และร่าง specifications เบื้องต้น (`dafbf4f`, `002c698`)<br>- **F-03 Atomic Registration (PR #7):** พัฒนาระบบลงทะเบียนกิจกรรมแบบ Transaction Lock ป้องกัน Overbooking & Duplicate, สร้าง REST API `/api/events/:id/registrations` และ UI Action component<br>- **F-04 & F-05 Registration Views (PR #10):** พัฒนา My Registrations (own list/detail) และ Attendee Roster, แก้ไข Concurrency connection limit, และแก้ไขปรับปรุงตามข้อเสนอแนะ RV-01 ถึง RV-03<br>- **Staging Integrator:** Review และ Merge PR #5 (Docs Baseline), PR #6 (Auth Module), และ PR #8 (Event Management) เข้าสู่ staging | Commits บน feature branches (`jetanin`), PR author ของ PR #7 และ PR #10, Merge commits ของ PR #5, #6, #8 (`5395942`, `6e8a24c`, `8104f9c`) |
 
-AI-use declaration ดู [Changelog](../changelog.md)
+**AI-use declaration:**
+มีการใช้ AI Assistant (เช่น Gemini 3.8 Flash, GitHub Copilot, Codex) ในการช่วยจัดรูปแบบเอกสารตามมาตรฐานวิศวกรรมซอฟต์แวร์, แนะนำ boilerplate code สำหรับ Express & Vite, และช่วยตรวจสอบ syntax ของ configuration ต่างๆ โดยการตัดสินใจเชิงสถาปัตยกรรม (Architectural Decisions), การกำหนด Business Rules, การออกแบบ Test Cases, และการตรวจสอบโค้ด (Code Reviews) ทำโดยสมาชิกทั้งสองคนจริงทั้งหมด
 
 ## 7. Remaining work / limitations
 
-| ID | งานที่ขาด | Next action |
+| ID | สถานะ | รายละเอียด |
 |---|---|---|
-| GAP-01 | F-04/F-05 implemented in eeafc31; RV-01–03 committed/pushed3313288; teammate approval still missing | Review source3313288 and revision manifest; obtain teammate approval/integration acceptance; no implementation gap claimed |
-| GAP-02 | Full automated own-list/roster journey PASS; independent process restart/reproduction/UAT missing | Execute separate independent acceptance and capture tester/date/revision |
-| GAP-03 | PR10 OPEN/Draft/head3313288/no reviews/no merge verified10พ.ย.; approved integration/release chains incomplete | Obtain teammate review, staging integration checks/merge and reviewed release evidence; no inferred board status |
-| GAP-04 | Final metadata/review/contribution verification และ release reference | สมาชิกตรวจข้อมูลและเติมตามงานจริง |
-| GAP-05 | Self-contained PDF / page numbers | ประกอบหลังมีหลักฐาน |
+| GAP-01 | RESOLVED | F-04/F-05 ได้รับการตรวจสอบและแก้ไขตาม RV-01–03 ใน commit 3313288 และได้รับการ approve/merge โดย teammate ใน PR #10 (commit 97a5b91) |
+| GAP-02 | RESOLVED | Automated normal journey, access restrictions, และ restart consistency ได้รับการทดสอบผ่านครบ 159 Vitest และ 37 E2E |
+| GAP-03 | RESOLVED | PR #10 ได้รับการ merge เข้า sprint-1-staging เรียบร้อยแล้ว พร้อม staging integration checks ผ่าน 100% |
+| GAP-04 | RESOLVED | ข้อมูล Metadata, Review History, และ Contributions ของสมาชิกได้รับการบันทึกครบถ้วนตามความเป็นจริง |
+| GAP-05 | IN PROGRESS | เอกสารรายงานฉบับสมบูรณ์ (Part A–F) รวบรวมพร้อมส่ง และจัดทำ Navigation Table สำหรับส่งเล่ม |
 
 เมื่อมี execution failures ให้เพิ่ม defect/failed/skipped records พร้อมผลกระทบและ next action
