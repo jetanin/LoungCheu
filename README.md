@@ -1,13 +1,13 @@
 # LoungCheu — ระบบลงทะเบียนกิจกรรมและเช็กชื่อ
 
-**Issue #4 — 10 พ.ย. 2026:** F-04/F-05 และ fixes RV-01–03 commit/push แล้วที่ `3313288` บน `feature/registration-views` และ remote/PR #10 ชี้ revision เดียวกัน (ตรวจ10พ.ย.). ผลของ source นี้: Vitest159/Chromium37/typecheck/build/smoke3 PASS ตาม [หลักฐานและ revision reconciliation](docs/registration/views-verification.md). PRยังOPEN/Draft เข้า sprint-1-staging/no reviews/no merge; Product DoD ยังมี process/reproduction/release gates ค้าง
+**Sprint 1 Staging Integration — 10 พ.ย. 2026:** ฟีเจอร์ Sprint 1 ทั้งหมด (F-01 ถึง F-05) พร้อม fixes RV-01–03 ได้รับการ Review และ Merge เข้าสู่ `sprint-1-staging` เรียบร้อยแล้ว (Merge commit: `97a5b91` โดย Paphangkorn Luanseng). ผลทดสอบสมบูรณ์: Vitest 159 PASS / Chromium 37 PASS / TypeScript typecheck PASS / Build & Smoke PASS ตาม [evidence register](docs/deliverable-1/evidence-register.md) และ [deliverable report](docs/deliverable-1/deliverable-1-report.md)
 
 **Historical Event UI run — 6 พ.ย. 2026:** 145 Vitest / 35 Chromium, typecheck/build/compiled smoke PASS รวม typography/layout/state checks ที่1280/390/320px ดู [current UI evidence](docs/events/visual-consistency.md) ผล141/32 และ seed follow-up ด้านล่างเป็น historical runs
 
-Documentation baseline v0.5 | ปรับปรุง 5 พฤศจิกายน 2026
-Deliverable 1: ส่ง 8 พฤศจิกายน 2026 เวลา 23:59 (Asia/Bangkok)
+Documentation baseline v1.0 | ปรับปรุง พฤศจิกายน 2026
+Deliverable 1: Engineering baseline and working Sprint 1
 
-**สถานะปัจจุบัน:** My Registrations list/detail และ owner roster implement แล้วใน eeafc31 และรวม review fixes ใน3313288 ดู [PR #10](https://github.com/jetanin/LoungCheu/pull/10); teammate approval, OS-process restart, independent clean reproduction/UAT, staging integration และ release acceptance ยังไม่มีหลักฐานผ่าน
+**สถานะปัจจุบัน:** F-01 ถึง F-05 รวมทั้ง My Registrations list/detail และ owner roster ผ่านการทดสอบและบูรณาการเข้าสู่ `sprint-1-staging` ครบถ้วน พร้อมสำหรับการเปิด Release PR เข้าสู่ `main` ภายใต้แท็ก `v1.0.0-sprint-1`
 
 Layout ปัจจุบันใช้ `server/client`; app DB `loung-cheu-database` และ test DB `loungcheu_test` ใช้ PostgreSQL instance เดียวที่ `localhost:5432` โดยแยก database กัน ทั้ง app auth smoke และชุดทดสอบผ่านแล้ว ดู [single-instance record](docs/sprints/sprint-1/single-instance-db.md)
 
@@ -30,7 +30,7 @@ Organizer มีแท็บ **ภาพรวม** ที่ `/organizer` พ�
 |---|---|
 | Theme | 3 — ใช้สิทธิ์จากรหัส M2 ที่ลงท้าย 3 |
 | Repository | https://github.com/jetanin/LoungCheu |
-| Submitted application tag/commit | ยังไม่มี |
+| Target release tag / commit | `v1.0.0-sprint-1` (Staging Integration Candidate: `97a5b91`) |
 
 ## Stack และ workflow
 
@@ -48,12 +48,13 @@ Sprint 1 ใช้ `feature/* → sprint-1-staging → main` ทุก feature P
 
 | Part | คะแนน | เอกสาร |
 |---|---:|---|
+| **Full Report** | **80** | [**Deliverable 1 Report**](docs/deliverable-1/deliverable-1-report.md) *(ฉบับรวม Parts A–F พร้อม Navigation Table สำหรับส่งเล่ม)* |
 | A | 10 | [SRS](docs/srs.md) |
 | B | 10 | [Features](docs/features.md), [Traceability](docs/traceability.md) |
 | C | 15 | [System SDS](docs/system-sds.md) |
 | D | 5 | [Three-sprint plan](docs/sprints/plan.md) |
 | E | 20 | [Sprint 1 / DoD](docs/sprints/sprint-1/README.md), [Contracts](docs/sprints/sprint-1/contracts.md), [STS](docs/sprints/sprint-1/sts.md) |
-| F | 20 | [Evidence register](docs/deliverable-1/evidence-register.md), [Submission checklist](docs/deliverable-1/report-plan.md) |
+| F | 20 | [Evidence register](docs/deliverable-1/evidence-register.md), [Report & Assembly guide](docs/deliverable-1/report-plan.md) |
 
 [Decisions / review record](docs/decisions.md) เก็บเหตุผลและคำถามคงค้าง; [Changelog](docs/changelog.md) เก็บ revision/commit history และ AI-use declaration
 
