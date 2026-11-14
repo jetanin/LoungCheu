@@ -1,0 +1,15 @@
+
+> loungcheu@0.1.0 test:e2e
+> playwright test
+
+
+Running 5 tests using 1 worker
+
+  ok 1 tests\e2e\auth.spec.ts:3:3 › F-01 participant.a: login, refresh, logout and browser back (1.4s)
+  ok 2 tests\e2e\auth.spec.ts:3:3 › F-01 organizer.a: login, refresh, logout and browser back (801ms)
+  ok 3 tests\e2e\auth.spec.ts:18:1 › F-01 invalid form, generic credentials and pending submit (1.2s)
+  ok 4 tests\e2e\auth.spec.ts:29:1 › F-01 expired session clears private UI on focus (438ms)
+  ok 5 tests\e2e\auth.spec.ts:37:1 › F-01 failed logout clears private UI and offers a working retry (568ms)
+
+  5 passed (14.9s)
+Exit code: 0

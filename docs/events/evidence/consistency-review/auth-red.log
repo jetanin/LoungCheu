@@ -1,0 +1,41 @@
+
+ RUN  v5.1.0 C:/Kmutt/Senior/CPE334/Final/LoungCheu
+
+ ❯ server/tests/integration/auth.test.ts (31 tests | 1 failed | 30 skipped) 1527ms
+   ❯ F-01 API with real PostgreSQL sessions (31)
+     × TEST-02 uses one credential error for unknown, wrong, inactive and case-mismatched accounts 488ms
+node :
+At line:2 char:1
++ node node_modules/vitest/vitest.mjs run server/tests/integration/auth ...
++ ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : NotSpecified: (:String) [], RemoteException
+    + FullyQualifiedErrorId : NativeCommandError
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 1 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  server/tests/integration/auth.test.ts > F-01 API with real PostgreSQL sessions > TEST-02 uses one credential
+error for unknown, wrong, inactive and case-mismatched accounts
+AssertionError: expected 500 to be 401 // Object.is equality
+
+- Expected
++ Received
+
+- 401
++ 500
+
+ ❯ expectError server/tests/integration/auth.test.ts:35:27
+     33| }
+     34| function expectError(response: request.Response, status: number, code:…
+     35|   expect(response.status).toBe(status);
+       |                           ^
+     36|   expect(response.body).toEqual({ error: { code, message: expect.any(S…
+     37| }
+ ❯ server/tests/integration/auth.test.ts:120:7
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/1]⎯
+
+
+ Test Files  1 failed (1)
+      Tests  1 failed | 30 skipped (31)
+   Start at  23:02:34
+   Duration  2.24s (tests 74%, import 20%, transform 6%)

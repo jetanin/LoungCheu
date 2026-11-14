@@ -1,0 +1,67 @@
+
+> loungcheu@0.1.0 test:e2e
+> playwright test tests/e2e/events.spec.ts -g Organizer creates
+
+npm.cmd : [WebServer] (node:42912) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+At line:2 char:137
++ ... ORT='3011'; npm.cmd run test:e2e -- tests/e2e/events.spec.ts -g 'Orga ...
++                 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : NotSpecified: ([WebServer] (no... env being set.:String) [], RemoteException
+    + FullyQualifiedErrorId : NativeCommandError
+ 
+[WebServer] (Use `node --trace-warnings ...` to show where the warning was created)
+[WebServer] (node:47432) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+[WebServer] (Use `node --trace-warnings ...` to show where the warning was created)
+[WebServer] (node:13076) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+[WebServer] (Use `node --trace-warnings ...` to show where the warning was created)
+[WebServer] (node:47016) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+[WebServer] (Use `node --trace-warnings ...` to show where the warning was created)
+[WebServer] (node:47016) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+[WebServer] (Use `node --trace-warnings ...` to show where the warning was created)
+[WebServer] (node:3480) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+[WebServer] (Use `node --trace-warnings ...` to show where the warning was created)
+[WebServer] (node:48724) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+[WebServer] (Use `node --trace-warnings ...` to show where the warning was created)
+
+Running 1 test using 1 worker
+
+(node:2264) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  x  1 tests\e2e\events.spec.ts:10:1 › TEST-07/09/14/36 Organizer creates, previews, publishes; Participant browses persisted shared detail (6.0s)
+
+
+  1) tests\e2e\events.spec.ts:10:1 › TEST-07/09/14/36 Organizer creates, previews, publishes; Participant browses persisted shared detail 
+
+    Error: expect(locator).toHaveText(expected) failed
+
+    Locator: locator('section').filter({ has: getByRole('heading', { name: 'สร้างกิจกรรม', exact: true }) }).locator('fieldset legend')
+    Timeout: 5000ms
+    - Expected  - 1
+    + Received  + 1
+
+      Array [
+    -   "ปิดรับลงทะเบียน",
+        "เริ่มกิจกรรม",
+        "สิ้นสุดกิจกรรม",
+    +   "ปิดรับลงทะเบียน",
+      ]
+
+    Call log:
+      - Expect "toHaveText" locator('section').filter({ has: getByRole('heading', { name: 'สร้างกิจกรรม', exact: true }) }).locator('fieldset legend') with timeout 5000ms
+      - waiting for locator('section').filter({ has: getByRole('heading', { name: 'สร้างกิจกรรม', exact: true }) }).locator('fieldset legend')
+        14 × locator resolved to 3 elements
+
+
+      15 |   const cardBounds = await formCard.boundingBox(), mainBounds = await page.locator('main').boundingBox();
+      16 |   expect.soft(Math.abs(cardBounds!.x + cardBounds!.width / 2 - mainBounds!.x - mainBounds!.width / 2)).toBeLessThanOrEqual(1);
+    > 17 |   await expect(formCard.locator('fieldset legend')).toHaveText(['ปิดรับลงทะเบียน', 'เริ่มกิจกรรม', 'สิ้นสุดกิจกรรม']);
+         |                                                     ^
+      18 |   const checkScheduleOrder = async () => {
+      19 |     const tops = await formCard.locator('fieldset').evaluateAll(elements => elements.map(element => element.getBoundingClientRect().top));
+      20 |     expect(tops[0]).toBeLessThan(tops[1]); expect(tops[1]).toBeLessThan(tops[2]);
+        at C:\Kmutt\Senior\CPE334\Final\LoungCheu\tests\e2e\events.spec.ts:17:53
+
+    Error Context: test-results\events-TEST-07-09-14-36-Or-fa34a-ses-persisted-shared-detail\error-context.md
+
+  1 failed
+    tests\e2e\events.spec.ts:10:1 › TEST-07/09/14/36 Organizer creates, previews, publishes; Participant browses persisted shared detail 

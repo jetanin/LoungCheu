@@ -1,0 +1,35 @@
+
+> loungcheu@0.1.0 test:built
+> node scripts/smoke-built.mjs
+
+npm.cmd : node:internal/modules/run_main:123
+At line:2 char:271
++ ... ($result -ne 0) { exit $result }; npm.cmd run test:built 2>&1 | Tee-O ...
++                                       ~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : NotSpecified: (node:internal/modules/run_main:123:String) [], RemoteException
+    + FullyQualifiedErrorId : NativeCommandError
+ 
+    triggerUncaughtException(
+    ^
+
+Error: expected 200 "OK", got 500 "Internal Server Error"
+    at file:///C:/Kmutt/Senior/CPE334/Final/LoungCheu/.local/pre-pr-reproduction/scripts/smoke-built.mjs:14:57
+----
+    at Test._assertStatus 
+(C:\Kmutt\Senior\CPE334\Final\LoungCheu\.local\pre-pr-reproduction\node_modules\supertest\lib\test.js:404:14)
+    at C:\Kmutt\Senior\CPE334\Final\LoungCheu\.local\pre-pr-reproduction\node_modules\supertest\lib\test.js:460:13
+    at Test._assertFunction 
+(C:\Kmutt\Senior\CPE334\Final\LoungCheu\.local\pre-pr-reproduction\node_modules\supertest\lib\test.js:437:13)
+    at Test.assert 
+(C:\Kmutt\Senior\CPE334\Final\LoungCheu\.local\pre-pr-reproduction\node_modules\supertest\lib\test.js:302:23)
+    at localAssert 
+(C:\Kmutt\Senior\CPE334\Final\LoungCheu\.local\pre-pr-reproduction\node_modules\supertest\lib\test.js:220:38)
+    at Server.<anonymous> 
+(C:\Kmutt\Senior\CPE334\Final\LoungCheu\.local\pre-pr-reproduction\node_modules\supertest\lib\test.js:227:13)
+    at Object.onceWrapper (node:events:632:28)
+    at Server.emit (node:events:518:28)
+    at emitCloseNT (node:net:2418:8)
+    at process.processTicksAndRejections (node:internal/process/task_queues:89:21)
+
+Node.js v22.16.0
+Exit code: 1

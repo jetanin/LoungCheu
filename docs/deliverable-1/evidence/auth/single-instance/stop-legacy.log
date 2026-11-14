@@ -1,0 +1,10 @@
+pg_ctl: server is running (PID: 49196)
+C:/Program Files/PostgreSQL/17/bin/postgres.exe "-D" "C:/Kmutt/Senior/CPE334/Final/LoungCheu/.local/postgres" "-h" "127.0.0.1" "-p" "55432"
+waiting for server to shut down.... done
+server stopped
+127.0.0.1:55432 - no response
+localhost:5432 - accepting connections
+Legacy cluster stopped; archived data directory retained; primary PostgreSQL 5432 available.
+
+Exit code: 0
+

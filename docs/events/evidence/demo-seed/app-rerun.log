@@ -1,0 +1,9 @@
+
+> loungcheu@0.1.0 db:seed
+> npm run db:seed -w server
+
+
+> @loungcheu/server@0.1.0 db:seed
+> tsx prisma/seed.ts
+
+{"message":"Synthetic accounts and demo events seeded (credentials omitted).","createdEvents":0,"createdRegistrations":0,"skippedEvents":6}

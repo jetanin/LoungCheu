@@ -1,0 +1,54 @@
+
+> loungcheu@0.1.0 test:e2e
+> playwright test
+
+npm.cmd : [WebServer] (node:24680) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+At line:2 char:53
++ ... T='5183'; $env:E2E_API_PORT='3011'; npm.cmd run test:e2e 2>&1 | Tee-O ...
++                                         ~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : NotSpecified: ([WebServer] (no... env being set.:String) [], RemoteException
+    + FullyQualifiedErrorId : NativeCommandError
+ 
+[WebServer] (Use `node --trace-warnings ...` to show where the warning was created)
+[WebServer] (node:49332) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+[WebServer] (Use `node --trace-warnings ...` to show where the warning was created)
+[WebServer] (node:64668) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+[WebServer] (Use `node --trace-warnings ...` to show where the warning was created)
+[WebServer] (node:54388) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+[WebServer] (Use `node --trace-warnings ...` to show where the warning was created)
+[WebServer] (node:54388) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+[WebServer] (Use `node --trace-warnings ...` to show where the warning was created)
+[WebServer] (node:66540) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+[WebServer] (Use `node --trace-warnings ...` to show where the warning was created)
+[WebServer] (node:50528) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+[WebServer] (Use `node --trace-warnings ...` to show where the warning was created)
+
+Running 22 tests using 1 worker
+
+(node:33328) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ok  1 tests\e2e\auth.spec.ts:3:3 › F-01 participant.a: login, refresh, logout and browser back (1.1s)
+  ok  2 tests\e2e\auth.spec.ts:3:3 › F-01 organizer.a: login, refresh, logout and browser back (693ms)
+  ok  3 tests\e2e\auth.spec.ts:18:1 › F-01 invalid form, generic credentials and pending submit (1.1s)
+  ok  4 tests\e2e\auth.spec.ts:29:1 › F-01 expired session clears private UI on focus (371ms)
+  ok  5 tests\e2e\auth.spec.ts:37:1 › F-01 failed logout clears private UI and offers a working retry (580ms)
+  ok  6 tests\e2e\auth.spec.ts:50:1 › F-01 ignores an older successful session response after a newer 401 (493ms)
+  ok  7 tests\e2e\auth.spec.ts:76:1 › F-01 rechecks a restored page after its session was logged out elsewhere (417ms)
+  ok  8 tests\e2e\events-audit.spec.ts:19:34 › TEST-14 publish 403 removes cached private record even if an old refresh returns later (640ms)
+  ok  9 tests\e2e\events-audit.spec.ts:19:34 › TEST-14 publish 404 removes cached private record even if an old refresh returns later (642ms)
+  ok 10 tests\e2e\events-audit.spec.ts:36:34 › TEST-14 read 403 cannot be overwritten by an earlier publish success (637ms)
+  ok 11 tests\e2e\events-audit.spec.ts:36:34 › TEST-14 read 404 cannot be overwritten by an earlier publish success (621ms)
+  ok 12 tests\e2e\events-audit.spec.ts:55:1 › TEST-09/14 publish conflict explains rejection and refreshes the committed event status (629ms)
+  ok 13 tests\e2e\events-audit.spec.ts:66:1 › TEST-14 a late create success cannot navigate the next signed-in account to the previous owner record (1.2s)
+  ok 14 tests\e2e\events-audit.spec.ts:85:1 › TEST-14 a late publish 401 cannot clear the next account session (786ms)
+  ok 15 tests\e2e\events-audit.spec.ts:100:1 › TEST-14 canonical detail and create routes work with a trailing slash (548ms)
+  ok 16 tests\e2e\events-audit.spec.ts:106:1 › TEST-14 a definitive session 401 still wins over a later temporary identity failure (390ms)
+  ok 17 tests\e2e\events.spec.ts:9:1 › TEST-07/09/14/36 Organizer creates, previews, publishes; Participant browses persisted shared detail (2.5s)
+  ok 18 tests\e2e\events.spec.ts:54:1 › TEST-14 list loading, empty, failure and retry; detail 404 and publish conflict (1.2s)
+  ok 19 tests\e2e\events.spec.ts:79:1 › TEST-09/14 an older availability refresh cannot overwrite a successful publish (626ms)
+  ok 20 tests\e2e\events.spec.ts:100:69 › F-02/#3 focus and availability refresh preserve RegistrationAction pending (1.3s)
+  ok 21 tests\e2e\events.spec.ts:100:69 › F-02/#3 focus and availability refresh preserve RegistrationAction success (1.3s)
+  ok 22 tests\e2e\events.spec.ts:100:69 › F-02/#3 focus and availability refresh preserve RegistrationAction uncertain (1.3s)
+
+  22 passed (27.5s)
+Playwright native exit code: 0

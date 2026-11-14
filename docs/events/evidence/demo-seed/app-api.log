@@ -1,0 +1,1 @@
+{"phase":"initial","database":"loung-cheu-database","before":{"users":6,"events":1,"registrations":0},"after":{"users":6,"events":7,"registrations":4},"unchanged_existing_records":{"users":6,"events":1,"registrations":0},"demo_events":6,"api_checks":"PASS"}

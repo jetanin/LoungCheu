@@ -1,0 +1,67 @@
+Captured tool-output tail; generate/migrate initial output was shown in the tool execution.
+
+> @loungcheu/frontend@0.1.0 typecheck
+> tsc --noEmit
+
+
+> loungcheu@0.1.0 test
+> vitest run
+
+
+ RUN  v5.1.0 C:/Kmutt/Senior/CPE334/Final/LoungCheu/.local/pre-pr-reproduction
+
+
+ Test Files  4 passed (4)
+      Tests  54 passed (54)
+   Start at  02:01:09
+   Duration  5.66s (tests 87%, import 8%, transform 4%, worker 1%)
+
+    Isolate  4 workers spawned · ~138ms startup each (spawn + environment, per file)
+             at least ~414ms faster with isolate: false — reuses workers across files instead of one per file
+
+
+> loungcheu@0.1.0 build
+> npm run build -w frontend && npm run build -w backend
+
+
+> @loungcheu/frontend@0.1.0 build
+> tsc --noEmit && vite build
+
+vite v6.4.5 building for production...
+transforming...
+✓ 32 modules transformed.
+rendering chunks...
+computing gzip size...
+dist/index.html                   0.42 kB │ gzip:  0.31 kB
+dist/assets/index-Cxb1Ua4K.css  231.90 kB │ gzip: 31.10 kB
+dist/assets/index-DXbzaFYN.js   230.71 kB │ gzip: 71.93 kB
+✓ built in 1.17s
+
+> @loungcheu/backend@0.1.0 build
+> tsc -p tsconfig.build.json
+
+
+> loungcheu@0.1.0 test:built
+> node scripts/smoke-built.mjs
+
+node:internal/modules/run_main:123
+    triggerUncaughtException(
+    ^
+
+Error: expected 200 "OK", got 500 "Internal Server Error"
+    at file:///C:/Kmutt/Senior/CPE334/Final/LoungCheu/.local/pre-pr-reproduction/scripts/smoke-built.mjs:14:57
+----
+    at Test._assertStatus (C:\Kmutt\Senior\CPE334\Final\LoungCheu\.local\pre-pr-reproduction\node_modules\supertest\lib\test.js:404:14)
+    at C:\Kmutt\Senior\CPE334\Final\LoungCheu\.local\pre-pr-reproduction\node_modules\supertest\lib\test.js:460:13
+    at Test._assertFunction (C:\Kmutt\Senior\CPE334\Final\LoungCheu\.local\pre-pr-reproduction\node_modules\supertest\lib\test.js:437:13)
+    at Test.assert (C:\Kmutt\Senior\CPE334\Final\LoungCheu\.local\pre-pr-reproduction\node_modules\supertest\lib\test.js:302:23)
+    at localAssert (C:\Kmutt\Senior\CPE334\Final\LoungCheu\.local\pre-pr-reproduction\node_modules\supertest\lib\test.js:220:38)
+    at Server.<anonymous> (C:\Kmutt\Senior\CPE334\Final\LoungCheu\.local\pre-pr-reproduction\node_modules\supertest\lib\test.js:227:13)
+    at Object.onceWrapper (node:events:632:28)
+    at Server.emit (node:events:518:28)
+    at emitCloseNT (node:net:2418:8)
+    at process.processTicksAndRejections (node:internal/process/task_queues:89:21)
+
+Node.js v22.16.0
+
+Exit code: 1

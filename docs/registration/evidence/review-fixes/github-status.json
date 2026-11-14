@@ -1,0 +1,39 @@
+{
+  "verified_on": "2026-11-08 Asia/Bangkok",
+  "source_commands": [
+    "gh pr list --head feature/registration-views --state all --json number,url,state,baseRefName,headRefName,headRefOid,mergedAt,updatedAt,reviewDecision",
+    "gh pr view 10 --json number,url,state,isDraft,baseRefName,headRefName,headRefOid,mergedAt,reviewDecision,reviews,author",
+    "gh issue view 4 --json number,url,state,assignees"
+  ],
+  "pull_request": {
+    "number": 10,
+    "url": "https://github.com/jetanin/LoungCheu/pull/10",
+    "state": "OPEN",
+    "isDraft": true,
+    "baseRefName": "sprint-1-staging",
+    "headRefName": "feature/registration-views",
+    "headRefOid": "eeafc313220fa9feda633b89cab8c4b90cb86f9e",
+    "author": "jetanin",
+    "reviews": [],
+    "reviewDecision": "",
+    "mergedAt": null
+  },
+  "previous_pull_request": {
+    "number": 9,
+    "url": "https://github.com/jetanin/LoungCheu/pull/9",
+    "state": "CLOSED",
+    "baseRefName": "feature/events",
+    "mergedAt": null
+  },
+  "issue": {
+    "number": 4,
+    "url": "https://github.com/jetanin/LoungCheu/issues/4",
+    "state": "OPEN",
+    "assignees": []
+  },
+  "not_verified": [
+    "project board status",
+    "independent reproduction/UAT",
+    "release acceptance"
+  ]
+}

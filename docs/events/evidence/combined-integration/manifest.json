@@ -1,0 +1,231 @@
+{
+  "recorded_at": "2026-11-06T15:52:36.527Z",
+  "branch": "feature/events",
+  "head": "04106ffe3d53b635c45db03e50dadf9904386852",
+  "merge_head": "ada659b0c6889e22e2d4ae8cc84ceb076d4da97e",
+  "merge_commit_created": false,
+  "tested_source": "combined working tree, not either parent alone",
+  "log_format": "UTF-8/LF, trailing whitespace removed; result content preserved",
+  "runtime": {
+    "node": "v22.16.0",
+    "npm": "11.11.0",
+    "platform": "win32",
+    "database": {
+      "database": "loungcheu_test",
+      "version": "17.6"
+    }
+  },
+  "results": {
+    "generate": "PASS",
+    "migrate_test": "PASS, 2 migrations / none pending",
+    "typecheck": "PASS",
+    "build": "PASS",
+    "vitest": {
+      "files": 11,
+      "passed": 140,
+      "failed": 0,
+      "skipped": 0,
+      "exit": 0
+    },
+    "chromium": {
+      "passed": 29,
+      "failed": 0,
+      "skipped": 0,
+      "exit": 0,
+      "ports": [
+        5183,
+        3011
+      ]
+    },
+    "built_smoke": {
+      "passed": 3,
+      "exit": 0
+    },
+    "validation_red": {
+      "failed": 5,
+      "passed": 20,
+      "source": "combined composition before validation correction"
+    },
+    "ui_red": {
+      "failed": 1,
+      "passed": 1,
+      "source": "isolated 04106ff before merge"
+    }
+  },
+  "guards": {
+    "app_database_touched": false,
+    "migrations_changed": false,
+    "no_unmerged_files": true,
+    "shared_implementations_unchanged": true,
+    "local_document_links_checked": 162
+  },
+  "shared_foundation_and_registration": {
+    "server/prisma/schema.prisma": {
+      "working_tree_sha256": "e212b9060a5e5198ec1a8b8fc522249ec07e52172f051f99d8228bd822fcb368",
+      "incoming_blob_sha256": "fef38830a32e16ac28dc276ed6528c982449813201582c40033d15f5c1ff73be",
+      "byte_identical": false,
+      "content_identical": true
+    },
+    "server/prisma/migrations/202611060002_registration_extension/migration.sql": {
+      "working_tree_sha256": "2e25cd62bcef753cded44a6d2c7c4480a65bd2ac9facd270148c0ed43b5835ed",
+      "incoming_blob_sha256": "f4cbedc97f8b3e990ab1d55f9747fe612a3f446502eef3f0e0ba45c189fc801c",
+      "byte_identical": false,
+      "content_identical": true
+    },
+    "client/src/features/registrations/RegistrationAction.tsx": {
+      "working_tree_sha256": "ed3eff1becbba0bf1f52e412d80699cd784bfd72bfb679201f37516038dfd530",
+      "incoming_blob_sha256": "92b53f6ad87a9b81489aea935d7efe25eee4e80ea621339d52e8de066cc8a64b",
+      "byte_identical": false,
+      "content_identical": true
+    },
+    "client/src/features/registrations/api.ts": {
+      "working_tree_sha256": "74a3d47b7bb64b18ea4134ffcebc838a44d7d112127f7c44b3b431ab9c40bd70",
+      "incoming_blob_sha256": "0a52f6a8ca814aa8c683053c60b27e15525663e15ed8336d5717019b506f1d26",
+      "byte_identical": false,
+      "content_identical": true
+    },
+    "server/src/modules/registrations/router.ts": {
+      "working_tree_sha256": "cb74ec785360ed3d137f4e45b2eae1ada5a214a4b92208c9296f22a0ccfda68d",
+      "incoming_blob_sha256": "428808afd365c4457268f2610c1e83be0e4f0cce3d47a0d88e61648251adfe82",
+      "byte_identical": false,
+      "content_identical": true
+    },
+    "server/src/modules/registrations/rules.ts": {
+      "working_tree_sha256": "9851bc8072d7c08a0a7a849d2cb8b56ee2f4b29146442d4f662c1c6d03daa7c8",
+      "incoming_blob_sha256": "5525cfa06d357580c56a9e8b040e0860621c4a381724ba4e06b4109acf405f0b",
+      "byte_identical": false,
+      "content_identical": true
+    },
+    "server/src/modules/registrations/service.ts": {
+      "working_tree_sha256": "fdc5e8d444958668f2d64d07840b35b7dae870e92806e28772422f0fea7b0105",
+      "incoming_blob_sha256": "204133955eb6bd3cb31f1d50aa7705e92ca77da91a2193cb88cca2babf2ee0af",
+      "byte_identical": false,
+      "content_identical": true
+    },
+    "client/src/features/registrations/RegistrationPage.tsx": {
+      "working_tree_sha256": "eeabd474eb92c187940bb9a8f3ed1ddfdddc6099aa2d94f08328e52c92accba5",
+      "incoming_blob_sha256": "caa735f2b4681d5a04c541323d821c9669d3ef085e0c233bc40f06fc148cd2d3",
+      "byte_identical": false,
+      "content_identical": true
+    }
+  },
+  "sources_sha256": {
+    "client/package.json": "21d07c32f12b5dcf552bec8f358da392a57b6e6e125392b27dd24f2ed3e91a79",
+    "client/src/app/App.tsx": "d372a965d84a9a316626104fb62bdce990d1754b95b8d9491082658c4dd88328",
+    "client/src/features/auth/Login.tsx": "66cb4f40a4d4564b775353661fb0478ca9da8cc16968c9590e0c63582b08c6a2",
+    "client/src/features/events/EventForm.tsx": "a9b10532810e63b9debb3b9705a4b45608bdce881f2330698012ed936e2437f1",
+    "client/src/features/events/EventOverview.tsx": "3fb760dd7bc6ad85531c2e42619a5c1d54f398c97a2267fe843e2bb9d5e46735",
+    "client/src/features/events/EventPage.tsx": "98a214b0ad39d140d795fb5e4738f04b1fa0d4b337436e72d1affc602226f9e4",
+    "client/src/features/events/EventSchedule.tsx": "8657ac59d7c24de19e68ccca6c8535b2b5e85a658990595660238db9ac5db8d4",
+    "client/src/features/events/model.test.ts": "d4d3839483b646c07043c1299fd80c87a00b989eda8402b44954969cc62aaa14",
+    "client/src/features/events/model.ts": "78f95be0e0df5348d2959e05b53e7ddc629f91d89e9ec08ef35a941ff0b0c08c",
+    "client/src/features/registrations/RegistrationAction.test.tsx": "e9b429fbf56ab216ea435b044baef935ce1272c497b7a2699d629878ab3dc8c7",
+    "client/src/features/registrations/RegistrationAction.tsx": "ed3eff1becbba0bf1f52e412d80699cd784bfd72bfb679201f37516038dfd530",
+    "client/src/features/registrations/RegistrationPage.test.tsx": "295ab6578d038d5e3fa0ca524cde37087d6e97f6f9563496f1d348463750da1f",
+    "client/src/features/registrations/RegistrationPage.tsx": "eeabd474eb92c187940bb9a8f3ed1ddfdddc6099aa2d94f08328e52c92accba5",
+    "client/src/features/registrations/api.ts": "74a3d47b7bb64b18ea4134ffcebc838a44d7d112127f7c44b3b431ab9c40bd70",
+    "client/src/lib/api.ts": "4a743b12719753706a8481adf4072b3231bcc61d1a37d8ca89b0d488906f16df",
+    "client/src/main.tsx": "fc9f7ce67ee02f651cb8d165a089e506b6433b481cb117fec9e52d3a99ff4c6c",
+    "client/src/styles/app.css": "0c7ef92e765c46db29271f3a1ff8d1bb791395f981292358ebb9c0d1ea940ca9",
+    "client/src/vite-env.d.ts": "424faf9241dd699dda995b367ed36665732da1e6ec1f33b2fd40394488ecac92",
+    "client/tsconfig.json": "dfc8bf2f1ad520917881f061b1219f5d1d93e66816fe9be969dd2e82cbc30597",
+    "client/vite.config.ts": "e44f34159933738cb5ee143a108ba794a565a2180df21bbbf78360d94e83915d",
+    "compose.yaml": "b514b17a79499d41273d5d104a102f25021535824ad8f5c84eaafa73e13b0573",
+    "package-lock.json": "d79e2f996b56a1e99998b6f27af8bb3dceded9c4fed508ba8705f86501ddd9a9",
+    "package.json": "26429b661ed8bde70107360e0c19c8ac2d7f0c40c761ae1789f574d158f17062",
+    "playwright.config.ts": "376371ecab118b2838c9db3685c1e12319df5681760d4f01eb2a1e2535989565",
+    "scripts/capture-version.ps1": "87abe75cbb73a711fbe7ff3155b4d8bebb373642d6dd404c6d1d533490bf052f",
+    "scripts/e2e-server.ts": "750062683bd1cf339e39d6e613f9876dac0267d552caa648f3d546cbf7e1ed9a",
+    "scripts/local-db.ps1": "98b2cfc75f29560891c30d1697e262a4b8140342ed9ed9465768cdefdadfef34",
+    "scripts/setup-test-db.mjs": "669b3412947090869fbcbeb89487e7b049f948c1a22f51f5af36b652fd22fa85",
+    "scripts/smoke-built.mjs": "4af43de1d93ceed2f90aee2e844213fefac1103ceadb4d500ed9a194a009b7a8",
+    "scripts/smoke-local-db.mjs": "21b3ea9b44d65a1044105b4861d22d76eb9ec7fe4bcab914e5deeaa4a8c1638b",
+    "scripts/test-db-migrate.ts": "eaab704d73d4dd1f375a0a39f4afe870fdd9033527bc67f30b26d5bef0c56c93",
+    "server/package.json": "a49b40ef4646155e8103d8bff214d89632ddc5886bc951d63362a3d19b55efea",
+    "server/prisma.config.ts": "72ec33e4093505c07e0a400bc493e11fab480c6b4d5f7ba5c94439f44b74db8f",
+    "server/prisma/migrations/202611060001_auth/migration.sql": "d30f264056daaf58a1d2907d76c2b70f568fd37176e36baf25b71afc921ff4ec",
+    "server/prisma/migrations/202611060002_registration_extension/migration.sql": "2e25cd62bcef753cded44a6d2c7c4480a65bd2ac9facd270148c0ed43b5835ed",
+    "server/prisma/migrations/migration_lock.toml": "e0f301404b533bea819cafbc56ca2a9d9bcc2cf97d6350473e3a008f0637cc12",
+    "server/prisma/schema.prisma": "e212b9060a5e5198ec1a8b8fc522249ec07e52172f051f99d8228bd822fcb368",
+    "server/prisma/seed.ts": "744875b77cec1637630dba275f297ba01778f6fd0beaf669985825a8e18ebc9d",
+    "server/src/app.ts": "c804bf4e106146c9b584fc2ec6085f66897f03f469315690c8e6dddd6298b6a2",
+    "server/src/config/database-url.ts": "879ed5e37c8a91b4743285c1f72e6359bb79b16c5297ceac1675dc183258c900",
+    "server/src/config/env.ts": "2511add4ed60163b2967ed661607128bf43d6256cadf2db87a2f72125133e383",
+    "server/src/db/client.ts": "c4bc5d5323f63567718d4fbcf2ffd9cef2b1cf8c92ec38fc2fb74dd3db09c211",
+    "server/src/middleware/auth.ts": "65d5efe7167acae2ebb91ad9c3b5d5f04cce9dbd13d5c84be080e335983c1a7d",
+    "server/src/modules/accounts/password.ts": "64360541e5879e8bec7e6c1ca9438c91c10eb7689faae31b17dc3133271b9baf",
+    "server/src/modules/accounts/seed.ts": "9b2693f7abfad2e99c7b2b3e725fbb26e56ca01feed86fdbbdfc6ec9a6f6355c",
+    "server/src/modules/events/input.ts": "274b01deaa7d458f8384092858ce08df0db37bafb7ca504e4c995dd11100f755",
+    "server/src/modules/events/router.ts": "3d5b70277b972f527916d7a43812661d37b9eff442ae532c9bb16e64522d746c",
+    "server/src/modules/events/service.ts": "31cbacc41599366b3995d7a2bf4f6c5afe3047bdf0ab6a062af601831306595b",
+    "server/src/modules/registrations/router.ts": "cb74ec785360ed3d137f4e45b2eae1ada5a214a4b92208c9296f22a0ccfda68d",
+    "server/src/modules/registrations/rules.ts": "9851bc8072d7c08a0a7a849d2cb8b56ee2f4b29146442d4f662c1c6d03daa7c8",
+    "server/src/modules/registrations/service.ts": "fdc5e8d444958668f2d64d07840b35b7dae870e92806e28772422f0fea7b0105",
+    "server/src/server.ts": "b4ac73d3520b4591415d99626f308dc2fe1bc0d14b50003b08d1b43123a496dc",
+    "server/src/shared/errors.ts": "b607beb7d80753f8aa3abbb85bf66eb160ee136fdcd59efd68ae8a24c06a69a2",
+    "server/tests/integration/auth.test.ts": "3de0be1e448a826f2b4181b8740554ed1ea5af9e5303058cf92f740fac769b3a",
+    "server/tests/integration/events.test.ts": "c6cb4e417a22cb01f3288f5a5855854f7e4e965f3c6c8482031ce02aaa4c43d5",
+    "server/tests/integration/registration.test.ts": "5bce5e389a4984125eee6355c48cc0027a71d5e4f4b31c2d23d17aa68be9dc9d",
+    "server/tests/unit/config.test.ts": "d7a8c8dd394ae771b60c26b9ce64a76c7245724715eb9c82fcf38b26a0895130",
+    "server/tests/unit/database-url.test.ts": "a333e0270e1067b2b7bd39604629eca6575a5c76ad6ebce4ab88450d806d87a5",
+    "server/tests/unit/password.test.ts": "3751e4aa546d3b8a6f336c6828e7481374126140925bbea705f4f85fffc46378",
+    "server/tests/unit/registration-router.test.ts": "77da65697de35598fd540958e55b43b9f1d20ed758034b600e6bb73437385b78",
+    "server/tests/unit/registration-rules.test.ts": "328a028c5898049a51c6d7fb24e69e9dd2b203e02fc20306d9692b26824df0da",
+    "server/tsconfig.build.json": "7b2aaff890a494fd0c047ada06b7995b1387ca9e3b57de45b5341dd9e4936a98",
+    "server/tsconfig.json": "71b57d4154f1fb6cae3c3f67255d45e45ab937b54c7fa73a528c9f7d58700015",
+    "tests/e2e/auth.spec.ts": "be3a006eefa463f96368e0b2fb69f15b2d03425fc503956df2ac282301306386",
+    "tests/e2e/consistency.spec.ts": "7776e535567d004548484f43b48326d86b1c5637cb0549bc68cb541e4a1b70d5",
+    "tests/e2e/event-form.ts": "2906e99f04ba56e5635e758a4cab6ef412bbfaf9c12d27690a6ac9cf7865f18a",
+    "tests/e2e/events-audit.spec.ts": "c0f9698bc824ba0b1844a195ca1efdc9d5ab1316ec2252dc5e686919b20449f6",
+    "tests/e2e/events-registration.spec.ts": "c1abe3d85864710024d16317fd65bf0a9c1f4d581f8cc6e53cb647a35eb76ecd",
+    "tests/e2e/events.spec.ts": "67c782bd85a14e0b3e58f72be8a4fe082866112754ac99c92269946eaf2c123e",
+    "tests/e2e/overview.spec.ts": "e0e8c5c9f630be78cb9af4bf9196154fc9ee2a2dc639c7b70aa09f164d7145f8",
+    "tsconfig.tools.json": "a83045b5155dfa501db890ba344f1484d0d8e9c16d66279e6206f9eeeda41b5c",
+    "vitest.config.ts": "66b2f9f24672fd901a0e632989f7a19df53d21972f47a22afbdac7f2963b967b"
+  },
+  "documentation_sha256": {
+    "README.md": "9c9137426e472a07cad3148b73939bfb4c2944a5d71b0cbe1db6b5d515eace7e",
+    "docs/changelog.md": "8501bb77e18a831f254d0f70e5e6af6dc2d15928ef38468d712afd04c7a06cac",
+    "docs/decisions.md": "c84fbddc9f46e995f26ddb1ae93923d6ea1ebba8f2cdf60cf06636d3ad0450dc",
+    "docs/deliverable-1/evidence-register.md": "91cacb915e3a7cd649159a0abd32472e842c33d0ef720fac71bbb76aab40becf",
+    "docs/deliverable-1/report-plan.md": "dc94a8353555e1a16316c0a9b7e217d503a5ed29998b11e88efb67c8ef654e61",
+    "docs/events/audit.md": "e9582a43c727be70b24cc9f9fbffcbb671256a480ca7a11382932a1dad573a0f",
+    "docs/events/combined-integration.md": "f6727fce7598b6148ca2bdbbf0a7a8a96435e6a3ef218ae587ea33b871539845",
+    "docs/events/integration.md": "5c40faaa40ae69f9b166e0abd94cf497892e2d567ecedfa8ccf73a545de4649c",
+    "docs/events/verification.md": "4ca904a2713bccc56192b120ac7d551fb3a8fccfe7ba94febe2903211f5c8ac2",
+    "docs/features.md": "5e1bb9b23a54df7cbb6f599c0f18c5e69146d95c70037eb35a68314b5e5133e1",
+    "docs/registration/integration.md": "e70b23a2e399560aa3dbcd197a7ddbabf7fd8d9db0ea2c01878e5c50b831c32f",
+    "docs/registration/pr.md": "7a242a992a46d9be48288dde25f1c6d87896af47f409f535f877f47b42d0b52c",
+    "docs/registration/verification.md": "8b3ca8c10644581f2e51632630cbe16b003709010c3389b5e510323fcd4b87e5",
+    "docs/sprints/plan.md": "130e54a0043df5234bc3a544ac5efb6d3c9852a72c82efa7dc37a12cb2decfaa",
+    "docs/sprints/sprint-1/README.md": "8430a3b86ed78d7fb3a4b77941ef169227424dd28a2926be69e74c1606d8fed3",
+    "docs/sprints/sprint-1/auth-pre-pr-review.md": "0e37fd7a0312a7458e06f19c2946562e0f5c097795b34bbc83fe1424f8f618c1",
+    "docs/sprints/sprint-1/auth-work-record.md": "d0b4d9369b8557d47acf2e4ca33f59549c9f7bd967412d1266ad12d85d291a89",
+    "docs/sprints/sprint-1/contracts.md": "aca536a22a2586fa6043915e0a6bb626226c39f50ea260477a2c6a258afe904c",
+    "docs/sprints/sprint-1/server-client-local-db.md": "ee3bae851fd935360f3b0e67e6c5b10669ab2534a46f69eec0379136698906a5",
+    "docs/sprints/sprint-1/single-instance-db.md": "c23a11fce36b23872c20f42981ea3e2aabd85a6bf1ad65ceb9dc9f84eb58fdd6",
+    "docs/sprints/sprint-1/sts.md": "85be94d3ca76ffc3b9f5495844342e6158d2b876ea8005113514375da2bbd8ad",
+    "docs/srs.md": "6158310d9d77a0b8b98b005f8f7ee72d2a99e59b4a5fa5736fb1eb0db0eea6e9",
+    "docs/system-sds.md": "e1732d1e33e34adb26b72d77bc859f193110c335b6d9afdb2da4d2f3feae625e",
+    "docs/traceability.md": "d0998f1c77ebf9cd11acf1bddc6f1fdef05cb4b057423d6304404e8ea348898a"
+  },
+  "evidence_sha256": {
+    "docs/events/evidence/combined-integration/build.log": "c4477b86fa96d92bada26a1bb4057a50618f923e98f9f2468f6a5a55f182d325",
+    "docs/events/evidence/combined-integration/built-smoke.log": "bc1fd7dbf37b5c7e50f13bf598d07f811368b513a9aedb80110560ea90da9401",
+    "docs/events/evidence/combined-integration/e2e.log": "7c9861e6a61a28b0ff647ad5de695178d79cb6e7991db3754ae71c61d71d4e95",
+    "docs/events/evidence/combined-integration/generate.log": "dfa6c3fafe1d763dad65f37922b65e7d7d92d13323ee3789be0913487bc0b3b3",
+    "docs/events/evidence/combined-integration/migrate-test.log": "0290e3c7e2629298f7e19848e6e287e364d287240fc8db50ef37e727224cff5a",
+    "docs/events/evidence/combined-integration/registration-success.png": "67662dd2315318ad161b049fee23114de071176f9b6ae3dcce5b312bb910c4ab",
+    "docs/events/evidence/combined-integration/typecheck.log": "3436c1226eecc9cff0a10f179c59508ed4aed5d126cadceae43e7ff0acf67685",
+    "docs/events/evidence/combined-integration/ui-red.log": "25372c746082120b8b60f9f8cd617867c4da62aabf761cfc17d401e31d6aed7c",
+    "docs/events/evidence/combined-integration/validated-form.png": "e2e6aab63ba44e2bee1edbacfd9f376d81997b76dd7b040cee151c5594afb0d2",
+    "docs/events/evidence/combined-integration/validation-red.log": "79c411bb74a33ea750d1d5520973d09c5aa96f079aee9cfbb705330c74addfaa",
+    "docs/events/evidence/combined-integration/vitest.log": "07db12b2df08d49b9218264dcb778b831ec4a69624ac4e161e3409c02224a470"
+  },
+  "limitations": [
+    "Issue #4 F-04/F-05 own GET/list/detail and roster not implemented",
+    "No manual process restart or redeploy",
+    "No independent Chrome/UAT/clean-machine reproduction",
+    "No teammate approval or commit/push/release"
+  ]
+}

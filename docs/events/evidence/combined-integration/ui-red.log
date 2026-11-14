@@ -1,0 +1,61 @@
+node : [WebServer] (node:43192) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+At line:2 char:53
++ ... ORT='3011'; node C:\Kmutt\Senior\CPE334\Final\LoungCheu\node_modules\ ...
++                 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : NotSpecified: ([WebServer] (no... env being set.:String) [], RemoteException
+    + FullyQualifiedErrorId : NativeCommandError
+
+[WebServer] (Use `node --trace-warnings ...` to show where the warning was created)
+[WebServer] (node:32380) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+[WebServer] (Use `node --trace-warnings ...` to show where the warning was created)
+[WebServer] (node:26304) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+[WebServer] (Use `node --trace-warnings ...` to show where the warning was created)
+[WebServer] (node:18112) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+[WebServer] (Use `node --trace-warnings ...` to show where the warning was created)
+[WebServer] (node:18112) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+[WebServer] (Use `node --trace-warnings ...` to show where the warning was created)
+[WebServer] (node:59120) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+[WebServer] (Use `node --trace-warnings ...` to show where the warning was created)
+[WebServer] (node:51876) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+[WebServer] (Use `node --trace-warnings ...` to show where the warning was created)
+
+Running 2 tests using 1 worker
+
+(node:54496) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  x  1 tests\e2e\consistency.spec.ts:10:1 › F-02 consistency: field errors follow corrected values and dependent time ordering (6.2s)
+(node:54424) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ok 2 tests\e2e\consistency.spec.ts:37:1 › F-02 consistency: CLOSED totals and forbidden refresh discard older private overview data (863ms)
+
+
+  1) tests\e2e\consistency.spec.ts:10:1 › F-02 consistency: field errors follow corrected values and dependent time ordering
+
+    Error: expect(locator).toHaveAttribute(expected) failed
+
+    Locator:  getByLabel('ชื่อกิจกรรม', { exact: true })
+    Expected: "false"
+    Received: "true"
+    Timeout:  5000ms
+
+    Call log:
+      - Expect "toHaveAttribute" getByLabel('ชื่อกิจกรรม', { exact: true }) with timeout 5000ms
+      - waiting for getByLabel('ชื่อกิจกรรม', { exact: true })
+        14 × locator resolved to <input type="text" id="event-title" aria-invalid="true" class="form-control" aria-describedby="title-error" value="Validated 1793977476896"/>
+           - unexpected value "true"
+
+
+      14 |     const field = page.getByLabel(label, { exact: true });
+      15 |     await expect(field).toHaveAttribute('aria-invalid', 'true'); await field.fill(value);
+    > 16 |     await expect(field).toHaveAttribute('aria-invalid', 'false');
+         |                         ^
+      17 |   }
+      18 |   await page.getByLabel('วันที่ปิดรับลงทะเบียน', { exact: true }).fill('2099-01-01');
+      19 |   await expect(page.getByLabel('เวลาปิดรับลงทะเบียน', { exact: true })).toHaveAttribute('aria-invalid', 'true');
+        at C:\Kmutt\Senior\CPE334\Final\LoungCheu\.local\consistency-04106ff\tests\e2e\consistency.spec.ts:16:25
+
+    Error Context: test-results\consistency-F-02-consisten-290e5-and-dependent-time-ordering\error-context.md
+
+  1 failed
+    tests\e2e\consistency.spec.ts:10:1 › F-02 consistency: field errors follow corrected values and dependent time ordering
+  1 passed (18.9s)

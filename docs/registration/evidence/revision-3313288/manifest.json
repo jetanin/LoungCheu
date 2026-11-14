@@ -1,0 +1,400 @@
+{
+  "verified_date": "2026-11-10",
+  "timezone": "Asia/Bangkok",
+  "source_branch": "feature/registration-views",
+  "published_source_commit": "331328812092c04db84859c4ca00e9a6aa70b0fe",
+  "initial_implementation_commit": "eeafc313220fa9feda633b89cab8c4b90cb86f9e",
+  "review_fixes_commit": "331328812092c04db84859c4ca00e9a6aa70b0fe",
+  "source_publication_verified": true,
+  "documentation_only_followup": true,
+  "application_or_test_source_changed": false,
+  "new_application_test_execution_claimed": false,
+  "recorded_execution_date": "2026-11-08",
+  "user_supplied_followup_review_received": "2026-11-10",
+  "recorded_results": {
+    "focused_browser": {
+      "passed": 2,
+      "failed": 0,
+      "skipped": 0,
+      "log": "focused.log"
+    },
+    "full_vitest": {
+      "files": 15,
+      "passed": 159,
+      "failed": 0,
+      "skipped": 0,
+      "log": "vitest.log"
+    },
+    "typecheck": {
+      "exit_code": 0,
+      "log": "typecheck.log"
+    },
+    "build": {
+      "exit_code": 0,
+      "log": "build.log"
+    },
+    "compiled_smoke": {
+      "passed": 3,
+      "exit_code": 0,
+      "log": "built-smoke.log"
+    },
+    "full_browser": {
+      "passed": 37,
+      "failed": 0,
+      "skipped": 0,
+      "exit_code": 0,
+      "log": "e2e.log"
+    }
+  },
+  "result_provenance": "Original review-fixes execution logs retained unchanged; all34 manifest entries matched source3313288 before these documentation edits; follow-up review reports same159/37/typecheck/build/smoke3 results at3313288",
+  "historical_manifest": "docs/registration/evidence/review-fixes/manifest.json",
+  "historical_manifest_scope": "Immutable before-commit capture preserved in3313288; false patch flags are as-of8Nov capture time, not current publication status. Its document hashes must be checked against3313288, not later documentation revisions.",
+  "historical_manifest_pre_edit_validation": {
+    "matched": 34,
+    "total": 34,
+    "audit": "docs/registration/evidence/revision-3313288/historical-manifest-audit.json"
+  },
+  "unchanged_application_test_files": 11,
+  "command_checks": [
+    {
+      "documented_command": "npm test -- server/tests/integration/registration.test.ts",
+      "root_script": "vitest run",
+      "discovery_command": "npm exec -- vitest list server/tests/integration/registration.test.ts",
+      "exit_code": 0,
+      "discovered_files": [
+        "server/tests/integration/registration.test.ts"
+      ],
+      "definition_lines": 13,
+      "note": "Discovery only, not test execution; parameterized definitions may be collapsed",
+      "log": "docs/registration/evidence/revision-3313288/registration-collection.log"
+    },
+    {
+      "documented_command": "npm test -- server/tests/unit",
+      "root_script": "vitest run",
+      "discovery_command": "npm exec -- vitest list server/tests/unit",
+      "exit_code": 0,
+      "discovered_files": [
+        "server/tests/unit/config.test.ts",
+        "server/tests/unit/database-url.test.ts",
+        "server/tests/unit/password.test.ts",
+        "server/tests/unit/registration-queries.test.ts",
+        "server/tests/unit/registration-router.test.ts",
+        "server/tests/unit/registration-rules.test.ts"
+      ],
+      "definition_lines": 26,
+      "note": "Discovery only, not test execution; parameterized definitions may be collapsed",
+      "log": "docs/registration/evidence/revision-3313288/unit-collection.log"
+    },
+    {
+      "documented_command": "npm test -- server/tests/integration",
+      "root_script": "vitest run",
+      "discovery_command": "npm exec -- vitest list server/tests/integration",
+      "exit_code": 0,
+      "discovered_files": [
+        "server/tests/integration/auth.test.ts",
+        "server/tests/integration/demo-seed.test.ts",
+        "server/tests/integration/events.test.ts",
+        "server/tests/integration/registration-views.test.ts",
+        "server/tests/integration/registration.test.ts"
+      ],
+      "definition_lines": 59,
+      "note": "Discovery only, not test execution; parameterized definitions may be collapsed",
+      "log": "docs/registration/evidence/revision-3313288/integration-collection.log"
+    }
+  ],
+  "missing_script_aliases_avoided": [
+    "test:registration",
+    "test -w server",
+    "test:db -w server"
+  ],
+  "package_scripts_checked": {
+    "root_test": "vitest run",
+    "server_scripts": [
+      "dev",
+      "build",
+      "typecheck",
+      "start",
+      "db:generate",
+      "db:migrate",
+      "db:seed"
+    ]
+  },
+  "local_link_check": {
+    "documents": 16,
+    "local_links_checked": 154,
+    "broken_links": 0
+  },
+  "remaining_acceptance_gates": [
+    "teammate approval",
+    "staging integration/merge",
+    "OS-process restart",
+    "independent clean reproduction/UAT",
+    "reviewed main release/deployment acceptance"
+  ],
+  "hash_convention": "Exact workspace SHA256 plus UTF8 normalized-LF SHA256; this manifest excludes itself. Source is published3313288; document hashes identify this reconciliation, independent of its eventual documentation commit.",
+  "files": [
+    {
+      "path": "tests/e2e/registration-views.spec.ts",
+      "bytes": 8167,
+      "sha256": "f46b057cd53cd800661add34966abf1bf2a0481839c3e560671392bd39969b69",
+      "sha256_utf8_lf": "16e98a39c403b21eb37067b39dc4f4d8bb86d31e60701acde4dd95edb6cec66d"
+    },
+    {
+      "path": "server/src/modules/registrations/queries.ts",
+      "bytes": 2666,
+      "sha256": "62dd5b5518b680cf7b071d6a1cbc0265ecfe1671e36a879d73eab36c6c9b01b3",
+      "sha256_utf8_lf": "d3f067f336e37d5c438af0024c6cddd949213d3bd04ba07884ad290c5c24dc0a"
+    },
+    {
+      "path": "server/src/modules/registrations/read-router.ts",
+      "bytes": 1006,
+      "sha256": "a97d1ce96cf134b08f3c17644d75e9a51959dc7a9d1a9c72e09918836b093157",
+      "sha256_utf8_lf": "2bbddb584e0431900f01e6dc39d916120dab4115a5c95662adb6471410920e79"
+    },
+    {
+      "path": "server/src/app.ts",
+      "bytes": 6991,
+      "sha256": "135f98b29fb0f71772f00349ad8c4901de85369599d2bed60b99d0b24d6dbe96",
+      "sha256_utf8_lf": "b33c7b2aa56b6506ee6d5c702d41a2957328fee2e884531513faf80ce2f0d588"
+    },
+    {
+      "path": "server/src/db/client.ts",
+      "bytes": 319,
+      "sha256": "c4bc5d5323f63567718d4fbcf2ffd9cef2b1cf8c92ec38fc2fb74dd3db09c211",
+      "sha256_utf8_lf": "555a6a1ef1b6df7b75b1d33e604040e7b8e7460f4d2d4640bba7530030f1db78"
+    },
+    {
+      "path": "client/src/features/registrations/RegistrationViews.tsx",
+      "bytes": 8418,
+      "sha256": "a0b05d50247f5a5b08939389080fe02a66d61bc3e01d23d03e5268c4fd796d8d",
+      "sha256_utf8_lf": "5d5d58835713a00791704d370cde63e88e7dd6706bf1194523757833d9a6b26d"
+    },
+    {
+      "path": "client/src/app/App.tsx",
+      "bytes": 10636,
+      "sha256": "c5ce3239f55ae7de23a996ef208b6909b83083eb48b114af70e57f21d7a0a4ec",
+      "sha256_utf8_lf": "fb4789cbe2e28af94d3442d36f7a65f055f2f3efe1175b58cb3f8453804b5e95"
+    },
+    {
+      "path": "client/src/features/events/EventPage.tsx",
+      "bytes": 9472,
+      "sha256": "be24c2b6af274213bc1bf62a623088516e26fa939800123e814efa808ca1bc58",
+      "sha256_utf8_lf": "aa1305e41896329eba6d0081916d2a01702d56c53b1f1d0c88610c01623fac55"
+    },
+    {
+      "path": "server/tests/integration/registration-views.test.ts",
+      "bytes": 8355,
+      "sha256": "fb90ad4424996495ac7fe7c9d6851347d82e4b0bb6e210e214321ba79170f7a0",
+      "sha256_utf8_lf": "874b63e6550732a2256319d0b2cc1f16cd5e05dec24cb03c504f1e8957921c2e"
+    },
+    {
+      "path": "server/tests/unit/registration-queries.test.ts",
+      "bytes": 3779,
+      "sha256": "b10b3b5ea92426838331e3b8a755268ce56c38969940e319cd8e1f916c462c6a",
+      "sha256_utf8_lf": "39aadd1edaf39a0ecdb6d072650b721d32222f22708b12466761b100666bb0f3"
+    },
+    {
+      "path": "client/src/features/registrations/RegistrationViews.test.tsx",
+      "bytes": 5520,
+      "sha256": "36852443a8d8b67822218fda205ac18d3c07e874a15d8c3824b992b20758d4e2",
+      "sha256_utf8_lf": "0c73a52907e66b84a8d5381edcd79e1f57eb69fa0416b7cac01099e2c5c9aa5d"
+    },
+    {
+      "path": "README.md",
+      "bytes": 21861,
+      "sha256": "c2f775af1a292726abaed41cafa34f0f0d7c2fae71c88eaceac66d296eaf8e41",
+      "sha256_utf8_lf": "d27b2cc3280e5ccf1f4e1bb2f368dc2291b9c5b26e3b2969ee3c9dd87ffb2dd3"
+    },
+    {
+      "path": "docs/traceability.md",
+      "bytes": 17972,
+      "sha256": "1c55ceece64a4606869adb801dba2add270f5b8148ce9101f8bf0e396347b1f4",
+      "sha256_utf8_lf": "6a40b6f535689cc2c371e7d6c24732a33bad94da613c6f4be44f65e180731686"
+    },
+    {
+      "path": "docs/deliverable-1/evidence-register.md",
+      "bytes": 10407,
+      "sha256": "1d3abba1f1c20d195a5d408b6dd173ce80a45d9a64e4c071321d08a3bd8d5a1c",
+      "sha256_utf8_lf": "d041fc184195e99589a0887304d823b5125ebecc19265635410c518dd5deea7e"
+    },
+    {
+      "path": "docs/sprints/plan.md",
+      "bytes": 8657,
+      "sha256": "d2757feed2ce9d94abbe3b9eda627e2e1b8da22efe312883e7ad5269433fb38b",
+      "sha256_utf8_lf": "35d514e06bbec3b170cb0823303d863c3e699a119efe67e2b6e8d3bd15be7211"
+    },
+    {
+      "path": "docs/features.md",
+      "bytes": 5030,
+      "sha256": "5bd29fbb70cc3592f3f338ecbb5373f71c2c59ac010807713c326be16edb5ab1",
+      "sha256_utf8_lf": "5bb124955b2c59c199b2ad7a1ba0b4d10983b84225d7450e3bf4ea593e38118b"
+    },
+    {
+      "path": "docs/sprints/sprint-1/contracts.md",
+      "bytes": 22783,
+      "sha256": "a8e65eee35633d200bba65b7cf59ef5dd1cfcf8c40c149794de706837ecdfc10",
+      "sha256_utf8_lf": "f5d2dc4c0d5fecf4774ce8a2e3b2ebcb24bbf4c7872064ec14a7011f495bb2f8"
+    },
+    {
+      "path": "docs/sprints/sprint-1/README.md",
+      "bytes": 6152,
+      "sha256": "c5e0862e14680787346afd8612f6bce0a20dfa5cd15ca443e0f2ae3f3821ad67",
+      "sha256_utf8_lf": "f4436ec5a83e42b361f90d5143ead752ca78b2ec8fa0752b48a1bb671eb14f75"
+    },
+    {
+      "path": "docs/sprints/sprint-1/sts.md",
+      "bytes": 19340,
+      "sha256": "c50faed113e4b834e32aa82f765179f06abd6831b9e783afdb53a21d3db74163",
+      "sha256_utf8_lf": "006459b768088aa6e10ee959ecc44b10c94a945e3ff71dc5dca1186986696812"
+    },
+    {
+      "path": "docs/changelog.md",
+      "bytes": 17142,
+      "sha256": "471e9182c20773154a67afe5f48940d6e5c316df3efa3c1f3516c4be37e29142",
+      "sha256_utf8_lf": "48cc94a0fa12fc7264cf89e562b14cd0799d5d1088df7458d31de10789915dab"
+    },
+    {
+      "path": "docs/registration/views-verification.md",
+      "bytes": 7570,
+      "sha256": "e0b478c6bc3add06dbbc8f06f8d270daebac58f835cc2f1aaa6ee568c63ec4c7",
+      "sha256_utf8_lf": "9bfd58c2380b61acc5e26bae6bf806cb8e09be3c1336da32220f338291c66efd"
+    },
+    {
+      "path": "docs/registration/views-pr.md",
+      "bytes": 2267,
+      "sha256": "f94e25bdb4fe8157657765c58dd725b816d967aec94448023d8657b2cb9b9aea",
+      "sha256_utf8_lf": "857221b87f50fcdaa42adb6bb8c8873dbe42a40e05b45467a0f2db79bd6076aa"
+    },
+    {
+      "path": "docs/system-sds.md",
+      "bytes": 23777,
+      "sha256": "f89708614dbadd93c0f57069e57b7d20f811cecdd3af0e6f2b2c89069c1154a8",
+      "sha256_utf8_lf": "16fdb28c76669a45b45a1099ab60033692bdbd3ca0783653f47af18642e1b16a"
+    },
+    {
+      "path": "docs/registration/evidence/review-fixes/build.log",
+      "bytes": 533,
+      "sha256": "574fdfed856242731f4469581ef773992e4ede1f45c72202728a3ee2ef25215a",
+      "sha256_utf8_lf": "574fdfed856242731f4469581ef773992e4ede1f45c72202728a3ee2ef25215a"
+    },
+    {
+      "path": "docs/registration/evidence/review-fixes/built-smoke.log",
+      "bytes": 159,
+      "sha256": "bc1fd7dbf37b5c7e50f13bf598d07f811368b513a9aedb80110560ea90da9401",
+      "sha256_utf8_lf": "bc1fd7dbf37b5c7e50f13bf598d07f811368b513a9aedb80110560ea90da9401"
+    },
+    {
+      "path": "docs/registration/evidence/review-fixes/e2e.log",
+      "bytes": 5939,
+      "sha256": "2d4cbdd9ae07f845aa08e3315a366613d64c364d2aa57b12ec17d78e70217210",
+      "sha256_utf8_lf": "2d4cbdd9ae07f845aa08e3315a366613d64c364d2aa57b12ec17d78e70217210"
+    },
+    {
+      "path": "docs/registration/evidence/review-fixes/focused.log",
+      "bytes": 1346,
+      "sha256": "f879b37285544790299d749a6b895f1d1c81848b4a7e55bbb3ca0856002c40f9",
+      "sha256_utf8_lf": "f879b37285544790299d749a6b895f1d1c81848b4a7e55bbb3ca0856002c40f9"
+    },
+    {
+      "path": "docs/registration/evidence/review-fixes/github-status.json",
+      "bytes": 1240,
+      "sha256": "584e9a58afb5303457defc2674776bcf014082403db0485e33e6a64209b1b71e",
+      "sha256_utf8_lf": "584e9a58afb5303457defc2674776bcf014082403db0485e33e6a64209b1b71e"
+    },
+    {
+      "path": "docs/registration/evidence/review-fixes/own-detail.png",
+      "bytes": 44563,
+      "sha256": "753820ce0c6909c9e7667bc35f4b6b986a4df352382f2917ee8fc87b157af192"
+    },
+    {
+      "path": "docs/registration/evidence/review-fixes/README.md",
+      "bytes": 2427,
+      "sha256": "cc4be147fdd47eebb59b3125f4336bb044d4de7719c15bc43580463f72761a9c",
+      "sha256_utf8_lf": "cc4be147fdd47eebb59b3125f4336bb044d4de7719c15bc43580463f72761a9c"
+    },
+    {
+      "path": "docs/registration/evidence/review-fixes/review-eeafc31.md",
+      "bytes": 7399,
+      "sha256": "17c31dc8ceb066a855a816e581e9ec1d5cb214f10879d86fe33a4e119ddbe2e0",
+      "sha256_utf8_lf": "2f92be3772006909c457e2195276a9f42dd2749ce8350bfdee4866f3f39e7360"
+    },
+    {
+      "path": "docs/registration/evidence/review-fixes/roster.png",
+      "bytes": 35689,
+      "sha256": "43f7934737dc3289abded51a6d28219d4532f7c96a14ac87e56f17c71a2736bc"
+    },
+    {
+      "path": "docs/registration/evidence/review-fixes/typecheck.log",
+      "bytes": 208,
+      "sha256": "7f501bad652b6ee1e0a6dd96d0ebdc4e979d227e882da6bf89a4a71623e647ec",
+      "sha256_utf8_lf": "7f501bad652b6ee1e0a6dd96d0ebdc4e979d227e882da6bf89a4a71623e647ec"
+    },
+    {
+      "path": "docs/registration/evidence/review-fixes/vitest.log",
+      "bytes": 451,
+      "sha256": "09000b2e31398ac7dfbd821a565fd1040cca7365893c0edc8109b7b2a4af07d6",
+      "sha256_utf8_lf": "09000b2e31398ac7dfbd821a565fd1040cca7365893c0edc8109b7b2a4af07d6"
+    },
+    {
+      "path": "package.json",
+      "bytes": 1585,
+      "sha256": "f7d1db645aa1e77007d2a321888824a1852cece5ab86ea01087077f4a65609f6",
+      "sha256_utf8_lf": "d0d621fc104ae7da03fd942a8c5119abf572b63e0d32288c67314ad6eda1c6e2"
+    },
+    {
+      "path": "server/package.json",
+      "bytes": 634,
+      "sha256": "3fc28736c5637fb051731c8ce9f95c06c96398928a094884893c297d156f659f",
+      "sha256_utf8_lf": "f6f1d4decdefc4df7805d6347e9df900c099ffa8bf6399b16e1b06e83ffc6dac"
+    },
+    {
+      "path": "docs/registration/evidence/review-fixes/manifest.json",
+      "bytes": 11040,
+      "sha256": "a23f2d5d8937e2f407ca794b0c6825ff60ca0add7cd99806a6311fe0b411f59b",
+      "sha256_utf8_lf": "a23f2d5d8937e2f407ca794b0c6825ff60ca0add7cd99806a6311fe0b411f59b"
+    },
+    {
+      "path": "docs/registration/evidence/revision-3313288/github-status.json",
+      "bytes": 901,
+      "sha256": "b51fb1a89a44c1b6d5bf2b98810fc5e3a5618778003340029c1e83b0285d19f7",
+      "sha256_utf8_lf": "b51fb1a89a44c1b6d5bf2b98810fc5e3a5618778003340029c1e83b0285d19f7"
+    },
+    {
+      "path": "docs/registration/evidence/revision-3313288/historical-manifest-audit.json",
+      "bytes": 3407,
+      "sha256": "480477ee14cdb88935139aa6102ec70528d217977a60f3d72b2617af503a3f25",
+      "sha256_utf8_lf": "480477ee14cdb88935139aa6102ec70528d217977a60f3d72b2617af503a3f25"
+    },
+    {
+      "path": "docs/registration/evidence/revision-3313288/integration-collection.log",
+      "bytes": 8464,
+      "sha256": "3332d68cf68bd5b5860388635b0a061e6a194cee8b62cf9766bd3353940d922a",
+      "sha256_utf8_lf": "3332d68cf68bd5b5860388635b0a061e6a194cee8b62cf9766bd3353940d922a"
+    },
+    {
+      "path": "docs/registration/evidence/revision-3313288/README.md",
+      "bytes": 2734,
+      "sha256": "76315c750629c675ab050c7482ef552d8eff9e4e9b7c09b6be0f4af4948debc5",
+      "sha256_utf8_lf": "76315c750629c675ab050c7482ef552d8eff9e4e9b7c09b6be0f4af4948debc5"
+    },
+    {
+      "path": "docs/registration/evidence/revision-3313288/registration-collection.log",
+      "bytes": 2046,
+      "sha256": "ed19eb3da2287d73fc522ecacbac94358db3a0613b35cb3edf23d87c93133bd4",
+      "sha256_utf8_lf": "ed19eb3da2287d73fc522ecacbac94358db3a0613b35cb3edf23d87c93133bd4"
+    },
+    {
+      "path": "docs/registration/evidence/revision-3313288/unit-collection.log",
+      "bytes": 3480,
+      "sha256": "12ef634a44d306cd08348841667346eb0672c54ef82ca669eaa6e01f2cf587f7",
+      "sha256_utf8_lf": "12ef634a44d306cd08348841667346eb0672c54ef82ca669eaa6e01f2cf587f7"
+    },
+    {
+      "path": "docs/registration/integration.md",
+      "bytes": 6568,
+      "sha256": "f86a5cd242bc27eb33eba22b18249c74958355d8405338bc647809e30ccfc478",
+      "sha256_utf8_lf": "e141d13a4012df3b31bfea4ba3aba566633a4dc2bd2f67d466852ce9a9050efe"
+    }
+  ],
+  "documentation_followup": "2026-11-10 P3: mark all of registration/integration.md historical; align AC-26 to F-01–05 automated subset, retain PARTIAL for unverified manual/full matrix."
+}

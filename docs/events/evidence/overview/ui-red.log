@@ -1,0 +1,131 @@
+
+> loungcheu@0.1.0 test:e2e
+> playwright test tests/e2e/overview.spec.ts --timeout 12000
+
+npm.cmd : [WebServer] (node:42936) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+At line:2 char:131
++ ... ORT='3011'; npm.cmd run test:e2e -- tests/e2e/overview.spec.ts --time ...
++                 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : NotSpecified: ([WebServer] (no... env being set.:String) [], RemoteException
+    + FullyQualifiedErrorId : NativeCommandError
+ 
+[WebServer] (Use `node --trace-warnings ...` to show where the warning was created)
+[WebServer] (node:23364) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+[WebServer] (Use `node --trace-warnings ...` to show where the warning was created)
+[WebServer] (node:24476) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+[WebServer] (Use `node --trace-warnings ...` to show where the warning was created)
+[WebServer] (node:9840) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+[WebServer] (Use `node --trace-warnings ...` to show where the warning was created)
+[WebServer] (node:9840) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+[WebServer] (Use `node --trace-warnings ...` to show where the warning was created)
+[WebServer] (node:54408) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+[WebServer] (Use `node --trace-warnings ...` to show where the warning was created)
+[WebServer] (node:45200) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+[WebServer] (Use `node --trace-warnings ...` to show where the warning was created)
+
+Running 4 tests using 1 worker
+
+(node:20876) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  x  1 tests\e2e\overview.spec.ts:17:1 › F-02 overview empty state, active navigation and create entry work on desktop and mobile (12.0s)
+(node:5828) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  x  2 tests\e2e\overview.spec.ts:35:1 › F-02 overview uses real owner-list counts/order, excludes another owner and preserves all-list/detail routes (12.0s)
+(node:52692) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  x  3 tests\e2e\overview.spec.ts:64:1 › F-02 overview distinguishes loading/error from zero and retries; 401 clears private overview (12.1s)
+(node:60768) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  x  4 tests\e2e\overview.spec.ts:84:1 › F-02 Participant keeps shared browsing and cannot open Organizer overview (5.8s)
+
+
+  1) tests\e2e\overview.spec.ts:17:1 › F-02 overview empty state, active navigation and create entry work on desktop and mobile 
+
+    Test timeout of 12000ms exceeded.
+
+    Error: locator.click: Test timeout of 12000ms exceeded.
+    Call log:
+      - waiting for getByRole('link', { name: 'ภาพรวม', exact: true })
+
+
+      18 |   await login(page);
+      19 |   await page.route('**/api/organizer/events', route => route.fulfill({ json: { data: [] } }));
+    > 20 |   await page.getByRole('link', { name: 'ภาพรวม', exact: true }).click();
+         |                                                                 ^
+      21 |   await expect(page).toHaveURL(/\/organizer$/);
+      22 |   await expect(page.getByRole('link', { name: 'ภาพรวม', exact: true })).toHaveAttribute('aria-current', 'page');
+      23 |   await expect(page.getByRole('heading', { name: 'สวัสดี Organizer A', exact: true })).toBeVisible();
+        at C:\Kmutt\Senior\CPE334\Final\LoungCheu\tests\e2e\overview.spec.ts:20:65
+
+    Error Context: test-results\overview-F-02-overview-emp-f61c6--work-on-desktop-and-mobile\error-context.md
+
+  2) tests\e2e\overview.spec.ts:35:1 › F-02 overview uses real owner-list counts/order, excludes another owner and preserves all-list/detail routes 
+
+    Test timeout of 12000ms exceeded.
+
+    Error: locator.click: Test timeout of 12000ms exceeded.
+    Call log:
+      - waiting for getByRole('link', { name: 'ภาพรวม', exact: true })
+
+
+      41 |   await login(otherPage, 'organizer.b'); const hidden = await create(otherPage, `${prefix} private B`); await other.close();
+      42 |   const events = (await (await page.request.get('/api/organizer/events')).json()).data as { id: string; title: string; status: string }[];
+    > 43 |   await page.getByRole('link', { name: 'ภาพรวม', exact: true }).click();
+         |                                                                 ^
+      44 |   for (const [name, value] of [['กิจกรรมทั้งหมด', events.length], ['ฉบับร่าง', events.filter(e => e.status === 'DRAFT').length], ['กิจกรรมเผยแพร่', events.filter(e => e.status === 'PUBLISHED').length]] as const) {
+      45 |     await expect(page.getByRole('article', { name, exact: true }).getByText(String(value), { exact: true })).toBeVisible();
+      46 |   }
+        at C:\Kmutt\Senior\CPE334\Final\LoungCheu\tests\e2e\overview.spec.ts:43:65
+
+    Error Context: test-results\overview-F-02-overview-use-35af3-rves-all-list-detail-routes\error-context.md
+
+  3) tests\e2e\overview.spec.ts:64:1 › F-02 overview distinguishes loading/error from zero and retries; 401 clears private overview 
+
+    Test timeout of 12000ms exceeded.
+
+    Error: locator.click: Test timeout of 12000ms exceeded.
+    Call log:
+      - waiting for getByRole('link', { name: 'ภาพรวม', exact: true })
+
+
+      66 |   const captured = new Promise<void>(resolve => { seen = resolve; });
+      67 |   await page.route('**/api/organizer/events', route => { held = route; seen(); });
+    > 68 |   await page.getByRole('link', { name: 'ภาพรวม', exact: true }).click(); await captured;
+         |                                                                 ^
+      69 |   await expect(page.getByText('กำลังโหลดภาพรวมกิจกรรม…', { exact: true })).toBeVisible();
+      70 |   await expect(page.getByRole('article', { name: 'กิจกรรมทั้งหมด', exact: true }).getByText('0', { exact: true })).toHaveCount(0);
+      71 |   await expect(page.getByText('ยังไม่มีกิจกรรมที่สร้าง', { exact: true })).toHaveCount(0);
+        at C:\Kmutt\Senior\CPE334\Final\LoungCheu\tests\e2e\overview.spec.ts:68:65
+
+    Error Context: test-results\overview-F-02-overview-dis-51efc-401-clears-private-overview\error-context.md
+
+  4) tests\e2e\overview.spec.ts:84:1 › F-02 Participant keeps shared browsing and cannot open Organizer overview 
+
+    Error: expect(locator).toContainText(expected) failed
+
+    Locator: getByRole('alert')
+    Expected substring: "ไม่มีสิทธิ์ใช้งาน"
+    Timeout: 5000ms
+    Error: element(s) not found
+
+    Call log:
+      - Expect "toContainText" getByRole('alert') with timeout 5000ms
+      - waiting for getByRole('alert')
+
+
+      86 |   await expect(page.getByRole('link', { name: 'ภาพรวม', exact: true })).toHaveCount(0);
+      87 |   await expect(page.getByRole('link', { name: 'กิจกรรมของฉัน', exact: true })).toHaveCount(0);
+    > 88 |   await page.goto('/organizer'); await expect(page.getByRole('alert')).toContainText('ไม่มีสิทธิ์ใช้งาน');
+         |                                                                        ^
+      89 |   await expect(page.getByRole('link', { name: 'สร้างกิจกรรม', exact: true })).toHaveCount(0);
+      90 |   expect((await page.request.get('/api/organizer/events')).status()).toBe(403);
+      91 | });
+        at C:\Kmutt\Senior\CPE334\Final\LoungCheu\tests\e2e\overview.spec.ts:88:72
+
+    Error Context: test-results\overview-F-02-Participant--e9d57-not-open-Organizer-overview\error-context.md
+
+  4 failed
+    tests\e2e\overview.spec.ts:17:1 › F-02 overview empty state, active navigation and create entry work on desktop and mobile 
+    tests\e2e\overview.spec.ts:35:1 › F-02 overview uses real owner-list counts/order, excludes another owner and preserves all-list/detail routes 
+    tests\e2e\overview.spec.ts:64:1 › F-02 overview distinguishes loading/error from zero and retries; 401 clears private overview 
+    tests\e2e\overview.spec.ts:84:1 › F-02 Participant keeps shared browsing and cannot open Organizer overview 

@@ -1,0 +1,155 @@
+
+> loungcheu@0.1.0 test:e2e
+> playwright test tests/e2e/events.spec.ts
+
+node.exe : [WebServer] (node:15544) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+At C:\Program Files\nodejs\npm.ps1:29 char:3
++   & $NODE_EXE $NPM_CLI_JS $args
++   ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : NotSpecified: ([WebServer] (no... env being set.:String) [], RemoteException
+    + FullyQualifiedErrorId : NativeCommandError
+ 
+[WebServer] (Use `node --trace-warnings ...` to show where the warning was created)
+[WebServer] (node:41324) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+[WebServer] (Use `node --trace-warnings ...` to show where the warning was created)
+[WebServer] (node:38616) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+[WebServer] (Use `node --trace-warnings ...` to show where the warning was created)
+[WebServer] (node:15736) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+[WebServer] (Use `node --trace-warnings ...` to show where the warning was created)
+[WebServer] (node:15736) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+[WebServer] (Use `node --trace-warnings ...` to show where the warning was created)
+[WebServer] (node:18912) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+[WebServer] (Use `node --trace-warnings ...` to show where the warning was created)
+[WebServer] (node:60732) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+[WebServer] (Use `node --trace-warnings ...` to show where the warning was created)
+
+Running 5 tests using 1 worker
+
+(node:23016) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  x  1 tests\e2e\events.spec.ts:9:1 › TEST-07/09/14/36 Organizer creates, previews, publishes; Participant browses persisted shared detail (30.0s)
+(node:42424) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  x  2 tests\e2e\events.spec.ts:53:1 › TEST-14 list loading, empty, failure and retry; detail 404 and publish conflict (5.8s)
+(node:46740) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  x  3 tests\e2e\events.spec.ts:78:69 › F-02/#3 focus and availability refresh preserve RegistrationAction pending (30.0s)
+(node:31220) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  x  4 tests\e2e\events.spec.ts:78:69 › F-02/#3 focus and availability refresh preserve RegistrationAction success (30.0s)
+(node:6752) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  x  5 tests\e2e\events.spec.ts:78:69 › F-02/#3 focus and availability refresh preserve RegistrationAction uncertain (30.0s)
+
+
+  1) tests\e2e\events.spec.ts:9:1 › TEST-07/09/14/36 Organizer creates, previews, publishes; Participant browses persisted shared detail 
+
+    Test timeout of 30000ms exceeded.
+
+    Error: locator.click: Test timeout of 30000ms exceeded.
+    Call log:
+      - waiting for getByRole('link', { name: 'กิจกรรมของฉัน', exact: true })
+
+
+       9 | test('TEST-07/09/14/36 Organizer creates, previews, publishes; Participant browses persisted shared detail', async ({ page, browser }) => {
+      10 |   await login(page);
+    > 11 |   await page.getByRole('link', { name: 'กิจกรรมของฉัน', exact: true }).click();
+         |                                                                        ^
+      12 |   await page.getByRole('link', { name: 'สร้างกิจกรรม', exact: true }).click();
+      13 |   await page.getByRole('button', { name: 'บันทึก DRAFT' }).click();
+      14 |   await expect(page.getByText('กรุณากรอก 1–120 ตัวอักษร')).toBeVisible();
+        at C:\Kmutt\Senior\CPE334\Final\LoungCheu\tests\e2e\events.spec.ts:11:72
+
+    Error Context: test-results\events-TEST-07-09-14-36-Or-fa34a-ses-persisted-shared-detail\error-context.md
+
+  2) tests\e2e\events.spec.ts:53:1 › TEST-14 list loading, empty, failure and retry; detail 404 and publish conflict 
+
+    Error: expect(locator).toBeVisible() failed
+
+    Locator: getByText('กำลังโหลดกิจกรรม…', { exact: true })
+    Expected: visible
+    Timeout: 5000ms
+    Error: element(s) not found
+
+    Call log:
+      - Expect "toBeVisible" getByText('กำลังโหลดกิจกรรม…', { exact: true }) with timeout 5000ms
+      - waiting for getByText('กำลังโหลดกิจกรรม…', { exact: true })
+
+
+      54 |   await login(page);
+      55 |   await page.route('**/api/events', async route => { await new Promise(resolve => setTimeout(resolve, 250)); await route.fulfill({ json: { data: [] } }); });
+    > 56 |   await page.reload(); await expect(page.getByText('กำลังโหลดกิจกรรม…', { exact: true })).toBeVisible();
+         |                                                                                           ^
+      57 |   await expect(page.getByText('ยังไม่มีกิจกรรม')).toBeVisible();
+      58 |   await page.unroute('**/api/events');
+      59 |   await page.route('**/api/events', route => route.abort());
+        at C:\Kmutt\Senior\CPE334\Final\LoungCheu\tests\e2e\events.spec.ts:56:91
+
+    Error Context: test-results\events-TEST-14-list-loadin-5e728-il-404-and-publish-conflict\error-context.md
+
+  3) tests\e2e\events.spec.ts:78:69 › F-02/#3 focus and availability refresh preserve RegistrationAction pending 
+
+    Test timeout of 30000ms exceeded.
+
+    Error: locator.click: Test timeout of 30000ms exceeded.
+    Call log:
+      - waiting for getByRole('button', { name: 'ลงทะเบียน', exact: true })
+
+
+      90 |   });
+      91 |   await page.goto(`/events/${id}`);
+    > 92 |   await page.getByRole('button', { name: 'ลงทะเบียน', exact: true }).click();
+         |                                                                      ^
+      93 |   const state = outcome === 'pending' ? page.getByRole('button', { name: 'กำลังลงทะเบียน…' }) : outcome === 'success' ? page.getByText('registration-reference') : page.getByText('ยังยืนยันผลไม่ได้', { exact: false });
+      94 |   await expect(state).toBeVisible();
+      95 |   await page.evaluate(() => window.dispatchEvent(new Event('focus')));
+        at C:\Kmutt\Senior\CPE334\Final\LoungCheu\tests\e2e\events.spec.ts:92:70
+
+    Error Context: test-results\events-F-02-3-focus-and-av-4e3c8--RegistrationAction-pending\error-context.md
+
+  4) tests\e2e\events.spec.ts:78:69 › F-02/#3 focus and availability refresh preserve RegistrationAction success 
+
+    Test timeout of 30000ms exceeded.
+
+    Error: locator.click: Test timeout of 30000ms exceeded.
+    Call log:
+      - waiting for getByRole('button', { name: 'ลงทะเบียน', exact: true })
+
+
+      90 |   });
+      91 |   await page.goto(`/events/${id}`);
+    > 92 |   await page.getByRole('button', { name: 'ลงทะเบียน', exact: true }).click();
+         |                                                                      ^
+      93 |   const state = outcome === 'pending' ? page.getByRole('button', { name: 'กำลังลงทะเบียน…' }) : outcome === 'success' ? page.getByText('registration-reference') : page.getByText('ยังยืนยันผลไม่ได้', { exact: false });
+      94 |   await expect(state).toBeVisible();
+      95 |   await page.evaluate(() => window.dispatchEvent(new Event('focus')));
+        at C:\Kmutt\Senior\CPE334\Final\LoungCheu\tests\e2e\events.spec.ts:92:70
+
+    Error Context: test-results\events-F-02-3-focus-and-av-b114c--RegistrationAction-success\error-context.md
+
+  5) tests\e2e\events.spec.ts:78:69 › F-02/#3 focus and availability refresh preserve RegistrationAction uncertain 
+
+    Test timeout of 30000ms exceeded.
+
+    Error: locator.click: Test timeout of 30000ms exceeded.
+    Call log:
+      - waiting for getByRole('button', { name: 'ลงทะเบียน', exact: true })
+
+
+      90 |   });
+      91 |   await page.goto(`/events/${id}`);
+    > 92 |   await page.getByRole('button', { name: 'ลงทะเบียน', exact: true }).click();
+         |                                                                      ^
+      93 |   const state = outcome === 'pending' ? page.getByRole('button', { name: 'กำลังลงทะเบียน…' }) : outcome === 'success' ? page.getByText('registration-reference') : page.getByText('ยังยืนยันผลไม่ได้', { exact: false });
+      94 |   await expect(state).toBeVisible();
+      95 |   await page.evaluate(() => window.dispatchEvent(new Event('focus')));
+        at C:\Kmutt\Senior\CPE334\Final\LoungCheu\tests\e2e\events.spec.ts:92:70
+
+    Error Context: test-results\events-F-02-3-focus-and-av-7842b-egistrationAction-uncertain\error-context.md
+
+  5 failed
+    tests\e2e\events.spec.ts:9:1 › TEST-07/09/14/36 Organizer creates, previews, publishes; Participant browses persisted shared detail 
+    tests\e2e\events.spec.ts:53:1 › TEST-14 list loading, empty, failure and retry; detail 404 and publish conflict 
+    tests\e2e\events.spec.ts:78:69 › F-02/#3 focus and availability refresh preserve RegistrationAction pending 
+    tests\e2e\events.spec.ts:78:69 › F-02/#3 focus and availability refresh preserve RegistrationAction success 
+    tests\e2e\events.spec.ts:78:69 › F-02/#3 focus and availability refresh preserve RegistrationAction uncertain 

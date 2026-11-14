@@ -1,0 +1,77 @@
+
+> loungcheu@0.1.0 test:e2e
+> playwright test
+
+npm.cmd : [WebServer] (node:53392) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+At line:2 char:53
++ ... T='5183'; $env:E2E_API_PORT='3011'; npm.cmd run test:e2e 2>&1 | Tee-O ...
++                                         ~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : NotSpecified: ([WebServer] (no... env being set.:String) [], RemoteException
+    + FullyQualifiedErrorId : NativeCommandError
+ 
+[WebServer] (Use `node --trace-warnings ...` to show where the warning was created)
+[WebServer] (node:63032) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+[WebServer] (Use `node --trace-warnings ...` to show where the warning was created)
+[WebServer] (node:46816) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+[WebServer] (Use `node --trace-warnings ...` to show where the warning was created)
+[WebServer] (node:62260) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+[WebServer] (Use `node --trace-warnings ...` to show where the warning was created)
+[WebServer] (node:62260) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+[WebServer] (Use `node --trace-warnings ...` to show where the warning was created)
+[WebServer] (node:7868) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+[WebServer] (Use `node --trace-warnings ...` to show where the warning was created)
+[WebServer] (node:54680) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+[WebServer] (Use `node --trace-warnings ...` to show where the warning was created)
+
+Running 22 tests using 1 worker
+
+(node:55596) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ok  1 tests\e2e\auth.spec.ts:3:3 › F-01 participant.a: login, refresh, logout and browser back (1.7s)
+  ok  2 tests\e2e\auth.spec.ts:3:3 › F-01 organizer.a: login, refresh, logout and browser back (926ms)
+  ok  3 tests\e2e\auth.spec.ts:18:1 › F-01 invalid form, generic credentials and pending submit (1.3s)
+  ok  4 tests\e2e\auth.spec.ts:29:1 › F-01 expired session clears private UI on focus (617ms)
+  ok  5 tests\e2e\auth.spec.ts:37:1 › F-01 failed logout clears private UI and offers a working retry (729ms)
+  ok  6 tests\e2e\auth.spec.ts:50:1 › F-01 ignores an older successful session response after a newer 401 (640ms)
+  ok  7 tests\e2e\auth.spec.ts:76:1 › F-01 rechecks a restored page after its session was logged out elsewhere (578ms)
+  ok  8 tests\e2e\events-audit.spec.ts:20:34 › TEST-14 publish 403 removes cached private record even if an old refresh returns later (857ms)
+  ok  9 tests\e2e\events-audit.spec.ts:20:34 › TEST-14 publish 404 removes cached private record even if an old refresh returns later (821ms)
+  ok 10 tests\e2e\events-audit.spec.ts:37:34 › TEST-14 read 403 cannot be overwritten by an earlier publish success (862ms)
+  ok 11 tests\e2e\events-audit.spec.ts:37:34 › TEST-14 read 404 cannot be overwritten by an earlier publish success (851ms)
+  ok 12 tests\e2e\events-audit.spec.ts:56:1 › TEST-09/14 publish conflict explains rejection and refreshes the committed event status (806ms)
+  ok 13 tests\e2e\events-audit.spec.ts:67:1 › TEST-14 a late create success cannot navigate the next signed-in account to the previous owner record (1.5s)
+  ok 14 tests\e2e\events-audit.spec.ts:88:1 › TEST-14 a late publish 401 cannot clear the next account session (1.1s)
+  ok 15 tests\e2e\events-audit.spec.ts:103:1 › TEST-14 canonical detail and create routes work with a trailing slash (893ms)
+  ok 16 tests\e2e\events-audit.spec.ts:109:1 › TEST-14 a definitive session 401 still wins over a later temporary identity failure (728ms)
+  x  17 tests\e2e\events.spec.ts:10:1 › TEST-07/09/14/36 Organizer creates, previews, publishes; Participant browses persisted shared detail (1.2s)
+(node:42936) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ok 18 tests\e2e\events.spec.ts:83:1 › TEST-14 list loading, empty, failure and retry; detail 404 and publish conflict (1.7s)
+  ok 19 tests\e2e\events.spec.ts:108:1 › TEST-09/14 an older availability refresh cannot overwrite a successful publish (783ms)
+  ok 20 tests\e2e\events.spec.ts:129:69 › F-02/#3 focus and availability refresh preserve RegistrationAction pending (1.5s)
+  ok 21 tests\e2e\events.spec.ts:129:69 › F-02/#3 focus and availability refresh preserve RegistrationAction success (1.5s)
+  ok 22 tests\e2e\events.spec.ts:129:69 › F-02/#3 focus and availability refresh preserve RegistrationAction uncertain (1.5s)
+
+
+  1) tests\e2e\events.spec.ts:10:1 › TEST-07/09/14/36 Organizer creates, previews, publishes; Participant browses persisted shared detail 
+
+    Error: expect(received).toBeLessThanOrEqual(expected)
+
+    Expected: <= 1
+    Received:    49
+
+      26 |     const dateBounds = await date.boundingBox(), timeBounds = await field.boundingBox();
+      27 |     expect(timeBounds!.x).toBeGreaterThan(dateBounds!.x + dateBounds!.width);
+    > 28 |     expect(Math.abs(timeBounds!.y - dateBounds!.y)).toBeLessThanOrEqual(1);
+         |                                                     ^
+      29 |     await field.clear(); await date.clear();
+      30 |   }
+      31 |   const timezone = page.getByLabel('เขตเวลากิจกรรม', { exact: true });
+        at C:\Kmutt\Senior\CPE334\Final\LoungCheu\tests\e2e\events.spec.ts:28:53
+
+    Error Context: test-results\events-TEST-07-09-14-36-Or-fa34a-ses-persisted-shared-detail\error-context.md
+
+  1 failed
+    tests\e2e\events.spec.ts:10:1 › TEST-07/09/14/36 Organizer creates, previews, publishes; Participant browses persisted shared detail 
+  21 passed (35.8s)
+Playwright native exit code: 1

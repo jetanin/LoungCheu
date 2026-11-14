@@ -1,0 +1,39 @@
+
+ RUN  v5.1.0 C:/Kmutt/Senior/CPE334/Final/LoungCheu
+
+ ❯ server/tests/integration/events.test.ts (18 tests | 1 failed) 5384ms
+   × TEST-08 accepts max-length Unicode text encoded as JSON escapes without truncation 97ms
+node :
+At line:2 char:89
++ ... | Out-Null; node node_modules/vitest/vitest.mjs run server/tests/inte ...
++                 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : NotSpecified: (:String) [], RemoteException
+    + FullyQualifiedErrorId : NativeCommandError
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 1 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  server/tests/integration/events.test.ts > TEST-08 accepts max-length Unicode text encoded as JSON escapes
+without truncation
+AssertionError: expected 400 to be 201 // Object.is equality
+
+- Expected
++ Received
+
+- 201
++ 400
+
+ ❯ server/tests/integration/events.test.ts:325:20
+    323|   const r = await agent.post('/api/organizer/events').set('X-CSRF-Toke…
+    324|   if (r.status === 201) ids.push(r.body.data.id);
+    325|   expect(r.status).toBe(201);
+       |                    ^
+    326|   expect(r.body.data).toMatchObject({ title: body.title, description: …
+    327|   expect(await db.event.findUniqueOrThrow({ where: { id: r.body.data.i…
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/1]⎯
+
+
+ Test Files  1 failed (1)
+      Tests  1 failed | 17 passed (18)
+   Start at  22:57:48
+   Duration  6.35s (tests 88%, import 10%, transform 3%)

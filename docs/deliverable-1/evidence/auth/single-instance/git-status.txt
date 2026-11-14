@@ -1,0 +1,29 @@
+## feature/auth
+ M .gitignore
+ M README.md
+ M docs/changelog.md
+ M docs/decisions.md
+ M docs/deliverable-1/evidence-register.md
+ M docs/features.md
+ M docs/sprints/plan.md
+ M docs/sprints/sprint-1/README.md
+ M docs/sprints/sprint-1/contracts.md
+ M docs/sprints/sprint-1/sts.md
+ M docs/srs.md
+ M docs/system-sds.md
+ M docs/traceability.md
+?? .env.test.example
+?? client/
+?? docs/deliverable-1/evidence/
+?? docs/sprints/sprint-1/auth-pre-pr-review.md
+?? docs/sprints/sprint-1/auth-work-record.md
+?? docs/sprints/sprint-1/server-client-local-db.md
+?? docs/sprints/sprint-1/single-instance-db.md
+?? package-lock.json
+?? package.json
+?? playwright.config.ts
+?? scripts/
+?? server/
+?? tests/
+?? tsconfig.tools.json
+?? vitest.config.ts

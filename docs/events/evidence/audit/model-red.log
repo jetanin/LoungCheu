@@ -1,0 +1,41 @@
+
+ RUN  v5.1.0 C:/Kmutt/Senior/CPE334/Final/LoungCheu
+
+ ❯ client/src/features/events/model.test.ts (6 tests | 5 failed) 35ms
+   ❯ F-02 form/time contract audit (6)
+     × TEST-08/36 rejects invalid/UTC-out-of-range calendar input 2026-02-29T10:00 before sending 6ms
+     × TEST-08/36 rejects invalid/UTC-out-of-range calendar input 2026-02-30T10:00 before sending 1ms
+     × TEST-08/36 rejects invalid/UTC-out-of-range calendar input 2026-04-31T10:00 before sending 1ms
+     × TEST-08/36 rejects invalid/UTC-out-of-range calendar input 0000-01-01T10:00 before sending 0ms
+     × TEST-08/36 rejects invalid/UTC-out-of-range calendar input 0001-01-01T00:00 before sending 1ms
+npm.cmd : 
+At line:2 char:76
++ ... | Out-Null; npm.cmd exec -- vitest run client/src/features/events/mod ...
++                 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : NotSpecified: (:String) [], RemoteException
+    + FullyQualifiedErrorId : NativeCommandError
+ 
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 5 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  client/src/features/events/model.test.ts > F-02 form/time contract audit > TEST-08/36 rejects 
+invalid/UTC-out-of-range calendar input 2026-02-29T10:00 before sending
+ FAIL  client/src/features/events/model.test.ts > F-02 form/time contract audit > TEST-08/36 rejects 
+invalid/UTC-out-of-range calendar input 2026-02-30T10:00 before sending
+ FAIL  client/src/features/events/model.test.ts > F-02 form/time contract audit > TEST-08/36 rejects 
+invalid/UTC-out-of-range calendar input 2026-04-31T10:00 before sending
+ FAIL  client/src/features/events/model.test.ts > F-02 form/time contract audit > TEST-08/36 rejects 
+invalid/UTC-out-of-range calendar input 0000-01-01T10:00 before sending
+ FAIL  client/src/features/events/model.test.ts > F-02 form/time contract audit > TEST-08/36 rejects 
+invalid/UTC-out-of-range calendar input 0001-01-01T00:00 before sending
+AssertionError: expected undefined to be defined
+ ❯ client/src/features/events/model.test.ts:9:78
+
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/5]⎯
+
+
+ Test Files  1 failed (1)
+      Tests  5 failed | 1 passed (6)
+   Start at  14:19:34
+   Duration  371ms (transform 47%, tests 29%, import 17%, worker 6%)
+
