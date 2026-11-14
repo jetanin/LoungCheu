@@ -28,7 +28,7 @@ Out of scope: self-registration, reset password, email verification, หลา�
 
 ### Technology และ workflow
 
-- Frontend: React + TypeScript + Vite + Bootstrap
+- Frontend: React 19.3.1 + TypeScript + Vite + Bootstrap 5.3.8
 - Backend: Node.js + Express + TypeScript
 - Database/data access: PostgreSQL + Prisma
 - Architecture: REST-style APIs

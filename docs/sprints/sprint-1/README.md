@@ -1,6 +1,6 @@
 # Part E — Sprint 1 Engineering Baseline และ Product DoD
 
-10 พ.ย.2026: F-04/F-05 commit 3313288 (committed/pushed RV-01–03); Vitest159/Chromium37/typecheck/build/smoke3 PASS ดู [current source/results](../../registration/views-verification.md) Product DoD ยังรอ teammate approval, staging integration, process restart, independent reproduction/UAT และ accepted release
+**Evidence update — 14 พ.ย. 2026:** PR #7/#10 ได้ teammate review โดย i3artuf และ merge เข้า sprint-1-staging แล้ว ตาม snapshot 12 พ.ย.; PR #10 reviewed head `0bd3468`, merge `97a5b91` (10 พ.ย. 16:26:11 Asia/Bangkok). ผล 159 Vitest / 37 Chromium / typecheck / build / compiled smoke 3 PASS เป็นผลรัน 8 พ.ย. ของ source ที่ commit เป็น `3313288`; รอบแก้เอกสารนี้ไม่ได้รันทดสอบแอปใหม่. OS-process restart, independent clean reproduction/UAT และ reviewed main release ยังขาดหลักฐาน; GAP-02 ยัง OPEN และ Product DoD ยังไม่ครบ. [Review/merge evidence](../../deliverable-1/evidence/review-merge-20261112/README.md). Baseline FR/BR/NFR/AC ไม่เปลี่ยน; F-06–09 อยู่ Sprint 2/3
 
 **Historical Event UI run — 6 พ.ย. 2026:** 145 Vitest / 35 Chromium, typecheck/build/compiled smoke PASS รวม typography/layout/state checks ที่1280/390/320px ดู [current UI evidence](../../events/visual-consistency.md) ผล141/32 และ seed follow-up ด้านล่างเป็น historical runs
 
@@ -37,7 +37,7 @@ Version contracts/STS ก่อน implementation และดำเนิน re
 | DOD-09 | ระบุ limitations/failed/skipped/incomplete งานและไม่ใส่ secrets ใน Git/PDF | Defect register และ safe access review |
 | DOD-10 | ตั้งแต่ Lab 5 เป็นต้นไปมี CI gate, Docker/GCP version และ post-deploy verification; final มี independent acceptance และส่งมอบครบ | Pipeline/deployment/UAT records ตาม checkpoint; D1 ส่วนนี้เป็น PLANNED ไม่อ้างผ่าน |
 
-DOD-01/02/04 มี automated F-01–05 evidence: Vitest159/Chromium37/typecheck/build/smoke3 PASS รวม full own-list/roster journey ใน [current record](../../registration/views-verification.md). RV-02/03 ปรับ docs/evidence/revision ให้ตรงกันและเก็บ failed attempts; historical meaningful TDD อยู่ใน original records ไม่อ้าง environment errors เป็น RED. Product DoD ทั้งชุดยังไม่ครบ: OS-process restart, independent clean reproduction/UAT, teammate approval, staging integration และ release acceptance ยังต้องมีหลักฐาน; PR10ยังDraft/no reviews/no merge ณ10พ.ย. DOD-10ใช้ตั้งแต่Lab5 และ AI reviewไม่แทนteammateapproval
+DOD-01/02/04 มี automated F-01–05 evidence ตาม [recorded source/results](../../registration/views-verification.md); meaningful TDD และ failed attempts คงไว้ตามวันที่เดิม ไม่ใช้ environment errors เป็น domain RED. DOD-05 ยัง PARTIAL: app recreation ผ่าน แต่ OS-process restart/independent clean reproduction ยังขาดหลักฐาน. DOD-07 ยัง PARTIAL: PR #7/#10 approved และ merged staging แล้ว แต่ reviewed main release ยังขาดหลักฐาน. GAP-02 ยัง OPEN; ไม่ประกาศ Product DoD ทั้งชุดผ่าน. DOD-10 ใช้ตาม checkpoint ตั้งแต่ Lab 5; AI execution/review ไม่แทน independent acceptance.
 
 ## Review gate ก่อนรับ implementation
 

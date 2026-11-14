@@ -1,0 +1,15 @@
+{
+  "reconciled_date": "2026-11-14",
+  "timezone": "Asia/Bangkok",
+  "snapshot_capture_date_from_part_f": "2026-11-12",
+  "provenance": "Existing local tmp/part-f/github/pr-{7,10}.json snapshots; no live GitHub query",
+  "recorded_test_commit": "331328812092c04db84859c4ca00e9a6aa70b0fe",
+  "new_application_test_execution_claimed": false,
+  "gap_02": "OPEN",
+  "product_dod": "INCOMPLETE",
+  "files": {
+    "pr-7.json": "a6a5640b7b527b99607952a977b7c305278a4da468250e59bf9db11f52f57cdc",
+    "pr-10.json": "8df7f58d551d5298b9fe630fcc23f12bf8d1748ae6a8f0051afa27ffcd999d9a",
+    "README.md": "5b74e37da27bcac8262cc3a5e88fd0892e654d81a42525606fc5b518108dddb0"
+  }
+}
