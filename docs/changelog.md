@@ -83,3 +83,7 @@ AI scope includes implementation/tests/audit/review corrections/automated execut
 ## Documentation branch merge reconciliation — 14 November 2026
 
 Merged the existing docs/deliverable-1-update history with documentation correction6d4e73e. Retained incoming report/assembly guide and source changes; resolved documentation conflicts against baseline IDs, tested source3313288 and dated PR #7/#10 review/merge snapshots. Corrected the newly available combined report: baseline FR/BR/NFR/AC/F/SYS tables, React19/Bootstrap, actual schema/routes, exact test excerpts and setup commands; GAP-02 remains OPEN and Product DoD incomplete. No application test execution or new independent acceptance is claimed.
+
+## PR #11 documentation review fixes — 14 November 2026
+
+Removed unsupported board-Done, named teammate clean-reproduction and staging-rerun claims from the evidence register. Bound the recorded159/37/typecheck/build/smoke3 results to the8November source3313288 execution and kept staging97a5b91 separate. Replaced nonexistent db:test:* setup aliases with current README/package.json instructions; no new execution is claimed. Expanded the report with the existing complete engineering baseline A–E, actual AC/test results, selected recorded screenshots and log excerpts. Marked the report as an assembly draft and made remaining acceptance, evidence, release and PDF pagination work explicit. Historical raw logs/manifests remain unchanged; no application code, tests, AC IDs or schema changed.

@@ -4,7 +4,7 @@ import { randomBytes } from 'node:crypto';
 import { createDatabaseClient } from '../../src/db/client.js';
 import { Pool } from 'pg';
 import { createApp, SESSION_MS } from '../../src/app.js';
-import { seedUsers } from '../../src/modules/accounts/seed.js';
+import { demoUsers, seedUsers } from '../../src/modules/accounts/seed.js';
 import { readConfig } from '../../src/config/env.js';
 import { requireAuth, requireRole } from '../../src/middleware/auth.js';
 import { errorHandler } from '../../src/shared/errors.js';
@@ -55,8 +55,11 @@ describe('F-01 API with real PostgreSQL sessions', () => {
     const before = await db.user.findMany({ orderBy: { username: 'asc' } });
     await seedUsers(db, password);
     expect(await db.user.findMany({ orderBy: { username: 'asc' } })).toEqual(before);
-    expect(before).toHaveLength(6);
-    expect(new Set(before.map(user => user.passwordHash)).size).toBe(6);
+    // Other suites can leave unrelated fixtures; only demo users belong to this seed.
+    const usernames = new Set(demoUsers.map(user => user.username));
+    const seeded = before.filter(user => usernames.has(user.username));
+    expect(seeded).toHaveLength(demoUsers.length);
+    expect(new Set(seeded.map(user => user.passwordHash)).size).toBe(demoUsers.length);
   });
   it.each([['participant.a', 'PARTICIPANT'], ['organizer.a', 'ORGANIZER']])('TEST-01/03 rotates session and returns only Identity for %s', async (username, role) => {
     const { agent, pre, response, cookie } = await login(username);

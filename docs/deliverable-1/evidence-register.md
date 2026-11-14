@@ -13,11 +13,11 @@ Documentation baseline v0.5 | 5 พฤศจิกายน 2026
 |---|---|
 | Repository | https://github.com/jetanin/LoungCheu |
 | Sprint staging | sprint-1-staging (current commit: 97a5b91) |
-| GitHub project board URL / captured status/date | https://github.com/users/jetanin/projects/10/views/1 (Captured: 10 พ.ย. 2026 - All Sprint 1 features in Done) |
+| GitHub project board URL / captured status/date | https://github.com/users/jetanin/projects/10/views/1 (final board status/date NOT VERIFIED; ต้องแนบ snapshot ก่อนอ้างว่า Done) |
 | Documentation history | [Changelog](../changelog.md) |
-| Target main release tag/commit | Release Tag: v1.0.0-sprint-1 (Staging Head: 97a5b91) |
-| Runtime/dependency/DB versions | Node 22.23.2 / PostgreSQL 17.11 (isolated Docker 55433); dependencies จาก checkout lockfile; source and log hashes in [manifest](../registration/evidence/review-fixes/manifest.json) |
-| Environment / execution date / tester | Windows, isolated PostgreSQL 55433, 10 พ.ย. 2026 Asia/Bangkok; Verified by Paphangkorn Luanseng & Jetanin Naitho |
+| Target main release tag/commit | `v1.0.0-sprint-1` เป็น target เท่านั้น; staging candidate `97a5b91`; ยังไม่มี accepted main release/tag |
+| Runtime/dependency/DB versions | Node 22.23.2 / PostgreSQL 17.11 (isolated Docker 55433); versions ของ recorded execution 8 พ.ย. ที่ source3313288; source and log hashes in [manifest](../registration/evidence/review-fixes/manifest.json) |
+| Environment / execution date / tester | Recorded automated execution: Windows, isolated PostgreSQL 55433, 8 พ.ย. 2026 Asia/Bangkok, source3313288 ตาม manifest/logs; ยังไม่มี independent teammate restart/clean reproduction record |
 
 ## 2. Program demonstrations
 
@@ -90,7 +90,7 @@ it('TEST-23/27/32: enforces auth → role → input → ownership without privat
 
 ## 4. Issue/PR/integration evidence
 
-เลือก 2 completed implementation Issues แสดงใน PDF; ทุก feature PR ผ่านการ review ตาม workflow
+ตารางนี้เก็บ 2 implementation Issue/PR chains ที่มี teammate approval และ staging merge snapshots; main release และ final board ยัง NOT VERIFIED
 
 | Field | Chain 1: #3 / F-03 | Chain 2: #4 / F-04–05 |
 |---|---|---|
@@ -112,9 +112,9 @@ EV-10: feature teammate review/staging merge ของสอง chains มี [s
 | ขั้นตอน | Actual commands / outcome |
 |---|---|
 | Dependencies/runtime และ safe environment examples | npm workspaces, pinned packages/lockfile; templates คือ server/.env.example และ root .env.test.example; root .env.example ที่ซ้ำลบแล้ว; clean npm ci copy ผ่าน; [README](../../README.md#local-setup--issue-1--f-01) และ pre-PR record |
-| Database creation/migrations และ synthetic seed/private demo access | ใช้ Docker db-test container 127.0.0.1:55433/loungcheu_test, migrated auth/registration foundation; คำสั่ง `npm run db:test:up && npm run db:test:migrate && npm run db:test:seed` สำเร็จสมบูรณ์ |
-| Build/run/test และ normal journey | Current F-01–05 Vitest 159/159 PASS, Playwright E2E 37/37 PASS, typecheck/build/smoke 3 PASS; ครอบคลุม full publish/register/roster journey |
-| Teammate clean reproduction: tester/date/commit/result | ตรวจสอบและรันซ้ำโดย Paphangkorn Luanseng (10 พ.ย. 2026, commit 97a5b91): ทุกชุดการทดสอบ PASS สมบูรณ์ |
+| Database creation/migrations และ synthetic seed/private demo access | Historical automated execution 8 พ.ย. ใช้ isolated PostgreSQL ที่ 127.0.0.1:55433/loungcheu_test ตาม [manifest](../registration/evidence/review-fixes/manifest.json). Current setup ใช้ `npm run db:migrate`, `npm run db:setup:test`, `npm run db:migrate:test`, `npm run db:seed` ตาม README; เป็นขั้นตอนที่ต้องรัน ไม่ใช่ผล clean reproduction รอบใหม่ |
+| Build/run/test และ normal journey | Recorded 8 พ.ย. ที่ source3313288: Vitest159/159 PASS, Playwright37/37 PASS, typecheck/build/smoke3 PASS; ไม่ใช่ rerun ที่ staging97a5b91 หรือ submitted release |
+| Teammate clean reproduction: tester/date/commit/result | NOT VERIFIED: ยังไม่มี independent clean reproduction record ที่ผูก tester/date/commit/commands/actual results; TEST-31/35 และ DOD-05 ยัง PARTIAL |
 
 นำขั้นตอนจริงจาก README implementation มาสรุปใน PDF โดยไม่ใส่ secrets
 

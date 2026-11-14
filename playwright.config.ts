@@ -7,7 +7,7 @@ export default defineConfig({
   use: { baseURL: `http://127.0.0.1:${webPort}`, browserName: 'chromium' },
   reporter: [['list']],
   webServer: [
-    { command: 'npx tsx scripts/e2e-server.ts', url: `http://127.0.0.1:${apiPort}/api/health`, reuseExistingServer: false },
+    { command: 'node --import tsx scripts/e2e-server.ts', url: `http://127.0.0.1:${apiPort}/api/health`, reuseExistingServer: false },
     { command: `npm run dev -w client -- --port ${webPort} --strictPort`, url: `http://127.0.0.1:${webPort}`, env: { API_PROXY_TARGET: `http://127.0.0.1:${apiPort}` }, reuseExistingServer: false },
   ],
 });
