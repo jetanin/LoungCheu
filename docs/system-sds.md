@@ -1,6 +1,6 @@
 # Part C — System-Level Software Design Specification
 
-**Implementation update — 10 พ.ย.2026:** F-04/F-05 เริ่มที่eeafc31 และ RV-01–03 รวมใน committed/pushed3313288 แล้ว; sourceนี้มี Vitest159/Chromium37/typecheck/build/smoke3 PASS ดู [revision/results](registration/views-verification.md). Query scope/response/snapshot contracts ไม่เปลี่ยน; PR10 Draft/head3313288/no reviews/no merge ตรวจ10พ.ย. Product DoD/process acceptance ยังไม่ครบ
+**Implementation/evidence update — 14 พ.ย. 2026:** PR #7/#10 ได้ teammate review โดย i3artuf และ merge เข้า sprint-1-staging แล้ว ตาม snapshot 12 พ.ย.; PR #10 reviewed head `0bd3468`, merge `97a5b91` (10 พ.ย. 16:26:11 Asia/Bangkok). ผล 159 Vitest / 37 Chromium / typecheck / build / compiled smoke 3 PASS เป็นผลรัน 8 พ.ย. ของ source ที่ commit เป็น `3313288`; รอบแก้เอกสารนี้ไม่ได้รันทดสอบแอปใหม่. OS-process restart, independent clean reproduction/UAT และ reviewed main release ยังขาดหลักฐาน; GAP-02 ยัง OPEN และ Product DoD ยังไม่ครบ. [Review/merge evidence](deliverable-1/evidence/review-merge-20261112/README.md). Baseline FR/BR/NFR/AC ไม่เปลี่ยน; F-06–09 อยู่ Sprint 2/3
 
 เอกสาร LC-SYS-SDS | Documentation baseline v0.5 | 5 พฤศจิกายน 2026
 
@@ -10,11 +10,11 @@ React SPA → REST JSON `/api` → Express application services → PostgreSQL �
 
 | Component | Responsibility |
 |---|---|
-| React + TypeScript + Vite + Bootstrap | Screens, navigation, form validation และ loading/empty/error states |
+| React 19.3.1 + TypeScript + Vite + Bootstrap 5.3.8 | Screens, navigation, form validation และ loading/empty/error states |
 | Express + TypeScript | Routers, session/CSRF middleware, authorization, services และ JSON errors |
 | PostgreSQL + Prisma | Domain/session persistence, migrations, constraints และ transactions |
 | Vitest + Supertest | Unit และ API/database integration; concurrency ใช้ PostgreSQL จริง |
-| Browser E2E | Playwright สำหรับ selected auth journeys; cross-feature journeys ตาม STS ยัง pending |
+| Browser E2E | Playwright: recorded37 Chromium PASS at3313288 รวม cross-feature create/publish/register/own detail/roster; independent UAT ยัง pending |
 
 ```mermaid
 flowchart LR
@@ -72,7 +72,31 @@ registered_at เป็นเวลาลงครั้งแรกที่ se
 
 Prisma schema กำหนด relations/enums/unique; migrations เพิ่ม SQL checks สำหรับ capacity/time ordering ส่วน role relations, transitions และ ACTIVE count ตรวจใน service/transaction PostgreSQL session table เป็น infrastructure แยกจาก domain model
 
-Proposed indexes: Event(status, starts_at), Event(organizer_id), Registration(participant_id, registered_at), Registration(event_id, status)
+Implemented Sprint 1 indexes (schema.prisma): Event(status, starts_at), Event(organizer_id), Registration(participant_id, registered_at), Registration(event_id, status)
+
+### Implemented schema names and routes — reconciliation 14 November 2026
+
+ตาราง entity ด้านบนใช้ชื่อ SQL/API แบบ snake_case; Prisma ใช้ camelCase ผ่าน `@map` และ `@@map` ตาม `server/prisma/schema.prisma`:
+
+| Prisma model / table | Prisma field → SQL column / API field |
+|---|---|
+| User / users | passwordHash → password_hash (ไม่คืน API); displayName → display_name; isActive → is_active |
+| Event / events | organizerId → organizer_id; startsAt → starts_at; endsAt → ends_at; registrationClosesAt → registration_closes_at; createdAt → created_at; updatedAt → updated_at |
+| Registration / registrations | eventId → event_id; participantId → participant_id; registeredAt → registered_at |
+
+EventStatus มี DRAFT/PUBLISHED/CLOSED; RegistrationStatus มี ACTIVE/CANCELLED ตาม enum จริง แต่ Sprint1 ไม่มี cancel/reactivate mutation. Registration extensions, RegistrationHistory และเส้นเชื่อม history ใน ER diagram เป็น design สำหรับ S2/S3 ยังไม่มีใน schema/migrations ปัจจุบัน. ส่วน session store เป็น infrastructure แยกจาก Prisma domain models.
+
+| HTTP | Implemented API route | Implementation |
+|---|---|---|
+| GET | /api/health; /api/auth/csrf; /api/auth/me | server/src/app.ts |
+| POST | /api/auth/login; /api/auth/logout | server/src/app.ts |
+| GET | /api/events; /api/events/:id | modules/events/router.ts |
+| GET | /api/organizer/events; /api/organizer/events/:id | modules/events/router.ts |
+| POST | /api/organizer/events; /api/organizer/events/:id/publish | modules/events/router.ts |
+| POST | /api/events/:id/registrations | modules/registrations/router.ts |
+| GET | /api/my/registrations; /api/my/registrations/:id; /api/organizer/events/:id/registrations | modules/registrations/read-router.ts |
+
+Module paths ในตารางอยู่ใต้ `server/src/`; routers mount ที่ `/api`. API response fields ยึด serializers/contracts จริง: own record มี id/status/registered_at/event; roster มี event_id/capacity/active_count/registrations และ participant.display_name. cancel/reactivate/close/edit/check-in/summary routes เป็น planned scope ของ F-06–09 ยังไม่ใช่ implemented endpoints.
 
 ### Atomic registration
 

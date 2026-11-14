@@ -4,7 +4,7 @@
 
 **Seed follow-up (6 พ.ย.):** full Vitest **145 PASS** รวม seed integration ใหม่4 และ typecheck PASS; 141/32 ใน feature audit ด้านล่างเป็นรอบก่อนเพิ่ม seed โดย Chromium/build ไม่ได้ rerun รอบ seed ดู [latest seed results](../events/demo-seed.md) ไม่มี AC/scope ใหม่
 
-Documentation baseline v0.5 | 5 พฤศจิกายน2026 | Execution update10พ.ย.: F-04/F-05 implementation commit 3313288 (committed/pushed RV-01–03) ผ่าน Vitest159/Chromium37/typecheck/build/smoke3 ดู [current source/results](../registration/views-verification.md). PR10 OPEN/Draft เข้า sprint-1-staging ไม่มี reviews/merge จาก GitHubที่ตรวจ10พ.ย. ยังรอ independent restart/reproduction/UAT, teammate approval, staging integration และ main release acceptance; F-06–09 อยู่ Sprint2/3
+Documentation baseline v0.5 (5 พ.ย. 2026); evidence reconciliation 14 พ.ย. 2026: PR #7/#10 ได้ teammate review โดย i3artuf และ merge เข้า sprint-1-staging แล้ว ตาม snapshot 12 พ.ย.; PR #10 reviewed head `0bd3468`, merge `97a5b91` (10 พ.ย. 16:26:11 Asia/Bangkok). ผล 159 Vitest / 37 Chromium / typecheck / build / compiled smoke 3 PASS เป็นผลรัน 8 พ.ย. ของ source ที่ commit เป็น `3313288`; รอบแก้เอกสารนี้ไม่ได้รันทดสอบแอปใหม่. OS-process restart, independent clean reproduction/UAT และ reviewed main release ยังขาดหลักฐาน; GAP-02 ยัง OPEN และ Product DoD ยังไม่ครบ. [Review/merge evidence](../deliverable-1/evidence/review-merge-20261112/README.md). Baseline FR/BR/NFR/AC ไม่เปลี่ยน; F-06–09 อยู่ Sprint 2/3
 
 | Sprint | เป้าหมาย / Features | Dependencies | Completion outcome / Checkpoint |
 |---|---|---|---|

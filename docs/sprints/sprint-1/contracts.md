@@ -1,10 +1,10 @@
 # Part E — Sprint 1 Feature Engineering Contracts
 
-Execution update10พ.ย.2026: F-04/F-05 implement ตาม contract เดิมในeeafc31 และ RV-01–03 commit/push แล้วใน3313288; Vitest159/Chromium37/typecheck/build/smoke3 PASS ดู [revision/results](../../registration/views-verification.md). PR10 OPEN/Draft/no reviews/no merge ตรวจ10พ.ย.; acceptance gates ยัง pending ไม่มีการเปลี่ยน AC/schema
+**Evidence update — 14 พ.ย. 2026:** PR #7/#10 ได้ teammate review โดย i3artuf และ merge เข้า sprint-1-staging แล้ว ตาม snapshot 12 พ.ย.; PR #10 reviewed head `0bd3468`, merge `97a5b91` (10 พ.ย. 16:26:11 Asia/Bangkok). ผล 159 Vitest / 37 Chromium / typecheck / build / compiled smoke 3 PASS เป็นผลรัน 8 พ.ย. ของ source ที่ commit เป็น `3313288`; รอบแก้เอกสารนี้ไม่ได้รันทดสอบแอปใหม่. OS-process restart, independent clean reproduction/UAT และ reviewed main release ยังขาดหลักฐาน; GAP-02 ยัง OPEN และ Product DoD ยังไม่ครบ. [Review/merge evidence](../../deliverable-1/evidence/review-merge-20261112/README.md). Baseline FR/BR/NFR/AC ไม่เปลี่ยน; F-06–09 อยู่ Sprint 2/3
 
 เอกสาร LC-S1-CONTRACT | Documentation baseline v0.5 | 5 พฤศจิกายน 2026
 
-ใช้ SRS/System SDS baseline v0.5 กติกา success/error/session/time ร่วมตาม System SDS และ IDs ตาม traceability; F-01–05 implement บน branchนี้แล้ว ดู [current execution](../../registration/views-verification.md) Staging acceptance/review/release ยังต้องมีหลักฐานแยก ไม่มีการเปลี่ยน baseline AC
+ใช้ SRS/System SDS baseline v0.5 และ IDs เดิมตาม traceability; F-01–05 implement แล้ว ผลทดสอบอ้าง [tested source3313288](../../registration/views-verification.md). Feature review/staging merge มีหลักฐานแยกจาก main release และ independent process acceptance ซึ่งยัง pending; ไม่มีการเปลี่ยน baseline AC/schema
 
 ## Sprint 1 JSON schemas ร่วม
 

@@ -1,10 +1,10 @@
 # Issue #4 — current verification and review corrections
 
-Updated 10 November 2026 (Asia/Bangkok). Branch feature/registration-views; implementation eeafc313220fa9feda633b89cab8c4b90cb86f9e and RV-01–03 fixes are **committed and pushed as 331328812092c04db84859c4ca00e9a6aa70b0fe**. Remote and PR #10 head were verified at3313288 on10Nov. [Current revision/documentation manifest](evidence/revision-3313288/manifest.json) binds this source to its execution evidence. Later documentation-only reconciliation does not change the tested application/test code.
+Reconciled 14 November 2026 (Asia/Bangkok). The recorded 8 November application/test execution is bound to **331328812092c04db84859c4ca00e9a6aa70b0fe** (initial implementation eeafc313220fa9feda633b89cab8c4b90cb86f9e). The later reviewed PR #10 head is **0bd3468f31a9637feab5b9a9d102c22d5eede3d1** and staging merge is **97a5b9173ec6b0a53a7759f683b440ec49eae396**. Do not relabel the older execution as a new run on either later commit. The [10 November revision manifest](evidence/revision-3313288/manifest.json) is historical; the [review/merge reconciliation](../deliverable-1/evidence/review-merge-20261112/README.md) supplies later workflow evidence.
 
 ## Verified GitHub state
 
-Read-only checks on10November: [PR #10](https://github.com/jetanin/LoungCheu/pull/10) OPEN/Draft into sprint-1-staging, head3313288, reviews=[], no review decision/merge. [Current captured fields](evidence/revision-3313288/github-status.json). The separate [8November snapshot](evidence/review-fixes/github-status.json) is historical and identified head eeafc31 then. Board status, independent acceptance and release approval were not verified.
+The retained 12 November Part F snapshots show PR #7 and PR #10 approved by teammate i3artuf and merged into sprint-1-staging. PR #10 approval: 10 November 16:25:38 Asia/Bangkok at0bd3468; merge:16:26:11 at97a5b91. See [JSON snapshots and review details](../deliverable-1/evidence/review-merge-20261112/README.md). Earlier [10 November](evidence/revision-3313288/github-status.json) and [8 November](evidence/review-fixes/github-status.json) captures remain historical, not current pending-review claims. No live GitHub query was made in this reconciliation; final board/main release/independent acceptance are not established.
 
 ## RV-01 — account-switch setup
 
@@ -41,7 +41,7 @@ F-04/F-05 implement FR-07/08, AC-18–23 without migrations, cancellation, check
 | AC-23 / TEST-29 | API new reference/count equals DB; focused browser owner roster shows matching reference/display name |
 | AC-24 / TEST-30 | Focused real UI create → publish → register → own read/re-login → owner roster **PASS**; synthetic accounts/isolated DB, not independent UAT |
 | AC-25 / TEST-31,35 | App recreation subset; OS-process restart and independent clean reproduction **NOT VERIFIED** |
-| AC-27 / TEST-34 | RV-02/03 align documents/evidence with committed source3313288 and current documentation. PR facts above verified; teammate review, integration/release and full process acceptance incomplete |
+| AC-27 / TEST-34 | PARTIAL: baseline docs/results and PR #7/#10 substantive teammate approvals/staging merges evidenced; final board, reviewed main release and full process acceptance remain pending |
 
 Recorded8November full-journey screenshots: [mobile own detail](evidence/review-fixes/own-detail.png) and [desktop roster](evidence/review-fixes/roster.png), visually inspected after capture. Reproduction commands: [evidence README](evidence/review-fixes/README.md).
 
@@ -53,4 +53,4 @@ Recorded8November full-journey screenshots: [mobile own detail](evidence/review-
 
 ## Remaining acceptance gates
 
-No product logic, schema or AC change was introduced by these fixes. Keep teammate approval, staging integration/merge, OS-process restart, independent clean reproduction/UAT, main release and applicable deployment gates pending until separately evidenced. AI review and automated tests do not establish entire Sprint Product DoD.
+This documentation reconciliation changes no product logic, schema, AC or test code and claims no new application execution. Feature teammate approval and staging merges are evidenced. OS-process restart, independent clean reproduction/UAT, final board/main release acceptance and applicable deployment gates still require separate evidence. GAP-02 remains OPEN; DOD-05 and overall Product DoD remain incomplete; DOD-07 is PARTIAL pending reviewed release acceptance.
