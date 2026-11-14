@@ -17,6 +17,7 @@ export function validateForm(values: FormValues) {
   const fields: Record<string, string[]> = {};
   for (const [key, max] of [['title', 120], ['description', 2000], ['location', 200]] as const) {
     if (![...values[key].trim()].length || [...values[key].trim()].length > max) fields[key] = [`กรุณากรอก 1–${max} ตัวอักษร`];
+    else if (/[\u0000\uD800-\uDFFF]/u.test(values[key])) fields[key] = ['มีอักขระที่ไม่รองรับ กรุณากรอกข้อความใหม่'];
   }
   const capacity = Number(values.capacity);
   if (!/^\d+$/.test(values.capacity) || !Number.isInteger(capacity) || capacity < 1 || capacity > 1000) fields.capacity = ['จำนวนที่นั่งต้องเป็นจำนวนเต็ม 1–1000'];

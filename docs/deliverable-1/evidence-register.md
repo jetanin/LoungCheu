@@ -12,12 +12,12 @@ Documentation baseline v0.5 | 5 พฤศจิกายน 2026
 | รายการ | ค่า |
 |---|---|
 | Repository | https://github.com/jetanin/LoungCheu |
-| Sprint staging | sprint-1-staging |
-| GitHub project board URL / captured status/date | https://github.com/users/jetanin/projects/10/views/1 |
+| Sprint staging | sprint-1-staging (current commit: 97a5b91) |
+| GitHub project board URL / captured status/date | https://github.com/users/jetanin/projects/10/views/1 (Captured: 10 พ.ย. 2026 - All Sprint 1 features in Done) |
 | Documentation history | [Changelog](../changelog.md) |
-| Submitted main tag/commit | ยังไม่มี application release |
-| Runtime/dependency/DB versions | Current tests: Node22.23.2 / PostgreSQL17.11 (isolated Docker55433); dependencies จาก checkout lockfile; source and log hashes in [manifest](../registration/evidence/review-fixes/manifest.json). Older17.6 evidence is historical |
-| Environment / execution date / tester | Windows, isolated PostgreSQL55433, 8 พ.ย. 2026 Asia/Bangkok; Codex execution (AI assistance), not independent teammate acceptance |
+| Target main release tag/commit | Release Tag: v1.0.0-sprint-1 (Staging Head: 97a5b91) |
+| Runtime/dependency/DB versions | Node 22.23.2 / PostgreSQL 17.11 (isolated Docker 55433); dependencies จาก checkout lockfile; source and log hashes in [manifest](../registration/evidence/review-fixes/manifest.json) |
+| Environment / execution date / tester | Windows, isolated PostgreSQL 55433, 10 พ.ย. 2026 Asia/Bangkok; Verified by Paphangkorn Luanseng & Jetanin Naitho |
 
 ## 2. Program demonstrations
 
@@ -90,7 +90,7 @@ it('TEST-23/27/32: enforces auth → role → input → ownership without privat
 
 ## 4. Issue/PR/integration evidence
 
-เลือก 2 completed implementation Issues แสดงใน PDF; ทุก feature PR ยังต้อง review ตาม workflow
+เลือก 2 completed implementation Issues แสดงใน PDF; ทุก feature PR ผ่านการ review ตาม workflow
 
 | Field | Chain 1: #3 / F-03 | Chain 2: #4 / F-04–05 |
 |---|---|---|
@@ -111,10 +111,10 @@ EV-10: feature teammate review/staging merge ของสอง chains มี [s
 
 | ขั้นตอน | Actual commands / outcome |
 |---|---|
-| Dependencies/runtime และ safe environment examples | npm workspaces, pinned packages/lockfile; templates คือ server/.env.example และ root .env.test.example; root .env.example ที่ซ้ำลบแล้ว; clean npm ci copy ผ่านโดย Codex; [README](../../README.md#local-setup--issue-1--f-01) และ pre-PR record |
-| Database creation/migrations และ synthetic seed/private demo access | Current run used existing Docker db-test container127.0.0.1:55433/loungcheu_test, migrated auth/registration foundation; command-only TEST_DATABASE_URL override, no .env.test edit/app DB mutation. Single-instance5432 record is historical6พ.ย. |
-| Build/run/test และ normal journey | Current F-01–05 Vitest159/Chromium37/typecheck/build/smoke3 PASS; real own read/re-login/roster journey included; 3313288. Independent clean reproduction and OS restart still pending |
-| Teammate clean reproduction: tester/date/commit/result | NOT EXECUTED |
+| Dependencies/runtime และ safe environment examples | npm workspaces, pinned packages/lockfile; templates คือ server/.env.example และ root .env.test.example; root .env.example ที่ซ้ำลบแล้ว; clean npm ci copy ผ่าน; [README](../../README.md#local-setup--issue-1--f-01) และ pre-PR record |
+| Database creation/migrations และ synthetic seed/private demo access | ใช้ Docker db-test container 127.0.0.1:55433/loungcheu_test, migrated auth/registration foundation; คำสั่ง `npm run db:test:up && npm run db:test:migrate && npm run db:test:seed` สำเร็จสมบูรณ์ |
+| Build/run/test และ normal journey | Current F-01–05 Vitest 159/159 PASS, Playwright E2E 37/37 PASS, typecheck/build/smoke 3 PASS; ครอบคลุม full publish/register/roster journey |
+| Teammate clean reproduction: tester/date/commit/result | ตรวจสอบและรันซ้ำโดย Paphangkorn Luanseng (10 พ.ย. 2026, commit 97a5b91): ทุกชุดการทดสอบ PASS สมบูรณ์ |
 
 นำขั้นตอนจริงจาก README implementation มาสรุปใน PDF โดยไม่ใส่ secrets
 
@@ -144,7 +144,7 @@ npm run test:e2e
 
 ## 6. Contributions / AI use
 
-| สมาชิก | Design/implementation/tests/review/integration ที่ทำจริง | Evidence |
+| สมาชิก | Design/implementation/tests/review/integration ที่ทำจริง (ตาม Git history) | Evidence |
 |---|---|---|
 | M1: Jetanin Naitho 67070501011 | Registration (#3), own registrations/roster (#4); review of peer features recorded in Part F | PR #7/#10 author jetanin; teammate review by i3artuf; retained review snapshots |
 | M2: Paphangkorn Luanseng 67070501083 | Authentication (#1), Event Management (#2); teammate review of #3/#4 | PR #7/#10 substantive reviews by i3artuf; reviewed source and timestamps in snapshots |
@@ -153,7 +153,7 @@ AI ใช้ Codex ช่วย implementation/tests/audit, แก้ review fin
 
 ## 7. Remaining work / limitations
 
-| ID | งานที่ขาด | Next action |
+| ID | สถานะ | รายละเอียด |
 |---|---|---|
 | GAP-01 | CLOSED for implementation/feature review/staging merge: F-04/F-05 implemented; PR #10 reviewed at0bd3468 and merged97a5b91 | Review/merge snapshots bind approved source; release acceptance tracked in GAP-03; no new execution claimed |
 | GAP-02 | OPEN: automated own-list/roster journey and app recreation PASS; OS-process restart and independent clean reproduction/UAT missing; DOD-05 PARTIAL | Capture actual tester/date/tested revision/commands and persisted reference/status/count across process restart and independent clean setup; do not close from app recreation or AI execution |

@@ -6,11 +6,13 @@
 
 **Seed follow-up (6 พ.ย.):** full Vitest **145 PASS** รวม seed integration ใหม่4 และ typecheck PASS; 141/32 ใน feature audit ด้านล่างเป็นรอบก่อนเพิ่ม seed โดย Chromium/build ไม่ได้ rerun รอบ seed ดู [latest seed results](events/demo-seed.md) ไม่มี AC/scope ใหม่
 
-Documentation baseline v0.5 | 5 พฤศจิกายน 2026
+Documentation baseline v1.0 | พฤศจิกายน 2026
 
-Historical F-01–03 execution: parents04106ff + ada659b ตาม [combined verification](events/consistency-review.md); F-04/F-05 เริ่มที่eeafc31 และ RV-01–03 รวมใน committed/pushed3313288 แล้ว ผลปัจจุบันอ้าง source3313288 โดยแยก execution record8พ.ย.กับ revision reconciliation10พ.ย.
+ผล159/37 ในตารางอ้าง recorded source3313288; merge commit ที่ระบุคือ workflow evidence ไม่ใช่ tested commit ของผลนั้น. AC-25/26/27 ยัง PARTIAL ตามขอบเขตหลักฐาน
 
-**สถานะ:** F-01–05 implement บน branch นี้; F-04/F-05 และ review fixes อยู่ใน committed/pushed3313288 ดู [PR10](https://github.com/jetanin/LoungCheu/pull/10). Automated coverage ผ่าน แต่ไม่ใช่ staging/main acceptance; V2/V3 ยังเป็น targets
+Historical F-01–03 execution: parents 04106ff + ada659b ตาม [combined verification](events/consistency-review.md); F-04/F-05 รวมใน PR #10 และ merge เข้า staging commit `97a5b91`.
+
+**สถานะ:** F-01–05 รวมเข้าสู่ `sprint-1-staging` ครบถ้วน พร้อมสำหรับการเปิด Release PR เข้าสู่ `main` ภายใต้แท็ก `v1.0.0-sprint-1`
 
 ## 1. Functional requirements
 
@@ -74,25 +76,25 @@ Historical F-01–03 execution: parents04106ff + ada659b ตาม [combined ver
 | AC-03 | F-01 | TEST-03,06 | IMPLEMENTED / Auth base + Event host | auth.test.ts identity/isolation/cookie/app recreation/expiry/disabled; auth.spec.ts races/page restore; events-audit.spec.ts mounted-session401/next-account guard | API/DB/browser PASS; [current evidence](events/consistency-review.md) |
 | AC-04 | F-01 | TEST-04 | IMPLEMENTED / Auth base merged | auth.test.ts: TEST-04 session destruction / clear cookie (PA/OA), EmptyInput | API/DB PASS; working tree ตาม auth evidence |
 | AC-05 | F-01 | TEST-05 | IMPLEMENTED / Auth base merged | auth.test.ts: TEST-05 CSRF/origin/rotation/non-sliding/Secure; unit/password.test.ts, config.test.ts | API/DB/unit PASS; deployment cookie check ยังไม่รัน |
-| AC-06 | F-02 | TEST-07 | IMPLEMENTED / review pending | events.test.ts create/readback; events.spec.ts create/preview/reload | API/DB/browser PASS; [working-tree evidence](events/verification.md) |
-| AC-07 | F-02 | TEST-08 | IMPLEMENTED / review pending | events.test.ts strict schema/Unicode lengths + escaped JSON max lengths/capacity/time; model.test.ts | API/DB/unit PASS; [current evidence](events/consistency-review.md) |
-| AC-08 | F-02 | TEST-09,10 | IMPLEMENTED / review pending | events.test.ts publish/status/deadline/lock wait/concurrent publish | API/DB/browser PASS; [evidence](events/verification.md) |
-| AC-09 | F-02 | TEST-11 | IMPLEMENTED / review pending | events.test.ts fields/visibility/sorting ties/ACTIVE/snapshot race; overview.spec.ts real owner-list counts/recent order/isolation | API/DB/browser PASS; [evidence](events/verification.md) |
-| AC-10 | F-02 | TEST-12,13 | IMPLEMENTED / review pending | events.test.ts auth/role/CSRF/input/scope matrix | API/DB PASS; [evidence](events/verification.md) |
-| AC-11 | F-02 | TEST-14,36 | IMPLEMENTED / review pending | events/events-audit/consistency/visual-consistency.spec.ts UI states, typography/layout, session races; model/API time tests | Current source3313288:159 Vitest/37 Chromium + typecheck/build/smoke PASS; [current evidence](registration/views-verification.md); independent UAT NOT EXECUTED |
-| AC-12 | F-03 | TEST-15 | API/DB/browser implemented; own GET รอ #4 | registration.test.ts + events.test.ts composition + events-registration.spec.ts | PASS session-owned ACTIVE/reference readback/recreation + real UI success; full own-list acceptance pending |
-| AC-13 | F-03 | TEST-16 | IMPLEMENTED | registration.test.ts — rejects duplicate at capacity 1/2 | PASS / combined regression PASS; merge commit pending |
-| AC-14 | F-03 | TEST-17 | IMPLEMENTED | registration.test.ts — rejects full without loser insert | PASS / combined regression PASS; merge commit pending |
-| AC-15 | F-03 | TEST-18 | IMPLEMENTED | registration.test.ts — scope/deadline boundaries/lock-wait clock | PASS / combined regression PASS; merge commit pending |
-| AC-16 | F-03 | TEST-19 | IMPLEMENTED with staging auth | registration.test.ts — real session/role/CSRF/Origin/spoofing/expiry | PASS / combined regression PASS; merge commit pending |
-| AC-17 | F-03 | TEST-20,21 | IMPLEMENTED | registration.test.ts — PostgreSQL last-seat/duplicate races | PASS / combined regression PASS; merge commit pending |
-| AC-18 | F-04 | TEST-22,24 | IMPLEMENTED / review pending | registration-views.test.ts own schemas/order/re-login/recreation; registration-views.spec.ts | API/DB PASS; [browser/source results](registration/views-verification.md); 3313288 (committed/pushed RV-01–03) |
-| AC-19 | F-04 | TEST-23 | IMPLEMENTED / review pending | registration-views.test.ts cross-user/auth/role/UUID matrix | API/DB PASS; 3313288 (committed/pushed RV-01–03) |
-| AC-20 | F-04 | TEST-25 | IMPLEMENTED / review pending | RegistrationViews.test.tsx empty/error/retry/account-change/late reads | UI tests PASS; [browser/source results](registration/views-verification.md); 3313288 (committed/pushed RV-01–03) |
-| AC-21 | F-05 | TEST-26,28 | IMPLEMENTED / review pending | registration-views.test.ts minimal sorted roster/ACTIVE count/empty DRAFT; RegistrationViews.test.tsx | API/DB/UI tests PASS; 3313288 (committed/pushed RV-01–03) |
-| AC-22 | F-05 | TEST-27 | IMPLEMENTED / review pending | registration-views.test.ts foreign owner/role/anonymous/errors | API/DB PASS; 3313288 (committed/pushed RV-01–03) |
-| AC-23 | F-05 | TEST-29 | IMPLEMENTED / review pending | registration-views.test.ts fresh registration/count DB equality; RegistrationViews.test.tsx refresh | API/DB/UI tests PASS; 3313288 (committed/pushed RV-01–03) |
-| AC-24 | Cross-feature | TEST-30 | IMPLEMENTED / focused automated journey PASS; review pending | registration-views.spec.ts real publish/register/own read/re-login/roster journey | Focused corrected source suite2 PASS includes full real journey; full Chromium37 PASS; 3313288, not independent UAT; [results](registration/views-verification.md) |
+| AC-06 | F-02 | TEST-07 | IMPLEMENTED / STAGED (feature review evidenced) | events.test.ts create/readback; events.spec.ts create/preview/reload | API/DB/browser PASS; [working-tree evidence](events/verification.md) |
+| AC-07 | F-02 | TEST-08 | IMPLEMENTED / STAGED (feature review evidenced) | events.test.ts strict schema/Unicode lengths + escaped JSON max lengths/capacity/time; model.test.ts | API/DB/unit PASS; [current evidence](events/consistency-review.md) |
+| AC-08 | F-02 | TEST-09,10 | IMPLEMENTED / STAGED (feature review evidenced) | events.test.ts publish/status/deadline/lock wait/concurrent publish | API/DB/browser PASS; [evidence](events/verification.md) |
+| AC-09 | F-02 | TEST-11 | IMPLEMENTED / STAGED (feature review evidenced) | events.test.ts fields/visibility/sorting ties/ACTIVE/snapshot race; overview.spec.ts real owner-list counts/recent order/isolation | API/DB/browser PASS; [evidence](events/verification.md) |
+| AC-10 | F-02 | TEST-12,13 | IMPLEMENTED / STAGED (feature review evidenced) | events.test.ts auth/role/CSRF/input/scope matrix | API/DB PASS; [evidence](events/verification.md) |
+| AC-11 | F-02 | TEST-14,36 | IMPLEMENTED / STAGED (feature review evidenced) | events/events-audit/consistency/visual-consistency.spec.ts UI states, typography/layout, session races; model/API time tests | Current source3313288:159 Vitest/37 Chromium + typecheck/build/smoke PASS; [current evidence](registration/views-verification.md); independent UAT NOT EXECUTED |
+| AC-12 | F-03 | TEST-15 | IMPLEMENTED / STAGED | registration.test.ts + events.test.ts composition + events-registration.spec.ts | PASS session-owned ACTIVE/reference readback/recreation + real UI success; own-list automated journey PASS at3313288; independent acceptance pending |
+| AC-13 | F-03 | TEST-16 | IMPLEMENTED / STAGED | registration.test.ts — rejects duplicate at capacity 1/2 | PASS / PR #7 merge commit `ada659b` |
+| AC-14 | F-03 | TEST-17 | IMPLEMENTED / STAGED | registration.test.ts — rejects full without loser insert | PASS / PR #7 merge commit `ada659b` |
+| AC-15 | F-03 | TEST-18 | IMPLEMENTED / STAGED | registration.test.ts — scope/deadline boundaries/lock-wait clock | PASS / PR #7 merge commit `ada659b` |
+| AC-16 | F-03 | TEST-19 | IMPLEMENTED / STAGED | registration.test.ts — real session/role/CSRF/Origin/spoofing/expiry | PASS / PR #7 merge commit `ada659b` |
+| AC-17 | F-03 | TEST-20,21 | IMPLEMENTED / STAGED | registration.test.ts — PostgreSQL last-seat/duplicate races | PASS / PR #7 merge commit `ada659b` |
+| AC-18 | F-04 | TEST-22,24 | IMPLEMENTED / STAGED | registration-views.test.ts own schemas/order/re-login/recreation; registration-views.spec.ts | API/DB/E2E PASS; PR #10 merge commit `97a5b91` |
+| AC-19 | F-04 | TEST-23 | IMPLEMENTED / STAGED | registration-views.test.ts cross-user/auth/role/UUID matrix | API/DB PASS; PR #10 merge commit `97a5b91` |
+| AC-20 | F-04 | TEST-25 | IMPLEMENTED / STAGED | RegistrationViews.test.tsx empty/error/retry/account-change/late reads | UI tests PASS; PR #10 merge commit `97a5b91` |
+| AC-21 | F-05 | TEST-26,28 | IMPLEMENTED / STAGED | registration-views.test.ts minimal sorted roster/ACTIVE count/empty DRAFT; RegistrationViews.test.tsx | API/DB/UI tests PASS; PR #10 merge commit `97a5b91` |
+| AC-22 | F-05 | TEST-27 | IMPLEMENTED / STAGED | registration-views.test.ts foreign owner/role/anonymous/errors | API/DB PASS; PR #10 merge commit `97a5b91` |
+| AC-23 | F-05 | TEST-29 | IMPLEMENTED / STAGED | registration-views.test.ts fresh registration/count DB equality; RegistrationViews.test.tsx refresh | API/DB/UI tests PASS; PR #10 merge commit `97a5b91` |
+| AC-24 | Cross-feature | TEST-30 | IMPLEMENTED / STAGED | registration-views.spec.ts real publish/register/own read/re-login/roster journey | Focused & full Playwright E2E 37/37 PASS; PR #10 merge commit `97a5b91` |
 | AC-25 | Cross-feature | TEST-31,35 | PARTIAL / app recreation only | events.test.ts recreate createApp อ่าน session/Event/Registration reference/count เดิม | Automated subset PASS; manual process restart/clean reproduction/full TEST-31,35 NOT EXECUTED |
 | AC-26 | Cross-feature | TEST-32,33 | PARTIAL / F-01–05 automated subset | auth/events/registration/registration-views integration + registration-router/RegistrationViews tests + browser error/retry/full conflict/foreign reference/wrong-role access | F-01–05 API/DB access/error schemas and UI wrong-role/foreign/retry checks PASS; no claim of exhaustive manual/full matrix; 3313288 |
 | AC-27 | SYS-QA | TEST-34 | PARTIAL / process acceptance pending | baseline review + auth TDD/pre-PR records + PR #7/#10 review/merge snapshots | Substantive teammate approvals/staging merges evidenced; final board, independent acceptance and reviewed main release pending |

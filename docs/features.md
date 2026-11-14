@@ -6,9 +6,9 @@
 
 **Seed follow-up (6 พ.ย.):** full Vitest **145 PASS** รวม seed integration ใหม่4 และ typecheck PASS; 141/32 ใน feature audit ด้านล่างเป็นรอบก่อนเพิ่ม seed โดย Chromium/build ไม่ได้ rerun รอบ seed ดู [latest seed results](events/demo-seed.md) ไม่มี AC/scope ใหม่
 
-Documentation baseline v0.5 | 5 พฤศจิกายน2026 | Current source3313288; execution8พ.ย./revision reconciliation10พ.ย.ตาม Issue #4 results; results145/35 ด้านบนเป็น historical Event runs ไม่รวม review-fix patch
+Documentation baseline v1.0 | พฤศจิกายน 2026 | F-01 ถึง F-05 รวมเข้าสู่ `sprint-1-staging` ครบถ้วน พร้อมเปิด Release PR เข้าสู่ `main`
 
-Registration integration update: F-01–05 รวมใน feature/registration-views แล้ว, F-04/F-05 เริ่มที่eeafc31 และรวม committed/pushed RV-01–03 ใน3313288 แล้ว มี own read/re-login/roster journey PASS. Staging integration, teammate review และ accepted release ยังไม่ยืนยัน; historical Event runs ไม่ใช่ผลปัจจุบัน
+Registration integration update: F-01–05 implemented; PR #7/#10 approved/merged staging ตาม retained snapshots. Automated159/37 results ผูก source3313288; OS-process restart, independent clean reproduction/UAT และ accepted main release ยังไม่ครบ ดู [verification](registration/views-verification.md).
 
 | ID | Feature / ผลลัพธ์ | Requirement / Rules | Dependency | Sprint |
 |---|---|---|---|---:|

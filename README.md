@@ -4,8 +4,8 @@
 
 **Historical Event UI run — 6 พ.ย. 2026:** 145 Vitest / 35 Chromium, typecheck/build/compiled smoke PASS รวม typography/layout/state checks ที่1280/390/320px ดู [current UI evidence](docs/events/visual-consistency.md) ผล141/32 และ seed follow-up ด้านล่างเป็น historical runs
 
-Documentation baseline v0.5 | ปรับปรุง 5 พฤศจิกายน 2026
-Deliverable 1: ส่ง 8 พฤศจิกายน 2026 เวลา 23:59 (Asia/Bangkok)
+Documentation baseline v1.0 | ปรับปรุง พฤศจิกายน 2026
+Deliverable 1: Engineering baseline and working Sprint 1
 
 **สถานะปัจจุบัน:** F-01–05 รวม My Registrations/owner roster implement แล้ว; feature review และ staging merge ของ PR #7/#10 มีหลักฐาน ส่วน process restart, independent clean reproduction/UAT และ main release acceptance ยังไม่ครบ ดู [verification](docs/registration/views-verification.md).
 
@@ -30,7 +30,7 @@ Organizer มีแท็บ **ภาพรวม** ที่ `/organizer` พ�
 |---|---|
 | Theme | 3 — ใช้สิทธิ์จากรหัส M2 ที่ลงท้าย 3 |
 | Repository | https://github.com/jetanin/LoungCheu |
-| Submitted application tag/commit | ยังไม่มี |
+| Target release tag / commit | `v1.0.0-sprint-1` (Staging Integration Candidate: `97a5b91`) |
 
 ## Stack และ workflow
 
@@ -48,12 +48,13 @@ Sprint 1 ใช้ `feature/* → sprint-1-staging → main` ทุก feature P
 
 | Part | คะแนน | เอกสาร |
 |---|---:|---|
+| **Full Report** | **80** | [**Deliverable 1 Report**](docs/deliverable-1/deliverable-1-report.md) *(ฉบับรวม Parts A–F พร้อม Navigation Table สำหรับส่งเล่ม)* |
 | A | 10 | [SRS](docs/srs.md) |
 | B | 10 | [Features](docs/features.md), [Traceability](docs/traceability.md) |
 | C | 15 | [System SDS](docs/system-sds.md) |
 | D | 5 | [Three-sprint plan](docs/sprints/plan.md) |
 | E | 20 | [Sprint 1 / DoD](docs/sprints/sprint-1/README.md), [Contracts](docs/sprints/sprint-1/contracts.md), [STS](docs/sprints/sprint-1/sts.md) |
-| F | 20 | [Evidence register](docs/deliverable-1/evidence-register.md), [Submission checklist](docs/deliverable-1/report-plan.md) |
+| F | 20 | [Evidence register](docs/deliverable-1/evidence-register.md), [Report & Assembly guide](docs/deliverable-1/report-plan.md) |
 
 [Decisions / review record](docs/decisions.md) เก็บเหตุผลและคำถามคงค้าง; [Changelog](docs/changelog.md) เก็บ revision/commit history และ AI-use declaration
 
