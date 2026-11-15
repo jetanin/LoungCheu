@@ -35,7 +35,9 @@ Production Express เสิร์ฟ `client/dist` ผ่าน path relative �
 | Port/address | อ่าน `PORT`, production bind `0.0.0.0`, local development bind `127.0.0.1`; startup ไม่ได้ migrate/seed อัตโนมัติ |
 | Readiness | `/api/ready` query DB, ตอบ 200 เมื่อพร้อม และ 503 เมื่อ query ล้มเหลวโดยไม่เผย driver error |
 
-Seed ทำซ้ำโดยไม่สร้าง demo IDs ซ้ำ แต่ **สามารถเปลี่ยน passwords/roles/active flags ของบัญชี demo เดิมได้** ตามข้อมูล seed หากเปลี่ยน password/บัญชี ต้อง review ผลก่อนรัน ไม่ใช้ seed/reset เพื่อทดแทน persistence proof
+Seed ปกติสร้างเฉพาะ username ที่ยังไม่มี ไม่เปลี่ยน password hash, display name, role หรือ active flag ของบัญชีเดิม แม้เปลี่ยน `DEMO_SEED_PASSWORD` และไม่เปิดบัญชีที่เคยปิดกลับมา การสร้างพร้อมกันใช้ unique username และ skipDuplicates เพื่อไม่เขียนทับบัญชีที่เพิ่งถูกสร้าง
+
+Tests/E2E ใช้ `scripts/test-fixtures.ts` แยกจาก production seed เพื่อตั้งค่า fixtures ใหม่ ก่อนเขียนจะ query ชื่อ database ที่เชื่อมต่อจริงและยอมรับเฉพาะ `loungcheu_test` เท่านั้น ห้ามใช้ test reset กับ application/live DB หากบัญชี demo เดิมถูกปิดหรือเปลี่ยน role จนใช้สร้าง sample events ไม่ได้ event seed จะรายงาน error แทนการแก้บัญชีกลับให้อัตโนมัติ
 
 การมี DB-backed state ในโค้ดเป็น prerequisite ของ R-04 ยังไม่ใช่ C-05 ต้องทดสอบ record จริงหลัง application restart และ redeploy บน GCP ในขั้น 8
 
@@ -145,7 +147,7 @@ Production ต้อง `NODE_ENV=production`, `SESSION_COOKIE_SECURE=true` แ�
 | `GET /login` | built SPA เมื่อ production และมี `client/dist`; development เปิดผ่าน Vite |
 | `GET /api/auth/csrf` → `POST /api/auth/login` | login ใช้ cookie jar, X-CSRF-Token, username/password; token เปลี่ยนหลัง login |
 
-Health/readiness ไม่ต้อง login, ไม่สร้าง session cookie โดยไม่จำเป็น และ responses ใต้ `/api` เป็น `Cache-Control: no-store` API ที่ไม่มีอยู่ยังเป็น JSON 404 ไม่ควรได้รับ SPA HTML
+Health/readiness ไม่ต้อง login; `/api/ready` อยู่ก่อน session middleware จึงไม่อ่าน session store แม้ request มี signed session cookie และยังตอบ 503 เมื่อ query DB ล้มเหลวโดยไม่สร้าง cookie Responses ใต้ `/api` เป็น `Cache-Control: no-store` API ที่ไม่มีอยู่ยังเป็น JSON 404 ไม่ควรได้รับ SPA HTML
 
 หลัง deploy ให้เทียบ `data.version` กับ **main SHA ของ image ที่ deploy จริง**, pipeline run และ Cloud Run revision/image digest เมื่อ rollback ต้องใช้ version ของ image เก่า ไม่ใช่ SHA ของ workflow ที่กด rollback
 
@@ -177,18 +179,19 @@ Health/readiness ไม่ต้อง login, ไม่สร้าง session c
 
 ## Verification ของ Issue #14
 
-ผล local verification วันที่ 15 พฤศจิกายน 2026 ของ working tree บน baseline SHA ด้านบน เนื่องจากยังไม่มี commit สำหรับการแก้ Issue #14 ห้ามอ้างว่า tested commit เป็น release ที่ deploy แล้ว
+ผล local verification วันที่ 15 พฤศจิกายน 2026: รอบแรกของ Issue #14 ใช้ baseline SHA ด้านบน รอบแก้ readiness/session และ seed ใช้ working tree บน `3472f7c` (commit ก่อนแก้ follow-up) ยังไม่มี commit สำหรับ follow-up นี้ ห้ามอ้างว่า tested source เป็น release ที่ deploy แล้ว
 
 | Command/check | ผลจริง |
 | --- | --- |
 | Read-only DB preflight ก่อน tests | เชื่อมและตรวจ `current_database()` เป็น `loungcheu_test` โดยไม่แสดง credentials |
 | `npm run typecheck` | PASS ทั้ง workspaces และ tools |
-| `npm test` | PASS 15 files / 163 tests รวม readiness สำเร็จและ simulated DB query failure ที่คืน 503 โดยไม่เผย error |
+| `npm test` | PASS 16 files / 167 tests รวม readiness พร้อม signed cookie/session store failure, create-only seed, concurrent seed และ guard ของ test fixtures |
 | `npm run build` | client/server build output พร้อมใช้งาน; compiled readiness ผ่าน smoke ด้านล่าง |
 | `npm run test:built` | PASS 4 checks: SPA `/login`, DB health/version, readiness และ unknown API JSON 404 |
+| `npm run test:e2e` | PASS 37 Chromium tests ที่ ports 5183/3011 รวม login/domain journeys หลังใช้ test-only fixture reset |
 | `git diff --check` | PASS สำหรับ tracked changes |
 
-ไม่ได้รัน browser E2E รอบนี้เพราะไม่มีการเปลี่ยน UI/login behavior; local checks นี้ไม่ใช่ผล live HTTPS login, clean-clone Docker หรือ OS-process restart ต้องตรวจในขั้นถัดไป
+Browser E2E รอบ follow-up: sandbox run เริ่ม server ไม่ได้เพราะ Windows `uv_os_get_passwd` error ก่อนเริ่ม browser tests จึงรันใหม่ภายนอก sandbox หลังได้รับอนุญาตและผ่าน 37 tests ผล local checks นี้ไม่ใช่ผล live HTTPS login, clean-clone Docker หรือ OS-process restart ต้องตรวจในขั้นถัดไป
 
 - ตรวจ config/PORT/listen, DB sessions, seed และไม่มี runtime file persistence จากโค้ด
 - Tests ของ readiness ต้องครอบคลุม DB available/unavailable, 503 และไม่เผย error detail

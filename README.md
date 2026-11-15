@@ -118,14 +118,14 @@ npm run db:migrate:test
 
 ตำแหน่ง config: server/Prisma/seed ใช้ `server/.env` เพราะ npm workspace รันจาก `server/`; Vitest/E2E/test migration ใช้ `.env.test` ที่ root Template ที่ต้องใช้มี `server/.env.example` และ `.env.test.example` ไม่มี runtime `.env` หรือ template `.env.example` ซ้ำที่ root ฝั่ง client ไม่อ่าน DB/session/seed secrets การตรวจ test target ใช้ชื่อ database ใน URL จริง จึงไม่รับ URL ของ dev ที่เพียงใส่คำว่า `loungcheu_test` ใน query string
 
-Seed รับ password ผ่าน environment แบบ private ไม่มี default และไม่ print credentials กำหนด `DEMO_SEED_PASSWORD` ใน `server/.env` ก่อน seed และใช้ค่าเดียวกันสำหรับ local auth smoke รอบ setup นี้เตรียมค่าสุ่มไว้ในไฟล์ local แล้ว; อ่านค่าใน IDE เพื่อใช้กับบัญชี demo โดยไม่ส่งรหัสผ่านในแชต หากเปลี่ยนค่าให้รัน seed อีกครั้งเพื่ออัปเดต hash
+Seed รับ password ผ่าน environment แบบ private ไม่มี default และไม่ print credentials กำหนด `DEMO_SEED_PASSWORD` ใน `server/.env` ก่อน seed เพื่อสร้างบัญชีที่ยังไม่มี และใช้ password ของบัญชีปัจจุบันสำหรับ local auth smoke อ่านค่าใน IDE โดยไม่ส่งรหัสผ่านในแชต การเปลี่ยนค่าแล้ว seed ซ้ำจะไม่เปลี่ยน password, role, ชื่อ หรือสถานะของบัญชีเดิม Tests/E2E reset fixtures ผ่าน `scripts/test-fixtures.ts` ซึ่งตรวจชื่อ DB จริงว่าเป็น `loungcheu_test` ก่อนเขียน แยกจาก seed ปกติ
 
 ```powershell
 npm run db:seed
 npm run dev
 ```
 
-เปิด **http://127.0.0.1:5173/login** (ใช้ hostname นี้ให้ตรง APP_ORIGIN) API port 3000; Vite proxy `/api` ไป backend บัญชีสังเคราะห์: `participant.a`, `participant.b`, `participant.c`, `organizer.a`, `organizer.b`, `inactive.x` โดยบัญชีสุดท้าย Login ไม่ได้ Password ใช้ค่าที่ส่งเข้า seed ผ่าน private handoff; seed ทำซ้ำแล้วคง IDs และ hash เดิมเมื่อ password ไม่เปลี่ยน ห้ามใส่ demo password/session secret ใน Git หรือ PDF
+เปิด **http://127.0.0.1:5173/login** (ใช้ hostname นี้ให้ตรง APP_ORIGIN) API port 3000; Vite proxy `/api` ไป backend บัญชีสังเคราะห์: `participant.a`, `participant.b`, `participant.c`, `organizer.a`, `organizer.b`, `inactive.x` โดยบัญชีสุดท้าย Login ไม่ได้ Password ของบัญชีที่สร้างใหม่ใช้ค่าที่ส่งเข้า seed ผ่าน private handoff; seed ซ้ำรักษาบัญชีเดิมแม้ค่า password สำหรับ seed เปลี่ยน ห้ามใส่ demo password/session secret ใน Git หรือ PDF
 
 `npm run db:seed` เพิ่มกิจกรรม `[DEMO]` 6 รายการและ registration ตัวอย่าง 4 รายการด้วย: เปิดรับ React Workshop, เต็ม, เลย deadline, DRAFT, CLOSED และกิจกรรมของ organizer.b เวลาเป็นวันข้างหน้าจากวัน seed ครั้งแรกตาม Asia/Bangkok รันซ้ำข้าม Event เดิม ไม่ทับกิจกรรม/ที่นั่ง/เลขอ้างอิงที่ลองใช้งานแล้ว รายละเอียดและผลจริงอยู่ใน [demo seed](docs/events/demo-seed.md)
 
