@@ -2,11 +2,13 @@
 
 ## สถานะและขอบเขต
 
-เอกสารฉบับแรกสำหรับ **Issue #14 — Prepare LoungCheu for cloud deployment** วันที่ 15 พฤศจิกายน 2026 ใช้ accepted Sprint 1 baseline `0853ce2d3ed7e17fcc76d47a1838a3ec4d5bdb51` (`v1.0.0-sprint-1`) เป็นฐาน ไม่อ้างว่า deploy บน GCP หรือทำ persistence proof สำเร็จแล้ว
+เอกสารนี้เริ่มใน **Issue #14 — Prepare LoungCheu for cloud deployment** วันที่ 15 พฤศจิกายน 2026 จาก accepted Sprint 1 baseline `0853ce2d3ed7e17fcc76d47a1838a3ec4d5bdb51` (`v1.0.0-sprint-1`) และเพิ่มผล Docker ของ Issue #15 กับแผนตรวจ CI ของ Issue #16 ภายหลัง ยังไม่อ้างว่า deploy บน GCP หรือทำ persistence proof บน GCP สำเร็จแล้ว
 
-Branch งาน: `refactor/14-lab5-cloud-ready` → reviewed PR เข้า `lab5-staging` → release PR เข้า `main` ผู้เขียน PR ต้องให้เพื่อน review ไม่ approve ตัวเอง Issues/PRs ใช้ label `lab5` และ project board
+เส้นทาง branch: งานของแต่ละ Issue → reviewed PR เข้า `lab5-staging` → release PR เข้า `main` ผู้เขียน PR ต้องให้เพื่อน review ไม่ approve ตัวเอง Issues/PRs ใช้ label `lab5` และ project board; Issue #14 ใช้ `refactor/14-lab5-cloud-ready`
 
-อ้างอิง: `01_SE_Lab_5_updated.pdf` §4, §7–9, §12 และ `03_Student-Guide-GCP-Deployment-and+CI+CD-V1_1.pdf` Ep.0–2 ไฟล์จาก `02_lab5-starter-kit.zip` เป็น templates สำหรับขั้นถัดไป
+สถานะ label และประวัติ CI ตาม R-10 ตรวจไว้ใน [R-10 audit](evidence/r10-label-history.md); ใช้ลิงก์ GitHub จริงตรวจซ้ำก่อนอ้างว่าผ่าน
+
+อ้างอิง: `01_SE_Lab_5_updated.pdf` §4, §7–9, §12 และ `03_Student-Guide-GCP-Deployment-and+CI+CD-V1_1.pdf` Ep.0–4 ไฟล์จาก `02_lab5-starter-kit.zip` เป็น templates ที่ต้องปรับให้ตรงแอป
 
 ## Stack และการปรับจากตัวอย่าง
 
@@ -16,9 +18,9 @@ Branch งาน: `refactor/14-lab5-cloud-ready` → reviewed PR เข้า `l
 | Frontend | React/Vite, output `client/dist`, API แบบ relative `/api` และ same-origin cookies |
 | Backend | Express/TypeScript, output `server/dist/server.js` |
 | Persistence | PostgreSQL, Prisma 7 ผ่าน `@prisma/adapter-pg`; sessions ใช้ `connect-pg-simple` ใน PostgreSQL |
-| Local DB | `compose.yaml`: PostgreSQL 17 พร้อม named volume `db-data`; หรือ PostgreSQL ที่ติดตั้งอยู่แล้ว |
+| Local DB | `compose.yaml` สำหรับ PostgreSQL เดิม; `compose.docker.yaml` สำหรับ Docker app+DB ที่แยก project/volume ตาม Issue #15 |
 | Tests | Vitest, real PostgreSQL DB `loungcheu_test`, Playwright และ compiled-app smoke |
-| Cloud/CI ที่วางแผน | Cloud Run, Cloud SQL PostgreSQL, Artifact Registry, Secret Manager, GitHub Actions/WIF; ยังไม่ได้ provision ใน Issue #14 |
+| CI/Cloud | Issue #16 เพิ่ม workflow PR CI บน branch งานแต่ยังไม่มี Actions run; Cloud Run, Cloud SQL, Artifact Registry, Secret Manager และ WIF ยังไม่ provision |
 
 ความต่างจาก TokTickIT: ใช้ Node 22 แทน 24, ติดตั้ง workspace จาก root, start `server.js` แทน `index.js`, login ด้วย **username + CSRF + session cookie** ไม่ใช่ email ไม่มี `/api/categories` และไม่มี admin bootstrap/password-change feature แบบตัวอย่าง จึงไม่เพิ่ม feature นั้นเพียงเพื่อใช้ kit
 
@@ -178,7 +180,9 @@ Health/readiness ไม่ต้อง login; `/api/ready` อยู่ก่อ
 5. ตรวจ `/api/ready`, `/api/health` และ release version แล้วตรวจ live sign-in/domain journey; เก็บ run/PR links และผลจริง
 6. พิสูจน์ persistence แยกเหตุการณ์ restart และ redeploy ด้วย record เดิม ไม่ reset/reseed record ทดแทน
 
-Docker พร้อมและผ่าน C-03 แล้วตามหลักฐานด้านล่าง ส่วน release end-to-end ยังรอ CI/cloud/pipeline จะเติม workflow filenames, exact deployment commands, resources และ run links หลังตรวจจริง ไม่ใช้คำอธิบายแผนนี้แทนหลักฐาน C-01–C-06
+Docker พร้อมและผ่าน C-03 แล้วตามหลักฐานด้านล่าง ส่วน release end-to-end ยังรอผล CI บน GitHub, cloud และ deploy pipeline จะเติม exact deployment commands, resources และ run links หลังตรวจจริง ไม่ใช้คำอธิบายแผนนี้แทนหลักฐาน C-01–C-06
+
+Issue #16 มี [PR CI workflow และขั้นตรวจ](ci.md) บน branch งาน สำหรับ `lab5-staging`/`main` โดยใช้ PostgreSQL test service แยก; เอกสารนี้ยังไม่มีผล GitHub Actions หรือ PR link จึงยังอ้าง C-01 ว่าผ่านไม่ได้ ส่วนสคริปต์ `deploy/` ที่ปรับให้ตรง LoungCheu และ offline checks จะเพิ่มพร้อมงาน first deployment/release pipeline ใน Issues #17/#19 ก่อนนำไปใช้งานจริง
 
 ## Verification ของ Issue #14 (ผลรอบก่อน)
 
