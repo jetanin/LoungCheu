@@ -61,3 +61,6 @@ Thumbs.db
 Desktop.ini
 
 # Keep lockfiles, Prisma schema/migrations, and selected docs evidence in Git.
+
+# Local agent instructions; the required deployment.md remains tracked.
+/docs/labs/lab-05/agent-guide.md
