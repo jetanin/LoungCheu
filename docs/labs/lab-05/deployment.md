@@ -22,7 +22,7 @@ Branch งาน: `refactor/14-lab5-cloud-ready` → reviewed PR เข้า `l
 
 ความต่างจาก TokTickIT: ใช้ Node 22 แทน 24, ติดตั้ง workspace จาก root, start `server.js` แทน `index.js`, login ด้วย **username + CSRF + session cookie** ไม่ใช่ email ไม่มี `/api/categories` และไม่มี admin bootstrap/password-change feature แบบตัวอย่าง จึงไม่เพิ่ม feature นั้นเพียงเพื่อใช้ kit
 
-Production Express เสิร์ฟ `client/dist` ผ่าน path relative จาก server ต้องรักษา layout นี้ใน image Root Dockerfile/Compose app service เป็นงาน Issue #15; CI เป็น Issue #16 ยังไม่มีผล clean-clone container หรือ CI run ให้ใช้อ้างอิงในฉบับนี้
+Production Express เสิร์ฟ `client/dist` ผ่าน path relative จาก server ต้องรักษา layout นี้ใน image Dockerfile และ local Compose ของ Issue #15 พร้อมคำสั่ง/ผลตรวจอยู่ใน [docker.md](docker.md) ส่วน CI เป็นงาน Issue #16
 
 ## Cloud-ready checklist (Guide Episode 2)
 
@@ -55,6 +55,7 @@ Tests/E2E ใช้ `scripts/test-fixtures.ts` แยกจาก production see
 | `SESSION_SECRET` | ต้องมีอย่างน้อย 32 characters ไม่ใช่ placeholder; เก็บค่าเดิมข้าม releases | ใช่ | ค่าสุ่มส่วนตัว / cloud secret |
 | `APP_ORIGIN` | ต้องมี HTTP(S) origin ตรง browser ไม่มี path/trailing slash; production ต้อง HTTPS | ไม่ | local `http://127.0.0.1:5173`; cloud ใช้ service HTTPS origin จริง |
 | `PORT` | integer 1–65535; default 3000; port ที่ runtime กำหนดต้องตรง container/service config | ไม่ | local env / Cloud Run runtime config |
+| `HOST` | bind address: `127.0.0.1`, `0.0.0.0`, `::`; default local loopback/production all interfaces; production ไม่รับ loopback | ไม่ | local Docker ตั้ง `0.0.0.0`; cloud ไม่ต้อง override |
 | `NODE_ENV` | `development`, `test`, `production`; ไม่ตั้งถือเป็น development | ไม่ | local env; cloud ตั้ง production |
 | `SESSION_COOKIE_SECURE` | `true`/`false`, default false; production บังคับ true | ไม่ | local false; HTTPS production true |
 | `APP_VERSION` | release identifier, default `local`; cloud ต้องเป็น full deployed main SHA | ไม่ | local env; release pipeline inject ตาม image |
@@ -78,6 +79,8 @@ Encode reserved characters ใน username/password ของ DATABASE_URL ใ�
 อย่าใส่ E2E overrides ไว้ใน `.env.test` แล้วคาดว่า Playwright config จะโหลดให้ ใช้ process env โดยตรง Test fixture ports/origins และ app origins ต้องไม่ปนกัน ส่วน `POSTGRES_USER`/`POSTGRES_DB` ใน Compose เดิมเป็น config ของ DB image ในไฟล์ Compose ไม่ใช่ตัวแปรที่แอปอ่าน
 
 ## Local setup และคำสั่งที่ทำซ้ำได้
+
+สำหรับ clean Docker setup โดยไม่ต้องติดตั้ง PostgreSQL/npm dependencies บน host ให้ใช้ [Docker setup และผลทดสอบ Issue #15](docker.md) คำสั่งด้านล่างเป็นทางเลือกสำหรับรันโดยตรงบน host
 
 คำสั่งต่อไปนี้ใช้ PowerShell จาก root repo พร้อม Node 22 และ PostgreSQL ที่ใช้งานได้ ไม่มีคำสั่งนี้ทำหน้าที่ตั้ง GCP หากมี `.env` เดิมอย่าคัดลอกทับ ให้แก้เฉพาะค่าที่จำเป็นด้วยตัวเอง
 
@@ -175,11 +178,11 @@ Health/readiness ไม่ต้อง login; `/api/ready` อยู่ก่อ
 5. ตรวจ `/api/ready`, `/api/health` และ release version แล้วตรวจ live sign-in/domain journey; เก็บ run/PR links และผลจริง
 6. พิสูจน์ persistence แยกเหตุการณ์ restart และ redeploy ด้วย record เดิม ไม่ reset/reseed record ทดแทน
 
-ยังไม่สามารถทำ release end-to-end ตามแผนนี้ได้จนกว่า Docker/CI/cloud/pipeline พร้อม จะเติม workflow filenames, exact deployment commands, resources และ run links หลังตรวจจริง ไม่ใช้คำอธิบายแผนนี้แทนหลักฐาน C-01–C-06
+Docker พร้อมและผ่าน C-03 แล้วตามหลักฐานด้านล่าง ส่วน release end-to-end ยังรอ CI/cloud/pipeline จะเติม workflow filenames, exact deployment commands, resources และ run links หลังตรวจจริง ไม่ใช้คำอธิบายแผนนี้แทนหลักฐาน C-01–C-06
 
-## Verification ของ Issue #14
+## Verification ของ Issue #14 (ผลรอบก่อน)
 
-ผล local verification วันที่ 15 พฤศจิกายน 2026: รอบแรกของ Issue #14 ใช้ baseline SHA ด้านบน รอบแก้ readiness/session และ seed ใช้ working tree บน `3472f7c` (commit ก่อนแก้ follow-up) ยังไม่มี commit สำหรับ follow-up นี้ ห้ามอ้างว่า tested source เป็น release ที่ deploy แล้ว
+ผล local verification วันที่ 15 พฤศจิกายน 2026: รอบแรกของ Issue #14 ใช้ baseline SHA ด้านบน รอบแก้ readiness/session และ seed ใช้ working tree บน `3472f7c` (commit ก่อนแก้ follow-up) ขณะบันทึกผลยังไม่มี commit สำหรับ follow-up นี้ จึงเป็นผล working tree ในเวลานั้น ไม่ใช่ release ที่ deploy แล้ว; ผล C-03 ที่ระบุ tested commit ชัดเจนอยู่ในหัวข้อ Issue #15 ด้านล่าง
 
 | Command/check | ผลจริง |
 | --- | --- |
@@ -191,11 +194,16 @@ Health/readiness ไม่ต้อง login; `/api/ready` อยู่ก่อ
 | `npm run test:e2e` | PASS 37 Chromium tests ที่ ports 5183/3011 รวม login/domain journeys หลังใช้ test-only fixture reset |
 | `git diff --check` | PASS สำหรับ tracked changes |
 
-Browser E2E รอบ follow-up: sandbox run เริ่ม server ไม่ได้เพราะ Windows `uv_os_get_passwd` error ก่อนเริ่ม browser tests จึงรันใหม่ภายนอก sandbox หลังได้รับอนุญาตและผ่าน 37 tests ผล local checks นี้ไม่ใช่ผล live HTTPS login, clean-clone Docker หรือ OS-process restart ต้องตรวจในขั้นถัดไป
+Browser E2E รอบ follow-up: sandbox run เริ่ม server ไม่ได้เพราะ Windows `uv_os_get_passwd` error ก่อนเริ่ม browser tests จึงรันใหม่ภายนอก sandbox หลังได้รับอนุญาตและผ่าน 37 tests ผลรอบ Issue #14 นี้ไม่ครอบคลุม live HTTPS login, clean-clone Docker หรือ OS-process restart; ต่อมา Issue #15 ทดสอบ clean-clone Docker และ local container recreation แล้วตามหลักฐาน C-03 ด้านล่าง ส่วน public GCP HTTPS/restart/redeploy ยังต้องตรวจในขั้นถัดไป
 
 - ตรวจ config/PORT/listen, DB sessions, seed และไม่มี runtime file persistence จากโค้ด
 - Tests ของ readiness ต้องครอบคลุม DB available/unavailable, 503 และไม่เผย error detail
 - Tests เดิมต้องยังตรวจ secure cookie และ session หลัง recreate app ได้
-- GCP public workflow, clean-clone Docker, CI gate และ live restart/redeploy: ยังไม่ทำ เป็นงาน Issues ถัดไป
+## Verification ของ Issue #15 — C-03 ปัจจุบัน
+
+- **PASS:** fresh remote clone ที่ commit `54fd6603594a7a2e0327aad93624796b61903cc5` build ด้วย `--no-cache --pull` และรันกับฐานข้อมูลใหม่แยกได้ โดยใช้ค่าตาม `.env.docker.example` ที่เติมเป็น private configuration; ไม่คัดลอก dependencies, build output, secret หรือ DB volume เดิม
+- เก็บคำสั่ง, output, exit codes, tested commit, image ID และผลตรวจ source clean ใน [ดัชนีหลักฐาน C-03](evidence/c03-20261115-54fd660/README.md), [transcript](evidence/c03-20261115-54fd660/transcript.log) และ [manifest](evidence/c03-20261115-54fd660/manifest.json)
+- ทดสอบ login/domain workflow และ local down/up แล้ว record กับ registration เดิมยังอยู่; รายละเอียดอยู่ใน [docker.md](docker.md#c-03-fresh-clone-evidence-15-november-2026)
+- GCP public workflow, CI gate และ GCP live restart/redeploy: ยังไม่ทำ เป็นงาน Issues ถัดไป หลักฐาน local C-03 นี้ไม่ใช่หลักฐาน GCP C-04/C-05 หรือ pipeline C-06
 
 หลังส่ง Lab 5 ให้คง service/repository public จนผู้สอนประกาศจบการตรวจ ห้าม teardown หรือหยุด DB ทันทีหลังส่ง PDF
