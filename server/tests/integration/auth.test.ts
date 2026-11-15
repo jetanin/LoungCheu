@@ -218,7 +218,16 @@ describe('F-01 API with real PostgreSQL sessions', () => {
     try {
       const result = await request(failed.app).get('/api/health');
       expectError(result, 500, 'INTERNAL_ERROR'); expect(result.text).not.toMatch(/SQL|SECRET|TRACE/);
+      const readiness = await request(failed.app).get('/api/ready').expect(503);
+      expect(readiness.body).toEqual({ data: { status: 'not_ready', version: config.version } });
+      expect(readiness.text).not.toMatch(/SQL|SECRET|TRACE/);
     } finally { await failed.close(); }
+  });
+  it('reports database readiness and release version without authentication or a session cookie', async () => {
+    const result = await request(runtime.app).get('/api/ready').expect(200).expect('Content-Type', /json/);
+    expect(result.body).toEqual({ data: { status: 'ready', db: 'connected', version: config.version } });
+    expect(result.headers['cache-control']).toBe('no-store');
+    expect(result.headers['set-cookie']).toBeUndefined();
   });
   it('shared authorization checks current backend role before an action', async () => {
     // Test-only harness; no test endpoint is exposed by createApp.
