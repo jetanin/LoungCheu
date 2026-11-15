@@ -22,7 +22,7 @@ Branch งาน: `refactor/14-lab5-cloud-ready` → reviewed PR เข้า `l
 
 ความต่างจาก TokTickIT: ใช้ Node 22 แทน 24, ติดตั้ง workspace จาก root, start `server.js` แทน `index.js`, login ด้วย **username + CSRF + session cookie** ไม่ใช่ email ไม่มี `/api/categories` และไม่มี admin bootstrap/password-change feature แบบตัวอย่าง จึงไม่เพิ่ม feature นั้นเพียงเพื่อใช้ kit
 
-Production Express เสิร์ฟ `client/dist` ผ่าน path relative จาก server ต้องรักษา layout นี้ใน image Root Dockerfile/Compose app service เป็นงาน Issue #15; CI เป็น Issue #16 ยังไม่มีผล clean-clone container หรือ CI run ให้ใช้อ้างอิงในฉบับนี้
+Production Express เสิร์ฟ `client/dist` ผ่าน path relative จาก server ต้องรักษา layout นี้ใน image Dockerfile และ local Compose ของ Issue #15 พร้อมคำสั่ง/ผลตรวจอยู่ใน [docker.md](docker.md) ส่วน CI เป็นงาน Issue #16
 
 ## Cloud-ready checklist (Guide Episode 2)
 
@@ -55,6 +55,7 @@ Tests/E2E ใช้ `scripts/test-fixtures.ts` แยกจาก production see
 | `SESSION_SECRET` | ต้องมีอย่างน้อย 32 characters ไม่ใช่ placeholder; เก็บค่าเดิมข้าม releases | ใช่ | ค่าสุ่มส่วนตัว / cloud secret |
 | `APP_ORIGIN` | ต้องมี HTTP(S) origin ตรง browser ไม่มี path/trailing slash; production ต้อง HTTPS | ไม่ | local `http://127.0.0.1:5173`; cloud ใช้ service HTTPS origin จริง |
 | `PORT` | integer 1–65535; default 3000; port ที่ runtime กำหนดต้องตรง container/service config | ไม่ | local env / Cloud Run runtime config |
+| `HOST` | bind address: `127.0.0.1`, `0.0.0.0`, `::`; default local loopback/production all interfaces; production ไม่รับ loopback | ไม่ | local Docker ตั้ง `0.0.0.0`; cloud ไม่ต้อง override |
 | `NODE_ENV` | `development`, `test`, `production`; ไม่ตั้งถือเป็น development | ไม่ | local env; cloud ตั้ง production |
 | `SESSION_COOKIE_SECURE` | `true`/`false`, default false; production บังคับ true | ไม่ | local false; HTTPS production true |
 | `APP_VERSION` | release identifier, default `local`; cloud ต้องเป็น full deployed main SHA | ไม่ | local env; release pipeline inject ตาม image |
@@ -78,6 +79,8 @@ Encode reserved characters ใน username/password ของ DATABASE_URL ใ�
 อย่าใส่ E2E overrides ไว้ใน `.env.test` แล้วคาดว่า Playwright config จะโหลดให้ ใช้ process env โดยตรง Test fixture ports/origins และ app origins ต้องไม่ปนกัน ส่วน `POSTGRES_USER`/`POSTGRES_DB` ใน Compose เดิมเป็น config ของ DB image ในไฟล์ Compose ไม่ใช่ตัวแปรที่แอปอ่าน
 
 ## Local setup และคำสั่งที่ทำซ้ำได้
+
+สำหรับ clean Docker setup โดยไม่ต้องติดตั้ง PostgreSQL/npm dependencies บน host ให้ใช้ [Docker setup และผลทดสอบ Issue #15](docker.md) คำสั่งด้านล่างเป็นทางเลือกสำหรับรันโดยตรงบน host
 
 คำสั่งต่อไปนี้ใช้ PowerShell จาก root repo พร้อม Node 22 และ PostgreSQL ที่ใช้งานได้ ไม่มีคำสั่งนี้ทำหน้าที่ตั้ง GCP หากมี `.env` เดิมอย่าคัดลอกทับ ให้แก้เฉพาะค่าที่จำเป็นด้วยตัวเอง
 
