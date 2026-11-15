@@ -62,19 +62,23 @@ docker build -t loungcheu-lab5-app .
 docker build --target checks -t loungcheu-lab5-checks .
 ```
 
-## Verification, 15 November 2026
+## C-03 fresh-clone evidence, 15 November 2026
 
-Tested the Issue #15 working tree based on `175b94b`, with no host npm dependencies, prebuilt client/server output or secret files copied into the image. These results are local observations, not a GCP release or a claim that a reviewed commit has been deployed.
+Tested committed application source **`54fd6603594a7a2e0327aad93624796b61903cc5`** from a **new remote clone**, not the earlier working tree. The source was clean before setup and after verification, with no host dependencies, build output, secret files or existing database volume copied in.
 
-| Check | Observed result |
+Evidence index: [C-03 commands, results and reproduction steps](evidence/c03-20261115-54fd660/README.md). Full [command/output transcript](evidence/c03-20261115-54fd660/transcript.log) and [manifest with tested SHA, image ID, hashes and exit codes](evidence/c03-20261115-54fd660/manifest.json) are retained in the repository. These links replace the previous unsupported working-tree PASS summary as evidence for C-03 (R-01/R-02).
+
+| Check | Observed result and evidence |
 | --- | --- |
-| Root Docker build | PASS: npm ci, Prisma 7 generation, client/server compilation and final image |
-| Checks target | PASS: typecheck and 90 unit tests across 11 files |
-| Compose config | PASS, validated without printing resolved secrets |
-| First startup | PASS: db healthy, migrate exit 0, server healthy, nginx running |
-| HTTP journey | PASS through nginx: SPA/login, health/readiness, organizer event creation/publish, participant registration, 401 anonymous rejection and 409 duplicate rejection |
-| Container recreation | PASS: down/up without deleting volume; original event `be809a56-d5f3-4ba5-80f6-3b51d7182cc4` and one active registration remain |
-| Unified production image | PASS using a temporary Compose run: built SPA `/login`, real DB readiness and `Secure` session cookie with forwarded HTTPS; this checks the container/proxy configuration, not public GCP TLS |
-| Git hygiene | PASS: diff whitespace check; private `.env.docker` and `.local/docker-smoke.json` are ignored |
+| Fresh remote clone | Correct tested SHA; empty git status; no node_modules, dist or local environment artifacts |
+| Configuration | New private values generated for exactly the committed .env.docker.example keys; only ports/project/release ID overridden |
+| Fresh image build | PASS: `build --no-cache --pull server client`; npm ci, Prisma generation and client/server compilation logged |
+| Run with new DB | PASS: isolated new volume, DB/server healthy, migration exited 0, nginx running |
+| Runtime source identification | Health/readiness returned the tested SHA through nginx (5195) and direct API (3025) |
+| Working application | PASS: login, event creation/publish, registration, anonymous rejection and duplicate rejection |
+| Container recreation | PASS: original event `ae47cf66-3b83-4e0c-a4a9-8babff8962ec` and one active registration still present after down/up |
+| Cleanup/source integrity | Only test containers/network stopped; volume retained; tracked source remained clean |
 
-Before closing #15: add the reviewed commit and PR links to the evidence index, and retain the build/test output for C-03. This stacked branch needs teammate review and a PR into `lab5-staging`. Cloud HTTPS, GCP revision identification and restart/redeploy persistence remain work for later issues.
+All recorded commands exited 0. This run did not repeat the earlier unit/checks-target suite or production proxy-cookie test; those earlier working-tree observations are not presented as fresh-clone evidence. C-03 application/build behavior was tested at the exact source SHA above; this follow-up only adds documentation and captured evidence.
+
+Before closing #15, link the reviewed PR/evidence in the final PDF index. Teammate review into lab5-staging is still required. Public GCP deployment, GCP restart/redeploy C-05 and release-pipeline evidence remain later work.
