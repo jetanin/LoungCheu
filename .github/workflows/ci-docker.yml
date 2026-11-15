@@ -33,6 +33,9 @@ jobs:
           --health-retries 10
 
     env:
+      # Prisma loads its config during generate and requires DATABASE_URL even
+      # though generation does not connect to the database.
+      DATABASE_URL: postgresql://loungcheu:ci_only@127.0.0.1:5432/loungcheu_test
       TEST_DATABASE_URL: postgresql://loungcheu:ci_only@127.0.0.1:5432/loungcheu_test
 
     steps:

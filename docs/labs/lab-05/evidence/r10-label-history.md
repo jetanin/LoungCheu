@@ -21,7 +21,7 @@ Existing work history is preserved: PR #21 has [source `175b94b`](https://github
 
 ## Finish and verify
 
-1. Add `lab5` to the Issue and PR for every later Lab 5 change, including PR #16 once opened and the release PR into `main`. Check both open and closed items when auditing; do not rely on title text alone.
+1. Add `lab5` to the Issue and PR for every later Lab 5 change, including Issue #16's PR #23 and the release PR into `main`. Check both open and closed items when auditing; do not rely on title text alone.
 2. Keep the actual commit, PR, review and Actions run links in the final evidence index. Do not delete or rewrite history to hide a failed run. Keep the CI check enabled and required after Lab 5; capture the ruleset and run history when Episodes 4 and 6 are complete.
 
-The retrospective label work is **verified**. R-10 as a whole remains **open** until CI run history and continued enforcement exist. The project board and teammate review requirements are tracked separately under R-09.
+The first Issue #16 [CI run 43740436556](https://github.com/jetanin/LoungCheu/actions/runs/43740436556) failed on [PR #23](https://github.com/jetanin/LoungCheu/pull/23) at head `efd71f2`; retain it alongside later passing runs. The retrospective label work is **verified**. R-10 as a whole remains **open** until CI continues after Lab 5 and the required-check gate is demonstrated. The project board and teammate review requirements are tracked separately under R-09.

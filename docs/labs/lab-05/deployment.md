@@ -20,7 +20,7 @@
 | Persistence | PostgreSQL, Prisma 7 ผ่าน `@prisma/adapter-pg`; sessions ใช้ `connect-pg-simple` ใน PostgreSQL |
 | Local DB | `compose.yaml` สำหรับ PostgreSQL เดิม; `compose.docker.yaml` สำหรับ Docker app+DB ที่แยก project/volume ตาม Issue #15 |
 | Tests | Vitest, real PostgreSQL DB `loungcheu_test`, Playwright และ compiled-app smoke |
-| CI/Cloud | Issue #16 เพิ่ม workflow PR CI บน branch งานแต่ยังไม่มี Actions run; Cloud Run, Cloud SQL, Artifact Registry, Secret Manager และ WIF ยังไม่ provision |
+| CI/Cloud | Issue #16 มี PR #23 และ Actions run แรกที่ล้มเหลวตอน Prisma generation; แก้ workflow แล้วแต่ยังรอผลรันใหม่ ส่วน Cloud Run, Cloud SQL, Artifact Registry, Secret Manager และ WIF ยังไม่ provision |
 
 ความต่างจาก TokTickIT: ใช้ Node 22 แทน 24, ติดตั้ง workspace จาก root, start `server.js` แทน `index.js`, login ด้วย **username + CSRF + session cookie** ไม่ใช่ email ไม่มี `/api/categories` และไม่มี admin bootstrap/password-change feature แบบตัวอย่าง จึงไม่เพิ่ม feature นั้นเพียงเพื่อใช้ kit
 
@@ -182,7 +182,7 @@ Health/readiness ไม่ต้อง login; `/api/ready` อยู่ก่อ
 
 Docker พร้อมและผ่าน C-03 แล้วตามหลักฐานด้านล่าง ส่วน release end-to-end ยังรอผล CI บน GitHub, cloud และ deploy pipeline จะเติม exact deployment commands, resources และ run links หลังตรวจจริง ไม่ใช้คำอธิบายแผนนี้แทนหลักฐาน C-01–C-06
 
-Issue #16 มี [PR CI workflow และขั้นตรวจ](ci.md) บน branch งาน สำหรับ `lab5-staging`/`main` โดยใช้ PostgreSQL test service แยก; เอกสารนี้ยังไม่มีผล GitHub Actions หรือ PR link จึงยังอ้าง C-01 ว่าผ่านไม่ได้ ส่วนสคริปต์ `deploy/` ที่ปรับให้ตรง LoungCheu และ offline checks จะเพิ่มพร้อมงาน first deployment/release pipeline ใน Issues #17/#19 ก่อนนำไปใช้งานจริง
+Issue #16 มี [PR #23](https://github.com/jetanin/LoungCheu/pull/23) เข้า `lab5-staging` และ [Actions run แรก](https://github.com/jetanin/LoungCheu/actions/runs/43740436556) ที่ล้มเหลวตอน Prisma generation; สาเหตุและการแก้ไขอยู่ใน [CI verification](ci.md) ยังต้องรอ run ที่ผ่านบน commit ที่แก้แล้วก่อนอ้าง C-01 ว่าผ่าน ส่วนสคริปต์ `deploy/` ที่ปรับให้ตรง LoungCheu และ offline checks จะเพิ่มพร้อมงาน first deployment/release pipeline ใน Issues #17/#19 ก่อนนำไปใช้งานจริง
 
 ## Verification ของ Issue #14 (ผลรอบก่อน)
 
