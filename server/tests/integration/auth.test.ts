@@ -1,10 +1,12 @@
-import { beforeAll, afterAll, beforeEach, describe, it, expect } from 'vitest';
+import { beforeAll, afterAll, beforeEach, describe, it, expect, vi } from 'vitest';
 import request from 'supertest';
 import { randomBytes } from 'node:crypto';
 import { createDatabaseClient } from '../../src/db/client.js';
 import { Pool } from 'pg';
 import { createApp, SESSION_MS } from '../../src/app.js';
 import { demoUsers, seedUsers } from '../../src/modules/accounts/seed.js';
+import { hashPassword, verifyPassword } from '../../src/modules/accounts/password.js';
+import { resetTestUsers } from '../../../scripts/test-fixtures.js';
 import { readConfig } from '../../src/config/env.js';
 import { requireAuth, requireRole } from '../../src/middleware/auth.js';
 import { errorHandler } from '../../src/shared/errors.js';
@@ -37,7 +39,7 @@ function expectError(response: request.Response, status: number, code: string) {
 }
 
 beforeAll(async () => {
-  await seedUsers(db, password);
+  await resetTestUsers(db, password);
   fixtureUsers = await db.user.findMany();
   runtime = await createApp(config, db, () => clock);
 });
@@ -60,6 +62,31 @@ describe('F-01 API with real PostgreSQL sessions', () => {
     const seeded = before.filter(user => usernames.has(user.username));
     expect(seeded).toHaveLength(demoUsers.length);
     expect(new Set(seeded.map(user => user.passwordHash)).size).toBe(demoUsers.length);
+  });
+  it('reseeding preserves changed passwords, profiles, roles and disabled accounts', async () => {
+    const changed = await db.user.update({ where: { username: 'participant.a' }, data: {
+      passwordHash: await hashPassword(randomBytes(24).toString('hex')),
+      displayName: 'Edited account', role: 'ORGANIZER', isActive: false,
+    } });
+    const before = await db.user.findMany({ orderBy: { username: 'asc' } });
+    await seedUsers(db, randomBytes(24).toString('hex'));
+    expect(await db.user.findUniqueOrThrow({ where: { id: changed.id } })).toEqual(changed);
+    expect(await db.user.findMany({ orderBy: { username: 'asc' } })).toEqual(before);
+  });
+  it('concurrent seeds create a missing account once without modifying existing accounts', async () => {
+    const original = await db.user.findUniqueOrThrow({ where: { username: 'participant.c' } });
+    await db.user.update({ where: { id: original.id }, data: { username: `seed-backup-${original.id}` } });
+    const before = await db.user.findMany({ orderBy: { username: 'asc' } });
+    try {
+      await Promise.all([seedUsers(db, password), seedUsers(db, password)]);
+      const created = await db.user.findUniqueOrThrow({ where: { username: original.username } });
+      expect(created).toMatchObject({ username: 'participant.c', displayName: 'Participant C', role: 'PARTICIPANT', isActive: true });
+      expect(await verifyPassword(password, created.passwordHash)).toBe(true);
+      expect(await db.user.findMany({ where: { id: { not: created.id } }, orderBy: { username: 'asc' } })).toEqual(before);
+    } finally {
+      await db.user.deleteMany({ where: { username: original.username } });
+      await db.user.update({ where: { id: original.id }, data: { username: original.username } });
+    }
   });
   it.each([['participant.a', 'PARTICIPANT'], ['organizer.a', 'ORGANIZER']])('TEST-01/03 rotates session and returns only Identity for %s', async (username, role) => {
     const { agent, pre, response, cookie } = await login(username);
@@ -228,6 +255,36 @@ describe('F-01 API with real PostgreSQL sessions', () => {
     expect(result.body).toEqual({ data: { status: 'ready', db: 'connected', version: config.version } });
     expect(result.headers['cache-control']).toBe('no-store');
     expect(result.headers['set-cookie']).toBeUndefined();
+  });
+  it('readiness bypasses a failed session store even with a valid signed session cookie', async () => {
+    const { cookie } = await login();
+    let databaseReady = false;
+    const unavailableDb = new Proxy(db, { get(target, property, receiver) {
+      if (property === '$queryRaw') return async () => {
+        if (!databaseReady) throw new Error('SQL SECRET TRACE');
+        return [{ value: 1 }];
+      };
+      return Reflect.get(target, property, receiver);
+    } });
+    const failed = await createApp(config, unavailableDb, () => clock);
+    const getSession = vi.spyOn(failed.store, 'get').mockImplementation((_sid, callback) => callback(new Error('SESSION SECRET TRACE')));
+    try {
+      // Prove the cookie is valid and would reach the failed store on a normal route.
+      expectError(await request(failed.app).get('/api/auth/me').set('Cookie', cookie), 500, 'INTERNAL_ERROR');
+      expect(getSession).toHaveBeenCalled();
+      getSession.mockClear();
+      for (const ready of [false, true]) {
+        databaseReady = ready;
+        const response = await request(failed.app).get('/api/ready').set('Cookie', cookie).expect(ready ? 200 : 503);
+        expect(response.body).toEqual({ data: ready
+          ? { status: 'ready', db: 'connected', version: config.version }
+          : { status: 'not_ready', version: config.version } });
+        expect(response.headers['cache-control']).toBe('no-store');
+        expect(response.headers['set-cookie']).toBeUndefined();
+        expect(response.text).not.toMatch(/SQL|SESSION|SECRET|TRACE/);
+      }
+      expect(getSession).not.toHaveBeenCalled();
+    } finally { getSession.mockRestore(); await failed.close(); }
   });
   it('shared authorization checks current backend role before an action', async () => {
     // Test-only harness; no test endpoint is exposed by createApp.

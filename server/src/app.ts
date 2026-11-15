@@ -43,6 +43,15 @@ export async function createApp(config: AppConfig, db: PrismaClient, now: () => 
     pruneSessionInterval: 15 * 60, errorLog: () => console.error('Session database operation failed') });
   const cookieOptions = { httpOnly: true, sameSite: 'lax' as const, secure: config.cookieSecure, path: '/' };
   app.use('/api', (_req, res, next) => { res.set('Cache-Control', 'no-store'); next(); });
+  // Probes must not load sessions: a failed session store must not mask a 503.
+  app.get('/api/ready', async (_req, res) => {
+    try {
+      await db.$queryRaw`SELECT 1`;
+      res.json({ data: { status: 'ready', db: 'connected', version: config.version } });
+    } catch {
+      res.status(503).json({ data: { status: 'not_ready', version: config.version } });
+    }
+  });
   app.use(session({ name: COOKIE_NAME, secret: config.sessionSecret, store,
     resave: false, saveUninitialized: false, rolling: false,
     cookie: { ...cookieOptions, maxAge: SESSION_MS } }));
@@ -61,15 +70,6 @@ export async function createApp(config: AppConfig, db: PrismaClient, now: () => 
   const dummyHash = await hashPassword(randomBytes(32).toString('hex'));
 
   app.get('/api/health', async (_req, res) => { await db.$queryRaw`SELECT 1`; res.json({ data: { status: 'ok', version: config.version } }); });
-  // Readiness includes the database and never exposes driver errors or credentials.
-  app.get('/api/ready', async (_req, res) => {
-    try {
-      await db.$queryRaw`SELECT 1`;
-      res.json({ data: { status: 'ready', db: 'connected', version: config.version } });
-    } catch {
-      res.status(503).json({ data: { status: 'not_ready', version: config.version } });
-    }
-  });
   app.get('/api/auth/csrf', (req, res) => {
     req.session.csrfToken ??= randomBytes(32).toString('hex');
     res.json({ data: { csrf_token: req.session.csrfToken } });
