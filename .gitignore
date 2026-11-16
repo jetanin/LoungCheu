@@ -15,6 +15,7 @@ server/src/generated/
 .vite/
 .cache/
 *.tsbuildinfo
+__pycache__/
 
 # Local environment values
 .env

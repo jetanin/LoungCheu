@@ -1,0 +1,13 @@
+{
+  "project": "your-gcp-project",
+  "region": "asia-southeast1",
+  "repository": "loungcheu",
+  "service": "loungcheu",
+  "migration_job": "loungcheu-migrate",
+  "runtime_service_account": "loungcheu-runner@your-gcp-project.iam.gserviceaccount.com",
+  "sql_instance": "loungcheu-pg",
+  "database_secret": "loungcheu-database-url:1",
+  "session_secret": "loungcheu-session-secret:1",
+  "demo_password_secret": "loungcheu-demo-password:1",
+  "max_instances": 1
+}

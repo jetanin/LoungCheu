@@ -171,6 +171,8 @@ Health/readiness ไม่ต้อง login; `/api/ready` อยู่ก่อ
 
 ## GCP resources — รอ first deployment
 
+Issue #17 เตรียมสคริปต์และ offline checks แล้วตาม [first-deployment.md](first-deployment.md) ค่าเริ่มต้นแสดงแผนโดยไม่เรียก GCP; billing/IAM/DB/secrets ต้องให้เจ้าของเตรียมและตรวจหลังได้เครดิต ยังไม่มี public URL หรือหลักฐาน C-04 จริง ตารางด้านล่างจึงยังเป็น TBD จนกว่าจะยืนยันบน GCP
+
 | รายการ | ค่าที่ตรวจยืนยันแล้ว |
 | --- | --- |
 | GCP access/project/billing | TBD — ยังไม่มีหลักฐานยืนยันในเอกสารนี้; ให้ตรวจสถานะ Issue #13 และยืนยันช่องทางกับ TA ตาม handout §4.4 |
@@ -195,7 +197,7 @@ Health/readiness ไม่ต้อง login; `/api/ready` อยู่ก่อ
 
 Docker พร้อมและผ่าน C-03 แล้วตามหลักฐานด้านล่าง ส่วน release end-to-end ยังรอ CI บน release PR เข้า `main`, cloud และ deploy pipeline จะเติม exact deployment commands, resources และ run links หลังตรวจจริง ไม่ใช้คำอธิบายแผนนี้แทนหลักฐาน C-01–C-06
 
-Issue #16 มี [PR #23](https://github.com/jetanin/LoungCheu/pull/23) เข้า `lab5-staging`; [Actions run แรก](https://github.com/jetanin/LoungCheu/actions/runs/43740436556) ล้มเหลวตอน Prisma generation แล้ว [run หลังแก้](https://github.com/jetanin/LoungCheu/actions/runs/43741684848) ผ่านทุกขั้นบน commit `774d28f` ตาม [CI verification](ci.md) ยังต้องมี release PR เข้า `main` พร้อม CI ที่ผ่านก่อนอ้างหลักฐาน PR ทั้งสองเป้าหมายครบ ส่วนสคริปต์ `deploy/` ที่ปรับให้ตรง LoungCheu และ offline checks จะเพิ่มพร้อมงาน first deployment/release pipeline ใน Issues #17/#19 ก่อนนำไปใช้งานจริง
+Issue #16 มี [PR #23](https://github.com/jetanin/LoungCheu/pull/23) เข้า `lab5-staging`; [Actions run แรก](https://github.com/jetanin/LoungCheu/actions/runs/43740436556) ล้มเหลวตอน Prisma generation แล้ว [run หลังแก้](https://github.com/jetanin/LoungCheu/actions/runs/43741684848) ผ่านทุกขั้นบน commit `774d28f` ตาม [CI verification](ci.md) ยังต้องมี release PR เข้า `main` พร้อม CI ที่ผ่านก่อนอ้างหลักฐาน PR ทั้งสองเป้าหมายครบ ปัจจุบัน Issue #17 เพิ่มสคริปต์ `deploy/` สำหรับ first deployment และ offline checks เข้า CI แล้วตาม [first-deployment.md](first-deployment.md); ยังไม่ execute บน GCP ส่วน release pipeline เป็นงาน #19
 
 ## Verification ของ Issue #14 (ผลรอบก่อน)
 
