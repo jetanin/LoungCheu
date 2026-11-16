@@ -2,11 +2,13 @@
 
 ## สถานะและขอบเขต
 
-เอกสารฉบับแรกสำหรับ **Issue #14 — Prepare LoungCheu for cloud deployment** วันที่ 15 พฤศจิกายน 2026 ใช้ accepted Sprint 1 baseline `0853ce2d3ed7e17fcc76d47a1838a3ec4d5bdb51` (`v1.0.0-sprint-1`) เป็นฐาน ไม่อ้างว่า deploy บน GCP หรือทำ persistence proof สำเร็จแล้ว
+เอกสารนี้เริ่มใน **Issue #14 — Prepare LoungCheu for cloud deployment** วันที่ 15 พฤศจิกายน 2026 จาก accepted Sprint 1 baseline `0853ce2d3ed7e17fcc76d47a1838a3ec4d5bdb51` (`v1.0.0-sprint-1`) และเพิ่มผล Docker ของ Issue #15 กับผล CI บน PR #23 ของ Issue #16 ภายหลัง ยังไม่อ้างว่า deploy บน GCP หรือทำ persistence proof บน GCP สำเร็จแล้ว
 
-Branch งาน: `refactor/14-lab5-cloud-ready` → reviewed PR เข้า `lab5-staging` → release PR เข้า `main` ผู้เขียน PR ต้องให้เพื่อน review ไม่ approve ตัวเอง Issues/PRs ใช้ label `lab5` และ project board
+เส้นทาง branch: งานของแต่ละ Issue → reviewed PR เข้า `lab5-staging` → release PR เข้า `main` ผู้เขียน PR ต้องให้เพื่อน review ไม่ approve ตัวเอง Issues/PRs ใช้ label `lab5` และ project board; Issue #14 ใช้ `refactor/14-lab5-cloud-ready`
 
-อ้างอิง: `01_SE_Lab_5_updated.pdf` §4, §7–9, §12 และ `03_Student-Guide-GCP-Deployment-and+CI+CD-V1_1.pdf` Ep.0–2 ไฟล์จาก `02_lab5-starter-kit.zip` เป็น templates สำหรับขั้นถัดไป
+สถานะ label และประวัติ CI ตาม R-10 ตรวจไว้ใน [R-10 audit](evidence/r10-label-history.md); ใช้ลิงก์ GitHub จริงตรวจซ้ำก่อนอ้างว่าผ่าน
+
+อ้างอิง: `01_SE_Lab_5_updated.pdf` §4, §7–9, §12 และ `03_Student-Guide-GCP-Deployment-and+CI+CD-V1_1.pdf` Ep.0–4 ไฟล์จาก `02_lab5-starter-kit.zip` เป็น templates ที่ต้องปรับให้ตรงแอป
 
 ## Stack และการปรับจากตัวอย่าง
 
@@ -16,9 +18,9 @@ Branch งาน: `refactor/14-lab5-cloud-ready` → reviewed PR เข้า `l
 | Frontend | React/Vite, output `client/dist`, API แบบ relative `/api` และ same-origin cookies |
 | Backend | Express/TypeScript, output `server/dist/server.js` |
 | Persistence | PostgreSQL, Prisma 7 ผ่าน `@prisma/adapter-pg`; sessions ใช้ `connect-pg-simple` ใน PostgreSQL |
-| Local DB | `compose.yaml`: PostgreSQL 17 พร้อม named volume `db-data`; หรือ PostgreSQL ที่ติดตั้งอยู่แล้ว |
+| Local DB | `compose.yaml` สำหรับ PostgreSQL เดิม; `compose.docker.yaml` สำหรับ Docker app+DB ที่แยก project/volume ตาม Issue #15 |
 | Tests | Vitest, real PostgreSQL DB `loungcheu_test`, Playwright และ compiled-app smoke |
-| Cloud/CI ที่วางแผน | Cloud Run, Cloud SQL PostgreSQL, Artifact Registry, Secret Manager, GitHub Actions/WIF; ยังไม่ได้ provision ใน Issue #14 |
+| CI/Cloud | Issue #16 มี PR #23 เข้า `lab5-staging` และ Actions run ที่ผ่านบน commit `774d28f`; release PR เข้า `main` ยังไม่เกิด ส่วน Cloud Run, Cloud SQL, Artifact Registry, Secret Manager และ WIF ยังไม่ provision |
 
 ความต่างจาก TokTickIT: ใช้ Node 22 แทน 24, ติดตั้ง workspace จาก root, start `server.js` แทน `index.js`, login ด้วย **username + CSRF + session cookie** ไม่ใช่ email ไม่มี `/api/categories` และไม่มี admin bootstrap/password-change feature แบบตัวอย่าง จึงไม่เพิ่ม feature นั้นเพียงเพื่อใช้ kit
 
@@ -51,7 +53,7 @@ Tests/E2E ใช้ `scripts/test-fixtures.ts` แยกจาก production see
 
 | Variable | Purpose / required / default | Secret? | แหล่งค่า |
 | --- | --- | --- | --- |
-| `DATABASE_URL` | ต้องมี PostgreSQL URL พร้อม host/DB name; ใช้ทั้ง Prisma และ session Pool | ใช่ | local `server/.env`; cloud secret ที่ผู้ดูแลจัดการ |
+| `DATABASE_URL` | ต้องมี PostgreSQL URL พร้อม host/DB name; ใช้ทั้ง Prisma และ session Pool; Prisma config ต้องอ่านตัวแปรนี้แม้ตอน generate | ใช่สำหรับ DB จริง | local `server/.env`; cloud secret ที่ผู้ดูแลจัดการ; CI ตั้งค่าใช้ PostgreSQL test service ชั่วคราวเท่านั้น |
 | `SESSION_SECRET` | ต้องมีอย่างน้อย 32 characters ไม่ใช่ placeholder; เก็บค่าเดิมข้าม releases | ใช่ | ค่าสุ่มส่วนตัว / cloud secret |
 | `APP_ORIGIN` | ต้องมี HTTP(S) origin ตรง browser ไม่มี path/trailing slash; production ต้อง HTTPS | ไม่ | local `http://127.0.0.1:5173`; cloud ใช้ service HTTPS origin จริง |
 | `PORT` | integer 1–65535; default 3000; port ที่ runtime กำหนดต้องตรง container/service config | ไม่ | local env / Cloud Run runtime config |
@@ -77,6 +79,19 @@ Encode reserved characters ใน username/password ของ DATABASE_URL ใ�
 | `POSTGRES_PORT` | host port ของ Compose app DB, default 5432 | ไม่ | process env หรือ private Compose `.env`; เปลี่ยนหากชน DB เดิม |
 
 อย่าใส่ E2E overrides ไว้ใน `.env.test` แล้วคาดว่า Playwright config จะโหลดให้ ใช้ process env โดยตรง Test fixture ports/origins และ app origins ต้องไม่ปนกัน ส่วน `POSTGRES_USER`/`POSTGRES_DB` ใน Compose เดิมเป็น config ของ DB image ในไฟล์ Compose ไม่ใช่ตัวแปรที่แอปอ่าน
+
+### Local Docker Compose configuration
+
+`compose.docker.yaml` อ่านค่าจาก `.env.docker` ที่สร้างตาม `.env.docker.example`; ค่านี้ใช้เฉพาะ local stack แยกจาก `server/.env` และ CI รายละเอียดการใช้งานอยู่ใน [docker.md](docker.md)
+
+| Variable | Purpose / required / default | Secret? | แหล่งค่า |
+| --- | --- | --- | --- |
+| `DOCKER_DB_PASSWORD` | จำเป็นสำหรับ PostgreSQL local stack และ URL ที่ส่งให้ migrate/server; ต้องเป็นค่าที่ปลอดภัยใน URL | ใช่ | `.env.docker` ที่สร้างโดย `scripts/setup-docker-env.mjs` หรือเติมเองจาก example |
+| `DOCKER_SESSION_SECRET` | จำเป็นสำหรับ session ของ local stack; เก็บค่าเดิมเมื่อ down/up | ใช่ | `.env.docker` จาก setup helper หรือเติมเอง |
+| `DOCKER_DEMO_PASSWORD` | จำเป็นสำหรับ seed และ local Docker smoke; ไม่ reset บัญชีเดิม | ใช่ | `.env.docker` จาก setup helper หรือเติมเอง |
+| `DOCKER_WEB_PORT` | พอร์ต frontend บน loopback; default 5173; ใช้สร้าง `APP_ORIGIN` ใน Compose ด้วย | ไม่ | `.env.docker` หรือค่า default ใน Compose |
+| `DOCKER_API_PORT` | พอร์ต API บน loopback; default 3000 | ไม่ | `.env.docker` หรือค่า default ใน Compose |
+| `APP_VERSION` | ตัวระบุ image/release ของ local stack; default `local-docker`; สำหรับ cloud ใช้ full main SHA | ไม่ | `.env.docker` หรือค่า default ใน Compose; cloud release pipeline |
 
 ## Local setup และคำสั่งที่ทำซ้ำได้
 
@@ -158,7 +173,7 @@ Health/readiness ไม่ต้อง login; `/api/ready` อยู่ก่อ
 
 | รายการ | ค่าที่ตรวจยืนยันแล้ว |
 | --- | --- |
-| GCP access/project/billing | TBD — ยังไม่ตรวจยืนยัน; ผู้ใช้กำลังขอสิทธิ์มหาวิทยาลัย ให้ยืนยันช่องทางกับ TA ตาม handout §4.4 |
+| GCP access/project/billing | TBD — ยังไม่มีหลักฐานยืนยันในเอกสารนี้; ให้ตรวจสถานะ Issue #13 และยืนยันช่องทางกับ TA ตาม handout §4.4 |
 | Project ID / region | TBD — ยังไม่ยืนยัน |
 | Artifact Registry / image path | TBD — ยังไม่สร้างหรือยืนยัน |
 | Cloud Run service / public URL | TBD — ยังไม่ deploy ใน Issue #14 |
@@ -178,7 +193,9 @@ Health/readiness ไม่ต้อง login; `/api/ready` อยู่ก่อ
 5. ตรวจ `/api/ready`, `/api/health` และ release version แล้วตรวจ live sign-in/domain journey; เก็บ run/PR links และผลจริง
 6. พิสูจน์ persistence แยกเหตุการณ์ restart และ redeploy ด้วย record เดิม ไม่ reset/reseed record ทดแทน
 
-Docker พร้อมและผ่าน C-03 แล้วตามหลักฐานด้านล่าง ส่วน release end-to-end ยังรอ CI/cloud/pipeline จะเติม workflow filenames, exact deployment commands, resources และ run links หลังตรวจจริง ไม่ใช้คำอธิบายแผนนี้แทนหลักฐาน C-01–C-06
+Docker พร้อมและผ่าน C-03 แล้วตามหลักฐานด้านล่าง ส่วน release end-to-end ยังรอ CI บน release PR เข้า `main`, cloud และ deploy pipeline จะเติม exact deployment commands, resources และ run links หลังตรวจจริง ไม่ใช้คำอธิบายแผนนี้แทนหลักฐาน C-01–C-06
+
+Issue #16 มี [PR #23](https://github.com/jetanin/LoungCheu/pull/23) เข้า `lab5-staging`; [Actions run แรก](https://github.com/jetanin/LoungCheu/actions/runs/43740436556) ล้มเหลวตอน Prisma generation แล้ว [run หลังแก้](https://github.com/jetanin/LoungCheu/actions/runs/43741684848) ผ่านทุกขั้นบน commit `774d28f` ตาม [CI verification](ci.md) ยังต้องมี release PR เข้า `main` พร้อม CI ที่ผ่านก่อนอ้างหลักฐาน PR ทั้งสองเป้าหมายครบ ส่วนสคริปต์ `deploy/` ที่ปรับให้ตรง LoungCheu และ offline checks จะเพิ่มพร้อมงาน first deployment/release pipeline ใน Issues #17/#19 ก่อนนำไปใช้งานจริง
 
 ## Verification ของ Issue #14 (ผลรอบก่อน)
 
@@ -204,6 +221,6 @@ Browser E2E รอบ follow-up: sandbox run เริ่ม server ไม่ไ
 - **PASS:** fresh remote clone ที่ commit `54fd6603594a7a2e0327aad93624796b61903cc5` build ด้วย `--no-cache --pull` และรันกับฐานข้อมูลใหม่แยกได้ โดยใช้ค่าตาม `.env.docker.example` ที่เติมเป็น private configuration; ไม่คัดลอก dependencies, build output, secret หรือ DB volume เดิม
 - เก็บคำสั่ง, output, exit codes, tested commit, image ID และผลตรวจ source clean ใน [ดัชนีหลักฐาน C-03](evidence/c03-20261115-54fd660/README.md), [transcript](evidence/c03-20261115-54fd660/transcript.log) และ [manifest](evidence/c03-20261115-54fd660/manifest.json)
 - ทดสอบ login/domain workflow และ local down/up แล้ว record กับ registration เดิมยังอยู่; รายละเอียดอยู่ใน [docker.md](docker.md#c-03-fresh-clone-evidence-15-november-2026)
-- GCP public workflow, CI gate และ GCP live restart/redeploy: ยังไม่ทำ เป็นงาน Issues ถัดไป หลักฐาน local C-03 นี้ไม่ใช่หลักฐาน GCP C-04/C-05 หรือ pipeline C-06
+- GCP public workflow, required-check merge gate (C-02) และ GCP live restart/redeploy: ยังไม่ทำ เป็นงาน Issues ถัดไป; PR CI ของ Issue #16 ผ่านแล้วตามหัวข้อด้านบน หลักฐาน local C-03 นี้ไม่ใช่หลักฐาน GCP C-04/C-05 หรือ pipeline C-06
 
 หลังส่ง Lab 5 ให้คง service/repository public จนผู้สอนประกาศจบการตรวจ ห้าม teardown หรือหยุด DB ทันทีหลังส่ง PDF

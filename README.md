@@ -87,15 +87,17 @@ npm test -- server/tests/unit
 npm test -- server/tests/integration
 ```
 
-### PostgreSQL Docker สำหรับ branch นี้
+### PostgreSQL สำหรับการรันแอปบน host (`compose.yaml`)
+
+หากต้องการรันแอปและฐานข้อมูลใน Docker ทั้งชุด ให้ใช้ [Lab 5 Docker setup](docs/labs/lab-05/docker.md) ซึ่งใช้ `compose.docker.yaml` และ volume แยกจากขั้นตอนในหัวข้อนี้
 
 ```powershell
 docker compose up -d --wait db
 ```
 
-ตั้ง private `server/.env` ให้ตรง container เช่น `DATABASE_URL=postgresql://loungcheu:local_only@localhost:5432/loung-cheu-database` แล้วใช้ scripts migrate/setup-test/seed ด้านล่าง App/test ใช้ Docker instance เดียวที่ 5432 แต่คนละ database; db-test profile เดิมที่ 55433 ไม่ใช้ใน workflow ปัจจุบัน
+ตั้ง private `server/.env` ให้ตรง container เช่น `DATABASE_URL=postgresql://loungcheu:local_only@localhost:5432/loung-cheu-database` แล้วใช้ scripts migrate/setup-test/seed ด้านล่าง สำหรับวิธีรันบน host นี้ app/test ใช้ Docker instance เดียวที่ 5432 แต่คนละ database; db-test profile ที่ 55433 ไม่จำเป็น ส่วน CI ของ Issue #16 ใช้ PostgreSQL service ชั่วคราวแยกต่างหาก
 
-Historical setup ของ #3 สร้าง loung-cheu-database ใหม่และเก็บ loungcheu เก่าไว้; merge audit รอบนี้ใช้เฉพาะ loungcheu_test ไม่เปลี่ยนฐานแอป Private credentials อยู่ใน server/.env เท่านั้น ถ้าใช้ Docker volume ที่มี migration history จากโครงเก่า ให้เลือกฐานใหม่หรือวางแผนย้ายข้อมูลก่อน migrate
+Historical setup ของ #3 สร้าง loung-cheu-database ใหม่และเก็บ loungcheu เก่าไว้; merge audit รอบนี้ใช้เฉพาะ loungcheu_test ไม่เปลี่ยนฐานแอป สำหรับวิธีรันบน host นี้ค่า private อยู่ใน `server/.env` ส่วน Docker app+DB ของ Lab 5 ใช้ `.env.docker` แยก ถ้าใช้ Docker volume ที่มี migration history จากโครงเก่า ให้เลือกฐานใหม่หรือวางแผนย้ายข้อมูลก่อน migrate
 
 ใช้ Node.js **22.16.0** (รองรับ 22.x ตั้งแต่ 22.16.0), npm **11.11.0**, PostgreSQL **17**; dependency versions pin ใน package.json และ package-lock.json รันคำสั่งต่อไปนี้จาก repository root
 

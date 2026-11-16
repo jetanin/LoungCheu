@@ -1,0 +1,78 @@
+name: CI & Docker Build
+
+on:
+  workflow_call:
+  pull_request:
+    branches: [lab5-staging, main]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: ci-${{ github.workflow }}-${{ github.event.pull_request.number || github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  test-and-docker:
+    runs-on: ubuntu-latest
+    timeout-minutes: 45
+    services:
+      postgres:
+        image: postgres:17-alpine
+        env:
+          POSTGRES_USER: loungcheu
+          POSTGRES_PASSWORD: ci_only
+          POSTGRES_DB: loungcheu_test
+        ports:
+          - 5432:5432
+        options: >-
+          --health-cmd "pg_isready -U loungcheu -d loungcheu_test"
+          --health-interval 5s
+          --health-timeout 5s
+          --health-retries 10
+
+    env:
+      # Prisma loads its config during generate and requires DATABASE_URL even
+      # though generation does not connect to the database.
+      DATABASE_URL: postgresql://loungcheu:ci_only@127.0.0.1:5432/loungcheu_test
+      TEST_DATABASE_URL: postgresql://loungcheu:ci_only@127.0.0.1:5432/loungcheu_test
+
+    steps:
+      - name: Check out source
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+
+      - name: Set up Node.js 22
+        uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1 # v7.1.0
+        with:
+          node-version: '22.16.0'
+          cache: npm
+
+      - name: Install locked dependencies and generate Prisma Client
+        run: |
+          npm ci
+          npm run db:generate
+
+      - name: Migrate disposable test database
+        run: npm run db:migrate:test
+
+      - name: Typecheck and run unit/integration tests
+        run: |
+          npm run typecheck
+          npm test
+
+      - name: Build app and check compiled production routes
+        run: |
+          npm run build
+          npm run test:built
+
+      - name: Install Chromium for browser tests
+        run: npx playwright install --with-deps chromium
+
+      - name: Run browser tests
+        run: npm run test:e2e
+
+      - name: Build production Docker image
+        run: docker build -t loungcheu-ci:${{ github.sha }} .

@@ -1,6 +1,6 @@
 # Issue #15: Docker packaging
 
-Branch `build/15-lab5-docker` starts at Issue #14 commit `175b94b`. This is a stacked branch as requested: review its Docker changes against `refactor/14-lab5-cloud-ready`, and target `lab5-staging` after #14 is merged there. PR description: `Part of #15`. A teammate must review it before merging. This document describes local packaging, not GCP deployment or the final cloud C-05 proof.
+Branch `build/15-lab5-docker` started at Issue #14 commit `175b94b`. [PR #22](https://github.com/jetanin/LoungCheu/pull/22) received a specific approval from teammate `i3artuf` on head `051c718` and merged into `lab5-staging` as `6f82566`. Issue #15 is closed. This document describes local packaging, not GCP deployment or the final cloud C-05 proof.
 
 ## Files and adaptation from Guide Episode 3
 
@@ -81,4 +81,4 @@ Evidence index: [C-03 commands, results and reproduction steps](evidence/c03-202
 
 All recorded commands exited 0. This run did not repeat the earlier unit/checks-target suite or production proxy-cookie test; those earlier working-tree observations are not presented as fresh-clone evidence. C-03 application/build behavior was tested at the exact source SHA above; this follow-up only adds documentation and captured evidence.
 
-Before closing #15, link the reviewed PR/evidence in the final PDF index. Teammate review into lab5-staging is still required. Public GCP deployment, GCP restart/redeploy C-05 and release-pipeline evidence remain later work.
+Link PR #22 and this C-03 evidence in the final PDF index. The retrospective `lab5` label verification is recorded in the [R-10 audit](evidence/r10-label-history.md). Public GCP deployment, GCP restart/redeploy C-05 and release-pipeline evidence remain later work.
