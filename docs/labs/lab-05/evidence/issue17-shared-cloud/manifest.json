@@ -1,0 +1,93 @@
+{
+  "result": "PASS",
+  "scope": "Shared-course adaptation offline only; no C-04/C-05/C-06 proof",
+  "baseCommit": "33253af44408efd9c9c7e0e8426d2dcbede2d6cd",
+  "sourceState": "uncommitted working tree; exact bytes identified by hashes",
+  "project": "cpe-se-course-2026",
+  "region": "asia-southeast1",
+  "prefix": "scccd8b05",
+  "tests": 28,
+  "cloudCalls": 0,
+  "realHttpCalls": 0,
+  "commands": [
+    {
+      "command": [
+        "C:\\Users\\jetan\\AppData\\Local\\Programs\\Python\\Python312\\python.exe",
+        "-m",
+        "unittest",
+        "discover",
+        "-s",
+        "deploy/tests",
+        "-v"
+      ],
+      "exitCode": 0
+    },
+    {
+      "command": [
+        "C:\\Users\\jetan\\AppData\\Local\\Programs\\Python\\Python312\\python.exe",
+        "deploy/first_deploy.py"
+      ],
+      "exitCode": 0
+    },
+    {
+      "command": [
+        "C:/Program Files/Git/bin/bash.exe",
+        "-n",
+        "deploy/deploy.sh"
+      ],
+      "exitCode": 0
+    },
+    {
+      "command": [
+        "C:/Program Files/Git/bin/bash.exe",
+        "-n",
+        "deploy/release.sh"
+      ],
+      "exitCode": 0
+    },
+    {
+      "command": [
+        "C:/Program Files/Git/bin/bash.exe",
+        "deploy/deploy.sh"
+      ],
+      "exitCode": 0
+    },
+    {
+      "command": [
+        "C:/Program Files/Git/bin/bash.exe",
+        "deploy/release.sh"
+      ],
+      "exitCode": 0
+    },
+    {
+      "command": [
+        "C:\\Users\\jetan\\AppData\\Local\\Programs\\Python\\Python312\\python.exe",
+        "-c",
+        "from pathlib import Path; import yaml; files=['.github/workflows/ci-docker.yml','.github/workflows/deploy.yml']; [yaml.load(Path(p).read_text(),Loader=yaml.BaseLoader) for p in files]; print('Both workflow YAML files parsed; not a live GitHub run.')"
+      ],
+      "exitCode": 0
+    },
+    {
+      "command": [
+        "git",
+        "diff",
+        "--check"
+      ],
+      "exitCode": 0
+    }
+  ],
+  "sourceFileSHA256": {
+    "deploy/course_cloud.py": "254e2187d154b967f425270bc51f433b3a049ec88eb1a10a18f726f708cc5c18",
+    "deploy/first_deploy.py": "98f6dbde75af1c3f7516a54e80bb28a55a0dd3f9fac86c328e4cad13e60daa81",
+    "deploy/deploy.sh": "74b4c680f4f9a19582a4a6416b8b6b608dbc1176dacf8a31197256f55670cca9",
+    "deploy/release.sh": "9c0afec283c97dfab0232211d48f94549d2b86398c8116a2dd8d8d9085fe9d7e",
+    "deploy/gcp.example.json": "a6949c3054065325d44bade6c7cb7fe925f3e7de7ca74f40c006b6bba660ed12",
+    "deploy/smoke_test.py": "8a61248e8e7e8d04418e58683eb9aae8b2282177f99143a61c8f1d714510b4a3",
+    "deploy/tests/test_first_deploy.py": "fef9e401d1dc708c4fded97adc7498b9045a9cadfe139142cb648d7ad8753fcc",
+    "deploy/tests/test_smoke.py": "e5f9ae8eaa4c360840d043ba687614610221cb68a64d64e6368819c5cda4d71e",
+    ".github/workflows/ci-docker.yml": "0d5783dcc21dd006a521bc724f451664226176421e8f5472d6d2b6d57028ab56",
+    ".github/workflows/deploy.yml": "99dfcb6f8a009a7332336370c2c6587256ad008bc90b9195dd1eb631181e4080",
+    ".gitignore": "6475cd3084321fab1292252f4a8cfae790889e2558f041f4c5b289a4db4c878e"
+  },
+  "transcriptSHA256": "f05a9c6e3b87073d89f0ef61b2eb2329f87b5e193e295d9880653355b938295b"
+}

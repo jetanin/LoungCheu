@@ -1,0 +1,55 @@
+Issue #17 OFFLINE verification, UTC: 2026-11-16T04:58:56.598046+00:00
+Working-tree preparation based on b3374703e26b84cd17c7d1f3e7cb1e036c757c41
+No gcloud commands or real HTTP requests executed; simulated behavior only.
+
+$ C:\Users\jetan\AppData\Local\Programs\Python\Python312\python.exe -m unittest discover -s deploy/tests -v
+test_config_rejects_secret_values_foreign_projects_and_shell_arguments (test_first_deploy.DeploymentTests.test_config_rejects_secret_values_foreign_projects_and_shell_arguments) ... ok
+test_default_preview_cannot_invoke_any_subprocess (test_first_deploy.DeploymentTests.test_default_preview_cannot_invoke_any_subprocess) ... ok
+test_every_gcloud_command_scopes_the_project_and_only_references_secrets (test_first_deploy.DeploymentTests.test_every_gcloud_command_scopes_the_project_and_only_references_secrets) ... ok
+test_failed_build_never_runs_migrations (test_first_deploy.DeploymentTests.test_failed_build_never_runs_migrations) ... ok
+test_failed_migration_never_deploys_service (test_first_deploy.DeploymentTests.test_failed_migration_never_deploys_service) ... ok
+test_guards_stop_existing_service_wrong_branch_dirty_tree_and_bad_digest (test_first_deploy.DeploymentTests.test_guards_stop_existing_service_wrong_branch_dirty_tree_and_bad_digest) ... ok
+test_origin_rejects_injection_credentials_paths_and_non_cloud_origins (test_first_deploy.DeploymentTests.test_origin_rejects_injection_credentials_paths_and_non_cloud_origins) ... ok
+test_project_confirmation_checked_before_any_commands (test_first_deploy.DeploymentTests.test_project_confirmation_checked_before_any_commands) ... ok
+test_rejects_short_or_injected_commit (test_first_deploy.DeploymentTests.test_rejects_short_or_injected_commit) ... ok
+test_subprocess_failure_does_not_print_raw_driver_output (test_first_deploy.DeploymentTests.test_subprocess_failure_does_not_print_raw_driver_output) ... ok
+test_success_orders_migration_before_service_and_sets_real_https_origin (test_first_deploy.DeploymentTests.test_success_orders_migration_before_service_and_sets_real_https_origin) ... ok
+test_current_api_envelope_and_read_only_paths (test_smoke.SmokeTests.test_current_api_envelope_and_read_only_paths) ... ok
+test_html_or_auth_failures_are_not_mistaken_for_json_success (test_smoke.SmokeTests.test_html_or_auth_failures_are_not_mistaken_for_json_success) ... ok
+test_network_errors_fail_after_bounded_retries (test_smoke.SmokeTests.test_network_errors_fail_after_bounded_retries) ... ok
+test_only_explicit_loopback_http_allowed_for_local_testing (test_smoke.SmokeTests.test_only_explicit_loopback_http_allowed_for_local_testing) ... ok
+test_redirects_are_not_followed (test_smoke.SmokeTests.test_redirects_are_not_followed) ... ok
+test_rejects_remote_http_credentials_paths_and_bad_commit (test_smoke.SmokeTests.test_rejects_remote_http_credentials_paths_and_bad_commit) ... ok
+test_retries_cold_start_then_succeeds (test_smoke.SmokeTests.test_retries_cold_start_then_succeeds) ... ok
+test_stale_version_fails_without_printing_body (test_smoke.SmokeTests.test_stale_version_fails_without_printing_body) ... ok
+
+----------------------------------------------------------------------
+Ran 19 tests in 0.096s
+
+OK
+[exit 0]
+
+$ C:\Users\jetan\AppData\Local\Programs\Python\Python312\python.exe deploy/first_deploy.py --config deploy/gcp.example.json --commit b3374703e26b84cd17c7d1f3e7cb1e036c757c41
+OFFLINE PLAN ONLY. Zero gcloud calls. Zero cloud changes. Zero-filled digest and service URL below are placeholders.
+Prerequisites: owner-prepared APIs, billing, repository, Cloud SQL/DB/user, runtime IAM and pinned secret versions.
+gcloud artifacts repositories describe loungcheu --location=asia-southeast1 '--format=value(format)' --project=your-gcp-project --quiet
+gcloud sql instances describe loungcheu-pg --format=json --project=your-gcp-project --quiet
+gcloud iam service-accounts describe loungcheu-runner@your-gcp-project.iam.gserviceaccount.com '--format=value(email)' --project=your-gcp-project --quiet
+gcloud secrets versions describe 1 --secret=loungcheu-database-url '--format=value(state)' --project=your-gcp-project --quiet
+gcloud secrets versions describe 1 --secret=loungcheu-session-secret '--format=value(state)' --project=your-gcp-project --quiet
+gcloud secrets versions describe 1 --secret=loungcheu-demo-password '--format=value(state)' --project=your-gcp-project --quiet
+gcloud run services list --filter=metadata.name=loungcheu '--format=value(metadata.name)' --region=asia-southeast1 --project=your-gcp-project --quiet
+gcloud builds submit . --tag=asia-southeast1-docker.pkg.dev/your-gcp-project/loungcheu/loungcheu:b3374703e26b84cd17c7d1f3e7cb1e036c757c41 --ignore-file=.gcloudignore --suppress-logs --region=asia-southeast1 --project=your-gcp-project --quiet
+gcloud artifacts docker images describe asia-southeast1-docker.pkg.dev/your-gcp-project/loungcheu/loungcheu:b3374703e26b84cd17c7d1f3e7cb1e036c757c41 '--format=value(image_summary.digest)' --project=your-gcp-project --quiet
+gcloud run jobs deploy loungcheu-migrate --image=asia-southeast1-docker.pkg.dev/your-gcp-project/loungcheu/loungcheu@sha256:0000000000000000000000000000000000000000000000000000000000000000 --service-account=loungcheu-runner@your-gcp-project.iam.gserviceaccount.com --set-cloudsql-instances=your-gcp-project:asia-southeast1:loungcheu-pg --set-env-vars=NODE_ENV=production --set-secrets=DATABASE_URL=loungcheu-database-url:1,DEMO_SEED_PASSWORD=loungcheu-demo-password:1 --command=sh '--args=^|^-c|npm run db:migrate && npm run db:seed' --tasks=1 --parallelism=1 --max-retries=0 --task-timeout=600s --cpu=1 --memory=512Mi --region=asia-southeast1 --project=your-gcp-project --quiet
+gcloud run jobs execute loungcheu-migrate --wait --region=asia-southeast1 --project=your-gcp-project --quiet
+gcloud run deploy loungcheu --image=asia-southeast1-docker.pkg.dev/your-gcp-project/loungcheu/loungcheu@sha256:0000000000000000000000000000000000000000000000000000000000000000 --service-account=loungcheu-runner@your-gcp-project.iam.gserviceaccount.com --set-cloudsql-instances=your-gcp-project:asia-southeast1:loungcheu-pg --execution-environment=gen2 --port=3000 --cpu=1 --memory=512Mi --min-instances=0 --max-instances=1 --concurrency=10 --set-env-vars=NODE_ENV=production,HOST=0.0.0.0,SESSION_COOKIE_SECURE=true,APP_ORIGIN=https://bootstrap.invalid,APP_VERSION=b3374703e26b84cd17c7d1f3e7cb1e036c757c41 --set-secrets=DATABASE_URL=loungcheu-database-url:1,SESSION_SECRET=loungcheu-session-secret:1 --no-allow-unauthenticated --region=asia-southeast1 --project=your-gcp-project --quiet
+gcloud run services describe loungcheu --format=json --region=asia-southeast1 --project=your-gcp-project --quiet
+gcloud run services update loungcheu --image=asia-southeast1-docker.pkg.dev/your-gcp-project/loungcheu/loungcheu@sha256:0000000000000000000000000000000000000000000000000000000000000000 --update-env-vars=APP_ORIGIN=https://service-url-from-describe.run.app --region=asia-southeast1 --project=your-gcp-project --quiet
+gcloud run services describe loungcheu --format=json --region=asia-southeast1 --project=your-gcp-project --quiet
+Public access and C-04 remain owner-controlled follow-up steps; this plan does not claim a deployed URL.
+[exit 0]
+
+$ C:\Users\jetan\AppData\Local\Programs\Python\Python312\python.exe -m py_compile deploy/first_deploy.py deploy/smoke_test.py
+
+[exit 0]

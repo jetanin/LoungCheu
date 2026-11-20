@@ -15,6 +15,7 @@ server/src/generated/
 .vite/
 .cache/
 *.tsbuildinfo
+__pycache__/
 
 # Local environment values
 .env
@@ -64,3 +65,6 @@ Desktop.ini
 
 # Local agent instructions; the required deployment.md remains tracked.
 /docs/labs/lab-05/agent-guide.md
+
+# Temporary WIF credentials created by google-github-actions/auth
+/gha-creds-*.json

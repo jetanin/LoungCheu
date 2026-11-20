@@ -1,0 +1,55 @@
+{
+  "scope": "Issue #17 offline preparation only, not GCP C-04",
+  "baseCommit": "b3374703e26b84cd17c7d1f3e7cb1e036c757c41",
+  "sourceState": "uncommitted working tree; exact source hashes below",
+  "result": "PASS",
+  "tests": 19,
+  "gcloudCalls": 0,
+  "realHttpCalls": 0,
+  "commands": [
+    {
+      "command": [
+        "C:\\Users\\jetan\\AppData\\Local\\Programs\\Python\\Python312\\python.exe",
+        "-m",
+        "unittest",
+        "discover",
+        "-s",
+        "deploy/tests",
+        "-v"
+      ],
+      "exitCode": 0
+    },
+    {
+      "command": [
+        "C:\\Users\\jetan\\AppData\\Local\\Programs\\Python\\Python312\\python.exe",
+        "deploy/first_deploy.py",
+        "--config",
+        "deploy/gcp.example.json",
+        "--commit",
+        "b3374703e26b84cd17c7d1f3e7cb1e036c757c41"
+      ],
+      "exitCode": 0
+    },
+    {
+      "command": [
+        "C:\\Users\\jetan\\AppData\\Local\\Programs\\Python\\Python312\\python.exe",
+        "-m",
+        "py_compile",
+        "deploy/first_deploy.py",
+        "deploy/smoke_test.py"
+      ],
+      "exitCode": 0
+    }
+  ],
+  "sourceFileSHA256": {
+    "deploy/first_deploy.py": "82e88524994b51a6b5a2bcd622433d11e4e212bb40ac6989b9521591c4685a86",
+    "deploy/smoke_test.py": "ecd64690acf0ee505ecb77c669fb244afad9944ed114e62414de904f2933f2d9",
+    "deploy/gcp.example.json": "f1060b131101b0fa4f86b49fc0edb0a6a73302d3858c9d33061dac0f9bbffd5e",
+    "deploy/tests/test_first_deploy.py": "60e60440e84f48c9793e797ca28c292a645f04a7cf1c5fc74726a40acdb4861f",
+    "deploy/tests/test_smoke.py": "69da6ffd5bf25a444eda8cc15679c898586d5fd7cae0e1423f9f22508bc9f601",
+    ".github/workflows/ci-docker.yml": "26f9270aa2ca8c5334ff9429e317bce7ada670612f595ec141b63261d81a66f5",
+    ".gcloudignore": "936efc8b69fd28db0e66ba048d333e7c136943e888bee17034ebe6b7ba3b9ef2",
+    ".gitignore": "828beed9518e975b21fd636f0b7e4ccfd56138b8a18914ead9fd31dee1f52c27"
+  },
+  "transcriptSHA256": "d3dac4844e56e2a2103de4cde8162673b70293f19eb250bc76f1784a23209738"
+}

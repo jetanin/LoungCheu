@@ -1,0 +1,10 @@
+{
+  "project": "cpe-se-course-2026",
+  "region": "asia-southeast1",
+  "repository": "scccd8b05",
+  "service": "scccd8b05",
+  "migration_job": "scccd8b05-migrate",
+  "database_secret": "scccd8b05-database-url:latest",
+  "demo_password_secret": "scccd8b05-demo-password:latest",
+  "session_secret": "scccd8b05-app-secret-1:1"
+}

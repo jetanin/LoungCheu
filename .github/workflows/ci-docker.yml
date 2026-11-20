@@ -44,6 +44,12 @@ jobs:
         with:
           persist-credentials: false
 
+      - name: Check deployment scripts offline (no GCP access)
+        run: |
+          python3 -m unittest discover -s deploy/tests -v
+          bash -n deploy/deploy.sh
+          bash -n deploy/release.sh
+
       - name: Set up Node.js 22
         uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1 # v7.1.0
         with:

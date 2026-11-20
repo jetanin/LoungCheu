@@ -1,5 +1,7 @@
 # LoungCheu — Lab 5 Deployment
 
+> Current course setup (20 November 2026): use only project `cpe-se-course-2026`, region `asia-southeast1` and team `scccd8b05`. The portal provisions infrastructure/IAM. Follow [course-managed first deployment](first-deployment.md); the earlier owner-provisioned instructions are superseded. Use the existing resource names with describe/update, preserve portal env/secrets, and do not create another DB or run teardown. No real deployment/C-04 is claimed by this adaptation.
+
 ## สถานะและขอบเขต
 
 เอกสารนี้เริ่มใน **Issue #14 — Prepare LoungCheu for cloud deployment** วันที่ 15 พฤศจิกายน 2026 จาก accepted Sprint 1 baseline `0853ce2d3ed7e17fcc76d47a1838a3ec4d5bdb51` (`v1.0.0-sprint-1`) และเพิ่มผล Docker ของ Issue #15 กับผล CI บน PR #23 ของ Issue #16 ภายหลัง ยังไม่อ้างว่า deploy บน GCP หรือทำ persistence proof บน GCP สำเร็จแล้ว
@@ -20,7 +22,7 @@
 | Persistence | PostgreSQL, Prisma 7 ผ่าน `@prisma/adapter-pg`; sessions ใช้ `connect-pg-simple` ใน PostgreSQL |
 | Local DB | `compose.yaml` สำหรับ PostgreSQL เดิม; `compose.docker.yaml` สำหรับ Docker app+DB ที่แยก project/volume ตาม Issue #15 |
 | Tests | Vitest, real PostgreSQL DB `loungcheu_test`, Playwright และ compiled-app smoke |
-| CI/Cloud | Issue #16 มี PR #23 เข้า `lab5-staging` และ Actions run ที่ผ่านบน commit `774d28f`; release PR เข้า `main` ยังไม่เกิด ส่วน Cloud Run, Cloud SQL, Artifact Registry, Secret Manager และ WIF ยังไม่ provision |
+| CI/Cloud | PR CI ของ #16 มีผลผ่านที่บันทึกไว้; #17 ใช้ชื่อ resource ทีม `scccd8b05` จาก kit ของ portal แล้ว แต่ **ยังไม่ตรวจสถานะ portal ว่า Resources ready หรือไม่** และยังไม่มีผล deploy/C-04; workflow deploy พักไว้สำหรับ #19 ไม่ทำงานเมื่อ push/merge เข้า main |
 
 ความต่างจาก TokTickIT: ใช้ Node 22 แทน 24, ติดตั้ง workspace จาก root, start `server.js` แทน `index.js`, login ด้วย **username + CSRF + session cookie** ไม่ใช่ email ไม่มี `/api/categories` และไม่มี admin bootstrap/password-change feature แบบตัวอย่าง จึงไม่เพิ่ม feature นั้นเพียงเพื่อใช้ kit
 
@@ -171,31 +173,45 @@ Health/readiness ไม่ต้อง login; `/api/ready` อยู่ก่อ
 
 ## GCP resources — รอ first deployment
 
+Issue #17 ปรับเป็น course-managed kit ทีม `scccd8b05` แล้วตาม [first-deployment.md](first-deployment.md) ค่าเริ่มต้นแสดงแผนโดยไม่เรียก GCP; ให้ Activate ใน portal และรอ Resources ready ไม่สร้าง billing/IAM/DB เอง ชื่อจาก kit เป็น assigned names ส่วน URL/revision/readiness ยังต้องยืนยันจาก resource จริงก่อนอ้าง C-04
+
 | รายการ | ค่าที่ตรวจยืนยันแล้ว |
 | --- | --- |
-| GCP access/project/billing | TBD — ยังไม่มีหลักฐานยืนยันในเอกสารนี้; ให้ตรวจสถานะ Issue #13 และยืนยันช่องทางกับ TA ตาม handout §4.4 |
-| Project ID / region | TBD — ยังไม่ยืนยัน |
-| Artifact Registry / image path | TBD — ยังไม่สร้างหรือยืนยัน |
-| Cloud Run service / public URL | TBD — ยังไม่ deploy ใน Issue #14 |
-| Cloud SQL instance / database / connection | TBD — ยังไม่สร้างหรือยืนยัน |
-| Runtime SA / deployer SA / WIF provider | TBD — ยังไม่สร้างหรือยืนยัน |
-| Runtime/seed secret resource names | TBD — ให้คนตั้งค่าจริงและบันทึกเฉพาะชื่อ ห้ามบันทึก secret value |
+| GCP access/project/billing | ใช้ portal รายวิชาด้วย Gmail ที่ลงทะเบียนและ project `cpe-se-course-2026`; ผู้ใช้รายงาน billingEnabled=true เมื่อ 18 พ.ย. 2026 แต่ยังไม่ตรวจสถานะ portal/เครดิตปัจจุบัน ไม่สมัคร Free Trial ใหม่ตามวิธีเก่า |
+| Project ID / region | `cpe-se-course-2026` / `asia-southeast1` ตาม kit รายวิชา |
+| Artifact Registry / image path | Assigned: `asia-southeast1-docker.pkg.dev/cpe-se-course-2026/scccd8b05/scccd8b05`; readiness ยังไม่ตรวจจริง |
+| Cloud Run service / public URL | Assigned service `scccd8b05`; URL และแอปจริงรอ describe/deploy/C-04 |
+| Cloud SQL instance / database / connection | Assigned instance `scccd8b05-pg`, DB `scccd8b05`; portal ดูแล connection secret; connectivity ยังไม่ตรวจจริง |
+| Runtime SA / deployer SA / WIF provider | ใช้ identity และ WIF variables จาก Team resources; ไม่สร้างหรือเปลี่ยน IAM เอง |
+| Runtime/seed secret resource names | `scccd8b05-database-url`, `scccd8b05-demo-password`; session ใช้ app-secret slot ที่จัดให้ ตาม first-deployment.md |
 | Running release SHA / revision | TBD — ยังไม่มีผล live verification |
 
-ก่อนเปิด resource ให้คนอ่าน gcloud commands และผล IAM/billing/DB ตาม handout §9 Agent ไม่เปลี่ยนรายการเหล่านี้เอง Budget alert เป็น recommended และไม่ใช่ spending cap
+ตรวจ/Activate เฉพาะทีมผ่าน portal ด้วย Gmail ที่ลงทะเบียน ไม่สร้าง infrastructure/IAM/DB เอง และไม่กด Activate ซ้ำระหว่างสร้างหรือเมื่อ Resources ready แล้ว ตรวจชื่อ resource จาก Team resources ก่อนใช้ describe/update; หากติดสิทธิ์ให้แจ้ง TA ตามประกาศใหม่ของรายวิชา
 
 ## Release procedure — แผนที่ต้องทำให้ใช้งานได้ในขั้น 4–7
 
 1. สร้าง Issue/branch จาก `lab5-staging` ล่าสุด ทำงานพร้อม tests เปิด PR เข้า `lab5-staging` ติด `lab5` และให้เพื่อน review แบบระบุสิ่งที่ตรวจ
 2. เมื่อ relevant build/tests ผ่านและ approvals ครบ จึง merge; เปิด release PR `lab5-staging → main` รอ checks/review อีกครั้ง ห้ามข้าม required checks
 3. First deployment ทำจาก reviewed main ผ่านขั้นตอนที่คนตรวจแล้ว ส่วน accepted releases ถัดไปต้องผ่าน deploy pipeline จาก main
-4. Pipeline ที่จะทำ: CI → build/push image full main SHA → migrate DB ด้วย image ที่ตรวจแล้ว → deploy → read-only smoke → บันทึก SHA/digest/revision/URL ถ้า migration ล้มเหลวต้องไม่ปล่อย service ใหม่
+4. #17 / Episode 5: รัน first deployment ด้วยมือจาก reviewed main ผ่าน `deploy/deploy.sh`; build/push → migrate → update → smoke และบันทึก SHA/digest/revision/URL ส่วน workflow อัตโนมัติเป็น #19 / Episode 7 และพัก trigger/jobs ไว้จนกว่าจะ review เปิดใช้งานแยก
 5. ตรวจ `/api/ready`, `/api/health` และ release version แล้วตรวจ live sign-in/domain journey; เก็บ run/PR links และผลจริง
 6. พิสูจน์ persistence แยกเหตุการณ์ restart และ redeploy ด้วย record เดิม ไม่ reset/reseed record ทดแทน
 
 Docker พร้อมและผ่าน C-03 แล้วตามหลักฐานด้านล่าง ส่วน release end-to-end ยังรอ CI บน release PR เข้า `main`, cloud และ deploy pipeline จะเติม exact deployment commands, resources และ run links หลังตรวจจริง ไม่ใช้คำอธิบายแผนนี้แทนหลักฐาน C-01–C-06
 
-Issue #16 มี [PR #23](https://github.com/jetanin/LoungCheu/pull/23) เข้า `lab5-staging`; [Actions run แรก](https://github.com/jetanin/LoungCheu/actions/runs/43740436556) ล้มเหลวตอน Prisma generation แล้ว [run หลังแก้](https://github.com/jetanin/LoungCheu/actions/runs/43741684848) ผ่านทุกขั้นบน commit `774d28f` ตาม [CI verification](ci.md) ยังต้องมี release PR เข้า `main` พร้อม CI ที่ผ่านก่อนอ้างหลักฐาน PR ทั้งสองเป้าหมายครบ ส่วนสคริปต์ `deploy/` ที่ปรับให้ตรง LoungCheu และ offline checks จะเพิ่มพร้อมงาน first deployment/release pipeline ใน Issues #17/#19 ก่อนนำไปใช้งานจริง
+Issue #16 มี [PR #23](https://github.com/jetanin/LoungCheu/pull/23) เข้า `lab5-staging`; [Actions run แรก](https://github.com/jetanin/LoungCheu/actions/runs/43740436556) ล้มเหลวตอน Prisma generation แล้ว [run หลังแก้](https://github.com/jetanin/LoungCheu/actions/runs/43741684848) ผ่านทุกขั้นบน commit `774d28f` ตาม [CI verification](ci.md) ยังต้องมี release PR เข้า `main` พร้อม CI ที่ผ่านก่อนอ้างหลักฐาน PR ทั้งสองเป้าหมายครบ ปัจจุบัน Issue #17 เพิ่มสคริปต์ `deploy/` สำหรับ first deployment และ offline checks เข้า CI แล้วตาม [first-deployment.md](first-deployment.md); ยังไม่ execute บน GCP ส่วน release pipeline เป็นงาน #19
+
+## #17: สิ่งที่ต้องทำหลัง merge ก่อนปิด Issue
+
+สถานะปัจจุบันเป็นการเตรียมและทดสอบ offline เท่านั้น ยังไม่เข้า portal เพื่อตรวจสถานะล่าสุด ไม่สรุปว่า resource ถูกสร้างแล้วหรือยังไม่สร้าง ดูลำดับ [portal/main/manual deployment](first-deployment.md#portal-resource-status-and-main-repository-review) ที่แยกจากกัน
+
+1. ให้ CI ของ head ล่าสุดใน [PR #24](https://github.com/jetanin/LoungCheu/pull/24/checks) ผ่าน และให้เพื่อน review/merge เข้า lab5-staging จากนั้น release PR เข้า main พร้อม CI/review โดยไม่ deploy อัตโนมัติ
+2. ใช้ Gmail ที่ลงทะเบียนเข้า portal ตรวจทรัพยากรทีม; ถ้ายังไม่ Activate ให้ทำครั้งเดียว ถ้ากำลังสร้างให้รอ ถ้า Resources ready แล้วไม่ Activate ซ้ำ
+3. หลังโค้ดเข้า main ให้ portal ตรวจ repo/main SHA ใหม่แยกจากสถานะ provisioning และเตรียม session-secret reference ที่ตรงกับ slot ของทีม
+4. รัน first deployment ด้วยมือจาก clean reviewed main; migration ต้องผ่านก่อน update service
+5. ทดสอบ public URL, /api/ready, login และเส้นทางใช้งานจริง/กฎหรือสิทธิ์ แล้วเติม URL, source SHA, image digest, revision, ผล smoke และภาพพร้อม caption ในเอกสาร/Issue จึงปิด #17
+
+ผล 28 tests ใน shared-course evidence เป็นผล offline ของ working tree ที่ระบุ hashes ไว้ ไม่ใช่ PR CI ของ commit ปัจจุบัน ใช้ Actions run ที่สัมพันธ์กับ head ล่าสุดใน PR checks เป็นหลักฐาน PR CI; หลัง push ทุกครั้งต้องตรวจใหม่ ไม่ใช้ผลก่อน commit แทน
 
 ## Verification ของ Issue #14 (ผลรอบก่อน)
 

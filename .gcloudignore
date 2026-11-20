@@ -1,0 +1,17 @@
+.git
+**/node_modules
+**/dist
+**/build
+**/.env
+**/.env.*
+.local
+docs
+**/*.log
+**/*.pem
+**/*.key
+**/*.p12
+**/gha-creds-*.json
+**/*service-account*.json
+.agents
+.codex
+**/__pycache__
