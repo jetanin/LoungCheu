@@ -1,8 +1,8 @@
+# Parked for Issue #19 / Guide Episode 7. Episode 5 first deployment is manual.
+# No push trigger; both jobs stay disabled until a separately reviewed #19 change.
 name: Deploy demo
 
 on:
-  push:
-    branches: [main]
   workflow_dispatch:
     inputs:
       image_tag:
@@ -20,15 +20,12 @@ concurrency:
 
 jobs:
   test:
-    if: github.ref == 'refs/heads/main' && !inputs.image_tag
+    if: ${{ false }} # #19 must explicitly enable the release workflow after manual first deployment
     uses: ./.github/workflows/ci-docker.yml
 
   deploy:
     needs: test
-    if: >-
-      always() && !cancelled() && github.ref == 'refs/heads/main' &&
-      (needs.test.result == 'success' ||
-       (github.event_name == 'workflow_dispatch' && inputs.image_tag != '' && needs.test.result == 'skipped'))
+    if: ${{ false }} # Parked: a manual dispatch must not deploy during Issue #17
     runs-on: ubuntu-latest
     timeout-minutes: 30
     environment: demo

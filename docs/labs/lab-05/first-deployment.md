@@ -2,9 +2,14 @@
 
 Status: **adapted offline for the course portal; not deployed and no C-04 evidence yet**. Use only project `cpe-se-course-2026`, region `asia-southeast1`, and team `scccd8b05`. This supersedes the earlier owner-provisioned first-deployment instructions. Keep Issue #17 open until the actual app works on its public URL and its C-04 evidence is recorded.
 
-## Portal activation comes first
+## Portal resource status and main repository review
 
-Use the registered Gmail at the course portal. Activate this team's resources once and wait for **Resources ready**. If the Lab 5 repository review sees old main `0853ce2`, it will not see Docker/CI files that exist only on staging. Integrate the reviewed code through `lab5-staging` and a release PR into `main`, then review the new main SHA in the portal. Resources-only activation can provision the database while code is being reviewed; it does not complete Lab 5 or deploy LoungCheu.
+These are separate activities. The assigned prefix/names are known from the downloaded team kit; **the team's current portal provisioning status has not been checked in this PR**. Do not infer either Resources ready or not provisioned from that kit.
+
+1. **Resource status, independent of the Git merge:** sign in to the course portal with the registered Gmail and confirm team `scccd8b05`. Check Activate & status first. If activation has never been requested, Activate once using the Lab 5 route when available, or Resources only while repository changes are reviewed. If provisioning is already in progress, wait and return later. If Resources ready, do not Activate again. Record the actual status/time from the portal in the evidence.
+2. **Code review and merge:** let the latest head of PR #24 pass CI and receive teammate review, merge into `lab5-staging`, then review/merge the release PR into `main` with passing CI. Deploy automation is parked, so this merge does not run deployment.
+3. **Repository review on main:** after the code is on main, refresh the portal's Lab 5 repository review and verify the reviewed main SHA. An earlier review of `0853ce2` cannot see files that existed only on staging. Rechecking the repo is not a reason to request resource activation twice.
+4. **Manual deployment:** only after Resources ready, required session-secret setup and a clean reviewed main checkout, preview and run the first deployment manually as below. Resources ready alone is not app deployment or C-04 evidence.
 
 The downloaded `lab5-starter-kit-scccd8b05` supplies the correct resource names and three entry-point filenames. Its remaining TokTickIT commands required adaptation: use `db:seed`, `DEMO_SEED_PASSWORD`, session-based auth, the workspace Dockerfile and LoungCheu's actual smoke interface. Do not overwrite the application's Dockerfile or `ci-docker.yml` with unrelated templates.
 
@@ -38,7 +43,7 @@ This future cloud-changing command was not run during preparation. Record only t
 export SESSION_SECRET_REF=scccd8b05-app-secret-3:2
 ```
 
-For GitHub, set the same reference as variable `SESSION_SECRET_REF` in environment `demo`; the workflow defaults to slot 1 version 1. Runtime permission to access this slot is provisioned by the course. If binding/access is denied, send the exact team secret name and error to the TA; do not modify shared-project IAM or reveal the secret.
+For GitHub, set the same reference as variable `SESSION_SECRET_REF` in environment `demo`; the workflow defaults to slot 1 version 1. Use the runtime access arranged by the course; actual slot readiness/access has not been verified by this PR. If binding/access is denied, send the exact team secret name and error to the TA; do not modify shared-project IAM or reveal the secret.
 
 ## Preview and offline tests
 
@@ -83,15 +88,15 @@ The DB URL value is owned by the portal. This application uses it in Prisma and 
 
 The startup command contains no seed/migration; those run only in the separate job. Seed preserves existing accounts and business records. A failed build/migration/smoke may leave an image/job/revision for inspection; do not reset the database or run teardown to hide a failure.
 
-## Workflow supplied for later releases (#18/#19)
+## Deploy workflow parked until Issue #19 (Episode 7)
 
-`.github/workflows/deploy.yml` retains the kit name `Deploy demo` and environment `demo`. It runs only on main, calls the existing CI first, authenticates through WIF, builds/pushes the team image, runs `release.sh`, then smoke-tests using **`--expected-commit "$IMAGE_TAG"`**. It does not claim email login or a categories endpoint. For a manual rollback, an existing full image SHA skips CI/build/migration/seed, while the service's runtime version is updated to the target SHA.
+`.github/workflows/deploy.yml` is retained as a parked draft using the kit name `Deploy demo` and environment `demo`. It has **no push trigger**, and **both jobs are guarded with `if: ${{ false }}`**, so even manual dispatch cannot authenticate, build, migrate or deploy in #17. A skipped/parked run is not deployment evidence. First deployment remains the manual `deploy/deploy.sh` procedure in Episode 5.
 
-Copy the portal's `GCP_PROJECT_ID`, `GCP_REGION`, `WIF_PROVIDER` and `WIF_SERVICE_ACCOUNT` into GitHub environment `demo` as instructed by the portal. Set the session-secret reference if different from the default. Check protected-main and environment controls in #18 before enabling real release runs. No WIF JSON key is needed. A merge to main enables the workflow's push trigger, so configure/review these settings before that merge. The workflow and WIF have only been prepared offline, not proven live by this change.
+In a separate reviewed #19 change, after manual first deployment and #18 prerequisites, configure the portal's `GCP_PROJECT_ID`, `GCP_REGION`, `WIF_PROVIDER`, `WIF_SERVICE_ACCOUNT` and session-secret reference in environment `demo`, restore main-only trigger/job conditions, then prove the normal CI → build/push → migrate → update → smoke path and rollback path. The prepared smoke command includes **`--expected-commit "$IMAGE_TAG"`**. Do not merely remove the false guard without restoring CI-success/main restrictions. No WIF JSON key is needed. Neither this parked workflow nor WIF has been proven live by this PR.
 
 ## Finish Issue #17
 
-After a successful real deployment, retain the source SHA, image digest, revision, service URL, sanitized command output and smoke result. Then manually sign in on the public URL using LoungCheu usernames such as `organizer.a` and `participant.a`, create/publish/register an event and show a rule/access rejection with URL-visible screenshots. Obtain the portal demo-secret credentials only through the course's private channel/TA if needed; do not use the kit's example email login or print the password. That is the remaining C-04 evidence. CI/merge-gate C-02, repeatable release C-06 and GCP persistence C-05 stay separate.
+These follow-up tasks may happen after the code PR/release PR is merged, but must happen before closing #17. Check/Activate the actual team resources in the portal, run first deployment manually from reviewed main, and after a successful real deployment retain the source SHA, image digest, revision, service URL, sanitized command output and smoke result. Then manually sign in on the public URL using LoungCheu usernames such as `organizer.a` and `participant.a`, create/publish/register an event and show a rule/access rejection with URL-visible screenshots. Obtain the portal demo-secret credentials only through the course's private channel/TA if needed; do not use the kit's example email login or print the password. That is the remaining C-04 evidence. CI/merge-gate C-02, repeatable release C-06 and GCP persistence C-05 stay separate.
 
 Resources ready, a preview, or a successful mocked test does not close #17. No public app success is claimed by this offline adaptation. Keep repository and service available through grading.
 
