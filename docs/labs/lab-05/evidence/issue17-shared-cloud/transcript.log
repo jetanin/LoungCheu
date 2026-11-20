@@ -1,0 +1,107 @@
+Shared-course offline verification at UTC 2026-11-20T10:34:04.268823+00:00
+Working-tree baseline: 33253af44408efd9c9c7e0e8426d2dcbede2d6cd
+Scope: cpe-se-course-2026 / asia-southeast1 / scccd8b05.
+DRY_RUN=1; IMAGE_TAG=aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
+Gcloud, registry, DB, IAM and real HTTP calls: zero. Commands in preview output are printed only.
+
+$ C:\Users\jetan\AppData\Local\Programs\Python\Python312\python.exe -m unittest discover -s deploy/tests -v
+test_branch_commit_and_dirty_tree_guards (test_first_deploy.CourseDeploymentTests.test_branch_commit_and_dirty_tree_guards) ... ok
+test_detached_github_main_checkout_is_supported (test_first_deploy.CourseDeploymentTests.test_detached_github_main_checkout_is_supported) ... ok
+test_driver_error_output_is_not_disclosed (test_first_deploy.CourseDeploymentTests.test_driver_error_output_is_not_disclosed) ... ok
+test_failed_build_does_not_migrate (test_first_deploy.CourseDeploymentTests.test_failed_build_does_not_migrate) ... ok
+test_failed_migration_does_not_update_service (test_first_deploy.CourseDeploymentTests.test_failed_migration_does_not_update_service) ... ok
+test_fixed_scope_rejects_another_project_region_or_team (test_first_deploy.CourseDeploymentTests.test_fixed_scope_rejects_another_project_region_or_team) ... ok
+test_foreign_or_incomplete_digest_is_rejected_before_mutating_job (test_first_deploy.CourseDeploymentTests.test_foreign_or_incomplete_digest_is_rejected_before_mutating_job) ... ok
+test_github_environment_contains_only_validated_deployment_metadata (test_first_deploy.CourseDeploymentTests.test_github_environment_contains_only_validated_deployment_metadata) ... ok
+test_job_uses_actual_npm_scripts_and_correct_seed_environment (test_first_deploy.CourseDeploymentTests.test_job_uses_actual_npm_scripts_and_correct_seed_environment) ... ok
+test_legacy_config_schema_is_rejected (test_first_deploy.CourseDeploymentTests.test_legacy_config_schema_is_rejected) ... ok
+test_no_receipt_when_smoke_fails (test_first_deploy.CourseDeploymentTests.test_no_receipt_when_smoke_fails) ... ok
+test_normal_deploy_builds_then_migrates_then_updates_exact_team (test_first_deploy.CourseDeploymentTests.test_normal_deploy_builds_then_migrates_then_updates_exact_team) ... ok
+test_preview_uses_no_subprocess_or_http_and_preserves_portal_settings (test_first_deploy.CourseDeploymentTests.test_preview_uses_no_subprocess_or_http_and_preserves_portal_settings) ... ok
+test_release_normal_does_not_rebuild_workflow_image (test_first_deploy.CourseDeploymentTests.test_release_normal_does_not_rebuild_workflow_image) ... ok
+test_rollback_updates_existing_image_without_build_or_migration (test_first_deploy.CourseDeploymentTests.test_rollback_updates_existing_image_without_build_or_migration) ... ok
+test_secret_reference_accepts_only_allocated_slots_and_numeric_versions (test_first_deploy.CourseDeploymentTests.test_secret_reference_accepts_only_allocated_slots_and_numeric_versions) ... ok
+test_service_sets_required_runtime_config_without_replacing_existing_settings (test_first_deploy.CourseDeploymentTests.test_service_sets_required_runtime_config_without_replacing_existing_settings) ... ok
+test_url_and_tag_injections_are_rejected (test_first_deploy.CourseDeploymentTests.test_url_and_tag_injections_are_rejected) ... ok
+test_wrong_environment_scope_fails_before_commands (test_first_deploy.CourseDeploymentTests.test_wrong_environment_scope_fails_before_commands) ... ok
+test_wrong_project_confirmation_stops_before_commands (test_first_deploy.CourseDeploymentTests.test_wrong_project_confirmation_stops_before_commands) ... ok
+test_current_api_envelope_and_read_only_paths (test_smoke.SmokeTests.test_current_api_envelope_and_read_only_paths) ... ok
+test_html_or_auth_failures_are_not_mistaken_for_json_success (test_smoke.SmokeTests.test_html_or_auth_failures_are_not_mistaken_for_json_success) ... ok
+test_network_errors_fail_after_bounded_retries (test_smoke.SmokeTests.test_network_errors_fail_after_bounded_retries) ... ok
+test_only_explicit_loopback_http_allowed_for_local_testing (test_smoke.SmokeTests.test_only_explicit_loopback_http_allowed_for_local_testing) ... ok
+test_redirects_are_not_followed (test_smoke.SmokeTests.test_redirects_are_not_followed) ... ok
+test_rejects_remote_http_credentials_paths_and_bad_commit (test_smoke.SmokeTests.test_rejects_remote_http_credentials_paths_and_bad_commit) ... ok
+test_retries_cold_start_then_succeeds (test_smoke.SmokeTests.test_retries_cold_start_then_succeeds) ... ok
+test_stale_version_fails_without_printing_body (test_smoke.SmokeTests.test_stale_version_fails_without_printing_body) ... ok
+
+----------------------------------------------------------------------
+Ran 28 tests in 0.075s
+
+OK
+[exit 0]
+
+$ C:\Users\jetan\AppData\Local\Programs\Python\Python312\python.exe deploy/first_deploy.py
+OFFLINE PLAN ONLY: zero external commands. Zero digest and example URL are placeholders, not deployment evidence.
+Portal must finish provisioning. Prepare a stable session secret in the configured team app-secret slot first.
+gcloud run services describe scccd8b05 --format=json --region=asia-southeast1 --project=cpe-se-course-2026 --quiet
+gcloud run jobs describe scccd8b05-migrate '--format=value(metadata.name)' --region=asia-southeast1 --project=cpe-se-course-2026 --quiet
+gcloud auth configure-docker asia-southeast1-docker.pkg.dev --project=cpe-se-course-2026 --quiet
+docker build --platform=linux/amd64 --tag=asia-southeast1-docker.pkg.dev/cpe-se-course-2026/scccd8b05/scccd8b05:aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa .
+docker push asia-southeast1-docker.pkg.dev/cpe-se-course-2026/scccd8b05/scccd8b05:aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
+gcloud artifacts docker images describe asia-southeast1-docker.pkg.dev/cpe-se-course-2026/scccd8b05/scccd8b05:aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa '--format=value(image_summary.fully_qualified_digest)' --project=cpe-se-course-2026 --quiet
+gcloud run jobs update scccd8b05-migrate --image=asia-southeast1-docker.pkg.dev/cpe-se-course-2026/scccd8b05/scccd8b05@sha256:0000000000000000000000000000000000000000000000000000000000000000 --update-secrets=DATABASE_URL=scccd8b05-database-url:latest,DEMO_SEED_PASSWORD=scccd8b05-demo-password:latest --update-env-vars=NODE_ENV=production --command=sh '--args=^|^-c|npm run db:migrate && npm run db:seed' --tasks=1 --parallelism=1 --max-retries=0 --task-timeout=600s --region=asia-southeast1 --project=cpe-se-course-2026 --quiet
+gcloud run jobs execute scccd8b05-migrate --wait --region=asia-southeast1 --project=cpe-se-course-2026 --quiet
+gcloud run services update scccd8b05 --image=asia-southeast1-docker.pkg.dev/cpe-se-course-2026/scccd8b05/scccd8b05@sha256:0000000000000000000000000000000000000000000000000000000000000000 --update-env-vars=NODE_ENV=production,HOST=0.0.0.0,SESSION_COOKIE_SECURE=true,APP_ORIGIN=https://scccd8b05-example-as.a.run.app,APP_VERSION=aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa --update-secrets=DATABASE_URL=scccd8b05-database-url:latest,SESSION_SECRET=scccd8b05-app-secret-1:1 --command=node --args=dist/server.js --port=3000 --min-instances=0 --max-instances=1 --memory=512Mi --cpu=1 --region=asia-southeast1 --project=cpe-se-course-2026 --quiet
+gcloud run services update-traffic scccd8b05 --to-latest --region=asia-southeast1 --project=cpe-se-course-2026 --quiet
+gcloud run services describe scccd8b05 --format=json --region=asia-southeast1 --project=cpe-se-course-2026 --quiet
+Smoke after update: python3 deploy/smoke_test.py SERVICE_URL --expected-commit aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
+[exit 0]
+
+$ "C:/Program Files/Git/bin/bash.exe" -n deploy/deploy.sh
+
+[exit 0]
+
+$ "C:/Program Files/Git/bin/bash.exe" -n deploy/release.sh
+
+[exit 0]
+
+$ "C:/Program Files/Git/bin/bash.exe" deploy/deploy.sh
+OFFLINE PLAN ONLY: zero external commands. Zero digest and example URL are placeholders, not deployment evidence.
+Portal must finish provisioning. Prepare a stable session secret in the configured team app-secret slot first.
+gcloud run services describe scccd8b05 --format=json --region=asia-southeast1 --project=cpe-se-course-2026 --quiet
+gcloud run jobs describe scccd8b05-migrate '--format=value(metadata.name)' --region=asia-southeast1 --project=cpe-se-course-2026 --quiet
+gcloud auth configure-docker asia-southeast1-docker.pkg.dev --project=cpe-se-course-2026 --quiet
+docker build --platform=linux/amd64 --tag=asia-southeast1-docker.pkg.dev/cpe-se-course-2026/scccd8b05/scccd8b05:aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa .
+docker push asia-southeast1-docker.pkg.dev/cpe-se-course-2026/scccd8b05/scccd8b05:aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
+gcloud artifacts docker images describe asia-southeast1-docker.pkg.dev/cpe-se-course-2026/scccd8b05/scccd8b05:aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa '--format=value(image_summary.fully_qualified_digest)' --project=cpe-se-course-2026 --quiet
+gcloud run jobs update scccd8b05-migrate --image=asia-southeast1-docker.pkg.dev/cpe-se-course-2026/scccd8b05/scccd8b05@sha256:0000000000000000000000000000000000000000000000000000000000000000 --update-secrets=DATABASE_URL=scccd8b05-database-url:latest,DEMO_SEED_PASSWORD=scccd8b05-demo-password:latest --update-env-vars=NODE_ENV=production --command=sh '--args=^|^-c|npm run db:migrate && npm run db:seed' --tasks=1 --parallelism=1 --max-retries=0 --task-timeout=600s --region=asia-southeast1 --project=cpe-se-course-2026 --quiet
+gcloud run jobs execute scccd8b05-migrate --wait --region=asia-southeast1 --project=cpe-se-course-2026 --quiet
+gcloud run services update scccd8b05 --image=asia-southeast1-docker.pkg.dev/cpe-se-course-2026/scccd8b05/scccd8b05@sha256:0000000000000000000000000000000000000000000000000000000000000000 --update-env-vars=NODE_ENV=production,HOST=0.0.0.0,SESSION_COOKIE_SECURE=true,APP_ORIGIN=https://scccd8b05-example-as.a.run.app,APP_VERSION=aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa --update-secrets=DATABASE_URL=scccd8b05-database-url:latest,SESSION_SECRET=scccd8b05-app-secret-1:1 --command=node --args=dist/server.js --port=3000 --min-instances=0 --max-instances=1 --memory=512Mi --cpu=1 --region=asia-southeast1 --project=cpe-se-course-2026 --quiet
+gcloud run services update-traffic scccd8b05 --to-latest --region=asia-southeast1 --project=cpe-se-course-2026 --quiet
+gcloud run services describe scccd8b05 --format=json --region=asia-southeast1 --project=cpe-se-course-2026 --quiet
+Smoke after update: python3 deploy/smoke_test.py SERVICE_URL --expected-commit aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
+[exit 0]
+
+$ "C:/Program Files/Git/bin/bash.exe" deploy/release.sh
+OFFLINE PLAN ONLY: zero external commands. Zero digest and example URL are placeholders, not deployment evidence.
+Portal must finish provisioning. Prepare a stable session secret in the configured team app-secret slot first.
+gcloud run services describe scccd8b05 --format=json --region=asia-southeast1 --project=cpe-se-course-2026 --quiet
+gcloud run jobs describe scccd8b05-migrate '--format=value(metadata.name)' --region=asia-southeast1 --project=cpe-se-course-2026 --quiet
+gcloud artifacts docker images describe asia-southeast1-docker.pkg.dev/cpe-se-course-2026/scccd8b05/scccd8b05:aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa '--format=value(image_summary.fully_qualified_digest)' --project=cpe-se-course-2026 --quiet
+gcloud run jobs update scccd8b05-migrate --image=asia-southeast1-docker.pkg.dev/cpe-se-course-2026/scccd8b05/scccd8b05@sha256:0000000000000000000000000000000000000000000000000000000000000000 --update-secrets=DATABASE_URL=scccd8b05-database-url:latest,DEMO_SEED_PASSWORD=scccd8b05-demo-password:latest --update-env-vars=NODE_ENV=production --command=sh '--args=^|^-c|npm run db:migrate && npm run db:seed' --tasks=1 --parallelism=1 --max-retries=0 --task-timeout=600s --region=asia-southeast1 --project=cpe-se-course-2026 --quiet
+gcloud run jobs execute scccd8b05-migrate --wait --region=asia-southeast1 --project=cpe-se-course-2026 --quiet
+gcloud run services update scccd8b05 --image=asia-southeast1-docker.pkg.dev/cpe-se-course-2026/scccd8b05/scccd8b05@sha256:0000000000000000000000000000000000000000000000000000000000000000 --update-env-vars=NODE_ENV=production,HOST=0.0.0.0,SESSION_COOKIE_SECURE=true,APP_ORIGIN=https://scccd8b05-example-as.a.run.app,APP_VERSION=aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa --update-secrets=DATABASE_URL=scccd8b05-database-url:latest,SESSION_SECRET=scccd8b05-app-secret-1:1 --command=node --args=dist/server.js --port=3000 --min-instances=0 --max-instances=1 --memory=512Mi --cpu=1 --region=asia-southeast1 --project=cpe-se-course-2026 --quiet
+gcloud run services update-traffic scccd8b05 --to-latest --region=asia-southeast1 --project=cpe-se-course-2026 --quiet
+gcloud run services describe scccd8b05 --format=json --region=asia-southeast1 --project=cpe-se-course-2026 --quiet
+Smoke after update: python3 deploy/smoke_test.py SERVICE_URL --expected-commit aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
+[exit 0]
+
+$ C:\Users\jetan\AppData\Local\Programs\Python\Python312\python.exe -c "from pathlib import Path; import yaml; files=['.github/workflows/ci-docker.yml','.github/workflows/deploy.yml']; [yaml.load(Path(p).read_text(),Loader=yaml.BaseLoader) for p in files]; print('Both workflow YAML files parsed; not a live GitHub run.')"
+Both workflow YAML files parsed; not a live GitHub run.
+[exit 0]
+
+$ git diff --check
+warning: in the working copy of 'deploy/first_deploy.py', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'deploy/gcp.example.json', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'deploy/tests/test_first_deploy.py', LF will be replaced by CRLF the next time Git touches it
+[exit 0]

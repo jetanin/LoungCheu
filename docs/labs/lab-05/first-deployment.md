@@ -1,95 +1,100 @@
-# Issue #17: first deployment preparation (offline)
+# Issue #17: course-managed first deployment
 
-Status: **prepared and checked offline; no GCP deployment and no C-04 evidence yet**. Branch `deploy/17-lab5-first-deployment` starts from `lab5-staging` after PR #23. Submit the work as `Part of #17`, keep #17 open, and get a teammate review. No GCP CLI command has been executed while preparing this change.
+Status: **adapted offline for the course portal; not deployed and no C-04 evidence yet**. Use only project `cpe-se-course-2026`, region `asia-southeast1`, and team `scccd8b05`. This supersedes the earlier owner-provisioned first-deployment instructions. Keep Issue #17 open until the actual app works on its public URL and its C-04 evidence is recorded.
 
-## What is implemented
+## Portal activation comes first
 
-| File | Behavior |
+Use the registered Gmail at the course portal. Activate this team's resources once and wait for **Resources ready**. If the Lab 5 repository review sees old main `0853ce2`, it will not see Docker/CI files that exist only on staging. Integrate the reviewed code through `lab5-staging` and a release PR into `main`, then review the new main SHA in the portal. Resources-only activation can provision the database while code is being reviewed; it does not complete Lab 5 or deploy LoungCheu.
+
+The downloaded `lab5-starter-kit-scccd8b05` supplies the correct resource names and three entry-point filenames. Its remaining TokTickIT commands required adaptation: use `db:seed`, `DEMO_SEED_PASSWORD`, session-based auth, the workspace Dockerfile and LoungCheu's actual smoke interface. Do not overwrite the application's Dockerfile or `ci-docker.yml` with unrelated templates.
+
+## Assigned resources
+
+| Resource | Name |
 | --- | --- |
-| `deploy/gcp.example.json` | Non-secret resource names and pinned numeric Secret Manager versions; no credential values |
-| `deploy/first_deploy.py` | Default offline plan. Future explicit execution checks reviewed clean main and prepared resources, builds an image, resolves its digest, runs a migration/seed job, then creates a private Cloud Run service |
-| `deploy/smoke_test.py` | Read-only GET checks for real LoungCheu API envelopes, ready/health DB/version, SPA login, anonymous access rejection and JSON API 404 |
-| `deploy/tests/` | Mocked gcloud/HTTP tests; no credentials, cloud resources or production database |
-| `.gcloudignore` | Excludes local secrets, dependencies, build output, keys, logs and local evidence from Cloud Build source uploads |
-| `.github/workflows/ci-docker.yml` | Runs the Python offline tests after checkout, before application checks; no GCP authentication |
+| Project / region | `cpe-se-course-2026` / `asia-southeast1` |
+| Cloud Run service | `scccd8b05` |
+| Migration job | `scccd8b05-migrate` |
+| Registry/image | `asia-southeast1-docker.pkg.dev/cpe-se-course-2026/scccd8b05/scccd8b05` |
+| Portal database secret | `scccd8b05-database-url` |
+| Portal demo-password secret | `scccd8b05-demo-password` |
+| Session-secret reference (default) | `scccd8b05-app-secret-1:1` |
 
-Python scripts use only the standard library and work from CMD, PowerShell or Linux. The example kit's shell scripts create billing-related infrastructure and IAM bindings. This adaptation deliberately leaves those steps to the owner, and does not copy TokTickIT's admin bootstrap, categories endpoint, email login or bearer-token assumptions.
+The scripts only describe exact team resources and update the existing job/service. They never list the shared project, enable APIs, create SQL/IAM/secrets, change public access or run teardown. Existing service account, Cloud SQL attachment and unrelated env/secret bindings are preserved. `--update-env-vars` and `--update-secrets` change only named entries. Credit and infrastructure are shared; do not create another database.
 
-## Do now, without GCP
+## Prepare the session secret once
 
-From the repository root:
+LoungCheu requires `SESSION_SECRET` with at least 32 private random characters. It must remain stable across releases so sessions survive. The kit's admin password is not a replacement for this secret.
+
+Use one of the five assigned app-secret slots. The default is slot 1, version 1. If that slot already contains another application secret, choose a free slot; do not overwrite or repurpose it. Use the portal Project Kit's hidden-input secret command if available, or have the TA help add the value to that exact slot. A Cloud Shell alternative, **only after confirming slot 1 is unused**, generates a value directly into Secret Manager without printing it:
+
+```bash
+python3 -c 'import secrets; print(secrets.token_hex(32))' | gcloud secrets versions add scccd8b05-app-secret-1 --data-file=- --project=cpe-se-course-2026
+```
+
+This future cloud-changing command was not run during preparation. Record only the returned version number, never the secret value. If the version is not 1 or another slot is used, set the non-secret reference before preview/deploy:
+
+```bash
+export SESSION_SECRET_REF=scccd8b05-app-secret-3:2
+```
+
+For GitHub, set the same reference as variable `SESSION_SECRET_REF` in environment `demo`; the workflow defaults to slot 1 version 1. Runtime permission to access this slot is provisioned by the course. If binding/access is denied, send the exact team secret name and error to the TA; do not modify shared-project IAM or reveal the secret.
+
+## Preview and offline tests
+
+In Bash (Cloud Shell/Git Bash), from the repository root:
+
+```bash
+python3 -m unittest discover -s deploy/tests -v
+bash -n deploy/deploy.sh
+bash -n deploy/release.sh
+DRY_RUN=1 bash deploy/deploy.sh
+```
+
+Python on Windows CMD/PowerShell works too:
 
 ```text
 python -m unittest discover -s deploy/tests -v
-git rev-parse HEAD
-python deploy/first_deploy.py --config deploy/gcp.example.json --commit FULL_40_CHARACTER_SHA_FROM_ABOVE
+python deploy/first_deploy.py
 ```
 
-Replace the last placeholder with the full Git SHA. The default plan invokes **no subprocess at all**, not even a gcloud describe. Its zero-filled image digest and example run.app URL are display placeholders; do not copy those plan commands for execution. No SDK, login, credit or network is needed for these two Python checks. The mocked execution tests additionally verify that a failed build/migration prevents service deployment and that secret values/driver errors are not printed.
-
-## Owner prerequisites after credits arrive
-
-Use the actual project approved for this course. Follow Guide Ep. 1/5 and handout guidance, reviewing billing, IAM and database commands personally before running them. The preparation script does **not** enable APIs, create IAM roles/keys, create a paid database, change DB passwords, write secret values or grant public access.
-
-Prepare and record:
-
-1. Active project/billing credit; APIs for Cloud Run, Cloud SQL Admin, Artifact Registry, Cloud Build and Secret Manager; budget alert and cost controls reviewed by the owner.
-2. A Docker-format Artifact Registry repository in the configured region and Cloud Build identity able to build/push there. Build submission and storage access permissions depend on the project's configured build identity; inspect those rather than assuming a legacy account.
-3. A running Cloud SQL PostgreSQL instance in that region, an application database/user and a compatible connection URL. The runtime identity needs Cloud SQL Client access. Use Cloud Run's `/cloudsql/PROJECT:REGION:INSTANCE` Unix socket attachment; do not point DATABASE_URL at localhost TCP inside the container.
-4. A runtime service account belonging to this project, permission for the deploying owner to act as it, and secret accessor access scoped to the required secrets. No downloaded service-account JSON keys are needed.
-5. Three **different**, enabled Secret Manager secrets, each pinned to a numeric version: the database URL, a stable random session secret (at least 32 characters), and the demo-account seed password. Only the job gets the demo password; only the service gets the session secret; both get the database URL. Do not paste secret values into Git, evidence or agent chat.
-
-For the socket URL, this application's validator requires a hostname, while the pg/Prisma connection uses the socket query parameter. A **placeholder format only** is:
-
-```text
-postgresql://DB_USER:URL_ENCODED_PASSWORD@localhost/DB_NAME?host=%2Fcloudsql%2FPROJECT%3AREGION%3AINSTANCE
-```
-
-Encode reserved username/password characters before entering the value privately in Secret Manager. Confirm the actual connection using the migration job and readiness on GCP; an offline test cannot prove Cloud SQL connectivity or IAM.
-
-Copy `deploy/gcp.example.json` to ignored `.local/gcp.json`, fill actual resource names/secret references and preview again. Never put values such as DATABASE_URL/passwords in this JSON. It must use exactly the example keys. `max_instances` defaults to 1 and accepts at most 3; database connection limits must be reviewed before raising it. The reference `:1` means the owner must set the actual existing secret version; `latest` is rejected to avoid a moving secret reference.
+The Python preview invokes no external commands and uses a zero SHA/digest and sample URL when no commit is supplied. It does not deploy or print secret values. `first_deploy.py` remains a compatibility entry point but now delegates to course-only update logic in `course_cloud.py`. Legacy arbitrary-project/owner-resource JSON configurations are rejected; `gcp.example.json` now contains the course names and secret references only.
 
 ## First deployment after review and merge to main
 
-The release to main and real GCP setup are still pending. Once prerequisites are ready, run from a **clean, reviewed main checkout** containing these scripts, and pass its exact full SHA:
+Before running: portal resources ready; session slot initialized; correct registered Gmail; clean reviewed `main` containing these scripts; Docker and gcloud available (Cloud Shell has them). In Cloud Shell, authenticate as that Gmail if necessary, select the course project and use a clean clone of reviewed main. Do not copy a local `.env` or credentials into the image.
 
-```text
-python deploy/first_deploy.py --config .local/gcp.json --commit REVIEWED_MAIN_SHA
-python deploy/first_deploy.py --config .local/gcp.json --commit REVIEWED_MAIN_SHA --execute --confirm-project ACTUAL_PROJECT_ID
+```bash
+gcloud config set project cpe-se-course-2026
+git status --short --branch
+DRY_RUN=1 bash deploy/deploy.sh
+DRY_RUN=0 bash deploy/deploy.sh
 ```
 
-The second command is a future cloud-changing action for the owner; it was **not run** for this preparation. Every gcloud call has an explicit project and resource location. Execution order:
+The last command is a real build/push/migration/service update; run it only after reviewing the plan. It was not run during preparation. The sequence is:
 
-1. Check clean main/commit, Docker repository, running regional SQL instance, runtime identity and enabled pinned secrets. Refuse an existing service: this script is for first deployment, not routine releases.
-2. Cloud Build submits the root Dockerfile and tags it with the reviewed commit. Resolve the digest and use **that exact immutable image** for both the job and service. Source upload uses `.gcloudignore`.
-3. Deploy a single-task, no-retry Cloud Run job, with the Cloud SQL attachment, and run `npm run db:migrate && npm run db:seed`. Wait for completion. A failed job stops service creation. Normal app startup does not seed/migrate.
-4. Deploy the service privately, with production mode, secure cookies, all-interface PORT 3000, min instances 0, configured max instances, and only secret references. An initial non-public bootstrap origin is replaced immediately with the canonical HTTPS origin returned by Cloud Run.
-5. Wait for the latest revision to be ready and write `.local/first-deploy-receipt.json` with project, source commit, image digest, revision and URL. The receipt explicitly says public access and smoke are pending. It is not a C-04 success certificate.
+1. Check the main source SHA and clean checkout; describe only `scccd8b05` and `scccd8b05-migrate` to obtain the existing HTTPS URL.
+2. Build the existing root Dockerfile for linux/amd64 and push a full-commit-SHA tag to the team registry using Docker. Cloud Build submission is not used.
+3. Resolve the exact team image to a validated sha256 digest. Update the existing migration job with `npm run db:migrate && npm run db:seed` and map `DEMO_SEED_PASSWORD` to the portal demo secret. Run one task with no retry and wait. A failed migration stops service update.
+4. Update the existing service with that same digest, port 3000, `node dist/server.js`, production mode, all-interface binding, secure cookies, actual `APP_ORIGIN`, `APP_VERSION` and the session secret reference. Keep other portal env/secrets unchanged. Use min instances 0 and max 1, then send traffic to the latest revision.
+5. Verify revision readiness and run the read-only smoke against the actual URL and image commit. Save a non-secret receipt in ignored `.local/course-deploy-receipt.json`. A failed smoke does not produce a successful receipt.
 
-If a command fails after a resource was created, inspect that step in Cloud Console before retrying. Do not delete the database, reseed/reset data or overwrite passwords to hide a failure. In particular, if the private service already exists after a partial attempt, inspect/fix it under a reviewed procedure; this script refuses to silently turn into an update/release tool. Automated rollback and ordinary release CI/CD belong to #19.
+The DB URL value is owned by the portal. This application uses it in Prisma and pg sessions. If readiness/migration reports an incompatible URL/socket shape, share only the sanitized error and ask the TA to verify the format; never print or copy the secret value into evidence. No app DB credentials are constructed in these scripts.
 
-## Public access, smoke and C-04 (still pending)
+The startup command contains no seed/migration; those run only in the separate job. Seed preserves existing accounts and business records. A failed build/migration/smoke may leave an image/job/revision for inspection; do not reset the database or run teardown to hide a failure.
 
-The owner must separately review and open public invocation for the intended service in Cloud Run, respecting any university project policy. The script does not grant `allUsers` or bypass the invoker IAM check. If policy blocks public access, ask the TA rather than weakening project policy.
+## Workflow supplied for later releases (#18/#19)
 
-After public access is approved, run:
+`.github/workflows/deploy.yml` retains the kit name `Deploy demo` and environment `demo`. It runs only on main, calls the existing CI first, authenticates through WIF, builds/pushes the team image, runs `release.sh`, then smoke-tests using **`--expected-commit "$IMAGE_TAG"`**. It does not claim email login or a categories endpoint. For a manual rollback, an existing full image SHA skips CI/build/migration/seed, while the service's runtime version is updated to the target SHA.
 
-```text
-python deploy/smoke_test.py https://ACTUAL_SERVICE.run.app --expected-commit REVIEWED_MAIN_SHA
-```
+Copy the portal's `GCP_PROJECT_ID`, `GCP_REGION`, `WIF_PROVIDER` and `WIF_SERVICE_ACCOUNT` into GitHub environment `demo` as instructed by the portal. Set the session-secret reference if different from the default. Check protected-main and environment controls in #18 before enabling real release runs. No WIF JSON key is needed. A merge to main enables the workflow's push trigger, so configure/review these settings before that merge. The workflow and WIF have only been prepared offline, not proven live by this change.
 
-The smoke uses only GET requests, no credentials and no login/business writes. It validates the expected deployed commit, follows no redirects, retries transient cold starts, and omits response bodies from failure output. HTTP is rejected except explicit local tests using `--allow-local-http` with `127.0.0.1`.
+## Finish Issue #17
 
-Then perform C-04 manually on the real URL: sign in, complete LoungCheu's main event/registration journey, and show one rule rejection or access restriction. Record URL-visible screenshots with captions, tested commit, Cloud Run revision/digest and command/run results. Do not show credentials. Update the resource table in deployment.md with confirmed names/URL and link this evidence before closing #17. Keep C-05 (GCP restart/redeploy persistence) and C-06 (repeatable release pipeline) separate.
+After a successful real deployment, retain the source SHA, image digest, revision, service URL, sanitized command output and smoke result. Then manually sign in on the public URL using LoungCheu usernames such as `organizer.a` and `participant.a`, create/publish/register an event and show a rule/access rejection with URL-visible screenshots. Obtain the portal demo-secret credentials only through the course's private channel/TA if needed; do not use the kit's example email login or print the password. That is the remaining C-04 evidence. CI/merge-gate C-02, repeatable release C-06 and GCP persistence C-05 stay separate.
 
-## Verification record
+Resources ready, a preview, or a successful mocked test does not close #17. No public app success is claimed by this offline adaptation. Keep repository and service available through grading.
 
-Offline test results and the exact source hashes for this uncommitted preparation are retained in [Issue #17 offline evidence](evidence/issue17-offline/README.md). They prove the plan/default guards and simulated behavior, not GCP CLI compatibility, actual IAM, Cloud SQL connectivity, a public URL or C-04. The updated GitHub workflow has not been pushed/run by this change yet.
+## Evidence
 
-## Primary references checked
-
-- [gcloud Cloud Run job deployment](https://docs.cloud.google.com/sdk/gcloud/reference/run/jobs/deploy)
-- [gcloud Cloud Run service deployment](https://docs.cloud.google.com/sdk/gcloud/reference/run/deploy)
-- [Cloud Build submission and ignore-file](https://docs.cloud.google.com/sdk/gcloud/reference/builds/submit)
-- [Artifact Registry image describe](https://docs.cloud.google.com/sdk/gcloud/reference/artifacts/docker/images/describe)
-- [Cloud SQL connection from Cloud Run](https://docs.cloud.google.com/sql/docs/postgres/connect-run)
+See [shared-course offline evidence](evidence/issue17-shared-cloud/README.md) for the actual commands/output and exact working-tree source hashes. Earlier owner-provisioned tests in `evidence/issue17-offline` are historical and do not validate this new course workflow.

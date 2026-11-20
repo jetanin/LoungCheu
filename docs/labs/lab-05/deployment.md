@@ -1,5 +1,7 @@
 # LoungCheu — Lab 5 Deployment
 
+> Current course setup (20 November 2026): use only project `cpe-se-course-2026`, region `asia-southeast1` and team `scccd8b05`. The portal provisions infrastructure/IAM. Follow [course-managed first deployment](first-deployment.md); the earlier owner-provisioned instructions are superseded. Use the existing resource names with describe/update, preserve portal env/secrets, and do not create another DB or run teardown. No real deployment/C-04 is claimed by this adaptation.
+
 ## สถานะและขอบเขต
 
 เอกสารนี้เริ่มใน **Issue #14 — Prepare LoungCheu for cloud deployment** วันที่ 15 พฤศจิกายน 2026 จาก accepted Sprint 1 baseline `0853ce2d3ed7e17fcc76d47a1838a3ec4d5bdb51` (`v1.0.0-sprint-1`) และเพิ่มผล Docker ของ Issue #15 กับผล CI บน PR #23 ของ Issue #16 ภายหลัง ยังไม่อ้างว่า deploy บน GCP หรือทำ persistence proof บน GCP สำเร็จแล้ว
@@ -171,17 +173,17 @@ Health/readiness ไม่ต้อง login; `/api/ready` อยู่ก่อ
 
 ## GCP resources — รอ first deployment
 
-Issue #17 เตรียมสคริปต์และ offline checks แล้วตาม [first-deployment.md](first-deployment.md) ค่าเริ่มต้นแสดงแผนโดยไม่เรียก GCP; billing/IAM/DB/secrets ต้องให้เจ้าของเตรียมและตรวจหลังได้เครดิต ยังไม่มี public URL หรือหลักฐาน C-04 จริง ตารางด้านล่างจึงยังเป็น TBD จนกว่าจะยืนยันบน GCP
+Issue #17 ปรับเป็น course-managed kit ทีม `scccd8b05` แล้วตาม [first-deployment.md](first-deployment.md) ค่าเริ่มต้นแสดงแผนโดยไม่เรียก GCP; ให้ Activate ใน portal และรอ Resources ready ไม่สร้าง billing/IAM/DB เอง ชื่อจาก kit เป็น assigned names ส่วน URL/revision/readiness ยังต้องยืนยันจาก resource จริงก่อนอ้าง C-04
 
 | รายการ | ค่าที่ตรวจยืนยันแล้ว |
 | --- | --- |
 | GCP access/project/billing | TBD — ยังไม่มีหลักฐานยืนยันในเอกสารนี้; ให้ตรวจสถานะ Issue #13 และยืนยันช่องทางกับ TA ตาม handout §4.4 |
-| Project ID / region | TBD — ยังไม่ยืนยัน |
-| Artifact Registry / image path | TBD — ยังไม่สร้างหรือยืนยัน |
-| Cloud Run service / public URL | TBD — ยังไม่ deploy ใน Issue #14 |
-| Cloud SQL instance / database / connection | TBD — ยังไม่สร้างหรือยืนยัน |
-| Runtime SA / deployer SA / WIF provider | TBD — ยังไม่สร้างหรือยืนยัน |
-| Runtime/seed secret resource names | TBD — ให้คนตั้งค่าจริงและบันทึกเฉพาะชื่อ ห้ามบันทึก secret value |
+| Project ID / region | `cpe-se-course-2026` / `asia-southeast1` ตาม kit รายวิชา |
+| Artifact Registry / image path | Assigned: `asia-southeast1-docker.pkg.dev/cpe-se-course-2026/scccd8b05/scccd8b05`; readiness ยังไม่ตรวจจริง |
+| Cloud Run service / public URL | Assigned service `scccd8b05`; URL และแอปจริงรอ describe/deploy/C-04 |
+| Cloud SQL instance / database / connection | Assigned instance `scccd8b05-pg`, DB `scccd8b05`; portal ดูแล connection secret; connectivity ยังไม่ตรวจจริง |
+| Runtime SA / deployer SA / WIF provider | ใช้ identity และ WIF variables จาก Team resources; ไม่สร้างหรือเปลี่ยน IAM เอง |
+| Runtime/seed secret resource names | `scccd8b05-database-url`, `scccd8b05-demo-password`; session ใช้ app-secret slot ที่จัดให้ ตาม first-deployment.md |
 | Running release SHA / revision | TBD — ยังไม่มีผล live verification |
 
 ก่อนเปิด resource ให้คนอ่าน gcloud commands และผล IAM/billing/DB ตาม handout §9 Agent ไม่เปลี่ยนรายการเหล่านี้เอง Budget alert เป็น recommended และไม่ใช่ spending cap

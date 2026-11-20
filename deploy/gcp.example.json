@@ -1,13 +1,10 @@
 {
-  "project": "your-gcp-project",
+  "project": "cpe-se-course-2026",
   "region": "asia-southeast1",
-  "repository": "loungcheu",
-  "service": "loungcheu",
-  "migration_job": "loungcheu-migrate",
-  "runtime_service_account": "loungcheu-runner@your-gcp-project.iam.gserviceaccount.com",
-  "sql_instance": "loungcheu-pg",
-  "database_secret": "loungcheu-database-url:1",
-  "session_secret": "loungcheu-session-secret:1",
-  "demo_password_secret": "loungcheu-demo-password:1",
-  "max_instances": 1
+  "repository": "scccd8b05",
+  "service": "scccd8b05",
+  "migration_job": "scccd8b05-migrate",
+  "database_secret": "scccd8b05-database-url:latest",
+  "demo_password_secret": "scccd8b05-demo-password:latest",
+  "session_secret": "scccd8b05-app-secret-1:1"
 }
