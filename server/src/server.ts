@@ -5,7 +5,7 @@ import { readConfig } from './config/env.js';
 const config = readConfig();
 const db = createDatabaseClient(config.databaseUrl);
 const runtime = await createApp(config, db);
-const server = runtime.app.listen(config.port, config.production ? '0.0.0.0' : '127.0.0.1');
+const server = runtime.app.listen(config.port, config.host);
 server.once('listening', () => console.log(`LoungCheu listening on port ${config.port}`));
 server.once('error', () => {
   console.error(`Cannot listen on port ${config.port}. Check whether another backend is running.`);

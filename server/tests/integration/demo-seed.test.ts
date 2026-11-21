@@ -5,7 +5,7 @@ import { createDatabaseClient } from '../../src/db/client.js';
 import { readTestDatabaseUrl } from '../../src/config/database-url.js';
 import { readConfig } from '../../src/config/env.js';
 import { createApp } from '../../src/app.js';
-import { seedUsers } from '../../src/modules/accounts/seed.js';
+import { resetTestUsers } from '../../../scripts/test-fixtures.js';
 import { demoEventIds, seedDemoEvents } from '../../prisma/demo-data.js';
 
 const url = readTestDatabaseUrl(process.env.TEST_DATABASE_URL), db = createDatabaseClient(url);
@@ -22,7 +22,7 @@ async function login(username: string) {
 beforeAll(async () => {
   if (await db.event.count({ where: { id: { in: ids } } })) throw new Error('Demo seed test namespace is occupied; preserving existing test data');
   ownsFixtures = true;
-  await seedUsers(db, password);
+  await resetTestUsers(db, password);
   runtime = await createApp(readConfig({ DATABASE_URL: url, SESSION_SECRET: randomBytes(48).toString('hex'), NODE_ENV: 'test', APP_ORIGIN: 'http://127.0.0.1:5173' }), db, () => now.getTime());
 });
 afterEach(async () => {

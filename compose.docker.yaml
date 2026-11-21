@@ -1,0 +1,70 @@
+# Isolated local stack; does not replace compose.yaml or publish a PostgreSQL port.
+name: loungcheu-lab5
+services:
+  db:
+    image: postgres:17-alpine
+    environment:
+      POSTGRES_USER: loungcheu
+      POSTGRES_PASSWORD: ${DOCKER_DB_PASSWORD:?Set DOCKER_DB_PASSWORD privately}
+      POSTGRES_DB: loungcheu
+    volumes:
+      - lab5-db-data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U $$POSTGRES_USER -d $$POSTGRES_DB"]
+      interval: 2s
+      timeout: 3s
+      retries: 30
+
+  migrate:
+    image: loungcheu-lab5-app
+    build:
+      context: .
+      target: production
+    depends_on:
+      db:
+        condition: service_healthy
+    environment:
+      DATABASE_URL: postgresql://loungcheu:${DOCKER_DB_PASSWORD:?Set DOCKER_DB_PASSWORD privately}@db:5432/loungcheu
+      DEMO_SEED_PASSWORD: ${DOCKER_DEMO_PASSWORD:?Set DOCKER_DEMO_PASSWORD privately}
+    command: ["sh", "-c", "npm run db:migrate && npm run db:seed"]
+    restart: "no"
+
+  server:
+    image: loungcheu-lab5-app
+    build:
+      context: .
+      target: production
+    depends_on:
+      migrate:
+        condition: service_completed_successfully
+    # Local HTTP only; production image defaults and HTTPS validation remain intact.
+    environment:
+      NODE_ENV: development
+      HOST: 0.0.0.0
+      PORT: 3000
+      DATABASE_URL: postgresql://loungcheu:${DOCKER_DB_PASSWORD:?Set DOCKER_DB_PASSWORD privately}@db:5432/loungcheu
+      SESSION_SECRET: ${DOCKER_SESSION_SECRET:?Set DOCKER_SESSION_SECRET privately}
+      SESSION_COOKIE_SECURE: "false"
+      APP_ORIGIN: http://127.0.0.1:${DOCKER_WEB_PORT:-5173}
+      APP_VERSION: ${APP_VERSION:-local-docker}
+    ports:
+      - "127.0.0.1:${DOCKER_API_PORT:-3000}:3000"
+    healthcheck:
+      test: ["CMD", "node", "-e", "fetch('http://127.0.0.1:3000/api/ready').then(r=>process.exit(r.ok?0:1)).catch(()=>process.exit(1))"]
+      interval: 5s
+      timeout: 5s
+      retries: 20
+      start_period: 10s
+
+  client:
+    build:
+      context: .
+      target: client
+    depends_on:
+      server:
+        condition: service_healthy
+    ports:
+      - "127.0.0.1:${DOCKER_WEB_PORT:-5173}:80"
+
+volumes:
+  lab5-db-data:

@@ -1,0 +1,308 @@
+{
+  "check": "C-03",
+  "requirements": [
+    "R-01",
+    "R-02"
+  ],
+  "result": "PASS",
+  "testedCommit": "54fd6603594a7a2e0327aad93624796b61903cc5",
+  "dateBangkok": "2026-11-15",
+  "source": "https://github.com/jetanin/LoungCheu.git",
+  "branch": "build/15-lab5-docker",
+  "cleanClonePath": "C:\\Users\\jetan\\.codex\\worktrees\\lab5-docker-15\\LoungCheu\\.local\\c03-20261115-r2\\clean-clone",
+  "composeProject": "c03-20261115-54fd660-r2",
+  "webUrl": "http://127.0.0.1:5195",
+  "apiUrl": "http://127.0.0.1:3025",
+  "imageId": "sha256:f7edf00a93b941ed4ee917a88b84cee9998c8c6c6bb06a9992ff482e5ebf0c28",
+  "absentBeforeSetup": {
+    "node_modules": true,
+    "server/node_modules": true,
+    "client/node_modules": true,
+    "server/dist": true,
+    "client/dist": true,
+    "server/.env": true,
+    ".env.docker": true,
+    ".local/docker-smoke.json": true
+  },
+  "workingTreeCleanAfterVerification": true,
+  "commands": [
+    {
+      "command": [
+        "git",
+        "clone",
+        "--single-branch",
+        "--branch",
+        "build/15-lab5-docker",
+        "https://github.com/jetanin/LoungCheu.git",
+        "C:\\Users\\jetan\\.codex\\worktrees\\lab5-docker-15\\LoungCheu\\.local\\c03-20261115-r2\\clean-clone"
+      ],
+      "exitCode": 0,
+      "seconds": 1.64
+    },
+    {
+      "command": [
+        "git",
+        "rev-parse",
+        "HEAD"
+      ],
+      "exitCode": 0,
+      "seconds": 0.03
+    },
+    {
+      "command": [
+        "git",
+        "status",
+        "--porcelain=v1",
+        "--untracked-files=all"
+      ],
+      "exitCode": 0,
+      "seconds": 0.08
+    },
+    {
+      "command": [
+        "node",
+        "--version"
+      ],
+      "exitCode": 0,
+      "seconds": 0.02
+    },
+    {
+      "command": [
+        "docker",
+        "--version"
+      ],
+      "exitCode": 0,
+      "seconds": 0.05
+    },
+    {
+      "command": [
+        "docker",
+        "compose",
+        "version"
+      ],
+      "exitCode": 0,
+      "seconds": 0.12
+    },
+    {
+      "command": [
+        "node",
+        "scripts/setup-docker-env.mjs"
+      ],
+      "exitCode": 0,
+      "seconds": 0.06
+    },
+    {
+      "command": [
+        "git",
+        "check-ignore",
+        ".env.docker"
+      ],
+      "exitCode": 0,
+      "seconds": 0.03
+    },
+    {
+      "command": [
+        "docker",
+        "compose",
+        "-p",
+        "c03-20261115-54fd660-r2",
+        "--env-file",
+        ".env.docker",
+        "-f",
+        "compose.docker.yaml",
+        "config",
+        "--quiet"
+      ],
+      "exitCode": 0,
+      "seconds": 0.14
+    },
+    {
+      "command": [
+        "docker",
+        "compose",
+        "-p",
+        "c03-20261115-54fd660-r2",
+        "--env-file",
+        ".env.docker",
+        "-f",
+        "compose.docker.yaml",
+        "build",
+        "--no-cache",
+        "--pull",
+        "server",
+        "client"
+      ],
+      "exitCode": 0,
+      "seconds": 47.1
+    },
+    {
+      "command": [
+        "docker",
+        "compose",
+        "-p",
+        "c03-20261115-54fd660-r2",
+        "--env-file",
+        ".env.docker",
+        "-f",
+        "compose.docker.yaml",
+        "up",
+        "--no-build",
+        "-d",
+        "--wait"
+      ],
+      "exitCode": 0,
+      "seconds": 13.08
+    },
+    {
+      "command": [
+        "docker",
+        "compose",
+        "-p",
+        "c03-20261115-54fd660-r2",
+        "--env-file",
+        ".env.docker",
+        "-f",
+        "compose.docker.yaml",
+        "ps",
+        "-a"
+      ],
+      "exitCode": 0,
+      "seconds": 0.19
+    },
+    {
+      "command": [
+        "docker",
+        "compose",
+        "-p",
+        "c03-20261115-54fd660-r2",
+        "--env-file",
+        ".env.docker",
+        "-f",
+        "compose.docker.yaml",
+        "logs",
+        "--no-color",
+        "migrate"
+      ],
+      "exitCode": 0,
+      "seconds": 0.17
+    },
+    {
+      "command": [
+        "node",
+        "scripts/smoke-docker.mjs",
+        "create"
+      ],
+      "exitCode": 0,
+      "seconds": 0.36
+    },
+    {
+      "command": [
+        "docker",
+        "compose",
+        "-p",
+        "c03-20261115-54fd660-r2",
+        "--env-file",
+        ".env.docker",
+        "-f",
+        "compose.docker.yaml",
+        "down"
+      ],
+      "exitCode": 0,
+      "seconds": 1.6
+    },
+    {
+      "command": [
+        "docker",
+        "compose",
+        "-p",
+        "c03-20261115-54fd660-r2",
+        "--env-file",
+        ".env.docker",
+        "-f",
+        "compose.docker.yaml",
+        "up",
+        "--no-build",
+        "-d",
+        "--wait"
+      ],
+      "exitCode": 0,
+      "seconds": 12.02
+    },
+    {
+      "command": [
+        "node",
+        "scripts/smoke-docker.mjs",
+        "verify"
+      ],
+      "exitCode": 0,
+      "seconds": 0.29
+    },
+    {
+      "command": [
+        "docker",
+        "compose",
+        "-p",
+        "c03-20261115-54fd660-r2",
+        "--env-file",
+        ".env.docker",
+        "-f",
+        "compose.docker.yaml",
+        "ps",
+        "-a"
+      ],
+      "exitCode": 0,
+      "seconds": 0.17
+    },
+    {
+      "command": [
+        "docker",
+        "image",
+        "inspect",
+        "--format",
+        "{{.Id}}",
+        "loungcheu-lab5-app"
+      ],
+      "exitCode": 0,
+      "seconds": 0.09
+    },
+    {
+      "command": [
+        "git",
+        "status",
+        "--porcelain=v1",
+        "--untracked-files=all"
+      ],
+      "exitCode": 0,
+      "seconds": 0.08
+    },
+    {
+      "command": [
+        "docker",
+        "compose",
+        "-p",
+        "c03-20261115-54fd660-r2",
+        "--env-file",
+        ".env.docker",
+        "-f",
+        "compose.docker.yaml",
+        "down"
+      ],
+      "exitCode": 0,
+      "seconds": 1.52
+    }
+  ],
+  "sourceFileSHA256": {
+    "Dockerfile": "0b98ea02f7772786a8cf86a5ba9040fcf172f4105fd2da9c2eb7970f0b53d579",
+    ".dockerignore": "6799d06bd4ec3b3c08a45a05198b37f5bff52e22c68d891dd1a02bce2f68ccdd",
+    "package-lock.json": "d79e2f996b56a1e99998b6f27af8bb3dceded9c4fed508ba8705f86501ddd9a9",
+    "compose.docker.yaml": "5ef66c1971ee710e1314684a8352eba163b6b8fa524ad63f3620ef06697a97af",
+    "server/prisma/schema.prisma": "e212b9060a5e5198ec1a8b8fc522249ec07e52172f051f99d8228bd822fcb368"
+  },
+  "record": {
+    "eventId": "ae47cf66-3b83-4e0c-a4a9-8babff8962ec",
+    "title": "Docker persistence 56a5e3b6-7825-4f42-a477-1c7d65b30f4e",
+    "registrationId": "1ff07f13-734a-4ee8-b196-898eaaeb5325"
+  },
+  "transcriptSHA256": "a24851e734bbe2a4b82e0bf303c4499d757ec5619270a127f72741d4489f1724",
+  "scope": "Local Docker C-03; not GCP C-04/C-05/C-06; test containers stopped without deleting the volume."
+}

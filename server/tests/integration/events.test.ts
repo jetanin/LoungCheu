@@ -6,7 +6,7 @@ import { createDatabaseClient } from '../../src/db/client.js';
 import { createApp, SESSION_MS } from '../../src/app.js';
 import { readConfig } from '../../src/config/env.js';
 import { readTestDatabaseUrl } from '../../src/config/database-url.js';
-import { seedUsers } from '../../src/modules/accounts/seed.js';
+import { resetTestUsers } from '../../../scripts/test-fixtures.js';
 
 const url = readTestDatabaseUrl(process.env.TEST_DATABASE_URL);
 const db = createDatabaseClient(url), pool = new Pool({ connectionString: url });
@@ -35,7 +35,7 @@ async function fixture(data: Record<string, unknown> = {}) {
     startsAt: new Date(t0 + 7200000), endsAt: new Date(t0 + 10800000), registrationClosesAt: new Date(t0 + 3600000), createdAt: new Date(t0), ...data } });
 }
 beforeAll(async () => {
-  await seedUsers(db, password);
+  await resetTestUsers(db, password);
   owner = (await db.user.findUniqueOrThrow({ where: { username: 'organizer.a' } })).id;
   participant = (await db.user.findUniqueOrThrow({ where: { username: 'participant.a' } })).id;
   runtime = await createApp(appConfig, db, () => clock);

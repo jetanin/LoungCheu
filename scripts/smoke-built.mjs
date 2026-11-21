@@ -15,7 +15,9 @@ try {
   assert.match(html.text, /<div id="root">/);
   const health = await request(runtime.app).get('/api/health').expect(200);
   assert.equal(health.body.data.version, 'working-tree-smoke');
+  const ready = await request(runtime.app).get('/api/ready').expect(200);
+  assert.deepEqual(ready.body.data, { status: 'ready', db: 'connected', version: 'working-tree-smoke' });
   const missing = await request(runtime.app).get('/api/missing').expect(404).expect('Content-Type', /json/);
   assert.equal(missing.body.error.code, 'ROUTE_NOT_FOUND');
-  console.log('Built production app smoke: SPA /login, database health/version, unknown API JSON 404: 3 passed.');
+  console.log('Built production app smoke: SPA /login, database health/version, readiness, unknown API JSON 404: 4 passed.');
 } finally { await runtime.close(); await db.$disconnect(); }
