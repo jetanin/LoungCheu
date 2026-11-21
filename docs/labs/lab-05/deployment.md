@@ -1,10 +1,10 @@
 # LoungCheu — Lab 5 Deployment
 
-> Current course setup (20 November 2026): use only project `cpe-se-course-2026`, region `asia-southeast1` and team `scccd8b05`. The portal provisions infrastructure/IAM. Follow [course-managed first deployment](first-deployment.md); the earlier owner-provisioned instructions are superseded. Use the existing resource names with describe/update, preserve portal env/secrets, and do not create another DB or run teardown. No real deployment/C-04 is claimed by this adaptation.
+> Current course setup (21 November 2026): use only project `cpe-se-course-2026`, region `asia-southeast1` and team `scccd8b05`. The portal provisions infrastructure/IAM. Follow [course-managed first deployment](first-deployment.md); the earlier owner-provisioned instructions are superseded. Use the existing resource names with describe/update, preserve portal env/secrets, and do not create another DB or run teardown. Manual deployment/smoke now passed; operator-reported business journeys passed. C-04 capture remains incomplete; see the live record below.
 
 ## สถานะและขอบเขต
 
-เอกสารนี้เริ่มใน **Issue #14 — Prepare LoungCheu for cloud deployment** วันที่ 15 พฤศจิกายน 2026 จาก accepted Sprint 1 baseline `0853ce2d3ed7e17fcc76d47a1838a3ec4d5bdb51` (`v1.0.0-sprint-1`) และเพิ่มผล Docker ของ Issue #15 กับผล CI บน PR #23 ของ Issue #16 ภายหลัง ยังไม่อ้างว่า deploy บน GCP หรือทำ persistence proof บน GCP สำเร็จแล้ว
+เอกสารนี้เริ่มใน **Issue #14 — Prepare LoungCheu for cloud deployment** วันที่ 15 พฤศจิกายน 2026 จาก accepted Sprint 1 baseline `0853ce2d3ed7e17fcc76d47a1838a3ec4d5bdb51` (`v1.0.0-sprint-1`) และเพิ่มผล Docker ของ Issue #15 กับผล CI บน PR #23 ของ Issue #16 ภายหลัง ปัจจุบันมีผล manual deployment และ smoke บน GCP แล้วตามหลักฐานรอบจริงด้านล่าง ส่วน GCP persistence proof ยังไม่ทำ
 
 เส้นทาง branch: งานของแต่ละ Issue → reviewed PR เข้า `lab5-staging` → release PR เข้า `main` ผู้เขียน PR ต้องให้เพื่อน review ไม่ approve ตัวเอง Issues/PRs ใช้ label `lab5` และ project board; Issue #14 ใช้ `refactor/14-lab5-cloud-ready`
 
@@ -22,7 +22,7 @@
 | Persistence | PostgreSQL, Prisma 7 ผ่าน `@prisma/adapter-pg`; sessions ใช้ `connect-pg-simple` ใน PostgreSQL |
 | Local DB | `compose.yaml` สำหรับ PostgreSQL เดิม; `compose.docker.yaml` สำหรับ Docker app+DB ที่แยก project/volume ตาม Issue #15 |
 | Tests | Vitest, real PostgreSQL DB `loungcheu_test`, Playwright และ compiled-app smoke |
-| CI/Cloud | PR CI ของ #16 มีผลผ่านที่บันทึกไว้; #17 ใช้ชื่อ resource ทีม `scccd8b05` จาก kit ของ portal แล้ว แต่ **ยังไม่ตรวจสถานะ portal ว่า Resources ready หรือไม่** และยังไม่มีผล deploy/C-04; workflow deploy พักไว้สำหรับ #19 ไม่ทำงานเมื่อ push/merge เข้า main |
+| CI/Cloud | PR #24 → `lab5-staging` และ PR #25 → `main` merge แล้วพร้อม CI ผ่านตรง head; manual migration/smoke ผ่านและผู้ใช้รายงาน business journeys ผ่าน; C-04 metadata/screenshots ยังเก็บไม่ครบ; automation ยังพักไว้สำหรับ #19 |
 
 ความต่างจาก TokTickIT: ใช้ Node 22 แทน 24, ติดตั้ง workspace จาก root, start `server.js` แทน `index.js`, login ด้วย **username + CSRF + session cookie** ไม่ใช่ email ไม่มี `/api/categories` และไม่มี admin bootstrap/password-change feature แบบตัวอย่าง จึงไม่เพิ่ม feature นั้นเพียงเพื่อใช้ kit
 
@@ -65,7 +65,7 @@ Tests/E2E ใช้ `scripts/test-fixtures.ts` แยกจาก production see
 | `APP_VERSION` | release identifier, default `local`; cloud ต้องเป็น full deployed main SHA | ไม่ | local env; release pipeline inject ตาม image |
 | `DEMO_SEED_PASSWORD` | ต้องมีเมื่อ seed/local auth smoke; ไม่จำเป็นต่อ server startup | ใช่ | private env / secret เฉพาะ migration/seed job ที่จำเป็น |
 
-Encode reserved characters ใน username/password ของ DATABASE_URL ให้ถูกต้อง production ต้องมี DB ที่เข้าถึงได้จากทั้ง Prisma adapter และ `pg` session Pool วิธี Cloud SQL socket/connection string จะเติมหลังเลือกและทดสอบจริงใน first deployment ไม่ใช้ local credentials บน cloud
+Encode reserved characters ใน username/password ของ DATABASE_URL ให้ถูกต้อง production ต้องมี DB ที่เข้าถึงได้จากทั้ง Prisma adapter และ `pg` session Pool live migration และ readiness ยืนยันการเชื่อม DB แล้ว; เก็บ reference ของ portal แทนการเผย connection string ไม่ใช้ local credentials บน cloud
 
 ### Test และ development tooling
 
@@ -171,47 +171,38 @@ Health/readiness ไม่ต้อง login; `/api/ready` อยู่ก่อ
 
 หลัง deploy ให้เทียบ `data.version` กับ **main SHA ของ image ที่ deploy จริง**, pipeline run และ Cloud Run revision/image digest เมื่อ rollback ต้องใช้ version ของ image เก่า ไม่ใช่ SHA ของ workflow ที่กด rollback
 
-## GCP resources — รอ first deployment
+## GCP resources — manual first deployment recorded
 
-Issue #17 ปรับเป็น course-managed kit ทีม `scccd8b05` แล้วตาม [first-deployment.md](first-deployment.md) ค่าเริ่มต้นแสดงแผนโดยไม่เรียก GCP; ให้ Activate ใน portal และรอ Resources ready ไม่สร้าง billing/IAM/DB เอง ชื่อจาก kit เป็น assigned names ส่วน URL/revision/readiness ยังต้องยืนยันจาก resource จริงก่อนอ้าง C-04
+## Live deployment record — 21 November 2026
 
-| รายการ | ค่าที่ตรวจยืนยันแล้ว |
+The first manual deployment is reachable at [https://scccd8b05-4d7hbszvwq-as.a.run.app](https://scccd8b05-4d7hbszvwq-as.a.run.app) ([login](https://scccd8b05-4d7hbszvwq-as.a.run.app/login)). This record separates independently collected public/GitHub results from the operator's Cloud Shell output and browser test reports. It does not claim a live automatic deployment pipeline.
+
+| Check | Actual evidence / remaining limitation |
 | --- | --- |
-| GCP access/project/billing | ใช้ portal รายวิชาด้วย Gmail ที่ลงทะเบียนและ project `cpe-se-course-2026`; ผู้ใช้รายงาน billingEnabled=true เมื่อ 18 พ.ย. 2026 แต่ยังไม่ตรวจสถานะ portal/เครดิตปัจจุบัน ไม่สมัคร Free Trial ใหม่ตามวิธีเก่า |
-| Project ID / region | `cpe-se-course-2026` / `asia-southeast1` ตาม kit รายวิชา |
-| Artifact Registry / image path | Assigned: `asia-southeast1-docker.pkg.dev/cpe-se-course-2026/scccd8b05/scccd8b05`; readiness ยังไม่ตรวจจริง |
-| Cloud Run service / public URL | Assigned service `scccd8b05`; URL และแอปจริงรอ describe/deploy/C-04 |
-| Cloud SQL instance / database / connection | Assigned instance `scccd8b05-pg`, DB `scccd8b05`; portal ดูแล connection secret; connectivity ยังไม่ตรวจจริง |
-| Runtime SA / deployer SA / WIF provider | ใช้ identity และ WIF variables จาก Team resources; ไม่สร้างหรือเปลี่ยน IAM เอง |
-| Runtime/seed secret resource names | `scccd8b05-database-url`, `scccd8b05-demo-password`; session ใช้ app-secret slot ที่จัดให้ ตาม first-deployment.md |
-| Running release SHA / revision | TBD — ยังไม่มีผล live verification |
+| Portal Resources ready time | Not recorded. Successful job/service operations do not establish when the portal displayed Resources ready. Do not Activate again merely to collect this timestamp. |
+| Portal repository review | Operator screenshot reviewed main `87c77af07bfbb7f2b4e0d9ada4b69cd79a5c6b5f`; timestamp not captured. The Starter Kit layout warning is not a deployment failure. |
+| Merge sequence | [PR #24](https://github.com/jetanin/LoungCheu/pull/24) merged into `lab5-staging` at 2026-11-20 23:18:57 +07; merge `5a6b3b5445c47fb56d2a97c1a007c314003a1070`. [PR #25](https://github.com/jetanin/LoungCheu/pull/25) merged into `main` at 2026-11-21 13:42:42 +07; merge `87c77af07bfbb7f2b4e0d9ada4b69cd79a5c6b5f`. |
+| Release identification | Public `/api/ready` independently returned HTTP 200, `status=ready`, `db=connected`, `version=87c77af07bfbb7f2b4e0d9ada4b69cd79a5c6b5f`; see [raw response](evidence/issue17-live-20261121/readiness.json). This confirms the app's reported APP_VERSION, not an independently verified image/source binding. |
+| Migration + seed | Operator reported successful execution [`scccd8b05-migrate-cbp4k`](https://console.cloud.google.com/run/jobs/executions/details/asia-southeast1/scccd8b05-migrate-cbp4k?project=670075229477), 1/1 complete. Command: `npm run db:migrate && npm run db:seed`. |
+| Completion time | Operator supplied `2026-11-21T12:05:47.291764Z` (19:05:47.291764 +07); association with the execution above awaits describe output. This is not the portal-ready or service deployment timestamp. |
+| Session secret | Operator's command returned `Created version [1] of the secret [scccd8b05-app-secret-1]`. Intended runtime reference: `scccd8b05-app-secret-1:1`; no secret value retained. |
+| Smoke | Operator output: PASS `/api/ready`, `/api/health`, `/login`, `/api/events`, `/api/not-a-real-route`; command `python3 deploy/smoke_test.py "$SERVICE_URL" --expected-commit "$SHA"`. Exact shell variable values were not printed in that transcript. |
+| Manual business journey | Operator confirmed organizer login/create/publish PASS; participant view/register PASS; inactive account login rejected. Earlier login problem was reported; operator later confirmed normal use. Resolution details and screenshots have not been supplied. |
+| Revision / immutable image | Operator described `scccd8b05-00002-72x`; spec image and status.imageDigest agree on `sha256:d5a94a9d6a6f1cbd9ce93789d1f0bcf4af15062f56ca9ca523a1dd80c7a0f5b1`; see [revision output](evidence/issue17-live-20261121/revision.yaml). Service traffic/latestReadyRevisionName output remains outstanding. |
+| C-04 screenshots | Awaiting public URL/login, business journey, rejection and Cloud Run/resource screenshots with no credentials. |
 
-ตรวจ/Activate เฉพาะทีมผ่าน portal ด้วย Gmail ที่ลงทะเบียน ไม่สร้าง infrastructure/IAM/DB เอง และไม่กด Activate ซ้ำระหว่างสร้างหรือเมื่อ Resources ready แล้ว ตรวจชื่อ resource จาก Team resources ก่อนใช้ describe/update; หากติดสิทธิ์ให้แจ้ง TA ตามประกาศใหม่ของรายวิชา
+The real procedure used individual Cloud Shell commands: Docker build/push with a commit tag, update the existing migration job with portal DB/demo-password secret references, execute with `--wait`, add session-secret version 1, update the existing service with DB/session references, port 3000, production/origin/version settings, move traffic to latest, and smoke-test. The operator has supplied revision/digest output but not a complete command transcript or traffic mapping yet; do not present the offline receipt as this deployment's receipt.
 
-## Release procedure — แผนที่ต้องทำให้ใช้งานได้ในขั้น 4–7
+See the [live evidence index and C-04 checklist](evidence/issue17-live-20261121/README.md) and [Issue #17](https://github.com/jetanin/LoungCheu/issues/17). Issue #17 remains open while the evidence fields/screenshots are incomplete. #18 merge-gate/WIF proof, #19 automation/rollback and #20 persistence/report work are outside this change.
 
-1. สร้าง Issue/branch จาก `lab5-staging` ล่าสุด ทำงานพร้อม tests เปิด PR เข้า `lab5-staging` ติด `lab5` และให้เพื่อน review แบบระบุสิ่งที่ตรวจ
-2. เมื่อ relevant build/tests ผ่านและ approvals ครบ จึง merge; เปิด release PR `lab5-staging → main` รอ checks/review อีกครั้ง ห้ามข้าม required checks
-3. First deployment ทำจาก reviewed main ผ่านขั้นตอนที่คนตรวจแล้ว ส่วน accepted releases ถัดไปต้องผ่าน deploy pipeline จาก main
-4. #17 / Episode 5: รัน first deployment ด้วยมือจาก reviewed main ผ่าน `deploy/deploy.sh`; build/push → migrate → update → smoke และบันทึก SHA/digest/revision/URL ส่วน workflow อัตโนมัติเป็น #19 / Episode 7 และพัก trigger/jobs ไว้จนกว่าจะ review เปิดใช้งานแยก
-5. ตรวจ `/api/ready`, `/api/health` และ release version แล้วตรวจ live sign-in/domain journey; เก็บ run/PR links และผลจริง
-6. พิสูจน์ persistence แยกเหตุการณ์ restart และ redeploy ด้วย record เดิม ไม่ reset/reseed record ทดแทน
+## Deployment history and remaining Issue #17 evidence
 
-Docker พร้อมและผ่าน C-03 แล้วตามหลักฐานด้านล่าง ส่วน release end-to-end ยังรอ CI บน release PR เข้า `main`, cloud และ deploy pipeline จะเติม exact deployment commands, resources และ run links หลังตรวจจริง ไม่ใช้คำอธิบายแผนนี้แทนหลักฐาน C-01–C-06
-
-Issue #16 มี [PR #23](https://github.com/jetanin/LoungCheu/pull/23) เข้า `lab5-staging`; [Actions run แรก](https://github.com/jetanin/LoungCheu/actions/runs/43740436556) ล้มเหลวตอน Prisma generation แล้ว [run หลังแก้](https://github.com/jetanin/LoungCheu/actions/runs/43741684848) ผ่านทุกขั้นบน commit `774d28f` ตาม [CI verification](ci.md) ยังต้องมี release PR เข้า `main` พร้อม CI ที่ผ่านก่อนอ้างหลักฐาน PR ทั้งสองเป้าหมายครบ ปัจจุบัน Issue #17 เพิ่มสคริปต์ `deploy/` สำหรับ first deployment และ offline checks เข้า CI แล้วตาม [first-deployment.md](first-deployment.md); ยังไม่ execute บน GCP ส่วน release pipeline เป็นงาน #19
-
-## #17: สิ่งที่ต้องทำหลัง merge ก่อนปิด Issue
-
-สถานะปัจจุบันเป็นการเตรียมและทดสอบ offline เท่านั้น ยังไม่เข้า portal เพื่อตรวจสถานะล่าสุด ไม่สรุปว่า resource ถูกสร้างแล้วหรือยังไม่สร้าง ดูลำดับ [portal/main/manual deployment](first-deployment.md#portal-resource-status-and-main-repository-review) ที่แยกจากกัน
-
-1. ให้ CI ของ head ล่าสุดใน [PR #24](https://github.com/jetanin/LoungCheu/pull/24/checks) ผ่าน และให้เพื่อน review/merge เข้า lab5-staging จากนั้น release PR เข้า main พร้อม CI/review โดยไม่ deploy อัตโนมัติ
-2. ใช้ Gmail ที่ลงทะเบียนเข้า portal ตรวจทรัพยากรทีม; ถ้ายังไม่ Activate ให้ทำครั้งเดียว ถ้ากำลังสร้างให้รอ ถ้า Resources ready แล้วไม่ Activate ซ้ำ
-3. หลังโค้ดเข้า main ให้ portal ตรวจ repo/main SHA ใหม่แยกจากสถานะ provisioning และเตรียม session-secret reference ที่ตรงกับ slot ของทีม
-4. รัน first deployment ด้วยมือจาก clean reviewed main; migration ต้องผ่านก่อน update service
-5. ทดสอบ public URL, /api/ready, login และเส้นทางใช้งานจริง/กฎหรือสิทธิ์ แล้วเติม URL, source SHA, image digest, revision, ผล smoke และภาพพร้อม caption ในเอกสาร/Issue จึงปิด #17
-
-ผล 28 tests ใน shared-course evidence เป็นผล offline ของ working tree ที่ระบุ hashes ไว้ ไม่ใช่ PR CI ของ commit ปัจจุบัน ใช้ Actions run ที่สัมพันธ์กับ head ล่าสุดใน PR checks เป็นหลักฐาน PR CI; หลัง push ทุกครั้งต้องตรวจใหม่ ไม่ใช้ผลก่อน commit แทน
+- The automatic [run 44882261079](https://github.com/jetanin/LoungCheu/actions/runs/44882261079) on `49aa64543a3c5a3f6f4f46b37a6e6a59b65e05a4` **failed**. Earlier migration execution `scccd8b05-migrate-8qszm` also failed. Neither is successful first-deployment evidence; the underlying error was not supplied.
+- `21ef6543c2c495e773ab89dd6f002dbe45c10286` subsequently changed the workflow to manual triggering. Later, at the operator's request, both workflow edits were removed from main history with a guarded force update back to `87c77af07bfbb7f2b4e0d9ada4b69cd79a5c6b5f`; backup branch `codex/backup-main-before-remove-deploy` retains them. Current main's deploy draft has no push trigger and disabled jobs. A failure or skipped run does not establish a successful deployment.
+- PR #24 → `lab5-staging` and PR #25 → `main` are complete with passing CI; see [exact heads/runs](ci.md#pr-24-and-release-pr-25-verified-merge-and-ci).
+- Manual release used the course project and existing team resources; no additional SQL/IAM provisioning is claimed. Runtime DB connection passed readiness. Portal-ready time, service traffic/latestReadyRevisionName and Cloud Run/resource screenshots still need capture; operator-supplied revision/digest is recorded above.
+- Before closing [Issue #17](https://github.com/jetanin/LoungCheu/issues/17), attach the public URL and sanitized C-04 screenshots to the Issue itself, confirm source SHA against revision image metadata, and link the live evidence. Do not overwrite `issue17-shared-cloud`: its 28 tests are offline historical evidence.
+- Automated release/rollback (#19), required-check proof (#18), and restart/redeploy persistence plus final LEB2 PDF (#20) are separate tasks. This branch changes documentation/evidence only.
 
 ## Verification ของ Issue #14 (ผลรอบก่อน)
 
@@ -237,6 +228,6 @@ Browser E2E รอบ follow-up: sandbox run เริ่ม server ไม่ไ
 - **PASS:** fresh remote clone ที่ commit `54fd6603594a7a2e0327aad93624796b61903cc5` build ด้วย `--no-cache --pull` และรันกับฐานข้อมูลใหม่แยกได้ โดยใช้ค่าตาม `.env.docker.example` ที่เติมเป็น private configuration; ไม่คัดลอก dependencies, build output, secret หรือ DB volume เดิม
 - เก็บคำสั่ง, output, exit codes, tested commit, image ID และผลตรวจ source clean ใน [ดัชนีหลักฐาน C-03](evidence/c03-20261115-54fd660/README.md), [transcript](evidence/c03-20261115-54fd660/transcript.log) และ [manifest](evidence/c03-20261115-54fd660/manifest.json)
 - ทดสอบ login/domain workflow และ local down/up แล้ว record กับ registration เดิมยังอยู่; รายละเอียดอยู่ใน [docker.md](docker.md#c-03-fresh-clone-evidence-15-november-2026)
-- GCP public workflow, required-check merge gate (C-02) และ GCP live restart/redeploy: ยังไม่ทำ เป็นงาน Issues ถัดไป; PR CI ของ Issue #16 ผ่านแล้วตามหัวข้อด้านบน หลักฐาน local C-03 นี้ไม่ใช่หลักฐาน GCP C-04/C-05 หรือ pipeline C-06
+- GCP public workflow มีผลรายงานในหลักฐาน #17 รอบจริงข้างบน; required-check merge gate (C-02) และ GCP live restart/redeploy ยังไม่ทำ เป็นงาน Issues ถัดไป; PR CI ของ Issue #16 ผ่านแล้วตามหัวข้อด้านบน หลักฐาน local C-03 นี้ไม่ใช่หลักฐาน GCP C-04/C-05 หรือ pipeline C-06
 
 หลังส่ง Lab 5 ให้คง service/repository public จนผู้สอนประกาศจบการตรวจ ห้าม teardown หรือหยุด DB ทันทีหลังส่ง PDF

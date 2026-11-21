@@ -1,13 +1,35 @@
 # Issue #17: course-managed first deployment
 
-Status: **adapted offline for the course portal; not deployed and no C-04 evidence yet**. Use only project `cpe-se-course-2026`, region `asia-southeast1`, and team `scccd8b05`. This supersedes the earlier owner-provisioned first-deployment instructions. Keep Issue #17 open until the actual app works on its public URL and its C-04 evidence is recorded.
+Status: **manual first deployment and smoke passed; business journeys reported passed; C-04 evidence capture is incomplete**. Use only project `cpe-se-course-2026`, region `asia-southeast1`, team `scccd8b05`. Keep #17 open until the remaining evidence is attached.
+
+## Live deployment record — 21 November 2026
+
+The first manual deployment is reachable at [https://scccd8b05-4d7hbszvwq-as.a.run.app](https://scccd8b05-4d7hbszvwq-as.a.run.app) ([login](https://scccd8b05-4d7hbszvwq-as.a.run.app/login)). This record separates independently collected public/GitHub results from the operator's Cloud Shell output and browser test reports. It does not claim a live automatic deployment pipeline.
+
+| Check | Actual evidence / remaining limitation |
+| --- | --- |
+| Portal Resources ready time | Not recorded. Successful job/service operations do not establish when the portal displayed Resources ready. Do not Activate again merely to collect this timestamp. |
+| Portal repository review | Operator screenshot reviewed main `87c77af07bfbb7f2b4e0d9ada4b69cd79a5c6b5f`; timestamp not captured. The Starter Kit layout warning is not a deployment failure. |
+| Merge sequence | [PR #24](https://github.com/jetanin/LoungCheu/pull/24) merged into `lab5-staging` at 2026-11-20 23:18:57 +07; merge `5a6b3b5445c47fb56d2a97c1a007c314003a1070`. [PR #25](https://github.com/jetanin/LoungCheu/pull/25) merged into `main` at 2026-11-21 13:42:42 +07; merge `87c77af07bfbb7f2b4e0d9ada4b69cd79a5c6b5f`. |
+| Release identification | Public `/api/ready` independently returned HTTP 200, `status=ready`, `db=connected`, `version=87c77af07bfbb7f2b4e0d9ada4b69cd79a5c6b5f`; see [raw response](evidence/issue17-live-20261121/readiness.json). This confirms the app's reported APP_VERSION, not an independently verified image/source binding. |
+| Migration + seed | Operator reported successful execution [`scccd8b05-migrate-cbp4k`](https://console.cloud.google.com/run/jobs/executions/details/asia-southeast1/scccd8b05-migrate-cbp4k?project=670075229477), 1/1 complete. Command: `npm run db:migrate && npm run db:seed`. |
+| Completion time | Operator supplied `2026-11-21T12:05:47.291764Z` (19:05:47.291764 +07); association with the execution above awaits describe output. This is not the portal-ready or service deployment timestamp. |
+| Session secret | Operator's command returned `Created version [1] of the secret [scccd8b05-app-secret-1]`. Intended runtime reference: `scccd8b05-app-secret-1:1`; no secret value retained. |
+| Smoke | Operator output: PASS `/api/ready`, `/api/health`, `/login`, `/api/events`, `/api/not-a-real-route`; command `python3 deploy/smoke_test.py "$SERVICE_URL" --expected-commit "$SHA"`. Exact shell variable values were not printed in that transcript. |
+| Manual business journey | Operator confirmed organizer login/create/publish PASS; participant view/register PASS; inactive account login rejected. Earlier login problem was reported; operator later confirmed normal use. Resolution details and screenshots have not been supplied. |
+| Revision / immutable image | Operator described `scccd8b05-00002-72x`; spec image and status.imageDigest agree on `sha256:d5a94a9d6a6f1cbd9ce93789d1f0bcf4af15062f56ca9ca523a1dd80c7a0f5b1`; see [revision output](evidence/issue17-live-20261121/revision.yaml). Service traffic/latestReadyRevisionName output remains outstanding. |
+| C-04 screenshots | Awaiting public URL/login, business journey, rejection and Cloud Run/resource screenshots with no credentials. |
+
+The real procedure used individual Cloud Shell commands: Docker build/push with a commit tag, update the existing migration job with portal DB/demo-password secret references, execute with `--wait`, add session-secret version 1, update the existing service with DB/session references, port 3000, production/origin/version settings, move traffic to latest, and smoke-test. The operator has supplied revision/digest output but not a complete command transcript or traffic mapping yet; do not present the offline receipt as this deployment's receipt.
+
+See the [live evidence index and C-04 checklist](evidence/issue17-live-20261121/README.md) and [Issue #17](https://github.com/jetanin/LoungCheu/issues/17). Issue #17 remains open while the evidence fields/screenshots are incomplete. #18 merge-gate/WIF proof, #19 automation/rollback and #20 persistence/report work are outside this change.
 
 ## Portal resource status and main repository review
 
-These are separate activities. The assigned prefix/names are known from the downloaded team kit; **the team's current portal provisioning status has not been checked in this PR**. Do not infer either Resources ready or not provisioned from that kit.
+These are separate activities. The team resources have supported a successful live migration and reachable app. The portal's Resources ready display/time is still not captured; see the live record above rather than inferring a portal timestamp.
 
 1. **Resource status, independent of the Git merge:** sign in to the course portal with the registered Gmail and confirm team `scccd8b05`. Check Activate & status first. If activation has never been requested, Activate once using the Lab 5 route when available, or Resources only while repository changes are reviewed. If provisioning is already in progress, wait and return later. If Resources ready, do not Activate again. Record the actual status/time from the portal in the evidence.
-2. **Code review and merge:** let the latest head of PR #24 pass CI and receive teammate review, merge into `lab5-staging`, then review/merge the release PR into `main` with passing CI. Deploy automation is parked, so this merge does not run deployment.
+2. **Code review and merge:** PR #24 and release PR #25 have merged with passing matching-head CI; see the live record and [CI evidence](ci.md). For future changes, use teammate review and passing CI through `lab5-staging` then `main`. Deploy automation is parked, so this merge does not run deployment.
 3. **Repository review on main:** after the code is on main, refresh the portal's Lab 5 repository review and verify the reviewed main SHA. An earlier review of `0853ce2` cannot see files that existed only on staging. Rechecking the repo is not a reason to request resource activation twice.
 4. **Manual deployment:** only after Resources ready, required session-secret setup and a clean reviewed main checkout, preview and run the first deployment manually as below. Resources ready alone is not app deployment or C-04 evidence.
 
@@ -37,13 +59,13 @@ Use one of the five assigned app-secret slots. The default is slot 1, version 1.
 python3 -c 'import secrets; print(secrets.token_hex(32))' | gcloud secrets versions add scccd8b05-app-secret-1 --data-file=- --project=cpe-se-course-2026
 ```
 
-This future cloud-changing command was not run during preparation. Record only the returned version number, never the secret value. If the version is not 1 or another slot is used, set the non-secret reference before preview/deploy:
+This command was not run during offline preparation. In the live session the operator created version 1 using an equivalent direct-to-Secret-Manager random generator; see the live record. Record only the returned version number, never the secret value. If the version is not 1 or another slot is used, set the non-secret reference before preview/deploy:
 
 ```bash
 export SESSION_SECRET_REF=scccd8b05-app-secret-3:2
 ```
 
-For GitHub, set the same reference as variable `SESSION_SECRET_REF` in environment `demo`; the workflow defaults to slot 1 version 1. Use the runtime access arranged by the course; actual slot readiness/access has not been verified by this PR. If binding/access is denied, send the exact team secret name and error to the TA; do not modify shared-project IAM or reveal the secret.
+For GitHub, set the same reference as variable `SESSION_SECRET_REF` in environment `demo`; the workflow defaults to slot 1 version 1. Use the runtime access arranged by the course; the operator confirmed version 1 creation and a successful live app smoke. Runtime binding details await service/revision evidence. If binding/access is denied, send the exact team secret name and error to the TA; do not modify shared-project IAM or reveal the secret.
 
 ## Preview and offline tests
 
@@ -76,7 +98,7 @@ DRY_RUN=1 bash deploy/deploy.sh
 DRY_RUN=0 bash deploy/deploy.sh
 ```
 
-The last command is a real build/push/migration/service update; run it only after reviewing the plan. It was not run during preparation. The sequence is:
+The last command is a real build/push/migration/service update; run it only after reviewing the plan. It was not run during offline preparation; the operator subsequently used individual Cloud Shell commands as recorded above, rather than demonstrating an end-to-end wrapper run. The wrapper sequence is:
 
 1. Check the main source SHA and clean checkout; describe only `scccd8b05` and `scccd8b05-migrate` to obtain the existing HTTPS URL.
 2. Build the existing root Dockerfile for linux/amd64 and push a full-commit-SHA tag to the team registry using Docker. Cloud Build submission is not used.
@@ -90,15 +112,15 @@ The startup command contains no seed/migration; those run only in the separate j
 
 ## Deploy workflow parked until Issue #19 (Episode 7)
 
-`.github/workflows/deploy.yml` is retained as a parked draft using the kit name `Deploy demo` and environment `demo`. It has **no push trigger**, and **both jobs are guarded with `if: ${{ false }}`**, so even manual dispatch cannot authenticate, build, migrate or deploy in #17. A skipped/parked run is not deployment evidence. First deployment remains the manual `deploy/deploy.sh` procedure in Episode 5.
+`.github/workflows/deploy.yml` is retained as a parked draft using the kit name `Deploy demo` and environment `demo`. It has **no push trigger**, and **both jobs are guarded with `if: ${{ false }}`**, so even manual dispatch cannot authenticate, build, migrate or deploy in #17. A skipped/parked run is not deployment evidence. First deployment was performed manually with individual Cloud Shell commands under Episode 5; the wrapper is a documented equivalent procedure, not a claimed executed receipt.
 
 In a separate reviewed #19 change, after manual first deployment and #18 prerequisites, configure the portal's `GCP_PROJECT_ID`, `GCP_REGION`, `WIF_PROVIDER`, `WIF_SERVICE_ACCOUNT` and session-secret reference in environment `demo`, restore main-only trigger/job conditions, then prove the normal CI → build/push → migrate → update → smoke path and rollback path. The prepared smoke command includes **`--expected-commit "$IMAGE_TAG"`**. Do not merely remove the false guard without restoring CI-success/main restrictions. No WIF JSON key is needed. Neither this parked workflow nor WIF has been proven live by this PR.
 
 ## Finish Issue #17
 
-These follow-up tasks may happen after the code PR/release PR is merged, but must happen before closing #17. Check/Activate the actual team resources in the portal, run first deployment manually from reviewed main, and after a successful real deployment retain the source SHA, image digest, revision, service URL, sanitized command output and smoke result. Then manually sign in on the public URL using LoungCheu usernames such as `organizer.a` and `participant.a`, create/publish/register an event and show a rule/access rejection with URL-visible screenshots. Obtain the portal demo-secret credentials only through the course's private channel/TA if needed; do not use the kit's example email login or print the password. That is the remaining C-04 evidence. CI/merge-gate C-02, repeatable release C-06 and GCP persistence C-05 stay separate.
+These follow-up tasks may happen after the code PR/release PR is merged, but must happen before closing #17. Check/Activate the actual team resources in the portal, run first deployment manually from reviewed main, and after a successful real deployment retain the source SHA, image digest, revision, service URL, sanitized command output and smoke result. The operator has now reported passing login/business/rejection checks; capture their screenshots and exact release metadata. For reproducibility, manually sign in on the public URL using LoungCheu usernames such as `organizer.a` and `participant.a`, create/publish/register an event and show a rule/access rejection with URL-visible screenshots. Obtain the portal demo-secret credentials only through the course's private channel/TA if needed; do not use the kit's example email login or print the password. That is the remaining C-04 evidence. CI/merge-gate C-02, repeatable release C-06 and GCP persistence C-05 stay separate.
 
-Resources ready, a preview, or a successful mocked test does not close #17. No public app success is claimed by this offline adaptation. Keep repository and service available through grading.
+Resources ready, a preview, or a successful mocked test does not close #17. Live readiness/smoke and operator-reported journeys are now recorded above; screenshots and exact revision/image evidence are still outstanding. Keep repository and service available through grading.
 
 ## Evidence
 

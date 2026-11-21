@@ -1,0 +1,12 @@
+{
+  "url": "https://scccd8b05-4d7hbszvwq-as.a.run.app/api/ready",
+  "http_status": 200,
+  "checked_at": "2026-11-21T13:11:24.748231+00:00",
+  "response": {
+    "data": {
+      "status": "ready",
+      "db": "connected",
+      "version": "87c77af07bfbb7f2b4e0d9ada4b69cd79a5c6b5f"
+    }
+  }
+}
