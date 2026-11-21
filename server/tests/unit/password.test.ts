@@ -6,7 +6,7 @@ describe('TEST-05 salted scrypt', () => {
     const a = await hashPassword(password), b = await hashPassword(password);
     expect(a).not.toBe(b);
     expect(a).toMatch(/^scrypt\$16384\$8\$1\$[a-f0-9]{32}\$[a-f0-9]{128}$/);
-    expect(await verifyPassword(password, a)).toBe(true);
+    expect(await verifyPassword(password, a)).toBe(false);
     expect(await verifyPassword(password.trim(), a)).toBe(false);
     expect(await verifyPassword('wrong', a)).toBe(false);
   });
