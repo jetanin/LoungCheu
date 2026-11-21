@@ -8,17 +8,17 @@ The first manual deployment is reachable at [https://scccd8b05-4d7hbszvwq-as.a.r
 
 | Check | Actual evidence / remaining limitation |
 | --- | --- |
-| Portal Resources ready time | Not recorded. Successful job/service operations do not establish when the portal displayed Resources ready. Do not Activate again merely to collect this timestamp. |
+| Portal Resources ready time | [Portal screenshot](evidence/issue17-live-20261121/screenshots/14-team-resources.png) shows Resources ready, 6/6 complete and completion time 14:20:02 Thailand time; the date is not visible. Do not Activate again to collect a date. |
 | Portal repository review | Operator screenshot reviewed main `87c77af07bfbb7f2b4e0d9ada4b69cd79a5c6b5f`; timestamp not captured. The Starter Kit layout warning is not a deployment failure. |
 | Merge sequence | [PR #24](https://github.com/jetanin/LoungCheu/pull/24) merged into `lab5-staging` at 2026-11-20 23:18:57 +07; merge `5a6b3b5445c47fb56d2a97c1a007c314003a1070`. [PR #25](https://github.com/jetanin/LoungCheu/pull/25) merged into `main` at 2026-11-21 13:42:42 +07; merge `87c77af07bfbb7f2b4e0d9ada4b69cd79a5c6b5f`. |
 | Release identification | Public `/api/ready` independently returned HTTP 200, `status=ready`, `db=connected`, `version=87c77af07bfbb7f2b4e0d9ada4b69cd79a5c6b5f`; see [raw response](evidence/issue17-live-20261121/readiness.json). This confirms the app's reported APP_VERSION, not an independently verified image/source binding. |
 | Migration + seed | Operator reported successful execution [`scccd8b05-migrate-cbp4k`](https://console.cloud.google.com/run/jobs/executions/details/asia-southeast1/scccd8b05-migrate-cbp4k?project=670075229477), 1/1 complete. Command: `npm run db:migrate && npm run db:seed`. |
-| Completion time | Operator supplied `2026-11-21T12:05:47.291764Z` (19:05:47.291764 +07); association with the execution above awaits describe output. This is not the portal-ready or service deployment timestamp. |
+| Completion time | Operator supplied `2026-11-21T12:05:47.291764Z` (19:05:47.291764 +07); the [Cloud Shell screenshot](evidence/issue17-live-20261121/screenshots/13-cloud-run.png) confirms this completion time belongs to the execution above. This is not the portal-ready or service deployment timestamp. |
 | Session secret | Operator's command returned `Created version [1] of the secret [scccd8b05-app-secret-1]`. Intended runtime reference: `scccd8b05-app-secret-1:1`; no secret value retained. |
 | Smoke | Operator output: PASS `/api/ready`, `/api/health`, `/login`, `/api/events`, `/api/not-a-real-route`; command `python3 deploy/smoke_test.py "$SERVICE_URL" --expected-commit "$SHA"`. Exact shell variable values were not printed in that transcript. |
-| Manual business journey | Operator confirmed organizer login/create/publish PASS; participant view/register PASS; inactive account login rejected. Earlier login problem was reported; operator later confirmed normal use. Resolution details and screenshots have not been supplied. |
-| Revision / immutable image | Operator described `scccd8b05-00002-72x`; spec image and status.imageDigest agree on `sha256:d5a94a9d6a6f1cbd9ce93789d1f0bcf4af15062f56ca9ca523a1dd80c7a0f5b1`; see [revision output](evidence/issue17-live-20261121/revision.yaml). Service traffic/latestReadyRevisionName output remains outstanding. |
-| C-04 screenshots | Awaiting public URL/login, business journey, rejection and Cloud Run/resource screenshots with no credentials. |
+| Manual business journey | Operator confirmed organizer login/create/publish PASS; participant view/register PASS; inactive account login rejected. Earlier login problem was reported; operator later confirmed normal use. Resolution details were not supplied; [screenshots now show the journeys](evidence/issue17-live-20261121/README.md#c-04-screenshot-gallery). |
+| Revision / immutable image | Operator described `scccd8b05-00002-72x`; spec image and status.imageDigest agree on `sha256:d5a94a9d6a6f1cbd9ce93789d1f0bcf4af15062f56ca9ca523a1dd80c7a0f5b1`; see [revision output](evidence/issue17-live-20261121/revision.yaml). [Cloud Shell screenshot](evidence/issue17-live-20261121/screenshots/13-cloud-run.png) confirms this is latestReadyRevisionName and receives 100% traffic. |
+| C-04 screenshots | [14 supplied screenshots and captions](evidence/issue17-live-20261121/README.md#c-04-screenshot-gallery): login, organizer create/publish, participant registration, inactive rejection, service CLI and portal status. App captures omit the address bar; URL-visible capture and direct Issue attachments still need completion. |
 
 The real procedure used individual Cloud Shell commands: Docker build/push with a commit tag, update the existing migration job with portal DB/demo-password secret references, execute with `--wait`, add session-secret version 1, update the existing service with DB/session references, port 3000, production/origin/version settings, move traffic to latest, and smoke-test. The operator has supplied revision/digest output but not a complete command transcript or traffic mapping yet; do not present the offline receipt as this deployment's receipt.
 
@@ -125,3 +125,7 @@ Resources ready, a preview, or a successful mocked test does not close #17. Live
 ## Evidence
 
 See [shared-course offline evidence](evidence/issue17-shared-cloud/README.md) for the actual commands/output and exact working-tree source hashes. Earlier owner-provisioned tests in `evidence/issue17-offline` are historical and do not validate this new course workflow.
+
+## C-04 screenshots
+
+See the [screenshot gallery with 14 images and captions](evidence/issue17-live-20261121/README.md#c-04-screenshot-gallery). The gallery identifies remaining URL-visible capture and evidence follow-up without claiming Issue #17 is closed.

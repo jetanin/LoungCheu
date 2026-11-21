@@ -1,0 +1,19 @@
+Provenance: excerpts pasted by the operator in chat on 21 November 2026; not an independently captured shell transcript.
+
+$ gcloud run jobs execute scccd8b05-migrate --project=cpe-se-course-2026 --region=asia-southeast1 --wait
+OK Running execution... 1 / 1 complete
+Done.
+Execution [scccd8b05-migrate-cbp4k] has successfully completed.
+
+Session-secret creation output (value not retained):
+Created version [1] of the secret [scccd8b05-app-secret-1].
+
+$ python3 deploy/smoke_test.py "$SERVICE_URL" --expected-commit "$SHA"
+PASS GET /api/ready
+PASS GET /api/health
+PASS GET /login
+PASS GET /api/events
+PASS GET /api/not-a-real-route
+
+Operator separately supplied: completionTime: '2026-11-21T12:05:47.291764Z'
+Association with migration execution awaits describe output.
