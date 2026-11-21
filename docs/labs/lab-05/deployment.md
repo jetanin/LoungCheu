@@ -1,6 +1,6 @@
 # LoungCheu — Lab 5 Deployment
 
-> Current course setup (20 November 2026): use only project `cpe-se-course-2026`, region `asia-southeast1` and team `scccd8b05`. The portal provisions infrastructure/IAM. Follow [course-managed first deployment](first-deployment.md); the earlier owner-provisioned instructions are superseded. Use the existing resource names with describe/update, preserve portal env/secrets, and do not create another DB or run teardown. No real deployment/C-04 is claimed by this adaptation.
+> Course setup: use only project `cpe-se-course-2026`, region `asia-southeast1` and team `scccd8b05`. The portal provisions infrastructure/IAM. Follow [course-managed first deployment](first-deployment.md); the earlier owner-provisioned instructions are superseded. Use the existing resource names with describe/update, preserve portal env/secrets, and do not create another DB or run teardown. The #19 code change enables the workflow but does not itself prove a live automated release; use actual GitHub Actions and GCP results for C-06.
 
 ## สถานะและขอบเขต
 
@@ -22,7 +22,7 @@
 | Persistence | PostgreSQL, Prisma 7 ผ่าน `@prisma/adapter-pg`; sessions ใช้ `connect-pg-simple` ใน PostgreSQL |
 | Local DB | `compose.yaml` สำหรับ PostgreSQL เดิม; `compose.docker.yaml` สำหรับ Docker app+DB ที่แยก project/volume ตาม Issue #15 |
 | Tests | Vitest, real PostgreSQL DB `loungcheu_test`, Playwright และ compiled-app smoke |
-| CI/Cloud | PR CI ของ #16 มีผลผ่านที่บันทึกไว้; #17 ใช้ชื่อ resource ทีม `scccd8b05` จาก kit ของ portal แล้ว แต่ **ยังไม่ตรวจสถานะ portal ว่า Resources ready หรือไม่** และยังไม่มีผล deploy/C-04; workflow deploy พักไว้สำหรับ #19 ไม่ทำงานเมื่อ push/merge เข้า main |
+| CI/Cloud | PR CI ของ #16 มีผลผ่านที่บันทึกไว้; #17 เตรียม manual first deployment และพัก workflow บน `main` เดิม; การแก้ #19 เปิด trigger/job สำหรับ reviewed merge เข้า `main` แต่การแก้ไฟล์นี้เพียงอย่างเดียวยังไม่ใช่หลักฐาน auto deploy/C-06 |
 
 ความต่างจาก TokTickIT: ใช้ Node 22 แทน 24, ติดตั้ง workspace จาก root, start `server.js` แทน `index.js`, login ด้วย **username + CSRF + session cookie** ไม่ใช่ email ไม่มี `/api/categories` และไม่มี admin bootstrap/password-change feature แบบตัวอย่าง จึงไม่เพิ่ม feature นั้นเพียงเพื่อใช้ kit
 
@@ -188,18 +188,23 @@ Issue #17 ปรับเป็น course-managed kit ทีม `scccd8b05` แ�
 
 ตรวจ/Activate เฉพาะทีมผ่าน portal ด้วย Gmail ที่ลงทะเบียน ไม่สร้าง infrastructure/IAM/DB เอง และไม่กด Activate ซ้ำระหว่างสร้างหรือเมื่อ Resources ready แล้ว ตรวจชื่อ resource จาก Team resources ก่อนใช้ describe/update; หากติดสิทธิ์ให้แจ้ง TA ตามประกาศใหม่ของรายวิชา
 
-## Release procedure — แผนที่ต้องทำให้ใช้งานได้ในขั้น 4–7
+## Release procedure — Issue #19 / Guide Episode 7
 
-1. สร้าง Issue/branch จาก `lab5-staging` ล่าสุด ทำงานพร้อม tests เปิด PR เข้า `lab5-staging` ติด `lab5` และให้เพื่อน review แบบระบุสิ่งที่ตรวจ
-2. เมื่อ relevant build/tests ผ่านและ approvals ครบ จึง merge; เปิด release PR `lab5-staging → main` รอ checks/review อีกครั้ง ห้ามข้าม required checks
-3. First deployment ทำจาก reviewed main ผ่านขั้นตอนที่คนตรวจแล้ว ส่วน accepted releases ถัดไปต้องผ่าน deploy pipeline จาก main
-4. #17 / Episode 5: รัน first deployment ด้วยมือจาก reviewed main ผ่าน `deploy/deploy.sh`; build/push → migrate → update → smoke และบันทึก SHA/digest/revision/URL ส่วน workflow อัตโนมัติเป็น #19 / Episode 7 และพัก trigger/jobs ไว้จนกว่าจะ review เปิดใช้งานแยก
-5. ตรวจ `/api/ready`, `/api/health` และ release version แล้วตรวจ live sign-in/domain journey; เก็บ run/PR links และผลจริง
-6. พิสูจน์ persistence แยกเหตุการณ์ restart และ redeploy ด้วย record เดิม ไม่ reset/reseed record ทดแทน
+Prerequisites: complete Episode 5 manual first deployment and Episode 6 `demo` environment/main merge gate. Confirm the actual service, job, image path and `SESSION_SECRET_REF` with the portal before merging the #19 release PR. `demo` provides `GCP_PROJECT_ID`, `GCP_REGION`, `WIF_PROVIDER`, `WIF_SERVICE_ACCOUNT`; if the session secret uses a non-default assigned slot/version, also set `SESSION_SECRET_REF`. Never place secret values in this file or the workflow. The #17 [manual first-deployment instructions](first-deployment.md) remain the historical procedure for that first release.
 
-Docker พร้อมและผ่าน C-03 แล้วตามหลักฐานด้านล่าง ส่วน release end-to-end ยังรอ CI บน release PR เข้า `main`, cloud และ deploy pipeline จะเติม exact deployment commands, resources และ run links หลังตรวจจริง ไม่ใช้คำอธิบายแผนนี้แทนหลักฐาน C-01–C-06
+1. Sync `lab5-staging` with the latest `main` merge commit, then create a feature branch from staging. Make the change and run relevant local checks. For #19, the change enables `.github/workflows/deploy.yml`; `ci-docker.yml`, `deploy/release.sh` and `deploy/smoke_test.py` are already project-specific and should not be overwritten with starter-kit copies.
+2. Push the feature branch and open a `lab5`-labelled PR into `lab5-staging`, linked to its Issue. Wait for `CI & Docker Build / test-and-docker` on the current head to pass and obtain a specific teammate review. Merge the PR only after those gates pass; the author does not approve their own PR.
+3. Open the release PR with base `main` and compare `lab5-staging`. Wait for the required CI check and teammate review again, then merge. A push to `main` starts `Deploy demo` automatically; no one runs `deploy/deploy.sh` for this release. The `test` job reuses `ci-docker.yml`, and `deploy` waits for it and only runs on `main`.
+4. In `Deploy demo`, confirm the test job passed, WIF authentication succeeded without a key, the root Docker image was pushed with the full merge commit SHA, the migration job succeeded before Cloud Run service update, and the read-only smoke step passed. The run Summary records image commit, digest, revision and public URL. This smoke checks LoungCheu's `/api/ready`, `/api/health`, `/login` and anonymous API responses; it does not prove an authenticated domain journey. Record C-04 login/business screenshots separately.
+5. Open the public URL. In Google Cloud Console, check the newest Cloud Run revision has 100% traffic and its image digest matches the run Summary; check the migration job's latest execution succeeded and Artifact Registry has the same full SHA tag. On the public `/api/health` and `/api/ready`, `data.version` must equal that deployed image SHA. Save direct PR/run links and these release identifiers for C-06 and the Lab 5 PDF evidence index.
+6. To prove repeatability (Guide 7.7), sync staging with main again, create a second branch, make a small browser-visible change, run tests, and repeat the reviewed feature PR and release PR. The second merge into main must start a green `Deploy demo` run automatically; refresh the public URL and confirm the change and a newer Cloud Run revision. A first green deployment alone does not finish Episode 7.
+7. For R-04/C-05, check separately that a record survives both application restart and redeploy; do not replace it with reseeded data. This is the persistence check after the release proof.
 
-Issue #16 มี [PR #23](https://github.com/jetanin/LoungCheu/pull/23) เข้า `lab5-staging`; [Actions run แรก](https://github.com/jetanin/LoungCheu/actions/runs/43740436556) ล้มเหลวตอน Prisma generation แล้ว [run หลังแก้](https://github.com/jetanin/LoungCheu/actions/runs/43741684848) ผ่านทุกขั้นบน commit `774d28f` ตาม [CI verification](ci.md) ยังต้องมี release PR เข้า `main` พร้อม CI ที่ผ่านก่อนอ้างหลักฐาน PR ทั้งสองเป้าหมายครบ ปัจจุบัน Issue #17 เพิ่มสคริปต์ `deploy/` สำหรับ first deployment และ offline checks เข้า CI แล้วตาม [first-deployment.md](first-deployment.md); ยังไม่ execute บน GCP ส่วน release pipeline เป็นงาน #19
+If a release fails, open the first red Actions step and then the Cloud Run job/revision logs as needed. Fix the cause through the reviewed PR path. An offline test or a parked/skipped run is not C-06 evidence. A manual `workflow_dispatch` is available only for `main`; a non-empty `image_tag` is reserved for an existing full-SHA team image and skips the build/migration in `release.sh`. Record rollback separately from the normal two automatic releases.
+
+Docker พร้อมและผ่าน C-03 แล้วตามหลักฐานด้านล่าง ส่วน release end-to-end ของ #19 ต้องเติม actual PR/run links, SHA, digest, revision และ URL หลังตรวจจริง ไม่ใช้คำอธิบายแผนนี้แทนหลักฐาน C-06
+
+ประวัติ #16/#17 ณ ตอนเตรียมโค้ด: Issue #16 มี [PR #23](https://github.com/jetanin/LoungCheu/pull/23) เข้า `lab5-staging`; [Actions run แรก](https://github.com/jetanin/LoungCheu/actions/runs/43740436556) ล้มเหลวตอน Prisma generation แล้ว [run หลังแก้](https://github.com/jetanin/LoungCheu/actions/runs/43741684848) ผ่านทุกขั้นบน commit `774d28f` ตาม [CI verification](ci.md) ต่อมา Issue #17 เพิ่มสคริปต์ `deploy/` สำหรับ manual first deployment และ offline checks ตาม [first-deployment.md](first-deployment.md) ส่วน release pipeline อัตโนมัติเป็นงาน #19; ผล live ให้ยืนยันจากหลักฐานของแต่ละ Issue ไม่อนุมานจากประวัติ offline นี้
 
 ## #17: สิ่งที่ต้องทำหลัง merge ก่อนปิด Issue
 
