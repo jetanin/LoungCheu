@@ -1,0 +1,264 @@
+# Issue #17 live deployment evidence — 21 November 2026
+
+Status: manual deployment, smoke and core journeys passed; URL-visible capacity restriction and available resource evidence are captured. Student-only access limitations are documented, not marked as successful inventory/IAM/API inspections. [Supplemental Issue #17 evidence comment](https://github.com/jetanin/LoungCheu/issues/17#issuecomment-7077742818) was posted at `2026-11-22T10:21:45Z` (`2026-11-22 17:21:45 +07`), as returned by the GitHub API. It links the new resource/capacity/scaling images directly at evidence commit `c36f477012eb8856e67bc7c5364a9667a56fc2c3`; its body and all listed image paths were verified. Remaining: PR #27 CI/review/merge into lab5-staging, a reviewed release PR into main, then final link/status checks before Done. Inaccessible resource-detail screens, full build provenance and the missing portal date are not standalone PR-review blockers.
+
+This is a new live-evidence round. `../issue17-shared-cloud` and `../issue17-offline` remain untouched historical offline records. No secret values, passwords, cookies or tokens belong in this directory.
+
+Screenshot refresh: **22 November 2026**. The original manual deployment/migration record remains dated 21 November; refreshed browser evidence uses activity `Test2` and does not establish a redeploy or restart.
+
+## Retained evidence and provenance
+
+- [Public readiness response](readiness.json): independently fetched HTTP 200 at the recorded UTC time. The app reports DB connected and APP_VERSION `87c77af07bfbb7f2b4e0d9ada4b69cd79a5c6b5f`; revision/image identity is corroborated by [revision output](revision.yaml), [service traffic](screenshots/15-cloud-run-cli.png) and [tag/index/manifest mapping](screenshots/16-image-tag-digest.png); this is not an independently attested source build.
+- [Operator transcript excerpts](operator-transcript.log): exact success excerpts supplied in this chat; not a full independently captured Cloud Shell session. Shell variable values were not printed.
+- [GitHub merge/CI snapshot](github-record.json): selected public API metadata, collected 21 November 2026, exact source heads, merge commits and Actions conclusions.
+- Public app: https://scccd8b05-4d7hbszvwq-as.a.run.app/login
+- Issue: https://github.com/jetanin/LoungCheu/issues/17
+- PR #24: https://github.com/jetanin/LoungCheu/pull/24
+- Release PR #25: https://github.com/jetanin/LoungCheu/pull/25
+
+## Browser results reported by the operator
+
+Organizer: login, create and publish passed. Participant: view and register passed. The operator reported inactive-account login rejection, but its generic error screenshot does not establish the inactive state. The explicit restriction evidence is now the full-capacity activity described below. An earlier login error was reported; later operator confirmation supersedes the failing status, without establishing a specific root cause/fix. Screenshots are now linked in the [C-04 screenshot gallery](#c-04-screenshot-gallery). The refreshed app screenshots show the public origin in the browser address bar, including login, successful registration and the capacity restriction; the generic login failure is supplementary evidence.
+
+## Still needed for C-04 / Issue completion
+
+- [x] Portal Resources ready screenshot: [13-team-resources.png](screenshots/13-team-resources.png), completed at 14:20:02 Thailand time; date is not visible in the capture.
+- [x] Operator-supplied revision `scccd8b05-00002-72x` and matching spec/status image digest `sha256:d5a94a9d6a6f1cbd9ce93789d1f0bcf4af15062f56ca9ca523a1dd80c7a0f5b1`: [revision output](revision.yaml).
+- [x] Service latestReadyRevisionName and 100% traffic point to `scccd8b05-00002-72x`: [Cloud Shell output](screenshots/15-cloud-run-cli.png).
+- [x] Verified release tag → OCI index → linux/amd64 image → deployed revision mapping: tag `87c77af07bfbb7f2b4e0d9ada4b69cd79a5c6b5f` resolves to index `sha256:e4054b99bf312ef871bd08e4c660599961da94638397d0d90954ee8a01ea5397`, whose linux/amd64 manifest `sha256:d5a94a9d6a6f1cbd9ce93789d1f0bcf4af15062f56ca9ca523a1dd80c7a0f5b1` matches `scccd8b05-00002-72x`. [Image mapping evidence](screenshots/16-image-tag-digest.png). This verifies tag/image identity, not independently attested source/build provenance.
+- [x] Migration completion time `2026-11-21T12:05:47.291764Z` and `succeededCount: 1` are associated with `scccd8b05-migrate-cbp4k` in [Cloud Shell output](screenshots/15-cloud-run-cli.png).
+- [x] Login and signed-in screens captured with no password shown: [login](screenshots/01-login.png), [organizer](screenshots/02-organizer.png), [participant](screenshots/08-participant.png).
+- [x] Public URL visible in refreshed browser captures: [login](screenshots/01-login.png), [organizer](screenshots/02-organizer.png), [registration](screenshots/10-participant-registered.png), [rejection](screenshots/12-inactive-rejected.png).
+- [x] Organizer create/publish and participant registration for the same refreshed activity `Test2` (event ID `2c9735a0-307b-4c08-b7de-60e29c3be683`): [draft](screenshots/06-organizer-draft.png), [published](screenshots/07-organizer-published.png), [registered](screenshots/10-participant-registered.png), [my registrations](screenshots/11-participant-own.png).
+- [x] Capacity restriction visible on the web UI: [one-seat published activity](screenshots/20a-capacity-one-published.png) → [Participant A registered successfully](screenshots/20c-capacity-full-blocked.png) → [Participant B blocked at 0/1 seats](screenshots/20b-capacity-last-seat-registered.png). This demonstrates UI restriction, not an independently submitted API request being rejected.
+- [x] Supplementary generic login-failure screenshot: [12-inactive-rejected.png](screenshots/12-inactive-rejected.png). It does not independently prove that inactivity caused the failure.
+- [x] Cloud Run CLI and team resource screenshots: [15-cloud-run-cli.png](screenshots/15-cloud-run-cli.png), [13-team-resources.png](screenshots/13-team-resources.png). The added [Cloud Run Console screenshot](screenshots/14-cloud-run.png) also shows ready revision `scccd8b05-00002-72x`, traffic 100%, port 3000, APP_VERSION and the session-secret reference; secret values are not exposed.
+- [x] Initial text-only release record: [original comment](https://github.com/jetanin/LoungCheu/issues/17#issuecomment-7063132101), created `2026-11-21T13:14:58Z`. It recorded URL/release metadata and pending screenshots; it is not proof that the later images were attached.
+- [ ] Complete PR #27 latest-head CI, teammate review and merge into lab5-staging; then complete the reviewed release PR into main, verify Issue/repository evidence links and update Issue #17/project status to Done. This documentation edit does not claim those merges or final status are complete.
+
+## Collect missing non-secret release metadata in Cloud Shell
+
+```bash
+gcloud run services describe scccd8b05 --project=cpe-se-course-2026 --region=asia-southeast1 --format='yaml(status.latestReadyRevisionName,status.traffic)'
+gcloud run jobs executions describe scccd8b05-migrate-cbp4k --project=cpe-se-course-2026 --region=asia-southeast1 --format='yaml(status.completionTime,status.succeededCount)'
+```
+
+Use the returned ready revision name in:
+
+```bash
+gcloud run revisions describe ACTUAL_READY_REVISION --project=cpe-se-course-2026 --region=asia-southeast1 --format='yaml(metadata.name,spec.containers[0].image,status.imageDigest)'
+```
+
+These collection commands have not been run by the documentation agent. Do not copy example/zero digests into evidence. #18/#19/#20 proof remains outside this update; include this C-04 set again in the final LEB2 submission under #20.
+
+## Guide 5.7 resource checks and access limitations
+
+The following operator-supplied screenshots were inspected on 22 November 2026. They record existing team resources; this documentation update changed no GCP configuration.
+
+| Check | Actual result | Evidence |
+| --- | --- | --- |
+| Cloud SQL | `scccd8b05-pg`, `RUNNABLE`, `asia-southeast1`, tier `db-f1-micro`; `storageAutoResize: false` | [17-cloud-sql.png](screenshots/17-cloud-sql.png) |
+| Runtime identity | Service uses `scccd8b05-runner@cpe-se-course-2026.iam.gserviceaccount.com`; identity alone does not establish granted roles | [18-runtime-service-account.png](screenshots/18-runtime-service-account.png) |
+| Artifact Registry | Team repository `scccd8b05`, location `asia-southeast1`, `DOCKER`, `STANDARD_REPOSITORY` | [19-artifact-registry.png](screenshots/19-artifact-registry.png) |
+| Database usability | Portal database-preparation status, successful migration/seed and readiness `db=connected` demonstrate application DB use; no database-list inspection is claimed | [Portal](screenshots/13-team-resources.png), [migration](screenshots/15-cloud-run-cli.png), [readiness](readiness.json) |
+| Enabled APIs | Resources ready and successful deploy/migration/readiness are functional evidence only; individual enabled APIs were not inventoried | [Portal](screenshots/13-team-resources.png), [deployment](screenshots/14-cloud-run.png), [migration](screenshots/15-cloud-run-cli.png) |
+| Min instances | Prepared deploy commands set 0. The actual service describe output contains neither `run.googleapis.com/minScale` (service) nor `autoscaling.knative.dev/minScale` (revision template); this is consistent with the documented default 0. This is CLI configuration evidence, not an explicit Console reading or a measurement of the current running instance count | [23-min-instances-config.png](screenshots/23-min-instances-config.png), [Cloud Run defaults](https://docs.cloud.google.com/run/docs/configuring/min-instances) |
+| Secret inventory | **Not inspected: student read access denied.** `gcloud secrets list` returns `PERMISSION_DENIED` for `secretmanager.secrets.list`. This proves the account cannot list secrets, not that secrets are absent or unusable by the runtime. No inventory PASS is claimed; lack of this access alone does not block PR review | [21-secret-manager-access.png](screenshots/21-secret-manager-access.png) |
+| Runtime IAM roles | **Not inspected: student read access denied.** `gcloud projects get-iam-policy` returns permission denied. The runtime identity is known from image 18, but its complete grants were not enumerated. This is not an IAM PASS or evidence that the runtime lacks access; the read restriction alone does not block PR review | [22-iam-access.png](screenshots/22-iam-access.png), [runtime identity](screenshots/18-runtime-service-account.png) |
+
+- [x] Cloud SQL state and disabled storage auto-increase captured.
+- [x] Actual runtime service account name captured.
+- [x] Team Artifact Registry configuration captured.
+- [x] Student Secret Manager/IAM read-access limitations captured without secret values.
+- Access limitation (not a PASS): the student cannot inspect secret inventory/runtime IAM grants. Record the denied access and the functional portal/deploy/migration/readiness evidence; TA clarification may be retained if obtained, but inaccessible detail screens alone do not block this PR review. Do not change shared-project IAM.
+- [x] New screenshot/resource/capacity/scaling evidence linked directly in Issue #17: [Supplemental Issue #17 evidence comment](https://github.com/jetanin/LoungCheu/issues/17#issuecomment-7077742818) was posted at `2026-11-22T10:21:45Z` (`2026-11-22 17:21:45 +07`), as returned by the GitHub API. It links the new resource/capacity/scaling images directly at evidence commit `c36f477012eb8856e67bc7c5364a9667a56fc2c3`; its body and all listed image paths were verified.
+
+These access limitations are documented as unverified checks, not fabricated PASS results or standalone blockers requiring inaccessible screenshots. The release tag/index/manifest mapping already recorded is sufficient to state that identity relationship; a full independently attested build and a date absent from the portal screenshot are not introduced as extra Episode 5 completion requirements.
+
+## C-04 screenshot gallery
+
+Public app reported by the operator: [LoungCheu login](https://scccd8b05-4d7hbszvwq-as.a.run.app/login). Images below were supplied by the operator and inspected when adding these links. Refreshed app captures show the public origin in the browser address bar. Images 05–07 and 09–11 document the same `Test2` event; screenshots 02/03/08 are navigation context and show the earlier `Test` activity. No visible password, secret value, cookie or token was found in these captures.
+
+### 01. หน้าเข้าสู่ระบบ
+
+หน้า login ของ LoungCheu ช่องรหัสผ่านว่าง
+
+![หน้าเข้าสู่ระบบ](screenshots/01-login.png)
+
+### 02. เข้าสู่ระบบเป็นผู้จัดกิจกรรม
+
+แสดง Organizer A หลังเข้าสู่ระบบ พร้อม public URL ในแถบที่อยู่
+
+![เข้าสู่ระบบเป็นผู้จัดกิจกรรม](screenshots/02-organizer.png)
+
+### 03. กิจกรรมของผู้จัด
+
+Organizer A เปิดหน้ากิจกรรมของฉันและมีปุ่มสร้างกิจกรรม
+
+![กิจกรรมของผู้จัด](screenshots/03-organizer-own.png)
+
+### 04. เปิดแบบฟอร์มสร้างกิจกรรม
+
+แบบฟอร์มสร้างกิจกรรมก่อนกรอกข้อมูล
+
+![เปิดแบบฟอร์มสร้างกิจกรรม](screenshots/04-organizer-form.png)
+
+### 05. กรอกข้อมูลกิจกรรม
+
+กิจกรรม Test2 ที่ CPE KMUTT จำนวน 5 ที่นั่ง จัดวันที่ 24 พ.ย. 2569 เวลา 08:30–16:30 และปิดรับลงทะเบียนวันที่ 23 พ.ย. 2569 เวลา 11:59 ตามแบบฟอร์ม
+
+![กรอกข้อมูลกิจกรรม](screenshots/05-organizer-filled_form.png)
+
+### 06. บันทึกกิจกรรมร่าง
+
+กิจกรรม Test2 อยู่ในสถานะ DRAFT และแสดงปุ่มเผยแพร่กิจกรรม
+
+![บันทึกกิจกรรมร่าง](screenshots/06-organizer-draft.png)
+
+### 07. เผยแพร่กิจกรรมสำเร็จ
+
+กิจกรรม Test2 เปลี่ยนเป็น PUBLISHED มีที่นั่งว่าง 5/5
+
+![เผยแพร่กิจกรรมสำเร็จ](screenshots/07-organizer-published.png)
+
+### 08. เข้าสู่ระบบเป็นผู้เข้าร่วม
+
+Participant A เห็นกิจกรรม Test ในรายการกิจกรรมทั้งหมด
+
+![เข้าสู่ระบบเป็นผู้เข้าร่วม](screenshots/08-participant.png)
+
+### 09. เลือกกิจกรรมเพื่อลงทะเบียน
+
+Participant A เปิดกิจกรรม Test2 และเห็นปุ่มลงทะเบียน; URL ระบุ event ID 2c9735a0-307b-4c08-b7de-60e29c3be683
+
+![เลือกกิจกรรมเพื่อลงทะเบียน](screenshots/09-participant-selected.png)
+
+### 10. ลงทะเบียนสำเร็จ
+
+แสดงข้อความลงทะเบียน Test2 สำเร็จ เลขอ้างอิง d90146b4-0151-4a0f-b2ef-2bf3f22d69b0; ที่นั่งว่างลดจาก 5/5 เป็น 4/5 และเห็น public URL
+
+![ลงทะเบียนสำเร็จ](screenshots/10-participant-registered.png)
+
+### 11. ตรวจรายการลงทะเบียนของฉัน
+
+กิจกรรม Test2 แสดงสถานะ ACTIVE เลขอ้างอิง d90146b4-0151-4a0f-b2ef-2bf3f22d69b0 ตรงกับหน้าลงทะเบียนสำเร็จ; ภาพระบุเวลาลงทะเบียน 22 พ.ย. 2569 00:30:37 และแสดงรายการ Test เดิมแยกกัน
+
+![ตรวจรายการลงทะเบียนของฉัน](screenshots/11-participant-own.png)
+
+### 12. Login ไม่สำเร็จ — หลักฐานประกอบ
+
+บัญชี inactive.x ได้รับข้อความชื่อผู้ใช้หรือรหัสผ่านไม่ถูกต้อง ตามผลทดสอบที่ผู้ใช้รายงาน; ภาพเพียงอย่างเดียวไม่แยกสาเหตุบัญชี inactive ออกจากรหัสผ่านผิด
+
+![ข้อความ login ไม่สำเร็จแบบทั่วไป](screenshots/12-inactive-rejected.png)
+
+### 13. Portal Resources ready
+
+Portal แสดง Resources ready, 6/6 main steps complete และ WIF Connected; Completed at (Thailand time) 14:20:02 โดยภาพไม่แสดงวันที่ จึงไม่อนุมานวันที่จากภาพ
+
+![Portal Resources ready](screenshots/13-team-resources.png)
+
+### 14. Cloud Run Console
+
+หน้า Service details ของ scccd8b05 ใน CPE-SE-Course-2026, region asia-southeast1 แสดง revision scccd8b05-00002-72x สถานะพร้อมและ Traffic 100% (to latest), port 3000, คำสั่ง node dist/server.js, APP_VERSION 87c77af07bfbb7f2b4e0d9ada4b69cd79a5c6b5f และ SESSION_SECRET ที่อ้าง scccd8b05-app-secret-1:1 ภาพแสดงเฉพาะชื่อ secret/reference ไม่แสดงค่ารหัสผ่าน ข้อมูล image บน Console ถูกตัดให้สั้นจึงใช้ revision.yaml ประกอบการยืนยัน digest เต็ม; Console ระบุว่าไม่มี build/source information จึงยังไม่ใช่หลักฐาน source-to-image provenance
+
+![Cloud Run Console: revision และ traffic](screenshots/14-cloud-run.png)
+
+### 15. Cloud Run CLI และ migration
+
+ผล Cloud Shell แสดง public URL, main SHA 87c77af…, latestReadyRevisionName scccd8b05-00002-72x และ traffic 100%; migration execution scccd8b05-migrate-cbp4k ใช้ digest เดียวกับ revision.yaml และสำเร็จ 1 task ณ 2026-11-21T12:05:47.291764Z
+
+![Cloud Run CLI: revision, traffic และ migration](screenshots/15-cloud-run-cli.png)
+
+### 16. Release tag → image index → deployed image
+
+Operator-supplied `docker buildx imagetools inspect` output links release tag `87c77af07bfbb7f2b4e0d9ada4b69cd79a5c6b5f` to OCI index `sha256:e4054b99bf312ef871bd08e4c660599961da94638397d0d90954ee8a01ea5397`. Its linux/amd64 child manifest is `sha256:d5a94a9d6a6f1cbd9ce93789d1f0bcf4af15062f56ca9ca523a1dd80c7a0f5b1`, matching the immutable image of revision `scccd8b05-00002-72x` in [revision.yaml](revision.yaml). The parent index digest differs from the child image digest because they identify different OCI objects. The unknown/unknown entry is an attestation manifest referencing that child image; its presence alone does not establish verified source/build provenance.
+
+![Release tag, OCI index and linux/amd64 digest](screenshots/16-image-tag-digest.png)
+
+## Capacity restriction — One Participant
+
+This replaces the ambiguous inactive-login screenshot as the explicit rule/access-restriction evidence. All three images show event `98e22d31-fc01-4759-9861-477005e23f83`, titled `One Participant`, at the same public origin. The registration deadline shown is 23 November 2026 23:59, so the captured UI sequence is consistent with the capacity limit rather than an already expired deadline.
+
+The filenames of 20b and 20c do not match their contents; the captions and sequence below follow the inspected images. Files are not renamed by this edit.
+
+### 20a. Published activity with one available seat
+
+Organizer A sees `PUBLISHED`, 1/1 seats available and zero active registrations.
+
+![One Participant published with one seat](screenshots/20a-capacity-one-published.png)
+
+### 20c. Participant A occupies the final seat
+
+Participant A receives registration success, reference `c3d27e48-1234-4a46-8569-2ab6431163a4`. Availability is 0/1 and the active registration count is 1.
+
+![Participant A registered successfully and filled the activity](screenshots/20c-capacity-full-blocked.png)
+
+### 20b. Participant B cannot register for the full activity
+
+Participant B sees the same event at 0/1 seats, the message “กิจกรรมนี้ไม่เปิดรับลงทะเบียน หรือไม่มีที่นั่งว่าง”, and a disabled registration button. This is direct evidence of a capacity restriction in the browser UI. No direct API request or server rejection response was captured, so this record does not claim an API-level rejection test.
+
+![Participant B registration disabled when capacity is full](screenshots/20b-capacity-last-seat-registered.png)
+
+## Additional resource screenshots
+
+### 17. Cloud SQL and storage auto-increase
+
+`scccd8b05-pg` is RUNNABLE and `storageAutoResize` is false.
+
+![Cloud SQL state and storage auto-increase disabled](screenshots/17-cloud-sql.png)
+
+### 18. Runtime service account
+
+The service's actual runtime identity is shown. This does not display its role grants.
+
+![Runtime service account name](screenshots/18-runtime-service-account.png)
+
+### 19. Artifact Registry
+
+The assigned Docker repository exists in asia-southeast1.
+
+![Team Artifact Registry configuration](screenshots/19-artifact-registry.png)
+
+### 21. Secret Manager access limitation
+
+The student account cannot list secrets. No secret payload is shown.
+
+![Secret Manager list permission denied](screenshots/21-secret-manager-access.png)
+
+### 22. IAM access limitation
+
+The student account cannot read the project IAM policy. Runtime grants are not inspected with student permissions; the limitation is recorded rather than marked PASS or used alone to block review.
+
+![Project IAM policy read permission denied](screenshots/22-iam-access.png)
+
+## Scope of functional evidence and student access
+
+บัญชีนักศึกษาไม่มีสิทธิ์ดูรายละเอียดบางรายการ จึงอ้างอิง portal, ผล deploy, migration และ readiness แทน โดยไม่อ้างว่าได้ตรวจรายการ API, รายชื่อ secrets หรือ IAM grants ครบแล้ว การเข้าถึงหน้าที่ถูกจำกัดสิทธิ์ไม่เป็นเงื่อนไขขวางการรีวิว PR เพียงอย่างเดียว
+
+- **Database:** portal แสดงการเตรียมฐานข้อมูล, migration/seed สำเร็จ และ `/api/ready` ตอบ `db=connected` จึงยืนยันว่าแอปเชื่อมและใช้ฐานข้อมูลได้ ไม่อ้างว่าเปิดตรวจหน้ารายชื่อ database แล้ว
+- **Enabled APIs:** Resources ready และผล deployment/migration/readiness เป็นหลักฐานเชิงการทำงานของเส้นทางที่ใช้ ไม่ได้ตรวจรายการ enabled APIs ทีละตัว และไม่สรุปว่าทุก API ถูกเปิด
+- **Min instances:** สคริปต์/คำสั่ง deploy ที่จัดเตรียมตั้ง `0`; [ผล CLI จริง](screenshots/23-min-instances-config.png) ไม่พบ `minScale` ทั้งระดับ service และ revision template จึงสอดคล้องกับค่าเริ่มต้น 0 ตาม [เอกสาร Cloud Run](https://docs.cloud.google.com/run/docs/configuring/min-instances) เป็นการอ่าน configuration ผ่าน CLI ไม่ได้อ้างว่าเห็นค่า 0 ใน Console หรือวัดจำนวน instance ที่กำลังรันอยู่
+- **Secret Manager / IAM:** [ภาพ Secret Manager](screenshots/21-secret-manager-access.png) แสดง `secretmanager.secrets.list` ถูกปฏิเสธ และ [ภาพ IAM](screenshots/22-iam-access.png) แสดงว่าอ่าน project IAM policy ไม่ได้ จึงระบุว่า **ตรวจรายละเอียดไม่ได้ด้วยสิทธิ์นักศึกษา** ไม่ติ๊กว่า inventory/grants ตรวจผ่าน ไม่สรุปว่า secrets หรือ runtime permissions ไม่มี และไม่ใช้การเข้าหน้ารายละเอียดไม่ได้เป็นเหตุขวาง PR review เพียงอย่างเดียว ผล portal/deploy/migration/readiness เป็นหลักฐานเชิงการทำงานตามขอบเขตที่ตรวจได้
+
+เพิ่ม[คอมเมนต์หลักฐานชุดใหม่ใน Issue #17](https://github.com/jetanin/LoungCheu/issues/17#issuecomment-7077742818) แล้ว ครอบคลุมภาพ 17–23 รวม 20a/20b/20c; GitHub API ยืนยันเวลาสร้าง `2026-11-22T10:21:45Z` (`2026-11-22 17:21:45 +07`) และตรวจลิงก์ภาพในคอมเมนต์แล้ว งานคงเหลือคือให้ [PR #27](https://github.com/jetanin/LoungCheu/pull/27) ผ่าน CI/review และ merge เข้า lab5-staging จากนั้น release PR เข้า main ตาม flow ทีม ตรวจลิงก์ก่อนอัปเดต Issue/project เป็น Done ไม่บังคับให้ขยายสิทธิ์ใน shared project เพื่อถ่ายภาพ และไม่ใช้ build provenance เต็มรูปแบบหรือวันที่ portal เป็นเหตุค้างโดยลำพัง
+
+## Min instances and restricted-access evidence
+
+- **Min instances:** [image 23](screenshots/23-min-instances-config.png) is actual `gcloud run services describe` output. It does not contain service-level `run.googleapis.com/minScale` or revision-template `autoscaling.knative.dev/minScale`. Together with [Cloud Run's documented minimum-instance defaults](https://docs.cloud.google.com/run/docs/configuring/min-instances), this supports the default minimum of 0 without claiming an explicit Console value. The visible `maxScale` values are maximum limits, not minimum instances. This does not measure live instance count.
+- **Secret Manager:** [image 21](screenshots/21-secret-manager-access.png) shows `PERMISSION_DENIED` for `secretmanager.secrets.list`. Inventory inspection is unavailable to the student, not marked PASS; it does not imply missing secret resources or runtime access failure.
+- **IAM:** [image 22](screenshots/22-iam-access.png) shows the student cannot read project IAM policy. [Image 18](screenshots/18-runtime-service-account.png) identifies the runtime account but does not enumerate its grants. IAM inspection is not marked PASS.
+
+บัญชีนักศึกษามีข้อจำกัดในการดูรายละเอียด จึงใช้ portal, ผล deploy/migration และ readiness เป็นหลักฐานเชิงการทำงานแทน โดยไม่อ้างว่าตรวจ inventory/IAM grants ครบแล้ว ข้อจำกัด read access นี้ไม่เป็นเหตุขวางการรีวิว PR เพียงอย่างเดียว; เพิ่ม[คอมเมนต์หลักฐานชุดใหม่](https://github.com/jetanin/LoungCheu/issues/17#issuecomment-7077742818) แล้ว โดยเวลา GitHub API คือ `2026-11-22T10:21:45Z` (`2026-11-22 17:21:45 +07`); งานคงเหลือคือ PR #27 ผ่าน CI/review/merge เข้า lab5-staging ตามด้วย release PR เข้า main และตรวจลิงก์ก่อนเปลี่ยนสถานะ Done
+
+### 23. Min instances — actual CLI configuration
+
+ผล `gcloud run services describe` ของ scccd8b05 ไม่พบค่า minScale ทั้งระดับ service และ revision template จึงสอดคล้องกับค่าเริ่มต้น minimum instances 0 ของ Cloud Run ไม่ใช่การอ้างว่า Console แสดง 0 หรือว่าจำนวน instance ที่ทำงานอยู่ขณะนั้นเป็น 0
+
+![Cloud Run configuration without minScale overrides](screenshots/23-min-instances-config.png)
+
+## Issue #17 comment records
+
+- Initial text-only record: [comment 7063132101](https://github.com/jetanin/LoungCheu/issues/17#issuecomment-7063132101), created `2026-11-21T13:14:58Z`. Its pending-image notes and old branch link are historical; do not count it as the later screenshot submission.
+- Supplemental record with direct pinned image links: [Supplemental Issue #17 evidence comment](https://github.com/jetanin/LoungCheu/issues/17#issuecomment-7077742818) was posted at `2026-11-22T10:21:45Z` (`2026-11-22 17:21:45 +07`), as returned by the GitHub API. It links the new resource/capacity/scaling images directly at evidence commit `c36f477012eb8856e67bc7c5364a9667a56fc2c3`; its body and all listed image paths were verified.
+
+The initial and new evidence sets are now distinguished and dated from GitHub metadata. PR #27/release review and merge, final link checks and Done/Close remain separate tasks. IAM/Secret Manager/API detail inspection is still limited as documented; no inventory/grants/API PASS is asserted.
