@@ -1,6 +1,6 @@
 # Issue #17: course-managed first deployment
 
-Status: **adapted offline for the course portal; not deployed and no C-04 evidence yet**. Use only project `cpe-se-course-2026`, region `asia-southeast1`, and team `scccd8b05`. This supersedes the earlier owner-provisioned first-deployment instructions. Keep Issue #17 open until the actual app works on its public URL and its C-04 evidence is recorded.
+Status of this document at the #17 code-review baseline: **adapted offline for the course portal; this document alone does not prove a deployment or C-04**. Use only project `cpe-se-course-2026`, region `asia-southeast1`, and team `scccd8b05`. This supersedes the earlier owner-provisioned first-deployment instructions. Actual #17 completion must be checked against its live deployment evidence; #19's automated release is described in [deployment.md](deployment.md#release-procedure--issue-19--guide-episode-7).
 
 ## Portal resource status and main repository review
 
@@ -88,13 +88,13 @@ The DB URL value is owned by the portal. This application uses it in Prisma and 
 
 The startup command contains no seed/migration; those run only in the separate job. Seed preserves existing accounts and business records. A failed build/migration/smoke may leave an image/job/revision for inspection; do not reset the database or run teardown to hide a failure.
 
-## Deploy workflow parked until Issue #19 (Episode 7)
+## Deploy workflow at the Issue #17 baseline (before Issue #19)
 
-`.github/workflows/deploy.yml` is retained as a parked draft using the kit name `Deploy demo` and environment `demo`. It has **no push trigger**, and **both jobs are guarded with `if: ${{ false }}`**, so even manual dispatch cannot authenticate, build, migrate or deploy in #17. A skipped/parked run is not deployment evidence. First deployment remains the manual `deploy/deploy.sh` procedure in Episode 5.
+At the Issue #17 baseline on main, `.github/workflows/deploy.yml` was retained as a parked draft using the kit name `Deploy demo` and environment `demo`. It had **no push trigger**, and **both jobs were guarded with `if: ${{ false }}`**, so even manual dispatch could not authenticate, build, migrate or deploy in #17. A skipped/parked run is not deployment evidence. First deployment remains the manual `deploy/deploy.sh` procedure in Episode 5. The separate Issue #19 branch enables the workflow for Episode 7; see the [release procedure](deployment.md#release-procedure--issue-19--guide-episode-7) for the current candidate and its required live checks.
 
-In a separate reviewed #19 change, after manual first deployment and #18 prerequisites, configure the portal's `GCP_PROJECT_ID`, `GCP_REGION`, `WIF_PROVIDER`, `WIF_SERVICE_ACCOUNT` and session-secret reference in environment `demo`, restore main-only trigger/job conditions, then prove the normal CI → build/push → migrate → update → smoke path and rollback path. The prepared smoke command includes **`--expected-commit "$IMAGE_TAG"`**. Do not merely remove the false guard without restoring CI-success/main restrictions. No WIF JSON key is needed. Neither this parked workflow nor WIF has been proven live by this PR.
+The #19 change must be reviewed after manual first deployment and #18 prerequisites. Its workflow consumes the portal's `GCP_PROJECT_ID`, `GCP_REGION`, `WIF_PROVIDER`, `WIF_SERVICE_ACCOUNT` and session-secret reference in environment `demo`, restores main-only trigger/job conditions, and must prove the normal CI → build/push → migrate → update → smoke path. The prepared smoke command includes **`--expected-commit "$IMAGE_TAG"`**. No WIF JSON key is needed. This historical #17 PR did not prove WIF or an automated release live.
 
-## Finish Issue #17
+## Issue #17 completion checklist at the code-review baseline
 
 These follow-up tasks may happen after the code PR/release PR is merged, but must happen before closing #17. Check/Activate the actual team resources in the portal, run first deployment manually from reviewed main, and after a successful real deployment retain the source SHA, image digest, revision, service URL, sanitized command output and smoke result. Then manually sign in on the public URL using LoungCheu usernames such as `organizer.a` and `participant.a`, create/publish/register an event and show a rule/access rejection with URL-visible screenshots. Obtain the portal demo-secret credentials only through the course's private channel/TA if needed; do not use the kit's example email login or print the password. That is the remaining C-04 evidence. CI/merge-gate C-02, repeatable release C-06 and GCP persistence C-05 stay separate.
 
