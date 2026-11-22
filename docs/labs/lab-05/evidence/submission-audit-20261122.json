@@ -1,0 +1,297 @@
+{
+  "audit_date": "2026-11-22",
+  "timezone": "Asia/Bangkok",
+  "collected_at_utc": "2026-11-22T16:31:22.205877+00:00",
+  "repository": "jetanin/LoungCheu",
+  "main_sha": "8b64c48931b5e4fc9d36867fd3d067774a9510be",
+  "latest_deploy": {
+    "id": 45042702690,
+    "html_url": "https://github.com/jetanin/LoungCheu/actions/runs/45042702690",
+    "head_sha": "8b64c48931b5e4fc9d36867fd3d067774a9510be",
+    "event": "push",
+    "status": "completed",
+    "conclusion": "success",
+    "updated_at": "2026-11-22T16:20:28Z"
+  },
+  "readiness_observation": {
+    "http": 200,
+    "body": {
+      "data": {
+        "status": "ready",
+        "db": "connected",
+        "version": "8b64c48931b5e4fc9d36867fd3d067774a9510be"
+      }
+    }
+  },
+  "c01_final_run": {
+    "id": 43743586204,
+    "jobs": [
+      {
+        "name": "test-and-docker",
+        "head_sha": "7efa9361ef8ca0f60de019054307c7f841448a4b",
+        "status": "completed",
+        "conclusion": "success",
+        "html_url": "https://github.com/jetanin/LoungCheu/actions/runs/43743586204/job/133086867310"
+      }
+    ]
+  },
+  "ruleset": {
+    "id": 27801252,
+    "name": "protect-main",
+    "enforcement": "active",
+    "conditions": {
+      "ref_name": {
+        "exclude": [],
+        "include": [
+          "refs/heads/main"
+        ]
+      }
+    },
+    "rules": [
+      {
+        "type": "deletion"
+      },
+      {
+        "type": "non_fast_forward"
+      },
+      {
+        "type": "pull_request",
+        "parameters": {
+          "required_approving_review_count": 1,
+          "dismiss_stale_reviews_on_push": false,
+          "required_reviewers": [],
+          "require_code_owner_review": false,
+          "require_last_push_approval": false,
+          "required_review_thread_resolution": false,
+          "require_extra_approval_for_unattributed_changes": true,
+          "allowed_merge_methods": [
+            "merge",
+            "squash",
+            "rebase"
+          ]
+        }
+      },
+      {
+        "type": "required_status_checks",
+        "parameters": {
+          "strict_required_status_checks_policy": true,
+          "do_not_enforce_on_create": false,
+          "required_status_checks": [
+            {
+              "context": "test-and-docker",
+              "integration_id": 15368
+            }
+          ]
+        }
+      }
+    ],
+    "bypass_actors": []
+  },
+  "issue_states": {
+    "16": {
+      "state": "closed",
+      "url": "https://github.com/jetanin/LoungCheu/issues/16",
+      "comment_count": 0
+    },
+    "17": {
+      "state": "closed",
+      "url": "https://github.com/jetanin/LoungCheu/issues/17",
+      "comment_count": 2
+    },
+    "18": {
+      "state": "closed",
+      "url": "https://github.com/jetanin/LoungCheu/issues/18",
+      "comment_count": 1
+    },
+    "19": {
+      "state": "closed",
+      "url": "https://github.com/jetanin/LoungCheu/issues/19",
+      "comment_count": 1
+    },
+    "20": {
+      "state": "open",
+      "url": "https://github.com/jetanin/LoungCheu/issues/20",
+      "comment_count": 0
+    }
+  },
+  "pr_labels": {
+    "37": [
+      "lab5"
+    ],
+    "36": [
+      "lab5"
+    ],
+    "35": [],
+    "34": [],
+    "33": [
+      "lab5"
+    ],
+    "32": [
+      "lab5"
+    ],
+    "31": [
+      "lab5"
+    ],
+    "30": [
+      "lab5"
+    ],
+    "29": [
+      "lab5"
+    ],
+    "28": [
+      "lab5"
+    ],
+    "27": [
+      "lab5"
+    ],
+    "26": [
+      "lab5"
+    ],
+    "25": [
+      "lab5"
+    ],
+    "24": [
+      "lab5"
+    ],
+    "23": [
+      "lab5"
+    ],
+    "22": [
+      "lab5"
+    ],
+    "21": [
+      "lab5"
+    ]
+  },
+  "reviews": {
+    "reviews24": [
+      {
+        "reviewer": "i3artuf",
+        "state": "APPROVED",
+        "commit_id": "03668672856c16fb8840debf276e487dc101d662",
+        "url": "https://github.com/jetanin/LoungCheu/pull/24#pullrequestreview-5995743669"
+      }
+    ],
+    "reviews27": [
+      {
+        "reviewer": "i3artuf",
+        "state": "APPROVED",
+        "commit_id": "91b57f7b1e7326ee8bbed2af1a49d1fd6e4fc667",
+        "url": "https://github.com/jetanin/LoungCheu/pull/27#pullrequestreview-6011786133"
+      }
+    ],
+    "reviews25": [
+      {
+        "reviewer": "i3artuf",
+        "state": "APPROVED",
+        "commit_id": "5a6b3b5445c47fb56d2a97c1a007c314003a1070",
+        "url": "https://github.com/jetanin/LoungCheu/pull/25#pullrequestreview-6003579655"
+      }
+    ],
+    "reviews29": [
+      {
+        "reviewer": "jetanin",
+        "state": "APPROVED",
+        "commit_id": "e032cf06cef105f6b1b92e12c39b89db8f9b2f69",
+        "url": "https://github.com/jetanin/LoungCheu/pull/29#pullrequestreview-6010777686"
+      }
+    ],
+    "reviews31": [
+      {
+        "reviewer": "jetanin",
+        "state": "APPROVED",
+        "commit_id": "74caa5b6b352cd9b04d6eb16d966e3b4da85df14",
+        "url": "https://github.com/jetanin/LoungCheu/pull/31#pullrequestreview-6011325333"
+      }
+    ],
+    "reviews32": [
+      {
+        "reviewer": "jetanin",
+        "state": "APPROVED",
+        "commit_id": "878e733a86c608576edac477c615467014b7bd5a",
+        "url": "https://github.com/jetanin/LoungCheu/pull/32#pullrequestreview-6011602401"
+      }
+    ],
+    "reviews34": [
+      {
+        "reviewer": "i3artuf",
+        "state": "APPROVED",
+        "commit_id": "591a7b9cb14c66a1f2f25c6d45b6e89125573224",
+        "url": "https://github.com/jetanin/LoungCheu/pull/34#pullrequestreview-6013003155"
+      }
+    ],
+    "reviews30": [
+      {
+        "reviewer": "jetanin",
+        "state": "APPROVED",
+        "commit_id": "625577af7511f3ea5c7f4cdca1c72fb03e450201",
+        "url": "https://github.com/jetanin/LoungCheu/pull/30#pullrequestreview-6010920822"
+      }
+    ],
+    "reviews35": [
+      {
+        "reviewer": "i3artuf",
+        "state": "APPROVED",
+        "commit_id": "f66ec061743d3e5614ea579d6c04a63867df4e80",
+        "url": "https://github.com/jetanin/LoungCheu/pull/35#pullrequestreview-6013045581"
+      }
+    ],
+    "reviews36": [
+      {
+        "reviewer": "i3artuf",
+        "state": "APPROVED",
+        "commit_id": "6a57fce9b40e8321cc03adf1f00185a83be62de8",
+        "url": "https://github.com/jetanin/LoungCheu/pull/36#pullrequestreview-6013187642"
+      }
+    ],
+    "reviews37": [
+      {
+        "reviewer": "i3artuf",
+        "state": "APPROVED",
+        "commit_id": "8a58769fa87fd66ce803542160fe00b6aa1b0407",
+        "url": "https://github.com/jetanin/LoungCheu/pull/37#pullrequestreview-6013212765"
+      }
+    ]
+  },
+  "limitations": [
+    "This audit performed read-only GitHub and HTTP requests; no GCP operation or app test was rerun.",
+    "Historical screenshots retain their original source versions.",
+    "No GitHub label, issue comment, review, merge, project status or LEB2 submission was changed."
+  ],
+  "final_submission_update": {
+    "checked_at_utc": "2026-11-22T16:51:45.461411+00:00",
+    "section": 1,
+    "group": "TH-001_P3",
+    "students": [
+      {
+        "name_th": "เจตนินทร์ นายโท",
+        "student_id": "67070501011",
+        "github": "jetanin"
+      },
+      {
+        "name_th": "ปภังกร ล่วนเส้ง",
+        "student_id": "67070501083",
+        "github": "i3artuf"
+      }
+    ],
+    "pr_labels": {
+      "34": [
+        "lab5"
+      ],
+      "35": [
+        "lab5"
+      ]
+    },
+    "issue20_comment": "https://github.com/jetanin/LoungCheu/issues/20#issuecomment-7082236743",
+    "pdf": {
+      "path": "output/pdf/lab5_sec1_TH-001_P3.pdf",
+      "sha256": "3f0514defc6b293bc6d9bff2c56843b125c69e89b012f4c2582abb68de9c480e",
+      "pages": 7,
+      "link_annotations": 100,
+      "application_evidence_baseline": "8b64c48931b5e4fc9d36867fd3d067774a9510be",
+      "thai_names_exact_text_check": true,
+      "visual_review_all_pages": true,
+      "leb2_submission_verified": false
+    }
+  }
+}

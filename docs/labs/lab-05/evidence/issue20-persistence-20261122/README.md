@@ -1,8 +1,12 @@
 # Issue #20 — restart and redeploy persistence evidence, 22 November 2026
 
-Status: **C-05 record-retention checks passed in the supplied restart and redeploy evidence**: the original event and ACTIVE registration remain present after a new instance starts on the same revision and after a separate successful deployment to a new revision. This is the persistence result for these retained records, not completion of all Issue #20 submission work or C-01–C-06. The direct Actions run URL is verified below. Remaining: publish/link the evidence through the reviewed PR flow and complete the final submission checklist. Images were supplied by the operator and inspected when preparing this record; no GCP operation or database change was performed by the documentation agent.
+Status: **C-05 record-retention checks passed in the supplied restart and redeploy evidence**: the original event and ACTIVE registration remain present after a new instance starts on the same revision and after a separate successful deployment to a new revision. This is the persistence result for these retained records, not completion of all Issue #20 submission work or C-01–C-06. The direct Actions run URL is verified below. Evidence publication is now verified: PR #36 merged into lab5-staging and release PR #37 merged into main. Remaining: review/merge the combined submission index and completed PDF, then submit to LEB2. Section 1, group TH-001_P3 and exact Thai names are confirmed; the [Issue #20 C-05 comment](https://github.com/jetanin/LoungCheu/issues/20#issuecomment-7082236743) now embeds six before/after screenshots. Images were supplied by the operator and inspected when preparing this record; no GCP operation or database change was performed by the documentation agent.
 
 Use only course project `cpe-se-course-2026`, region `asia-southeast1`, service `scccd8b05`. [Issue #20](https://github.com/jetanin/LoungCheu/issues/20). Keep this evidence separate from the historical [Issue #17 deployment round](../issue17-live-20261121/README.md).
+
+## Submission publication update — 22 November 2026
+
+[Combined C-01–C-06 index and Answer Parts 0–4](../../submission-evidence.md). [PR #36](https://github.com/jetanin/LoungCheu/pull/36) and [PR #37](https://github.com/jetanin/LoungCheu/pull/37) have submitted teammate approvals and are merged. Main baseline is `8b64c48931b5e4fc9d36867fd3d067774a9510be`; [Deploy demo 45042702690](https://github.com/jetanin/LoungCheu/actions/runs/45042702690) completed successfully. This later documentation release does not replace the historical C-05 observations below. At the initial audit, Issue #20 was open with no comments; the [C-05 evidence comment](https://github.com/jetanin/LoungCheu/issues/20#issuecomment-7082236743) was subsequently posted and verified. The [completed 7-page PDF](../../../../../output/pdf/lab5_sec1_TH-001_P3.pdf) and [combined index](../../submission-evidence.md) use section 1, group TH-001_P3. Final PDF publication/review and LEB2 submission remain pending.
 
 ## Source and running deployment observations
 
@@ -140,7 +144,7 @@ The supplied revision describe output records creationTimestamp, full image refe
 - [x] Separate redeploy captured under `after-redeploy/`: successful Actions screenshot, new revision/image/version and the original same-ID event and ACTIVE registration.
 - [x] Comparison table completed for both restart and redeploy; original Event ID and Registration ID match the baseline in both rounds.
 - [x] Direct Actions URL verified via GitHub API: [Deploy demo run 45039170919](https://github.com/jetanin/LoungCheu/actions/runs/45039170919), workflow run #5, push to main, completed/success, head `f8fa8c9519f7196bdf6a8f8a002384e7cbb4089c` matching the retained readiness/Actions image.
-- [ ] Link the resulting evidence in Issue #20 and the final submission through the team's reviewed PR/release flow. Existing C-01–C-04/C-06 evidence must be assessed separately; this baseline does not establish those results.
+- [x] Link the C-05 evidence in [Issue #20](https://github.com/jetanin/LoungCheu/issues/20#issuecomment-7082236743) and the combined submission index/PDF. Historical C-05 evidence is already merged; the completed index/PDF still needs its own reviewed publication and LEB2 submission. C-01–C-04/C-06 are assessed separately in the combined index.
 
 Do not store passwords, SESSION_SECRET/DATABASE_URL values, cookies or tokens in screenshots/logs. No visible secret value was identified in the supplied baseline images. This documentation update does not run tests against the live database, reset data, change Cloud Run, deploy an image, commit, push or close Issue #20. The scaling operations in the supplied screenshots were executed by the operator, separately from this documentation work.
 
@@ -229,7 +233,7 @@ The subsequent Actions screenshot is titled “Merge pull request #35 from jetan
 | Actions result | `Deploy demo` Success, triggered via push on main; screenshot titled `Merge pull request #35 from jetanin/lab5-staging`, workflow run number #5 |
 | Test summary | 16 test files and 168 tests passed in the displayed Vitest summary; test/deploy jobs are green |
 | Release commit | `f8fa8c9519f7196bdf6a8f8a002384e7cbb4089c` in Actions Image commit and public readiness version |
-| Release PR | [PR #35](https://github.com/jetanin/LoungCheu/pull/35), as identified by the Actions screenshot title; review/merge metadata was not independently fetched in this documentation update |
+| Release PR | [PR #35](https://github.com/jetanin/LoungCheu/pull/35): independently verified merged into main at `2026-11-22T15:35:31Z`, merge SHA `f8fa8c9519f7196bdf6a8f8a002384e7cbb4089c`; [teammate approval](https://github.com/jetanin/LoungCheu/pull/35#pullrequestreview-6013045581) matches source head `f66ec061743d3e5614ea579d6c04a63867df4e80` |
 | Previous serving revision | `scccd8b05-00005-5xj`, retained in the preflight captures |
 | New serving revision | `scccd8b05-00006-68j` in Actions and actual service/revision describe output |
 | Traffic | 100% to `scccd8b05-00006-68j`, latestRevision=true |
@@ -269,4 +273,4 @@ The “recorded before” value printed in this screenshot is a label copied fro
 
 ![Same registration reference still active with the original registration time](after-redeploy/07-original-registration.png)
 
-Remaining submission work: link this complete persistence evidence in Issue #20, publish the updated document through the team's reviewed PR/release flow and incorporate it in the final Lab 5 submission. The direct Actions run above is now verified against the retained release SHA. Assess C-01–C-04/C-06 against their own evidence; a single deploy screenshot and this C-05 result do not establish all of them. Keep Issue #20 open until its remaining submission requirements are satisfied.
+Persistence evidence publication through PR #36 and release PR #37 is verified above. The [Issue #20 evidence comment](https://github.com/jetanin/LoungCheu/issues/20#issuecomment-7082236743) and completed PDF now include this comparison. Remaining submission work: review/merge the combined submission index/PDF, add their public link to the Issue and submit the PDF to LEB2. The direct Actions run above is now verified against the retained release SHA. Assess C-01–C-04/C-06 against their own evidence; a single deploy screenshot and this C-05 result do not establish all of them. Keep Issue #20 open until its remaining submission requirements are satisfied.
