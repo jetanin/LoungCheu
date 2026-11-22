@@ -1,6 +1,6 @@
 # Issue #17 live deployment evidence — 21 November 2026
 
-Status: manual deployment, smoke and core journeys passed; URL-visible capacity restriction and available resource evidence are captured. Student-only access limitations are documented, not marked as successful inventory/IAM/API inspections. Remaining: attach/link the new resource/capacity evidence in Issue #17 and complete PR #27 CI/review/merge before updating Issue/project status. Inaccessible resource-detail screens, full build provenance and the missing portal date are not standalone PR-review blockers.
+Status: manual deployment, smoke and core journeys passed; URL-visible capacity restriction and available resource evidence are captured. Student-only access limitations are documented, not marked as successful inventory/IAM/API inspections. [Supplemental Issue #17 evidence comment](https://github.com/jetanin/LoungCheu/issues/17#issuecomment-7077742818) was posted at `2026-11-22T10:21:45Z` (`2026-11-22 17:21:45 +07`), as returned by the GitHub API. It links the new resource/capacity/scaling images directly at evidence commit `c36f477012eb8856e67bc7c5364a9667a56fc2c3`; its body and all listed image paths were verified. Remaining: PR #27 CI/review/merge into lab5-staging, a reviewed release PR into main, then final link/status checks before Done. Inaccessible resource-detail screens, full build provenance and the missing portal date are not standalone PR-review blockers.
 
 This is a new live-evidence round. `../issue17-shared-cloud` and `../issue17-offline` remain untouched historical offline records. No secret values, passwords, cookies or tokens belong in this directory.
 
@@ -33,8 +33,8 @@ Organizer: login, create and publish passed. Participant: view and register pass
 - [x] Capacity restriction visible on the web UI: [one-seat published activity](screenshots/20a-capacity-one-published.png) → [Participant A registered successfully](screenshots/20c-capacity-full-blocked.png) → [Participant B blocked at 0/1 seats](screenshots/20b-capacity-last-seat-registered.png). This demonstrates UI restriction, not an independently submitted API request being rejected.
 - [x] Supplementary generic login-failure screenshot: [12-inactive-rejected.png](screenshots/12-inactive-rejected.png). It does not independently prove that inactivity caused the failure.
 - [x] Cloud Run CLI and team resource screenshots: [15-cloud-run-cli.png](screenshots/15-cloud-run-cli.png), [13-team-resources.png](screenshots/13-team-resources.png). The added [Cloud Run Console screenshot](screenshots/14-cloud-run.png) also shows ready revision `scccd8b05-00002-72x`, traffic 100%, port 3000, APP_VERSION and the session-secret reference; secret values are not exposed.
-- [x] Attach URL/screenshots and release metadata directly to [Issue #17](https://github.com/jetanin/LoungCheu/issues/17) and cross-link this record. Operator confirmed posting the evidence comment on 22 November 2026; the exact comment permalink was not supplied or independently checked in this update.
-- [ ] After the evidence PR passes review/CI and merges, confirm the Issue evidence links are accessible and update Issue #17/project status to Done.
+- [x] Initial text-only release record: [original comment](https://github.com/jetanin/LoungCheu/issues/17#issuecomment-7063132101), created `2026-11-21T13:14:58Z`. It recorded URL/release metadata and pending screenshots; it is not proof that the later images were attached.
+- [ ] Complete PR #27 latest-head CI, teammate review and merge into lab5-staging; then complete the reviewed release PR into main, verify Issue/repository evidence links and update Issue #17/project status to Done. This documentation edit does not claim those merges or final status are complete.
 
 ## Collect missing non-secret release metadata in Cloud Shell
 
@@ -71,7 +71,7 @@ The following operator-supplied screenshots were inspected on 22 November 2026. 
 - [x] Team Artifact Registry configuration captured.
 - [x] Student Secret Manager/IAM read-access limitations captured without secret values.
 - Access limitation (not a PASS): the student cannot inspect secret inventory/runtime IAM grants. Record the denied access and the functional portal/deploy/migration/readiness evidence; TA clarification may be retained if obtained, but inaccessible detail screens alone do not block this PR review. Do not change shared-project IAM.
-- [ ] Attach/link the newly added resource and capacity screenshots directly in Issue #17; the earlier operator confirmation of posting the first evidence set does not confirm these later additions.
+- [x] New screenshot/resource/capacity/scaling evidence linked directly in Issue #17: [Supplemental Issue #17 evidence comment](https://github.com/jetanin/LoungCheu/issues/17#issuecomment-7077742818) was posted at `2026-11-22T10:21:45Z` (`2026-11-22 17:21:45 +07`), as returned by the GitHub API. It links the new resource/capacity/scaling images directly at evidence commit `c36f477012eb8856e67bc7c5364a9667a56fc2c3`; its body and all listed image paths were verified.
 
 These access limitations are documented as unverified checks, not fabricated PASS results or standalone blockers requiring inaccessible screenshots. The release tag/index/manifest mapping already recorded is sufficient to state that identity relationship; a full independently attested build and a date absent from the portal screenshot are not introduced as extra Episode 5 completion requirements.
 
@@ -240,7 +240,7 @@ The student account cannot read the project IAM policy. Runtime grants are not i
 - **Min instances:** สคริปต์/คำสั่ง deploy ที่จัดเตรียมตั้ง `0`; [ผล CLI จริง](screenshots/23-min-instances-config.png) ไม่พบ `minScale` ทั้งระดับ service และ revision template จึงสอดคล้องกับค่าเริ่มต้น 0 ตาม [เอกสาร Cloud Run](https://docs.cloud.google.com/run/docs/configuring/min-instances) เป็นการอ่าน configuration ผ่าน CLI ไม่ได้อ้างว่าเห็นค่า 0 ใน Console หรือวัดจำนวน instance ที่กำลังรันอยู่
 - **Secret Manager / IAM:** [ภาพ Secret Manager](screenshots/21-secret-manager-access.png) แสดง `secretmanager.secrets.list` ถูกปฏิเสธ และ [ภาพ IAM](screenshots/22-iam-access.png) แสดงว่าอ่าน project IAM policy ไม่ได้ จึงระบุว่า **ตรวจรายละเอียดไม่ได้ด้วยสิทธิ์นักศึกษา** ไม่ติ๊กว่า inventory/grants ตรวจผ่าน ไม่สรุปว่า secrets หรือ runtime permissions ไม่มี และไม่ใช้การเข้าหน้ารายละเอียดไม่ได้เป็นเหตุขวาง PR review เพียงอย่างเดียว ผล portal/deploy/migration/readiness เป็นหลักฐานเชิงการทำงานตามขอบเขตที่ตรวจได้
 
-งานที่ยังต้องทำแน่นอน: เพิ่มภาพหลักฐานชุดใหม่ (17–22 รวม 20a/20b/20c) หรือลิงก์ภาพรายใบใน [Issue #17](https://github.com/jetanin/LoungCheu/issues/17) และให้ [PR #27](https://github.com/jetanin/LoungCheu/pull/27) ผ่าน CI/review และ merge ตาม flow ทีม ก่อนอัปเดต Issue/project เป็น Done ไม่บังคับให้ขยายสิทธิ์ใน shared project เพื่อถ่ายภาพ และไม่ใช้ build provenance เต็มรูปแบบหรือวันที่ portal เป็นเหตุค้างโดยลำพัง
+เพิ่ม[คอมเมนต์หลักฐานชุดใหม่ใน Issue #17](https://github.com/jetanin/LoungCheu/issues/17#issuecomment-7077742818) แล้ว ครอบคลุมภาพ 17–23 รวม 20a/20b/20c; GitHub API ยืนยันเวลาสร้าง `2026-11-22T10:21:45Z` (`2026-11-22 17:21:45 +07`) และตรวจลิงก์ภาพในคอมเมนต์แล้ว งานคงเหลือคือให้ [PR #27](https://github.com/jetanin/LoungCheu/pull/27) ผ่าน CI/review และ merge เข้า lab5-staging จากนั้น release PR เข้า main ตาม flow ทีม ตรวจลิงก์ก่อนอัปเดต Issue/project เป็น Done ไม่บังคับให้ขยายสิทธิ์ใน shared project เพื่อถ่ายภาพ และไม่ใช้ build provenance เต็มรูปแบบหรือวันที่ portal เป็นเหตุค้างโดยลำพัง
 
 ## Min instances and restricted-access evidence
 
@@ -248,10 +248,17 @@ The student account cannot read the project IAM policy. Runtime grants are not i
 - **Secret Manager:** [image 21](screenshots/21-secret-manager-access.png) shows `PERMISSION_DENIED` for `secretmanager.secrets.list`. Inventory inspection is unavailable to the student, not marked PASS; it does not imply missing secret resources or runtime access failure.
 - **IAM:** [image 22](screenshots/22-iam-access.png) shows the student cannot read project IAM policy. [Image 18](screenshots/18-runtime-service-account.png) identifies the runtime account but does not enumerate its grants. IAM inspection is not marked PASS.
 
-บัญชีนักศึกษามีข้อจำกัดในการดูรายละเอียด จึงใช้ portal, ผล deploy/migration และ readiness เป็นหลักฐานเชิงการทำงานแทน โดยไม่อ้างว่าตรวจ inventory/IAM grants ครบแล้ว ข้อจำกัด read access นี้ไม่เป็นเหตุขวางการรีวิว PR เพียงอย่างเดียว; งานคงเหลือคือแนบ/ลิงก์ภาพหลักฐานชุดใหม่ลง Issue #17 และให้ PR #27 ผ่าน CI/review/merge ตาม flow ทีม
+บัญชีนักศึกษามีข้อจำกัดในการดูรายละเอียด จึงใช้ portal, ผล deploy/migration และ readiness เป็นหลักฐานเชิงการทำงานแทน โดยไม่อ้างว่าตรวจ inventory/IAM grants ครบแล้ว ข้อจำกัด read access นี้ไม่เป็นเหตุขวางการรีวิว PR เพียงอย่างเดียว; เพิ่ม[คอมเมนต์หลักฐานชุดใหม่](https://github.com/jetanin/LoungCheu/issues/17#issuecomment-7077742818) แล้ว โดยเวลา GitHub API คือ `2026-11-22T10:21:45Z` (`2026-11-22 17:21:45 +07`); งานคงเหลือคือ PR #27 ผ่าน CI/review/merge เข้า lab5-staging ตามด้วย release PR เข้า main และตรวจลิงก์ก่อนเปลี่ยนสถานะ Done
 
 ### 23. Min instances — actual CLI configuration
 
 ผล `gcloud run services describe` ของ scccd8b05 ไม่พบค่า minScale ทั้งระดับ service และ revision template จึงสอดคล้องกับค่าเริ่มต้น minimum instances 0 ของ Cloud Run ไม่ใช่การอ้างว่า Console แสดง 0 หรือว่าจำนวน instance ที่ทำงานอยู่ขณะนั้นเป็น 0
 
 ![Cloud Run configuration without minScale overrides](screenshots/23-min-instances-config.png)
+
+## Issue #17 comment records
+
+- Initial text-only record: [comment 7063132101](https://github.com/jetanin/LoungCheu/issues/17#issuecomment-7063132101), created `2026-11-21T13:14:58Z`. Its pending-image notes and old branch link are historical; do not count it as the later screenshot submission.
+- Supplemental record with direct pinned image links: [Supplemental Issue #17 evidence comment](https://github.com/jetanin/LoungCheu/issues/17#issuecomment-7077742818) was posted at `2026-11-22T10:21:45Z` (`2026-11-22 17:21:45 +07`), as returned by the GitHub API. It links the new resource/capacity/scaling images directly at evidence commit `c36f477012eb8856e67bc7c5364a9667a56fc2c3`; its body and all listed image paths were verified.
+
+The initial and new evidence sets are now distinguished and dated from GitHub metadata. PR #27/release review and merge, final link checks and Done/Close remain separate tasks. IAM/Secret Manager/API detail inspection is still limited as documented; no inventory/grants/API PASS is asserted.
