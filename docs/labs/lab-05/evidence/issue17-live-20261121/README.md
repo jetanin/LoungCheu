@@ -1,6 +1,6 @@
 # Issue #17 live deployment evidence — 21 November 2026
 
-Status: manual deployment, smoke and core journeys passed. URL-visible screenshots now include a capacity restriction on the web UI. Cloud SQL/auto-increase, runtime identity and registry checks are captured; runtime IAM permissions and the Secret Manager inventory remain unverified because student access is denied. Remaining: TA follow-up for those checks, attach/link the new resource/capacity evidence directly in Issue #17, and complete evidence-PR review/merge before updating Issue/project status. Full build provenance and an exact portal completion date are not standalone blockers for Episode 5.
+Status: manual deployment, smoke and core journeys passed; URL-visible capacity restriction and available resource evidence are captured. Student-only access limitations are documented, not marked as successful inventory/IAM/API inspections. Remaining: attach/link the new resource/capacity evidence in Issue #17 and complete PR #27 CI/review/merge before updating Issue/project status. Inaccessible resource-detail screens, full build provenance and the missing portal date are not standalone PR-review blockers.
 
 This is a new live-evidence round. `../issue17-shared-cloud` and `../issue17-offline` remain untouched historical offline records. No secret values, passwords, cookies or tokens belong in this directory.
 
@@ -60,17 +60,20 @@ The following operator-supplied screenshots were inspected on 22 November 2026. 
 | Cloud SQL | `scccd8b05-pg`, `RUNNABLE`, `asia-southeast1`, tier `db-f1-micro`; `storageAutoResize: false` | [17-cloud-sql.png](screenshots/17-cloud-sql.png) |
 | Runtime identity | Service uses `scccd8b05-runner@cpe-se-course-2026.iam.gserviceaccount.com`; identity alone does not establish granted roles | [18-runtime-service-account.png](screenshots/18-runtime-service-account.png) |
 | Artifact Registry | Team repository `scccd8b05`, location `asia-southeast1`, `DOCKER`, `STANDARD_REPOSITORY` | [19-artifact-registry.png](screenshots/19-artifact-registry.png) |
-| Secret inventory | `gcloud secrets list` denied `secretmanager.secrets.list` to the student account; inventory cannot be verified with that account | [21-secret-manager-access.png](screenshots/21-secret-manager-access.png) |
-| Runtime IAM roles | `gcloud projects get-iam-policy` denied to the student account; this is not proof that the runtime identity lacks permissions | [22-iam-access.png](screenshots/22-iam-access.png) |
+| Database usability | Portal database-preparation status, successful migration/seed and readiness `db=connected` demonstrate application DB use; no database-list inspection is claimed | [Portal](screenshots/13-team-resources.png), [migration](screenshots/15-cloud-run-cli.png), [readiness](readiness.json) |
+| Enabled APIs | Resources ready and successful deploy/migration/readiness are functional evidence only; individual enabled APIs were not inventoried | [Portal](screenshots/13-team-resources.png), [deployment](screenshots/14-cloud-run.png), [migration](screenshots/15-cloud-run-cli.png) |
+| Min instances | Prepared deploy commands set 0. The actual service describe output contains neither `run.googleapis.com/minScale` (service) nor `autoscaling.knative.dev/minScale` (revision template); this is consistent with the documented default 0. This is CLI configuration evidence, not an explicit Console reading or a measurement of the current running instance count | [23-min-instances-config.png](screenshots/23-min-instances-config.png), [Cloud Run defaults](https://docs.cloud.google.com/run/docs/configuring/min-instances) |
+| Secret inventory | **Not inspected: student read access denied.** `gcloud secrets list` returns `PERMISSION_DENIED` for `secretmanager.secrets.list`. This proves the account cannot list secrets, not that secrets are absent or unusable by the runtime. No inventory PASS is claimed; lack of this access alone does not block PR review | [21-secret-manager-access.png](screenshots/21-secret-manager-access.png) |
+| Runtime IAM roles | **Not inspected: student read access denied.** `gcloud projects get-iam-policy` returns permission denied. The runtime identity is known from image 18, but its complete grants were not enumerated. This is not an IAM PASS or evidence that the runtime lacks access; the read restriction alone does not block PR review | [22-iam-access.png](screenshots/22-iam-access.png), [runtime identity](screenshots/18-runtime-service-account.png) |
 
 - [x] Cloud SQL state and disabled storage auto-increase captured.
 - [x] Actual runtime service account name captured.
 - [x] Team Artifact Registry configuration captured.
 - [x] Student Secret Manager/IAM read-access limitations captured without secret values.
-- [ ] Ask the TA to confirm the team secret inventory and runtime IAM grants, retaining the request/response or approved course-managed exception. No request/response has been supplied for this record yet. Do not grant roles or modify shared-project IAM to obtain a screenshot.
+- Access limitation (not a PASS): the student cannot inspect secret inventory/runtime IAM grants. Record the denied access and the functional portal/deploy/migration/readiness evidence; TA clarification may be retained if obtained, but inaccessible detail screens alone do not block this PR review. Do not change shared-project IAM.
 - [ ] Attach/link the newly added resource and capacity screenshots directly in Issue #17; the earlier operator confirmation of posting the first evidence set does not confirm these later additions.
 
-These access limitations are documented as unverified checks, not fabricated PASS results. The release tag/index/manifest mapping already recorded is sufficient to state that identity relationship; a full independently attested build and a date absent from the portal screenshot are not introduced as extra Episode 5 completion requirements.
+These access limitations are documented as unverified checks, not fabricated PASS results or standalone blockers requiring inaccessible screenshots. The release tag/index/manifest mapping already recorded is sufficient to state that identity relationship; a full independently attested build and a date absent from the portal screenshot are not introduced as extra Episode 5 completion requirements.
 
 ## C-04 screenshot gallery
 
@@ -224,6 +227,31 @@ The student account cannot list secrets. No secret payload is shown.
 
 ### 22. IAM access limitation
 
-The student account cannot read the project IAM policy. TA confirmation of runtime permissions is still needed.
+The student account cannot read the project IAM policy. Runtime grants are not inspected with student permissions; the limitation is recorded rather than marked PASS or used alone to block review.
 
 ![Project IAM policy read permission denied](screenshots/22-iam-access.png)
+
+## Scope of functional evidence and student access
+
+บัญชีนักศึกษาไม่มีสิทธิ์ดูรายละเอียดบางรายการ จึงอ้างอิง portal, ผล deploy, migration และ readiness แทน โดยไม่อ้างว่าได้ตรวจรายการ API, รายชื่อ secrets หรือ IAM grants ครบแล้ว การเข้าถึงหน้าที่ถูกจำกัดสิทธิ์ไม่เป็นเงื่อนไขขวางการรีวิว PR เพียงอย่างเดียว
+
+- **Database:** portal แสดงการเตรียมฐานข้อมูล, migration/seed สำเร็จ และ `/api/ready` ตอบ `db=connected` จึงยืนยันว่าแอปเชื่อมและใช้ฐานข้อมูลได้ ไม่อ้างว่าเปิดตรวจหน้ารายชื่อ database แล้ว
+- **Enabled APIs:** Resources ready และผล deployment/migration/readiness เป็นหลักฐานเชิงการทำงานของเส้นทางที่ใช้ ไม่ได้ตรวจรายการ enabled APIs ทีละตัว และไม่สรุปว่าทุก API ถูกเปิด
+- **Min instances:** สคริปต์/คำสั่ง deploy ที่จัดเตรียมตั้ง `0`; [ผล CLI จริง](screenshots/23-min-instances-config.png) ไม่พบ `minScale` ทั้งระดับ service และ revision template จึงสอดคล้องกับค่าเริ่มต้น 0 ตาม [เอกสาร Cloud Run](https://docs.cloud.google.com/run/docs/configuring/min-instances) เป็นการอ่าน configuration ผ่าน CLI ไม่ได้อ้างว่าเห็นค่า 0 ใน Console หรือวัดจำนวน instance ที่กำลังรันอยู่
+- **Secret Manager / IAM:** [ภาพ Secret Manager](screenshots/21-secret-manager-access.png) แสดง `secretmanager.secrets.list` ถูกปฏิเสธ และ [ภาพ IAM](screenshots/22-iam-access.png) แสดงว่าอ่าน project IAM policy ไม่ได้ จึงระบุว่า **ตรวจรายละเอียดไม่ได้ด้วยสิทธิ์นักศึกษา** ไม่ติ๊กว่า inventory/grants ตรวจผ่าน ไม่สรุปว่า secrets หรือ runtime permissions ไม่มี และไม่ใช้การเข้าหน้ารายละเอียดไม่ได้เป็นเหตุขวาง PR review เพียงอย่างเดียว ผล portal/deploy/migration/readiness เป็นหลักฐานเชิงการทำงานตามขอบเขตที่ตรวจได้
+
+งานที่ยังต้องทำแน่นอน: เพิ่มภาพหลักฐานชุดใหม่ (17–22 รวม 20a/20b/20c) หรือลิงก์ภาพรายใบใน [Issue #17](https://github.com/jetanin/LoungCheu/issues/17) และให้ [PR #27](https://github.com/jetanin/LoungCheu/pull/27) ผ่าน CI/review และ merge ตาม flow ทีม ก่อนอัปเดต Issue/project เป็น Done ไม่บังคับให้ขยายสิทธิ์ใน shared project เพื่อถ่ายภาพ และไม่ใช้ build provenance เต็มรูปแบบหรือวันที่ portal เป็นเหตุค้างโดยลำพัง
+
+## Min instances and restricted-access evidence
+
+- **Min instances:** [image 23](screenshots/23-min-instances-config.png) is actual `gcloud run services describe` output. It does not contain service-level `run.googleapis.com/minScale` or revision-template `autoscaling.knative.dev/minScale`. Together with [Cloud Run's documented minimum-instance defaults](https://docs.cloud.google.com/run/docs/configuring/min-instances), this supports the default minimum of 0 without claiming an explicit Console value. The visible `maxScale` values are maximum limits, not minimum instances. This does not measure live instance count.
+- **Secret Manager:** [image 21](screenshots/21-secret-manager-access.png) shows `PERMISSION_DENIED` for `secretmanager.secrets.list`. Inventory inspection is unavailable to the student, not marked PASS; it does not imply missing secret resources or runtime access failure.
+- **IAM:** [image 22](screenshots/22-iam-access.png) shows the student cannot read project IAM policy. [Image 18](screenshots/18-runtime-service-account.png) identifies the runtime account but does not enumerate its grants. IAM inspection is not marked PASS.
+
+บัญชีนักศึกษามีข้อจำกัดในการดูรายละเอียด จึงใช้ portal, ผล deploy/migration และ readiness เป็นหลักฐานเชิงการทำงานแทน โดยไม่อ้างว่าตรวจ inventory/IAM grants ครบแล้ว ข้อจำกัด read access นี้ไม่เป็นเหตุขวางการรีวิว PR เพียงอย่างเดียว; งานคงเหลือคือแนบ/ลิงก์ภาพหลักฐานชุดใหม่ลง Issue #17 และให้ PR #27 ผ่าน CI/review/merge ตาม flow ทีม
+
+### 23. Min instances — actual CLI configuration
+
+ผล `gcloud run services describe` ของ scccd8b05 ไม่พบค่า minScale ทั้งระดับ service และ revision template จึงสอดคล้องกับค่าเริ่มต้น minimum instances 0 ของ Cloud Run ไม่ใช่การอ้างว่า Console แสดง 0 หรือว่าจำนวน instance ที่ทำงานอยู่ขณะนั้นเป็น 0
+
+![Cloud Run configuration without minScale overrides](screenshots/23-min-instances-config.png)
