@@ -18,9 +18,9 @@ An isolated, disposable PostgreSQL 17 container was used with `TEST_DATABASE_URL
 - Release PR from `lab5-staging` into `main` with the same passing check before merge.
 - Teammate review stating a specific check before merging PR #23. Issue #16 and PR #23 already have the `lab5` label.
 
-The required-check ruleset and intentionally failing temporary PR are Episode 6 / C-02, not part of Issue #16. The staging PR has a passing C-01 CI run; the release PR into `main` still needs its own passing run before claiming the full PR history required by the lab.
+The required-check ruleset and intentionally failing temporary PR are Episode 6 / C-02, not part of Issue #16. The staging PR has passing C-01 CI; release PR #25 into `main` subsequently passed as recorded below. This does not establish the separate C-02 merge gate or C-06 automatic deployment proof.
 
-As checked on 16 November 2026 (Asia/Bangkok), PR #23 is open and has no submitted review, and Issue #16 is open. After these documentation changes are committed and pushed, verify that CI passes again on the new PR head before merging. The [R-10 label/history audit](evidence/r10-label-history.md) records the verified labels and both CI runs.
+Historical snapshot on 16 November 2026 (Asia/Bangkok): PR #23 was open and has no submitted review, and Issue #16 is open. After these documentation changes are committed and pushed, verify that CI passes again on the new PR head before merging. The [R-10 label/history audit](evidence/r10-label-history.md) records the verified labels and both CI runs.
 
 ## First GitHub run and correction
 
@@ -28,8 +28,21 @@ As checked on 16 November 2026 (Asia/Bangkok), PR #23 is open and has no submitt
 
 The next [CI run 43741684848](https://github.com/jetanin/LoungCheu/actions/runs/43741684848) completed successfully on PR #23 head `774d28f68da8fc32bd96805f38c3b6ba437fc6ba`. GitHub reports the `test-and-docker` job and every substantive step as successful: dependency install and Prisma generation, test database migration, typecheck and unit/integration tests, app build and compiled-route smoke, Chromium browser tests, and production Docker image build. PR #23 and Issue #16 both have the `lab5` label as verified on 16 November 2026 (Asia/Bangkok).
 
-## PR #24: historical current-head verification at the #17 review
+## PR #24 and release PR #25: verified merge and CI
 
-The [PR #24 Checks tab](https://github.com/jetanin/LoungCheu/pull/24/checks) is the current-head CI record. The existing [run 44722418056](https://github.com/jetanin/LoungCheu/actions/runs/44722418056) passed on `9f7bf525434e4ff43df6d757981a10c0d2ae9be1` before the workflow-parking/documentation review fix. It is historical evidence for that SHA, not proof for a later head.
+These historical records were verified with the GitHub API on 21 November 2026. Both PRs merged with passing CI on their exact source heads; the timestamps below use Asia/Bangkok (+07). They establish the #17 code/release PR history, not the result of a later #19 automatic deployment.
 
-At that #17 review, the next check was a completed successful `CI & Docker Build / test-and-docker` run whose head SHA matched PR #24's latest head, followed by teammate review and manual first deployment evidence. The earlier local 28-test output, stale passing run and skipped `Deploy demo` run were not substitutes. For the current #19 PR, check its own latest-head CI run; after merging into `main`, use the new live `Deploy demo` run and GCP evidence.
+| PR / target | Actual source head | Matching-head CI | Merge result |
+| --- | --- | --- | --- |
+| [#24 → lab5-staging](https://github.com/jetanin/LoungCheu/pull/24) | `03668672856c16fb8840debf276e487dc101d662` | [44728212429](https://github.com/jetanin/LoungCheu/actions/runs/44728212429): completed, success | 20 Nov 23:18:57; `5a6b3b5445c47fb56d2a97c1a007c314003a1070` |
+| [#25 → main](https://github.com/jetanin/LoungCheu/pull/25) | `5a6b3b5445c47fb56d2a97c1a007c314003a1070` | [44787143909](https://github.com/jetanin/LoungCheu/actions/runs/44787143909): completed, success | 21 Nov 13:42:42; `87c77af07bfbb7f2b4e0d9ada4b69cd79a5c6b5f` |
+
+The earlier [44722418056](https://github.com/jetanin/LoungCheu/actions/runs/44722418056) passed on `9f7bf525434e4ff43df6d757981a10c0d2ae9be1`; retain it as historical evidence, not the final PR #24 head result. Offline 28-test output, stale runs and skipped/parked Deploy demo runs do not replace matching-head PR CI.
+
+The [automatic run 44882261079](https://github.com/jetanin/LoungCheu/actions/runs/44882261079) on `49aa64543a3c5a3f6f4f46b37a6e6a59b65e05a4` failed; it is separate from both passing PR checks and the later successful manual first deployment. See the [live #17 evidence](evidence/issue17-live-20261121/README.md).
+
+## Current release workflow — Issue #19
+
+The current `.github/workflows/deploy.yml` enables `push` on `main` and manual dispatch. The `test` job calls `ci-docker.yml`; `deploy` depends on that job and requires `github.ref == 'refs/heads/main'`. It uses environment `demo`, WIF without a JSON key, then builds/pushes the image, runs `deploy/release.sh`, and smoke-tests the expected release commit.
+
+At the #17 baseline this workflow was parked; that is historical context, not the current checkout's configuration. Preserve the #17 live evidence and follow the [#19 release procedure](deployment.md#release-procedure--issue-19--guide-episode-7) for subsequent automated releases. Verify each new PR's own latest-head CI; after the reviewed main merge, retain the actual Deploy demo run and GCP image/revision evidence before claiming C-06. Rollback is separate optional evidence, not an Episode 7 Done condition.

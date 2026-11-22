@@ -1,0 +1,9 @@
+# Provenance: operator-supplied gcloud run revisions describe output, 21 Nov 2026.
+# This output does not include revision readiness conditions or service traffic.
+metadata:
+  name: scccd8b05-00002-72x
+spec:
+  containers:
+  - image: asia-southeast1-docker.pkg.dev/cpe-se-course-2026/scccd8b05/scccd8b05@sha256:d5a94a9d6a6f1cbd9ce93789d1f0bcf4af15062f56ca9ca523a1dd80c7a0f5b1
+status:
+  imageDigest: asia-southeast1-docker.pkg.dev/cpe-se-course-2026/scccd8b05/scccd8b05@sha256:d5a94a9d6a6f1cbd9ce93789d1f0bcf4af15062f56ca9ca523a1dd80c7a0f5b1
