@@ -271,7 +271,7 @@ export function App() {
         )}
       </main>
       <footer className="container app-footer">
-        LoungCheu · กิจกรรมดี ๆ เริ่มที่การลงชื่อ
+        LoungCheu · มาร่วมกิจกรรมดี ๆ ไปด้วยกัน
       </footer>
     </div>
   );
