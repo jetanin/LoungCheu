@@ -171,11 +171,11 @@ Health/readiness ไม่ต้อง login; `/api/ready` อยู่ก่อ
 
 หลัง deploy ให้เทียบ `data.version` กับ **main SHA ของ image ที่ deploy จริง**, pipeline run และ Cloud Run revision/image digest เมื่อ rollback ต้องใช้ version ของ image เก่า ไม่ใช่ SHA ของ workflow ที่กด rollback
 
-## GCP resources — รอ first deployment
+## GCP resources — assigned names recorded during Issue #17
 
-Issue #17 ปรับเป็น course-managed kit ทีม `scccd8b05` แล้วตาม [first-deployment.md](first-deployment.md) ค่าเริ่มต้นแสดงแผนโดยไม่เรียก GCP; ให้ Activate ใน portal และรอ Resources ready ไม่สร้าง billing/IAM/DB เอง ชื่อจาก kit เป็น assigned names ส่วน URL/revision/readiness ยังต้องยืนยันจาก resource จริงก่อนอ้าง C-04
+Issue #17 ปรับเป็น course-managed kit ทีม `scccd8b05` ตาม [first-deployment.md](first-deployment.md) ตารางนี้บันทึกชื่อที่ได้รับจาก kit ในช่วงเตรียมโค้ด ไม่ใช่สถานะ GCP ปัจจุบันหรือหลักฐาน C-04/C-06; ให้ใช้ผล deployment และ revision จริงของแต่ละ release ยืนยันสถานะล่าสุด ไม่สร้าง billing/IAM/DB เอง
 
-| รายการ | ค่าที่ตรวจยืนยันแล้ว |
+| รายการ | ค่า/สถานะ ณ ตอนเตรียม Issue #17 |
 | --- | --- |
 | GCP access/project/billing | ใช้ portal รายวิชาด้วย Gmail ที่ลงทะเบียนและ project `cpe-se-course-2026`; ผู้ใช้รายงาน billingEnabled=true เมื่อ 18 พ.ย. 2026 แต่ยังไม่ตรวจสถานะ portal/เครดิตปัจจุบัน ไม่สมัคร Free Trial ใหม่ตามวิธีเก่า |
 | Project ID / region | `cpe-se-course-2026` / `asia-southeast1` ตาม kit รายวิชา |
@@ -184,7 +184,7 @@ Issue #17 ปรับเป็น course-managed kit ทีม `scccd8b05` แ�
 | Cloud SQL instance / database / connection | Assigned instance `scccd8b05-pg`, DB `scccd8b05`; portal ดูแล connection secret; connectivity ยังไม่ตรวจจริง |
 | Runtime SA / deployer SA / WIF provider | ใช้ identity และ WIF variables จาก Team resources; ไม่สร้างหรือเปลี่ยน IAM เอง |
 | Runtime/seed secret resource names | `scccd8b05-database-url`, `scccd8b05-demo-password`; session ใช้ app-secret slot ที่จัดให้ ตาม first-deployment.md |
-| Running release SHA / revision | TBD — ยังไม่มีผล live verification |
+| Running release SHA / revision | ไม่บันทึกใน snapshot ก่อน deploy; ใช้ release evidence ล่าสุดยืนยัน |
 
 ตรวจ/Activate เฉพาะทีมผ่าน portal ด้วย Gmail ที่ลงทะเบียน ไม่สร้าง infrastructure/IAM/DB เอง และไม่กด Activate ซ้ำระหว่างสร้างหรือเมื่อ Resources ready แล้ว ตรวจชื่อ resource จาก Team resources ก่อนใช้ describe/update; หากติดสิทธิ์ให้แจ้ง TA ตามประกาศใหม่ของรายวิชา
 
@@ -206,9 +206,9 @@ Docker พร้อมและผ่าน C-03 แล้วตามหลั�
 
 ประวัติ #16/#17 ณ ตอนเตรียมโค้ด: Issue #16 มี [PR #23](https://github.com/jetanin/LoungCheu/pull/23) เข้า `lab5-staging`; [Actions run แรก](https://github.com/jetanin/LoungCheu/actions/runs/43740436556) ล้มเหลวตอน Prisma generation แล้ว [run หลังแก้](https://github.com/jetanin/LoungCheu/actions/runs/43741684848) ผ่านทุกขั้นบน commit `774d28f` ตาม [CI verification](ci.md) ต่อมา Issue #17 เพิ่มสคริปต์ `deploy/` สำหรับ manual first deployment และ offline checks ตาม [first-deployment.md](first-deployment.md) ส่วน release pipeline อัตโนมัติเป็นงาน #19; ผล live ให้ยืนยันจากหลักฐานของแต่ละ Issue ไม่อนุมานจากประวัติ offline นี้
 
-## #17: สิ่งที่ต้องทำหลัง merge ก่อนปิด Issue
+## Issue #17: historical checklist from the code-review stage
 
-สถานะปัจจุบันเป็นการเตรียมและทดสอบ offline เท่านั้น ยังไม่เข้า portal เพื่อตรวจสถานะล่าสุด ไม่สรุปว่า resource ถูกสร้างแล้วหรือยังไม่สร้าง ดูลำดับ [portal/main/manual deployment](first-deployment.md#portal-resource-status-and-main-repository-review) ที่แยกจากกัน
+รายการด้านล่างเป็นแผนที่บันทึกไว้ขณะ PR #24 ยังอยู่ระหว่างรีวิว ไม่ใช่รายงานสถานะปัจจุบันของ portal, service หรือ Issue #17 และไม่ใช่หลักฐานว่า first deployment ยังไม่เกิดขึ้น ผลจริงต้องอ้างจาก Issue #17/PR และ live deployment evidence โดยตรง ดูลำดับ [portal/main/manual deployment](first-deployment.md#portal-resource-status-and-main-repository-review)
 
 1. ให้ CI ของ head ล่าสุดใน [PR #24](https://github.com/jetanin/LoungCheu/pull/24/checks) ผ่าน และให้เพื่อน review/merge เข้า lab5-staging จากนั้น release PR เข้า main พร้อม CI/review โดยไม่ deploy อัตโนมัติ
 2. ใช้ Gmail ที่ลงทะเบียนเข้า portal ตรวจทรัพยากรทีม; ถ้ายังไม่ Activate ให้ทำครั้งเดียว ถ้ากำลังสร้างให้รอ ถ้า Resources ready แล้วไม่ Activate ซ้ำ
@@ -216,7 +216,7 @@ Docker พร้อมและผ่าน C-03 แล้วตามหลั�
 4. รัน first deployment ด้วยมือจาก clean reviewed main; migration ต้องผ่านก่อน update service
 5. ทดสอบ public URL, /api/ready, login และเส้นทางใช้งานจริง/กฎหรือสิทธิ์ แล้วเติม URL, source SHA, image digest, revision, ผล smoke และภาพพร้อม caption ในเอกสาร/Issue จึงปิด #17
 
-ผล 28 tests ใน shared-course evidence เป็นผล offline ของ working tree ที่ระบุ hashes ไว้ ไม่ใช่ PR CI ของ commit ปัจจุบัน ใช้ Actions run ที่สัมพันธ์กับ head ล่าสุดใน PR checks เป็นหลักฐาน PR CI; หลัง push ทุกครั้งต้องตรวจใหม่ ไม่ใช้ผลก่อน commit แทน
+ผล 28 tests ใน shared-course evidence เป็นผล offline ของ working tree ที่ระบุ hashes ไว้ ไม่ใช่ PR CI ของ commit ใหม่ ใช้ Actions run ที่สัมพันธ์กับ head ล่าสุดของแต่ละ PR เป็นหลักฐาน PR CI; หลัง push ทุกครั้งต้องตรวจใหม่ ไม่ใช้ผลก่อน commit แทน
 
 ## Verification ของ Issue #14 (ผลรอบก่อน)
 
