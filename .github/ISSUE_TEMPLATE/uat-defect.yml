@@ -1,0 +1,114 @@
+name: UAT finding (Lab 6)
+description: Report a problem found while running the LoungCheu Sprint 1 UAT cases
+title: "[UAT] <case ID>: <short summary>"
+labels: ["uat-finding", "lab6"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Thanks for testing LoungCheu. Please fill in every field so we can reproduce the problem on the same release.
+        Do not paste passwords. Refer to accounts by label only (for example `participant.a`).
+
+  - type: input
+    id: reporter
+    attributes:
+      label: Reporter (name / team)
+      placeholder: "e.g. Napat Utbuawong / TH-005_P5"
+    validations:
+      required: true
+
+  - type: input
+    id: product
+    attributes:
+      label: Product team
+      value: "TH-001_P3 LoungCheu (owners: jetanin, i3artuf)"
+    validations:
+      required: true
+
+  - type: input
+    id: version
+    attributes:
+      label: Tested version
+      description: Tag and the `version` value from `/api/ready` at the time of testing
+      placeholder: "v1.0.1-uat / <commit SHA>"
+    validations:
+      required: true
+
+  - type: input
+    id: case
+    attributes:
+      label: Linked UAT case and requirement
+      placeholder: "e.g. UAT-04 step 3 / AC-22"
+    validations:
+      required: true
+
+  - type: textarea
+    id: preconditions
+    attributes:
+      label: Preconditions and test data
+      description: Accounts used, event titles/IDs, registration IDs, time of the test
+    validations:
+      required: true
+
+  - type: textarea
+    id: steps
+    attributes:
+      label: Steps to reproduce
+      placeholder: |
+        1.
+        2.
+        3.
+    validations:
+      required: true
+
+  - type: textarea
+    id: expected
+    attributes:
+      label: Expected result
+      description: What the UAT case or acceptance criterion says should happen
+    validations:
+      required: true
+
+  - type: textarea
+    id: actual
+    attributes:
+      label: Actual result
+      description: What you actually saw (exact message, page, numbers)
+    validations:
+      required: true
+
+  - type: dropdown
+    id: severity
+    attributes:
+      label: Severity (reporter's view)
+      options:
+        - "Critical: data leak, wrong permission, or data lost/corrupted"
+        - "Major: a main journey cannot be completed or gives a wrong result against an AC"
+        - "Minor: result is correct but text, layout or usability is off"
+    validations:
+      required: true
+
+  - type: textarea
+    id: impact
+    attributes:
+      label: Why this severity (user impact)
+    validations:
+      required: true
+
+  - type: dropdown
+    id: kind
+    attributes:
+      label: Type
+      options:
+        - "Defect: behaviour differs from the Sprint 1 UAT case / acceptance criteria"
+        - "Feature request: not part of the Sprint 1 contract"
+    validations:
+      required: true
+
+  - type: textarea
+    id: evidence
+    attributes:
+      label: Evidence
+      description: Evidence ID and screenshot(s). Drag images here.
+    validations:
+      required: true
