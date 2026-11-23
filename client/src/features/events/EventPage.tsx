@@ -3,6 +3,7 @@ import { api, ApiError, mutate, type Identity } from '../../lib/api';
 import { RegistrationAction } from '../registrations/RegistrationAction';
 import { bangkokTime, type OwnerEvent, type EventView } from './model';
 import { EventForm } from './EventForm';
+import { LifecycleMutation } from '../registrations/LifecycleMutation';
 
 export function EventPage({ path, identity, onAuthRequired, onNavigate }: {
   path: string; identity: Identity; onAuthRequired: () => void; onNavigate: (path: string) => void;
@@ -66,6 +67,25 @@ export function EventPage({ path, identity, onAuthRequired, onNavigate }: {
       }
     } finally { publishInFlight.current = false; if (mounted.current) setPublishing(false); }
   }
+  // F-06: an uncertain close is retryable only after a successful scoped read.
+  async function refreshClose() {
+    const version = ++generation.current, scope = scopeVersion.current;
+    try {
+      const latest = await api<OwnerEvent>(`${base}/${encodeURIComponent(id)}`);
+      if (!mounted.current || scope !== scopeVersion.current || version !== generation.current) return false;
+      setData(latest); setLoading(false); return true;
+    } catch (failure) {
+      if (!mounted.current || scope !== scopeVersion.current || version !== generation.current) return false;
+      if (failure instanceof ApiError && failure.status === 401) {
+        scopeVersion.current++; generation.current++; setData(null); setLoading(false); onAuthRequired();
+      }
+      else {
+        if (failure instanceof ApiError && [403, 404].includes(failure.status)) { scopeVersion.current++; setData(null); }
+        setError(failure instanceof ApiError ? failure.message : 'ตรวจสถานะล่าสุดไม่สำเร็จ กรุณาลองใหม่');
+      }
+      return false;
+    }
+  }
   if (owner && identity.role !== 'ORGANIZER') return <section className="card page-panel" role="alert"><h1 className="page-title">ไม่มีสิทธิ์ใช้งาน</h1></section>;
   if (creating) return <EventForm onAuthRequired={onAuthRequired} onCreated={event => onNavigate(`${base}/${event.id}`)}/>;
   const event = data && !Array.isArray(data) ? data : null;
@@ -100,6 +120,14 @@ export function EventPage({ path, identity, onAuthRequired, onNavigate }: {
         <button className="btn btn-outline-secondary" onClick={() => void refresh()}>รีเฟรชที่นั่ง</button>
         {owner && event.status === 'DRAFT' && <button className="btn btn-success" disabled={publishing} onClick={() => void publish()}>{publishing ? 'กำลังเผยแพร่…' : 'เผยแพร่กิจกรรม'}</button>}
         {owner && event.status !== 'DRAFT' && <a className="btn btn-outline-success" href={`/events/${event.id}`}>ดูหน้ากิจกรรมทั่วไป</a>}
+        {/* F-06: keep close after the F-07 edit control in this existing action row. */}
+        {owner && <LifecycleMutation<OwnerEvent> key={`close:${identity.id}:${event.id}`}
+          path={`/organizer/events/${encodeURIComponent(event.id)}/close`}
+          label="ปิดรับกิจกรรม" busyLabel="กำลังปิดรับ…" visible={event.status === 'PUBLISHED'}
+          confirmation="ยืนยันปิดรับกิจกรรม? ปิดแล้วเปิดกลับไม่ได้ และไม่ยกเลิกรายการลงทะเบียนเดิม"
+          onSuccess={closed => { generation.current++; setLoading(false); setData(closed); }}
+          refresh={refreshClose} onAuthRequired={() => { scopeVersion.current++; generation.current++; setData(null); onAuthRequired(); }}
+          onDenied={message => { scopeVersion.current++; generation.current++; setLoading(false); setData(null); setError(message); }}/>}
       </div>
       {!owner && <RegistrationAction event={event} identity={identity} getCsrfToken={async signal => (await api<{ csrf_token: string }>('/auth/csrf', { signal })).csrf_token}
         refreshEvent={refresh} onAuthRequired={onAuthRequired}/>}
