@@ -1,6 +1,6 @@
 # Sprint 2 — Feature Engineering Contracts (F-06, F-07)
 
-เอกสาร LC-S2-CONTRACT | v0.1 (draft for review) | 23 พฤศจิกายน 2026
+เอกสาร LC-S2-CONTRACT | v0.5 (planned design) | 24 พฤศจิกายน 2026
 
 ฐานของ Sprint 2: `sprint-2-staging` แตกจาก `main` ที่ `0b2cc80` (tag `v1.0.1-uat`) ใช้ SRS/System SDS baseline v0.5 และ IDs เดิมตาม [traceability](../../traceability.md) เอกสารนี้ต้อง merge เข้า `sprint-2-staging` **ก่อน** เริ่มเขียนโค้ด F-06/F-07 (D2 §3.2 "contracts before implementation")
 
@@ -26,15 +26,156 @@ Test design แยกอยู่ใน [sts.md](sts.md)
 | 409 | EVENT_NOT_EDITABLE | แก้กิจกรรมที่ status=CLOSED | F-07 |
 | 409 | FIELD_NOT_EDITABLE | ส่ง `starts_at` / `ends_at` / `registration_closes_at` มาแก้ตอน status=PUBLISHED | F-07 |
 | 409 | CAPACITY_BELOW_ACTIVE | capacity ใหม่ต่ำกว่า ACTIVE count ปัจจุบัน | F-07 |
-| — | (F-06 เพิ่มเอง) | | F-06 |
+| 409 | ALREADY_CANCELLED | ยกเลิก Registration ที่เป็น CANCELLED แล้ว ขณะที่กิจกรรมยังเปิดรับ | F-06 |
+
+F-06 ใช้ `REGISTRATION_CLOSED` เดิมเมื่อ cancel/reactivate ขณะ CLOSED หรือถึง deadline และใช้ `INVALID_TRANSITION` เดิมเมื่อ close กิจกรรมที่ไม่ใช่ PUBLISHED; ความหมายและลำดับตรวจระบุใน F-06 ด้านล่าง
 
 ---
 
 ## F-06 — Cancel, re-register และ close event
 
-**Links:** FR-09–10, FR-12; BR-03–11, BR-14; V2-01, V2-02, V2-04; dependency: F-03–05
+**Links:** FR-09–10, FR-12; BR-03–11, BR-14; NFR-01, NFR-03, NFR-04, NFR-05, NFR-06; V2-01, V2-02, V2-04; dependency: F-03–05
 
-> ส่วนนี้ M1 เป็นผู้เขียน ใช้โครงเดียวกับ F-07 ด้านล่าง: Workflow/UI → API/data contract (รวม migration `cancelled_at` และ `RegistrationHistory`) → Feature design (SDS) พร้อม state transition และตาราง UI/API/Data → validation/errors/permissions → Acceptance Criteria AC-28–AC-33 → DoD 7 ข้อ เขียนใน PR แยก (`doc/46-f06-contract`) หลัง PR ของส่วนร่วม + F-07 merge แล้ว
+สถานะ: **planned; ยังไม่ implement และยังไม่มีผลรันทดสอบ F-06** งานออกแบบอยู่ใน Issue #46; งาน implementation อยู่ใน Issue #47
+
+**NFR → planned verification** (อ้างอิง [SRS](../../srs.md); ยังไม่ใช่ผลรันทดสอบ):
+
+| NFR | ขอบเขตใน F-06 | Planned tests |
+|---|---|---|
+| NFR-01 | Access matrix: auth/role/ownership/CSRF และไม่เปิดเผยข้อมูลข้ามผู้ใช้ | TEST-41 |
+| NFR-03 | Persistence: อ่าน state/reference/timestamp กลับหลัง reload และ re-login | TEST-43 |
+| NFR-04 | Race ที่นั่งสุดท้ายและ duplicate cancel/reactivate ไม่ทำให้ record/history ซ้ำหรือ ACTIVE เกิน capacity | TEST-42 |
+| NFR-05 | Fresh disposable DB: migrate → seed แล้ว Registration/history ครบและ seed ซ้ำได้ | TEST-44(a) |
+| NFR-06 | Error format/code/message และการปฏิเสธสิทธิ์ตรง contract ไม่เปิดเผยข้อมูลภายใน | TEST-41 |
+
+### Workflow / UI
+
+Participant เปิด **รายการลงทะเบียนของฉัน** → เปิดรายละเอียด → กด **ยกเลิกการลงทะเบียน** → ยืนยัน → เห็น CANCELLED และเวลายกเลิก ที่นั่งคืนทันที เมื่อกิจกรรมยังเปิดรับและมีที่นั่ง เปิดหน้ากิจกรรม → กด **ลงทะเบียนใหม่** → เห็น ACTIVE พร้อมเลขอ้างอิงเดิม Organizer เปิดรายละเอียดกิจกรรมของตน → กด **ปิดรับกิจกรรม** → ยืนยัน → เห็น CLOSED โดยรายการลงทะเบียนเดิมยังอยู่
+
+| การกระทำ | เงื่อนไข | ผลสำเร็จ |
+|---|---|---|
+| Cancel | Participant เจ้าของ Registration, ACTIVE, Event=PUBLISHED และ server_now < registration_closes_at | เปลี่ยนเป็น CANCELLED, ตั้ง cancelled_at, ACTIVE count ลด 1 |
+| Re-register | Participant มี CANCELLED เดิม, Event=PUBLISHED, ยังไม่ถึง deadline และ ACTIVE count < capacity | reactivate record เดิมเป็น ACTIVE, ล้าง cancelled_at, ACTIVE count เพิ่ม 1 |
+| Close | Organizer เจ้าของ Event ที่เป็น PUBLISHED | เปลี่ยนเป็น CLOSED แม้ deadline ผ่านแล้ว; ไม่เปลี่ยน Registration หรือจำนวน ACTIVE |
+
+UI rules:
+
+- แสดงปุ่ม cancel บน own detail เฉพาะ ACTIVE ของกิจกรรม PUBLISHED ที่ยังไม่ถึง deadline และแสดงเวลาปิดรับเป็น Asia/Bangkok; server เป็นผู้ตัดสินเมื่อกดจริง การยกเลิก confirmation dialog ไม่ส่ง mutation
+- รายการและรายละเอียดของตน รวมถึงหัวคอลัมน์เวลาใน roster ใช้ชื่อ **ลงทะเบียนครั้งแรกเมื่อ** สำหรับ `registered_at` เหมือนกัน เพื่อไม่ให้เข้าใจว่าเป็นเวลาลงใหม่; own list/detail แสดง ACTIVE/CANCELLED และ `cancelled_at` เมื่อ CANCELLED ไม่เพิ่มหน้า history ใน Sprint 2
+- หน้ากิจกรรมของ Participant ใช้ `GET /api/my/registrations` เดิม แล้วเลือก record ที่ `record.event.id` ตรงกับ event ID ของหน้าปัจจุบันจากผลของ session ปัจจุบัน ไม่มี endpoint ใหม่สำหรับ lookup นี้; พบ ACTIVE แสดงว่าลงทะเบียนแล้ว พบ CANCELLED แสดง **ลงทะเบียนใหม่** เมื่อ registration_open=true และเมื่ออ่านสำเร็จแต่ไม่พบ record จึงแสดงปุ่มลงทะเบียนปกติ เมื่ออ่านล้มเหลวให้แสดง error/retry ไม่ตีความว่าไม่เคยลงทะเบียน ล้างผล lookup เมื่อ session/account หรือ event ID เปลี่ยน และไม่ให้ response เก่าทับ session/event ใหม่
+- หากพบ CANCELLED แต่กิจกรรม PUBLISHED ยังไม่ถึง deadline และ available_seats=0 ให้แสดง **คุณยกเลิกการลงทะเบียนแล้ว ขณะนี้กิจกรรมเต็ม** แทนปุ่มลงทะเบียนใหม่ พร้อมปุ่ม **รีเฟรชที่นั่ง**; หาก CLOSED หรือถึง deadline ให้แสดง **คุณยกเลิกการลงทะเบียนแล้ว กิจกรรมนี้ปิดรับลงทะเบียนแล้ว** และไม่แสดงปุ่มลงทะเบียนใหม่ เมื่อ refresh แล้วเปิดรับและมีที่นั่งจึงแสดงปุ่มลงทะเบียนใหม่ กรณีเงื่อนไขเปลี่ยนหลังอ่านข้อมูล server ยังปฏิเสธด้วย EVENT_FULL/REGISTRATION_CLOSED ตามลำดับตรวจเดิม
+- Organizer เห็นปุ่ม close เฉพาะ PUBLISHED; ก่อนยืนยันแจ้งว่าปิดแล้วเปิดกลับไม่ได้และไม่ยกเลิกรายการเดิม DRAFT/CLOSED ไม่มีปุ่มนี้
+- หลัง mutation สำเร็จโหลด own record, availability หรือ roster ที่เกี่ยวข้องใหม่จาก server; roster ยังคงแถว CANCELLED ไว้ แต่ `active_count` นับเฉพาะ ACTIVE และไม่เพิ่มแถวเมื่อ reactivate
+- แสดง loading/disabled กันการกดซ้ำ, 401 ล้างข้อมูลส่วนตัวและกลับ login, 403/404 ไม่แสดงข้อมูลข้ามสิทธิ์ เมื่อ 409 แสดงเหตุผลแล้ว refresh state ก่อนให้ตัดสินใจใหม่
+- หาก network timeout และยังไม่ทราบว่า commit แล้วหรือไม่ ห้าม retry อัตโนมัติ ให้ผู้ใช้ refresh own record/owner event ก่อน; backend ยังคงป้องกัน duplicate transition และ history ซ้ำ
+
+| Code / บริบท | ข้อความ UI |
+|---|---|
+| ALREADY_CANCELLED | รายการนี้ถูกยกเลิกแล้ว |
+| REGISTRATION_CLOSED / cancel | กิจกรรมปิดรับแล้วหรือเลยกำหนด จึงยกเลิกไม่ได้ |
+| REGISTRATION_CLOSED / register หรือ reactivate | กิจกรรมนี้ปิดรับลงทะเบียนแล้ว |
+| ALREADY_REGISTERED | คุณลงทะเบียนกิจกรรมนี้แล้ว ตรวจสอบได้ในรายการของฉัน |
+| EVENT_FULL | กิจกรรมเต็มแล้ว |
+| INVALID_TRANSITION / close | ปิดรับได้เฉพาะกิจกรรม PUBLISHED |
+| REGISTRATION_NOT_FOUND / EVENT_NOT_FOUND | ไม่พบรายการลงทะเบียนนี้ / ไม่พบกิจกรรมนี้ |
+
+### API / data contract
+
+ใช้ EmptyInput (ไม่มี body หรือ `{}`) และ valid CSRF header ทุก mutation; `null`, array, primitive หรือ field เพิ่ม รวม participant_id/status/registered_at/cancelled_at/event_id ใน body ตอบ 400 INVALID_INPUT Parser budget: Registration 1 KiB และ Event 32 KiB ตามเดิม
+
+| Method / path | Request | Success | Failure |
+|---|---|---|---|
+| POST /api/my/registrations/{id}/cancel | EmptyInput; participant จาก session | 200 data: MyRegistrationS2 | 400 INVALID_INPUT; 401 AUTH_REQUIRED; 403 ROLE_FORBIDDEN / CSRF_FAILED; 404 REGISTRATION_NOT_FOUND; 409 REGISTRATION_CLOSED / ALREADY_CANCELLED |
+| POST /api/events/{id}/registrations (ขยาย endpoint F-03 เดิม) | EmptyInput; participant จาก session | 201 data: RegistrationResultS2 เมื่อสร้างใหม่; 200 data: RegistrationResultS2 เมื่อ reactivate | 400 INVALID_INPUT; 401 AUTH_REQUIRED; 403 ROLE_FORBIDDEN / CSRF_FAILED; 404 EVENT_NOT_FOUND; 409 REGISTRATION_CLOSED / ALREADY_REGISTERED / EVENT_FULL |
+| POST /api/organizer/events/{id}/close | EmptyInput; organizer จาก session | 200 data: OwnerEvent หลัง close | 400 INVALID_INPUT; 401 AUTH_REQUIRED; 403 ROLE_FORBIDDEN / CSRF_FAILED; 404 EVENT_NOT_FOUND; 409 INVALID_TRANSITION |
+
+**Response schemas:**
+
+- `RegistrationResultS2` = RegistrationCreated ของ Sprint 1 พร้อม `cancelled_at: Timestamp | null` ที่ required; create/reactivate สำเร็จจึงเป็น ACTIVE และ cancelled_at=null เสมอ
+- `MyRegistrationS2` = MyRegistration เดิมพร้อม `cancelled_at: Timestamp | null` ที่ required; GET own list/detail ใช้ schema นี้ด้วย CANCELLED ยังคงปรากฏในรายการของตนและยังอ่านได้แม้ Event=CLOSED
+- ACTIVE ต้องมี cancelled_at=null; CANCELLED ต้องมี cancelled_at เป็นเวลา UTC `.SSSZ` เลขอ้างอิง, event_id, participant_id และ registered_at ครั้งแรกไม่เปลี่ยนเมื่อ cancel/reactivate
+- OwnerEvent และ Roster ใช้ schema เดิม (**no change**); roster คืนทุก Registration ตามสถานะปัจจุบัน เรียง registered_at ASC, id ASC เช่นเดิม และไม่นับ CANCELLED ใน active_count ไม่มี public history endpoint/UI ใน baseline
+- Client API และ regression assertions ต้องรองรับ response field ที่เพิ่มและ HTTP 200 สำหรับ reactivate โดยผลสร้างใหม่ยังเป็น 201 ตาม Sprint 1
+
+**ลำดับ cancel** (ใช้เหตุผลแรกที่เจอ):
+
+1. auth → role PARTICIPANT → CSRF → path UUID และ EmptyInput; input ผิดตอบ 400
+2. อ่านเฉพาะ id/event_id ของ Registration ที่ `id` และ `participant_id` ตรง session เพื่อหา Event ที่จะ lock; ไม่พบ/ไม่ใช่ของตนตอบ 404 REGISTRATION_NOT_FOUND ขั้นนี้ยังไม่ lock Registration หรือเชื่อ state ที่อ่านมา
+3. lock Event ด้วย event_id ก่อน แล้วอ่านและ lock Registration ของตนอีกครั้งใน transaction เดียวกันตาม Event → Registration; ไม่พบตอบ 404 REGISTRATION_NOT_FOUND
+4. อ่าน server clock หลังได้ Event lock; Event ไม่ใช่ PUBLISHED หรือ clock >= deadline ตอบ 409 REGISTRATION_CLOSED **ก่อน** ตรวจว่า cancel ไปแล้ว
+5. Registration=CANCELLED ตอบ 409 ALREADY_CANCELLED; ACTIVE เปลี่ยนเป็น CANCELLED ตั้ง cancelled_at จาก clock และ append CANCELLED history แล้ว commit ก่อนคืน 200; ไม่ตรวจ capacity เพราะการคืนที่นั่งต้องทำได้แม้กิจกรรมเต็ม
+
+**ลำดับ register/reactivate:** auth → role PARTICIPANT → CSRF → UUID/EmptyInput → lock Event → อ่าน clock ใหม่ → scope (ไม่พบ/DRAFT=404 EVENT_NOT_FOUND) → status/deadline (CLOSED หรือ clock >= deadline=409 REGISTRATION_CLOSED) → อ่าน/lock Registration ของ session หากมี → ACTIVE เดิม=409 ALREADY_REGISTERED → นับ ACTIVE หลัง lock และตรวจ capacity (เต็ม=409 EVENT_FULL) → ไม่เคยมี record: create ACTIVE + REGISTERED history, คืน 201; มี CANCELLED: update record เดิมเป็น ACTIVE, ล้าง cancelled_at + REACTIVATED history, คืน 200 ทั้งสองทางทำใน transaction เดียว ไม่สร้าง Registration เพิ่มเมื่อ reactivate
+
+**ลำดับ close:** auth → role ORGANIZER → CSRF → UUID/EmptyInput → lock Event ด้วย id และ organizer_id จาก session → ไม่พบ/ไม่ใช่เจ้าของ=404 EVENT_NOT_FOUND → status ไม่ใช่ PUBLISHED=409 INVALID_TRANSITION → อ่าน clock หลัง lock แล้วเปลี่ยนเป็น CLOSED พร้อม updated_at=clock → commit และคืน OwnerEvent ไม่ตรวจ deadline สำหรับ close; close ซ้ำถูกปฏิเสธ ไม่เปิดกลับและไม่ลบ/ยกเลิก Registration ใด
+
+ทุก rejection ต้องไม่ทำให้ operation นั้นเปลี่ยน Event/Registration/history แม้แต่ timestamp; cancel/reactivate ไม่แก้ Event fields หรือ updated_at และ close ไม่แก้ Registration/history จำนวนที่นั่งว่างยังเป็น capacity − ACTIVE count แต่ CLOSED มี registration_open=false เสมอ การเปลี่ยนที่เกิดจาก transaction คู่แข่งที่สำเร็จไม่ใช่ side effect ของ request ที่ถูกปฏิเสธ
+
+**Data / migration (planned ใน #47):**
+
+| ส่วน | การเปลี่ยนแปลง |
+|---|---|
+| Registration | เพิ่ม Prisma `cancelledAt` → SQL/API `cancelled_at`, nullable `timestamptz(3)`; คง UNIQUE(event_id, participant_id), FK และ registered_at เดิม |
+| RegistrationHistory | เพิ่ม table `registration_history`: id UUID PK, registration_id FK → registrations, actor_id FK → users, action enum REGISTERED/CANCELLED/REACTIVATED, occurred_at `timestamptz(3)`; index (registration_id, occurred_at, id); FK ใช้ Restrict ไม่ cascade ลบหลักฐาน |
+| Backfill | versioned migration เพิ่ม REGISTERED 1 แถวต่อ Registration เดิม ใช้ actor_id=participant_id และ occurred_at=registered_at; SQL INSERT ต้องสร้าง history.id ด้วย `gen_random_uuid()` เพราะ `@default(uuid())` สร้าง UUID ฝั่ง Prisma client ไม่ใช่ SQL DEFAULT; ไม่สร้าง users/events/registrations ใหม่ ไม่แก้ reference/status/registered_at หรือ reset ข้อมูล Sprint 1 |
+| Seed / demo data | บน DB ใหม่ migration/backfill รันก่อน seed จึงต้องปรับเส้นทาง `server/prisma/seed.ts` และ `server/prisma/demo-data.ts` ให้ทุก Registration ที่สร้างหลัง migration มี REGISTERED history 1 แถวใน transaction เดียวกัน ใช้ actor_id=participant_id และ occurred_at=registered_at; seed ซ้ำหรือพร้อมกันไม่เพิ่ม Registration/history ซ้ำ ไม่สร้าง lifecycle ที่เดาเองหรือทับ state/history ของ record เดิม |
+| Consistency | ทุก Registration ใหม่มี REGISTERED history และทุก cancel/reactivate ที่สำเร็จ append history 1 แถวใน transaction เดียวกับ state; ถ้าเขียน history ไม่สำเร็จ rollback state ด้วย; rejected/repeated request ไม่เพิ่ม history และ close ไม่สร้าง RegistrationHistory |
+
+ก่อน migration ตรวจว่า legacy data ตรง baseline Sprint 1 (ACTIVE เท่านั้น); หากพบ CANCELLED เดิมที่ไม่มีเวลายกเลิกให้หยุดและจัดทำ data reconciliation ก่อน ห้ามสร้าง cancelled_at/history ที่เดาเอง การรัน migrate deploy ซ้ำไม่เพิ่ม backfill ซ้ำเพราะ migration version ถูกบันทึกแล้ว; การ cancel/reactivate หลายรอบต้อง append ได้ จึงไม่ใช้ unique(registration_id, action) ที่จะบล็อกวงจรถัดไป
+
+### Feature design (SDS)
+
+**State transition:**
+
+```
+ไม่มี Registration ──register [เปิดรับ + มีที่นั่ง]──▶ ACTIVE + REGISTERED history
+ACTIVE ──cancel [เปิดรับ]──▶ CANCELLED + CANCELLED history
+CANCELLED ──register [เปิดรับ + มีที่นั่ง]──▶ ACTIVE (id/registered_at เดิม) + REACTIVATED history
+PUBLISHED ──close [เจ้าของ]──▶ CLOSED (Registration คงเดิม)
+```
+
+ACTIVE → register ซ้ำ และ CANCELLED → cancel ซ้ำ ถูกปฏิเสธตาม precedence ข้างต้น DRAFT → close, CLOSED → close และ CLOSED → PUBLISHED ไม่อนุญาต การ publish DRAFT ยังเป็น F-02 ตามเดิม
+
+| Layer | เปลี่ยน | รายละเอียด |
+|---|---|---|
+| UI | เปลี่ยน | cancel/confirmation บน own detail, CANCELLED/cancelled_at บน own list/detail, re-register บนหน้ากิจกรรมผ่าน own-list lookup เดิม, close/confirmation บน owner detail และ refresh roster/count; own list/detail และ roster ใช้ label ลงทะเบียนครั้งแรกเมื่อ เหมือนกัน; อยู่ใน features/registrations และ features/events |
+| API | เปลี่ยน | เพิ่ม cancel ใน modules/registrations และ close ใน modules/events; ขยาย register service/router/serializer เดิมให้ reactivate และ append history; own-read serializer เพิ่ม cancelled_at |
+| Data | เปลี่ยน | migration cancelled_at, RegistrationHistory/action enum/backfill ตามตารางด้านบน; Event และ session schema **no change** |
+
+**Service design:** ใช้ Prisma interactive transaction แบบ READ COMMITTED และ transaction client เดียวตลอด operation ทุก seat mutation ใช้ Event lock เดียวกับ F-03/F-07 และเวลาเดียวจาก clock หลัง lock; cancel หา event_id ผ่าน scoped read แล้ว lock Event ก่อน Registration และ recheck state; close lock Event ด้วย id + organizer_id; register/reactivate lock Event ก่อนอ่าน Registration/count การนับและ response serialization อยู่ภายใต้ Event lock แล้วจึง commit ก่อนส่ง response ห้ามแยกเขียน history หลัง commit หรือเรียก service ที่เปิด transaction ซ้อนเพื่อนับที่นั่ง
+
+**Concurrency:** cancel ซ้ำพร้อมกันสำเร็จครั้งเดียวและมี CANCELLED history เพิ่มครั้งเดียว; reactivate ซ้ำสำเร็จครั้งเดียวและอีกคำขอเป็น ALREADY_REGISTERED; reactivate แข่งกับผู้ใช้ใหม่แย่งที่นั่งสุดท้ายสำเร็จได้คนเดียว; close แข่งกับ register/reactivate/cancel ถ้า close ได้ lock ก่อน อีกคำขอถูก REGISTRATION_CLOSED ถ้า seat mutation ได้ lock และผ่าน deadline ก่อน ให้สำเร็จแล้ว close รักษาผลนั้นไว้; request ที่รอ lock จนถึง deadline ต้องถูกปฏิเสธแม้ส่งมาก่อน deadline การลด capacity หลัง cancel อ่าน ACTIVE count ล่าสุดและยังต้องเคารพ minimum capacity=1 ของ F-07
+
+**Permissions:**
+
+| ผู้เรียก | Cancel | Register/reactivate | Close |
+|---|---|---|---|
+| Anonymous | 401 AUTH_REQUIRED | 401 AUTH_REQUIRED | 401 AUTH_REQUIRED |
+| Participant | เฉพาะของตน; คนอื่น/ไม่มี record=404 REGISTRATION_NOT_FOUND | ของตนจาก session ตาม event-open/capacity; spoof input=400 | 403 ROLE_FORBIDDEN |
+| Organizer | 403 ROLE_FORBIDDEN | 403 ROLE_FORBIDDEN | เฉพาะกิจกรรมตน; คนอื่น/ไม่มี Event=404 EVENT_NOT_FOUND |
+
+ทุก role ที่มีสิทธิ์ทำ mutation ยังต้องผ่าน CSRF/Origin ตาม Sprint 1; direct URL/API ต้องบังคับสิทธิ์เช่นเดียวกับ UI
+
+### Acceptance Criteria
+
+| AC | ผลที่ต้องสังเกตได้ | Planned tests |
+|---|---|---|
+| AC-28 | เจ้าของ cancel ACTIVE ก่อน deadline ของ PUBLISHED ได้ 200 CANCELLED, cancelled_at=clock หลัง lock, id/registered_at เดิม; ACTIVE count ลดและผู้ใช้อื่นใช้ที่นั่งได้; state/history persist และ cancel ซ้ำไม่เปลี่ยนข้อมูล | TEST-37, TEST-40, TEST-43 |
+| AC-29 | CANCELLED ลงใหม่ได้เมื่อเปิดรับและมีที่นั่ง: 200 ACTIVE ด้วย id/registered_at เดิม, cancelled_at=null, REACTIVATED history เพิ่ม 1; ไม่สร้าง record ซ้ำ; create ใหม่ยัง 201 และเพิ่ม REGISTERED history; ACTIVE ซ้ำยัง ALREADY_REGISTERED | TEST-38, TEST-40, TEST-42, TEST-43 |
+| AC-30 | เจ้าของ close PUBLISHED ได้ก่อน/ที่/หลัง deadline; 200 CLOSED, updated_at เปลี่ยน, Registration/history/count เดิมและยังอ่าน own/roster ได้; DRAFT/close ซ้ำได้ INVALID_TRANSITION; CLOSED register/reactivate/cancel ไม่ได้ | TEST-39, TEST-40, TEST-43 |
+| AC-31 | Cancel/reactivate ตรวจ clock หลัง Event lock: deadline−1 ms อนุญาตเมื่อเงื่อนไขอื่นครบ; ที่/+1 ms และรอ lock จน deadline ปฏิเสธ; error precedence และ invalid/spoofed input ตรง contract; request ที่ถูกปฏิเสธไม่เปลี่ยน state/timestamp/history | TEST-40, TEST-42 |
+| AC-32 | Cancel/register/reactivate/close บังคับ auth/role/ownership/CSRF/Origin; ไม่เปิดเผย record ของผู้อื่น; UI confirmation/loading/retry/409 ภาษาไทยและ refresh ค่าใหม่ทำงาน พร้อมอ่านค่าเดิมหลัง reload/re-login | TEST-41, TEST-43 |
+| AC-33 | คำขอพร้อมกันไม่ทำให้ ACTIVE เกิน capacity, Registration/history ซ้ำ หรือ deadlock/500; close ไม่ลบผลที่ commit ก่อนหน้า; cancel แล้วลด capacity ได้ตามยอดใหม่; migration/backfill คงข้อมูล Sprint 1 และ state/history เขียนหรือ rollback พร้อมกัน | TEST-42, TEST-44 |
+
+DoD F-06 (ครบทุกข้อจึงถือว่าเสร็จ):
+
+1. AC-28–AC-33 ผ่านด้วย test ที่รันจริงตาม TEST-37–44 (unit/API/DB/concurrency/component/E2E และ migration) บันทึกคำสั่ง, commit, passed/failed/skipped; contract/STS นี้เป็นแผน ไม่ใช่ผล PASS
+2. เก็บ meaningful RED ก่อน implementation และ GREEN ของ test เดียวกัน พร้อม SHA/assertion/output; fixture หรือ migration error ไม่ใช้แทน RED ของกฎธุรกิจ
+3. Sprint 1 automated regression ผ่าน; ปรับ expected schema เฉพาะ cancelled_at ที่เพิ่มและเพิ่ม reactivate 200 พร้อมตรวจและอัปเดต component/E2E assertions ที่อ้าง label เดิม ลงทะเบียนเมื่อ ให้เป็น ลงทะเบียนครั้งแรกเมื่อ ทั้ง own list/detail และ roster โดยยัง assert ค่า registered_at ครั้งแรกเดิม และไม่ลด assertions ของ create/duplicate/access/time/concurrency เดิม
+4. versioned migration/backfill และ rollback-on-history-failure ผ่านบน test DB; seed/demo-data ต้องสร้าง REGISTERED history ด้วยสำหรับ Registration ที่สร้างหลัง migration และผ่านการตรวจ fresh DB → migrate → seed รวม seed ซ้ำ/พร้อมกันโดยไม่เกิด record/history ซ้ำ; อัปเดต System SDS (schema/API/error table), features.md และ traceability ให้ตรง implementation โดยประสานงานเอกสาร D2 ใน #51
+5. Trace ได้ครบ: Issue #47 → branch `feature/47-…` จาก sprint-2-staging หลัง contract ผ่าน review/merge → PR ที่ teammate review แบบมีเนื้อหา + CI ผ่าน → staging integration → reviewed main release/deploy/tag ของ Sprint 2 (เช่น `v2.0.0-sprint-2` ให้ระบุได้แม้ candidate ภายหลังจะมีงานเพิ่ม); ไม่เปลี่ยนรุ่น Lab 6 ระหว่าง UAT โดยไม่แจ้งทีมคู่
+6. มีแถวใน completion table ของ Sprint 2 เชื่อม AC, implementation file/commit, executed TEST/result และ accepted release; ทดสอบ cancel × capacity edit และ close × edit ร่วมกับ #48 ก่อน release
+7. ผ่าน [Product DoD](../sprint-1/README.md) DOD-01–DOD-10 ที่เกี่ยวข้อง รวม persistence/race, no secrets, เปิดเผยงานไม่ครบ และ CI/GCP post-deploy checks; teammate review contract ใน #46 ก่อนเริ่มโค้ด #47
 
 ---
 
@@ -155,7 +296,7 @@ DoD F-07 (ครบทุกข้อจึงถือว่าเสร็จ)
 
 | ประเด็น | ต้องตรวจ | ผู้รับผิดชอบ |
 |---|---|---|
-| ยกเลิกแล้วลด capacity | หลัง cancel ACTIVE count ลด จึงลด capacity ลงได้เท่ากับยอดใหม่ (F-06 × F-07) | M1 + M2 (เพิ่มเป็น test ในช่วง TEST-37–44 ของ F-06 เมื่อ cancel พร้อม เพราะต้องใช้ endpoint ของ F-06) |
+| ยกเลิกแล้วลด capacity | หลัง cancel ACTIVE count ลด จึงลด capacity ลงได้เท่ากับยอดใหม่ แต่ยังไม่น้อยกว่า 1 (F-06 × F-07) | M1 + M2 (TEST-44; pending จน cancel และ capacity edit พร้อมทั้งคู่) |
 | ปิดกิจกรรมแล้วแก้ | close แล้ว PATCH ได้ EVENT_NOT_EDITABLE (F-06 × F-07) | M2 (TEST-47 ใช้ event ที่ปิดผ่าน F-06 เมื่อพร้อม; ก่อนหน้านั้นใช้ fixture CLOSED) |
 | Sprint 1 regression | automated tests ของ Sprint 1 (TEST-01–TEST-30, TEST-32, TEST-33, TEST-36) ยังผ่านทั้งหมดใน CI; TEST-31/34/35 เป็น manual ทำตอนเตรียม release | ทั้งคู่ |
 
@@ -166,3 +307,7 @@ DoD F-07 (ครบทุกข้อจึงถือว่าเสร็จ)
 | Version | วันที่ | การเปลี่ยนแปลง | เหตุผล | ผู้เขียน |
 |---|---|---|---|---|
 | 0.1 | 23 พ.ย. 2026 | ร่างส่วนร่วม, การจองเลข ID และ F-07 ครบ; F-06 รอ M1 | ฉบับแรกก่อน implementation | M2 |
+| 0.2 | 23 พ.ย. 2026 | เติม F-06, AC-28–33, ALREADY_CANCELLED, response/migration/history และ lock/precedence; F-07 และ IDs เดิมไม่เปลี่ยน | ทำส่วน F-06 ของ #46 ให้พร้อม review ก่อน implementation #47; ยึด FR-09–10/12 และ BR-03–11/14 | M1 |
+| 0.3 | 24 พ.ย. 2026 | ระบุ own-registration lookup ผ่าน GET เดิม, ใช้ label registered_at ให้ตรงทั้ง own/roster และรวม regression assertions ใน DoD; เพิ่มตัวอย่าง release tag | แก้ข้อเสนอแนะก่อน approve PR #56 ให้ implementation/test expectations ชัดเจนและสอดคล้องกัน | M1 |
+| 0.4 | 24 พ.ย. 2026 | ระบุ REGISTERED history ใน seed/demo-data หลัง migration, UUID ของ SQL backfill และ UI ของ CANCELLED เมื่อเต็ม/ปิดรับ; ใช้สถานะ planned ที่ไม่อ้างรอ review | แก้ข้อเสนอแนะ PR #56 ให้ lifecycle ครบทั้ง legacy และ fresh DB และข้อความยังถูกต้องหลัง merge | M1 |
+| 0.5 | 24 พ.ย. 2026 | เพิ่ม linked NFR-01/03/04/05/06 และ mapping ไป TEST-41/43/42/44(a)/41 ตามลำดับ | เติม linked FR/BR/NFR ของ F-06 ให้ครบตาม D2 §3.2 จากข้อเสนอแนะ PR #56 | M1 |

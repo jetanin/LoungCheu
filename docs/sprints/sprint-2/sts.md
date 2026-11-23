@@ -1,6 +1,6 @@
 # Sprint 2 — Software Test Specification (F-06, F-07)
 
-เอกสาร LC-S2-STS | v0.1 (draft for review) | 23 พฤศจิกายน 2026
+เอกสาร LC-S2-STS | v0.5 (planned design) | 24 พฤศจิกายน 2026
 
 Contract: [contracts.md](contracts.md) ทุก test ต้องเขียนและ commit ให้ **fail ก่อน** implementation (RED) แล้วจึง implement ให้ผ่าน (GREEN) เก็บ SHA ทั้งสองจังหวะเป็นหลักฐาน TDD (D2 §3.2)
 
@@ -16,12 +16,42 @@ Fixtures เพิ่มเติม (เวลาอ้างอิง `t0 = 20
 | EPUB2 | OA | PUBLISHED | 3 | 2 (PA, PB) | เหมือน EDRAFT2 |
 | EFULL2 | OA | PUBLISHED | 1 | 1 (PB) | เหมือน EDRAFT2 |
 | ECLOSED2 | OA | CLOSED | 5 | 1 (PA) | เหมือน EDRAFT2 |
+| ECANCEL2 | OA | PUBLISHED | 1 | 1 (PA), available_seats=0 | เหมือน EDRAFT2; เต็มก่อน cancel |
+| ECYCLE2 | OA | PUBLISHED | 1 | 0; PA มี CANCELLED 1 record | เหมือน EDRAFT2; registered_at=t0−2h, cancelled_at=t0−1h |
 
 "ข้อมูลไม่เปลี่ยน" หมายถึงอ่าน Event row ใหม่จาก connection ใหม่แล้วทุก field รวม `updated_at` เท่าค่าก่อน request และจำนวน Registration เท่าเดิม
 
 ## 2. F-06 test cases (TEST-37–TEST-44)
 
-> M1 เขียน ใช้ fixtures ข้างบนหรือเพิ่มเองได้
+สถานะ: **planned; ยังไม่ implement และยังไม่มีผลรันทดสอบ F-06** ต้องผ่าน review/merge พร้อม F-06 contract ก่อน implementation #47 ส่วน TEST-45–52 ของ F-07 คงเดิม
+
+### Fixtures และวิธีตรวจ F-06
+
+- ใช้ clock ที่ควบคุมได้และ fixtures ใน §1; `ECANCEL2` เต็มก่อน cancel และ `ECYCLE2` มี CANCELLED ของ PA โดยไม่มี ACTIVE ตามตาราง
+- CANCELLED fixture มี registered_at=t0−2h, cancelled_at=t0−1h และ history REGISTERED/CANCELLED ที่ actor=PA ตามเวลา; ACTIVE fixtures มี REGISTERED history หลัง migration ทุก case เริ่มใหม่และบันทึก IDs/timestamps/count/history ก่อนส่งคำขอ
+- ตรวจ state จาก connection ใหม่หลัง commit: Event ทุก field รวม updated_at; Registration ทุก field โดยเฉพาะ id/registered_at/cancelled_at/status; history ทุกแถวรวม actor/action/occurred_at; active_count/available_seats เทียบ DB ไม่ดูเพียง HTTP status
+- Permission/input/domain tests ใช้ valid CSRF ของบัญชีที่ทดสอบ ยกเว้นกรณีตั้งใจตรวจ CSRF/Origin; ใช้ UUID ถูกต้องแต่เป็นของผู้อื่นเพื่อแยก 404 scope ออกจาก 400 path
+- Race tests ใช้ PostgreSQL จริง separate sessions/connections และ Event lock barrier; ควบคุมการได้ lock ให้ครอบทั้งสองลำดับ ไม่ใช้ Promise.all อย่างเดียวอ้างว่าได้ทั้งสองลำดับ ทำซ้ำแต่ละกลุ่ม ≥20 รอบโดย fixture ใหม่ และ join ทุก transaction ก่อน assert
+- ใน race ให้เทียบกับผลของ operation ที่ชนะ ไม่ยืนยันว่าฐานทั้งหมดไม่เปลี่ยนเมื่อมีคู่แข่งสำเร็จ; คำขอที่แพ้ต้องไม่เพิ่ม state/history ของตัวเอง
+
+### Test cases
+
+| Test ID / AC | ระดับ | Preconditions / input | Action | Expected result |
+|---|---|---|---|---|
+| TEST-37 / AC-28 | API/DB | PA/PB, ECANCEL2 ที่ t0 เต็มจาก PA (capacity=1, ACTIVE=1); valid sessions/CSRF; จด reference/registered_at/history เดิม | PB register ก่อน cancel → PA POST own cancel → GET own list/detail และ OA roster → PB register อีกครั้ง | ก่อน cancel: PB ได้ 409 EVENT_FULL, ไม่มี Registration/history ของ PB และ ACTIVE=1/available_seats=0; cancel=200 CANCELLED, cancelled_at=t0, reference/registered_at เดิม, ACTIVE count 1→0 และ available_seats 0→1 โดย Event.updated_at เดิม; เพิ่ม CANCELLED history 1 แถว actor=PA/time=t0; own list/detail ยังมี CANCELLED และ roster ยังคงแถวเดิม; หลัง cancel: PB ได้ 201 ACTIVE พร้อม REGISTERED history 1 แถว, ACTIVE=1/available_seats=0 เทียบ DB ยืนยันว่าใช้ที่นั่งที่ cancel คืน |
+| TEST-38 / AC-29 | API/DB | PA, ECYCLE2 ที่ t0; อีก case PA ไม่เคยมี record ใน event ใหม่ที่เปิดรับ | register/reactivate → cancel ที่ t0+1 min → reactivate ที่ t0+2 min; แยก case create ใหม่ | reactivate=200 ACTIVE id/registered_at เดิมและ cancelled_at=null, ACTIVE count 0→1; สุดท้าย record เดิมมี history 5 แถวเรียงตาม occurred_at: REGISTERED(t0−2h) → CANCELLED(t0−1h) → REACTIVATED(t0) → CANCELLED(t0+1 min) → REACTIVATED(t0+2 min), actor=PA ทุกแถว; unique pair ยัง 1 record และ registered_at=t0−2h; case ใหม่=201 ACTIVE และ REGISTERED history 1 แถว ไม่เปลี่ยน response/duplicate behaviour เดิมนอกจาก cancelled_at ที่เพิ่ม |
+| TEST-39 / AC-30 | API/DB | OA, EPUB2 แยก fixture สำหรับก่อน/ที่/หลัง deadline; จด Event/registrations/history/count | POST close → GET own/shared detail, PA own detail และ OA roster; close ซ้ำ และ close EDRAFT2 แยก case | close PUBLISHED=200 CLOSED แม้ deadline ผ่าน, owner/capacity/เวลา/created_at เดิม updated_at=clock หลัง lock, registration_open=false; Registration/history/ACTIVE count เดิมและอ่านได้; close ซ้ำ/DRAFT=409 INVALID_TRANSITION ไม่เปลี่ยน timestamp/history; close ไม่ append RegistrationHistory |
+| TEST-40 / AC-28–31 | Unit + API/DB | แยก ACTIVE/CANCELLED กับ PUBLISHED/DRAFT/CLOSED/full fixtures และ valid sessions; ควบคุม clock | (a) cancel/reactivate ที่ deadline−1 ms, deadline, +1 ms (b) cancel ซ้ำก่อน deadline และหลัง deadline (c) reactivate เต็ม/ACTIVE ซ้ำแม้เต็ม (d) register DRAFT, CLOSED/expired ที่ทั้ง duplicate/full (e) ทุก endpoint: ไม่มี body/{} และ invalid null/array/primitive/malformed JSON/unknown หรือ spoof fields/เกิน parser budget | (a) −1 ms สำเร็จเมื่ออื่นครบ, ที่/+1 ms=REGISTRATION_CLOSED (b) ก่อน=ALREADY_CANCELLED, หลัง=REGISTRATION_CLOSED (c) CANCELLED เต็ม=EVENT_FULL คง cancelled_at, ACTIVE=ALREADY_REGISTERED (d) DRAFT=404 EVENT_NOT_FOUND, CLOSED/expired=REGISTRATION_CLOSED ก่อน duplicate/full (e) ไม่มี body/{} ผ่าน input เมื่อ domain ถูก, invalid=400 INVALID_INPUT ไม่เขียนข้อมูล; ไม่รับ participant/status/timestamp จาก client; รวม invalid UUID ก่อน record scope และ payload ผิดก่อน domain ทุก rejection ไม่มี state/timestamp/history เปลี่ยน |
+| TEST-41 / AC-32 | API/DB | OA/OB/PA/PB/anonymous; ECANCEL2/ECYCLE2; CSRF ผูก session; body={} และ valid IDs | matrix cancel: anonymous/OA/PB→PA record/PA UUID ไม่มีจริง; register: anonymous/OA; close: anonymous/PA/OB→OA event/OA UUID ไม่มีจริง; แยก valid-role request ที่ CSRF ขาด/ผิดและ Origin ผิด | anonymous=401; wrong role=403 ROLE_FORBIDDEN; foreign/missing Registration=404 REGISTRATION_NOT_FOUND; foreign/missing Event=404 EVENT_NOT_FOUND; CSRF/Origin=403 CSRF_FAILED ก่อน input/scope; error schema ไม่เผยข้อมูลส่วนตัว/SQL; state/history ไม่เปลี่ยน |
+| TEST-42 / AC-29,31,33 | API/DB concurrency | แยก fixtures เปิดรับและช่วงเวลาเหมาะกับแต่ละ race; sessions/connections/barrier ตามด้านบน | (a) cancel ของ record เดียวกันพร้อมกัน (b) reactivate ของคนเดียวกันพร้อมกัน (c) PA reactivate กับ PB create แย่งที่นั่งสุดท้าย (d) OA close แข่งกับ create/reactivate/cancel แยกกลุ่มและทั้งสองลำดับ lock (e) ถือ Event lock แล้วเลื่อน clock จาก deadline−1 ms ถึง deadline ก่อนปล่อย cancel/reactivate | (a) 200 หนึ่ง, ALREADY_CANCELLED หนึ่ง, CANCELLED history เพิ่มแค่ 1 (b) 200 หนึ่ง, ALREADY_REGISTERED หนึ่ง, REACTIVATED เพิ่มแค่ 1 (c) สำเร็จหนึ่ง (200 หรือ 201 ตามผู้ชนะ) อีกคำขอ EVENT_FULL, ACTIVE≤capacity และ loser ไม่มี state/history เพิ่ม (d) close ก่อน: mutation=REGISTRATION_CLOSED; mutation ก่อนเมื่อยังไม่ถึง deadline: ทั้งคู่สำเร็จ, CLOSED เก็บผล mutation และ history นั้นไว้ (e) REGISTRATION_CLOSED ไม่มี transition; ทุกกลุ่มไม่มี duplicate pair/history, deadlock/500 |
+| TEST-43 / AC-28–30,32 | Component + E2E (Chromium) | OA/PA/PB contexts แยก, สร้าง/publish ผ่าน UI, เริ่ม ACTIVE ของ PA; mock error เฉพาะ component และใช้ server/DB จริงสำหรับ E2E | cancel confirmation (ปฏิเสธและยืนยัน) → ดู CANCELLED/time → refresh/re-login → re-register → ดู reference/time เดิม → OA refresh roster → close confirmation → refresh participant; component ทดสอบ busy,409,401,network uncertainty และ GET own-list lookup ที่สำเร็จ/ล้มเหลว/เปลี่ยน session หรือ event | ปฏิเสธ dialog ไม่ส่ง mutation; ยืนยันแล้ว UI/DB state/count ตรง; own list/detail และ roster แสดง registered_at ด้วย label ลงทะเบียนครั้งแรกเมื่อ เหมือนกันและค่าครั้งแรกคงเดิม; cancelled_at แสดงเฉพาะ CANCELLED, reactivate ใช้ ref เดิม; หน้ากิจกรรมเลือก record จาก GET /api/my/registrations ด้วย event.id, แยก ACTIVE/CANCELLED/ไม่พบได้และไม่มี endpoint lookup ใหม่; roster ไม่เพิ่มแถวซ้ำ; CLOSED ไม่มี cancel/re-register/close ที่ใช้งานได้; 409 ภาษาไทย+refresh, 401 ล้าง private data, own-read error ไม่ถูกตีความว่าไม่เคยลงทะเบียนและ response เก่าไม่ทับ session/event ใหม่, timeout ไม่ retry mutation อัตโนมัติ; reload/re-login อ่าน persisted state ได้ |
+| TEST-44 / AC-33 | Migration integration + API/DB cross-feature | (a) disposable DB ที่มี migration S1 และ ACTIVE records พร้อม refs/times เดิม (b) test DB ที่ migrate S2 แล้ว (c) EPUB2 สำหรับ F-06×F-07 เมื่อ #48 พร้อม | (a) migrate deploy → query → migrate deploy ซ้ำ (b) inject history-write failure ผ่าน test dependency/transaction ใน create/cancel/reactivate แยก case; ไม่มี public fault endpoint (c) cancel PA: ACTIVE 2→1 แล้ว OA PATCH capacity=1 → PA reactivate → OA PATCH capacity=2 → PA reactivate | (a) refs/status/registered_at เดิม, cancelled_at=null, REGISTERED backfill หนึ่งแถวต่อ record actor=participant/time=registered_at; migrate ซ้ำไม่เพิ่ม history และมี FK/unique/index ตาม contract; legacy CANCELLED ที่ไม่มีเวลาให้ migration หยุดอย่างชัดเจน (b) HTTP 500 INTERNAL_ERROR แบบ generic และ rollback state/history ทั้งหมด แม้ new record/count ก็ไม่เพิ่ม (c) ลด capacity เป็น 1 ได้ 200, reactivate ขณะเต็มได้ 409 EVENT_FULL คง CANCELLED; เพิ่ม capacity เป็น 2 ได้ 200 แล้ว reactivate ได้ 200 ด้วย id เดิม, ACTIVE=2; หาก #48 ยังไม่พร้อมระบุ cross-feature ส่วนนี้ pending ห้ามนับ PASS/DoD ครบ; close แล้ว PATCH ตรวจที่ TEST-47 แห่งเดียวตาม cross-feature table |
+
+TEST-44 ใช้ disposable test database เท่านั้น ห้าม downgrade/reset ฐาน application หรือ production เพื่อทดสอบ migration และต้องเก็บคำสั่ง/เวอร์ชันก่อนและหลังจริง เก็บ assertion ของ history ทั้งกรณีสำเร็จและ rollback; API/UI ไม่เปิดเผย history หรือเพิ่ม endpoint สำหรับ tests
+
+รายละเอียดเพิ่มเติมใน TEST-43: เตรียม own record เป็น CANCELLED และกิจกรรม PUBLISHED ก่อน deadline ที่เต็มจากผู้ใช้อื่น ต้องเห็น **คุณยกเลิกการลงทะเบียนแล้ว ขณะนี้กิจกรรมเต็ม** พร้อมปุ่มรีเฟรชที่นั่งและไม่มีปุ่มลงทะเบียนใหม่; เมื่อ refresh หลังมีที่ว่างจึงเห็นปุ่มลงทะเบียนใหม่ ส่วน CLOSED/ถึง deadline ต้องเห็น **คุณยกเลิกการลงทะเบียนแล้ว กิจกรรมนี้ปิดรับลงทะเบียนแล้ว** และไม่มีปุ่มลงทะเบียนใหม่
+
+รายละเอียดเพิ่มเติมใน TEST-44(a): นอกจาก legacy backfill ให้ใช้ fresh disposable DB → migrate → รัน `server/prisma/seed.ts` ซึ่งเรียก demo-data แล้วตรวจว่าทุก Registration มี REGISTERED history 1 แถวด้วย registration_id/actor_id/occurred_at ที่ตรงกับ record; รัน seed ซ้ำและพร้อมกันแล้วจำนวน Registration/history ไม่เพิ่มซ้ำและไม่ทับ lifecycle เดิม ตรวจ SQL backfill ที่ใช้ `gen_random_uuid()` ด้วยการรัน migration จริงผ่าน SQL ไม่ใช่สร้าง history แทนด้วย Prisma; กรณี history-write failure ของ seed ต้อง rollback Registration ที่สร้างใน transaction นั้นด้วย
 
 ## 3. F-07 test cases (TEST-45–TEST-52)
 
@@ -47,3 +77,7 @@ Fixtures เพิ่มเติม (เวลาอ้างอิง `t0 = 20
 | Version | วันที่ | การเปลี่ยนแปลง | เหตุผล | ผู้เขียน |
 |---|---|---|---|---|
 | 0.1 | 23 พ.ย. 2026 | fixtures และ F-07 TEST-45–52; F-06 รอ M1 | ฉบับแรกก่อน implementation | M2 |
+| 0.2 | 23 พ.ย. 2026 | เพิ่ม fixtures/protocol และ F-06 TEST-37–44 ผูก AC-28–33; F-07 IDs/เนื้อหาคงเดิม | เติมส่วน #46 ก่อนเริ่ม #47 ให้ครอบ lifecycle/history, deadline/lock races, migration และ integration กับ #48 | M1 |
+| 0.3 | 24 พ.ย. 2026 | TEST-37 ใช้กิจกรรมเต็มและตรวจ EVENT_FULL ก่อน cancel/201 หลัง cancel; TEST-43 ตรวจ label/GET lookup; TEST-44 แก้ถ้อยคำและให้ close×PATCH อยู่ TEST-47 แห่งเดียว | แก้ข้อเสนอแนะก่อน approve PR #56 ให้พิสูจน์การคืนที่นั่งจริงและไม่ซ้ำขอบเขต tests | M1 |
+| 0.4 | 24 พ.ย. 2026 | TEST-38 ระบุ history 5 แถว; TEST-43 เพิ่ม CANCELLED ขณะเต็ม/ปิดรับ; TEST-44 เพิ่ม fresh migrate→seed/history, repeat/concurrent seed และ SQL UUID; ใช้สถานะ planned | แก้ข้อเสนอแนะ PR #56 ให้พิสูจน์ history ของ seed หลัง backfill และผล UI ครบโดยไม่อ้างผลที่ยังไม่รัน | M1 |
+| 0.5 | 24 พ.ย. 2026 | เพิ่ม ECANCEL2/ECYCLE2 ในตาราง fixtures §1 และอ้างตารางจาก protocol F-06; NFR mapping อยู่ใน contracts v0.5 โดยไม่เปลี่ยน TEST IDs | ให้ fixture inventory ครบและสอดคล้องกับ linked NFR/test design ตามข้อเสนอแนะ PR #56 | M1 |
