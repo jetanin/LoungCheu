@@ -46,3 +46,7 @@ export function eventInput(body: unknown) {
   if (Object.keys(fields).length) throw invalidInput(fields);
   return { title, description, location, capacity: b.capacity as number, startsAt: startsAt!, endsAt: endsAt!, registrationClosesAt: registrationClosesAt! };
 }
+
+export type EventPatch = Partial<ReturnType<typeof eventInput>>;
+// F-07 (#48) TDD RED placeholder: lets the new tests compile and fail on assertions.
+export function eventPatch(_body: unknown): EventPatch { return {}; }
