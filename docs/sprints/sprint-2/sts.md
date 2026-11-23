@@ -1,6 +1,6 @@
 # Sprint 2 — Software Test Specification (F-06, F-07)
 
-เอกสาร LC-S2-STS | v0.4 (planned design) | 24 พฤศจิกายน 2026
+เอกสาร LC-S2-STS | v0.5 (planned design) | 24 พฤศจิกายน 2026
 
 Contract: [contracts.md](contracts.md) ทุก test ต้องเขียนและ commit ให้ **fail ก่อน** implementation (RED) แล้วจึง implement ให้ผ่าน (GREEN) เก็บ SHA ทั้งสองจังหวะเป็นหลักฐาน TDD (D2 §3.2)
 
@@ -16,6 +16,8 @@ Fixtures เพิ่มเติม (เวลาอ้างอิง `t0 = 20
 | EPUB2 | OA | PUBLISHED | 3 | 2 (PA, PB) | เหมือน EDRAFT2 |
 | EFULL2 | OA | PUBLISHED | 1 | 1 (PB) | เหมือน EDRAFT2 |
 | ECLOSED2 | OA | CLOSED | 5 | 1 (PA) | เหมือน EDRAFT2 |
+| ECANCEL2 | OA | PUBLISHED | 1 | 1 (PA), available_seats=0 | เหมือน EDRAFT2; เต็มก่อน cancel |
+| ECYCLE2 | OA | PUBLISHED | 1 | 0; PA มี CANCELLED 1 record | เหมือน EDRAFT2; registered_at=t0−2h, cancelled_at=t0−1h |
 
 "ข้อมูลไม่เปลี่ยน" หมายถึงอ่าน Event row ใหม่จาก connection ใหม่แล้วทุก field รวม `updated_at` เท่าค่าก่อน request และจำนวน Registration เท่าเดิม
 
@@ -25,7 +27,7 @@ Fixtures เพิ่มเติม (เวลาอ้างอิง `t0 = 20
 
 ### Fixtures และวิธีตรวจ F-06
 
-- ใช้ clock ที่ควบคุมได้และ fixtures เดิม; เพิ่ม `ECANCEL2` ของ OA, PUBLISHED, capacity=1, ACTIVE=1 (PA), available_seats=0 (เต็มก่อน cancel) และ `ECYCLE2` ของ OA, PUBLISHED, capacity=1, CANCELLED=1 (PA), ACTIVE=0 เวลาตาม EDRAFT2
+- ใช้ clock ที่ควบคุมได้และ fixtures ใน §1; `ECANCEL2` เต็มก่อน cancel และ `ECYCLE2` มี CANCELLED ของ PA โดยไม่มี ACTIVE ตามตาราง
 - CANCELLED fixture มี registered_at=t0−2h, cancelled_at=t0−1h และ history REGISTERED/CANCELLED ที่ actor=PA ตามเวลา; ACTIVE fixtures มี REGISTERED history หลัง migration ทุก case เริ่มใหม่และบันทึก IDs/timestamps/count/history ก่อนส่งคำขอ
 - ตรวจ state จาก connection ใหม่หลัง commit: Event ทุก field รวม updated_at; Registration ทุก field โดยเฉพาะ id/registered_at/cancelled_at/status; history ทุกแถวรวม actor/action/occurred_at; active_count/available_seats เทียบ DB ไม่ดูเพียง HTTP status
 - Permission/input/domain tests ใช้ valid CSRF ของบัญชีที่ทดสอบ ยกเว้นกรณีตั้งใจตรวจ CSRF/Origin; ใช้ UUID ถูกต้องแต่เป็นของผู้อื่นเพื่อแยก 404 scope ออกจาก 400 path
@@ -78,3 +80,4 @@ TEST-44 ใช้ disposable test database เท่านั้น ห้าม
 | 0.2 | 23 พ.ย. 2026 | เพิ่ม fixtures/protocol และ F-06 TEST-37–44 ผูก AC-28–33; F-07 IDs/เนื้อหาคงเดิม | เติมส่วน #46 ก่อนเริ่ม #47 ให้ครอบ lifecycle/history, deadline/lock races, migration และ integration กับ #48 | M1 |
 | 0.3 | 24 พ.ย. 2026 | TEST-37 ใช้กิจกรรมเต็มและตรวจ EVENT_FULL ก่อน cancel/201 หลัง cancel; TEST-43 ตรวจ label/GET lookup; TEST-44 แก้ถ้อยคำและให้ close×PATCH อยู่ TEST-47 แห่งเดียว | แก้ข้อเสนอแนะก่อน approve PR #56 ให้พิสูจน์การคืนที่นั่งจริงและไม่ซ้ำขอบเขต tests | M1 |
 | 0.4 | 24 พ.ย. 2026 | TEST-38 ระบุ history 5 แถว; TEST-43 เพิ่ม CANCELLED ขณะเต็ม/ปิดรับ; TEST-44 เพิ่ม fresh migrate→seed/history, repeat/concurrent seed และ SQL UUID; ใช้สถานะ planned | แก้ข้อเสนอแนะ PR #56 ให้พิสูจน์ history ของ seed หลัง backfill และผล UI ครบโดยไม่อ้างผลที่ยังไม่รัน | M1 |
+| 0.5 | 24 พ.ย. 2026 | เพิ่ม ECANCEL2/ECYCLE2 ในตาราง fixtures §1 และอ้างตารางจาก protocol F-06; NFR mapping อยู่ใน contracts v0.5 โดยไม่เปลี่ยน TEST IDs | ให้ fixture inventory ครบและสอดคล้องกับ linked NFR/test design ตามข้อเสนอแนะ PR #56 | M1 |

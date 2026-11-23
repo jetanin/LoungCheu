@@ -1,6 +1,6 @@
 # Sprint 2 — Feature Engineering Contracts (F-06, F-07)
 
-เอกสาร LC-S2-CONTRACT | v0.4 (planned design) | 24 พฤศจิกายน 2026
+เอกสาร LC-S2-CONTRACT | v0.5 (planned design) | 24 พฤศจิกายน 2026
 
 ฐานของ Sprint 2: `sprint-2-staging` แตกจาก `main` ที่ `0b2cc80` (tag `v1.0.1-uat`) ใช้ SRS/System SDS baseline v0.5 และ IDs เดิมตาม [traceability](../../traceability.md) เอกสารนี้ต้อง merge เข้า `sprint-2-staging` **ก่อน** เริ่มเขียนโค้ด F-06/F-07 (D2 §3.2 "contracts before implementation")
 
@@ -34,9 +34,19 @@ F-06 ใช้ `REGISTRATION_CLOSED` เดิมเมื่อ cancel/reactiva
 
 ## F-06 — Cancel, re-register และ close event
 
-**Links:** FR-09–10, FR-12; BR-03–11, BR-14; V2-01, V2-02, V2-04; dependency: F-03–05
+**Links:** FR-09–10, FR-12; BR-03–11, BR-14; NFR-01, NFR-03, NFR-04, NFR-05, NFR-06; V2-01, V2-02, V2-04; dependency: F-03–05
 
 สถานะ: **planned; ยังไม่ implement และยังไม่มีผลรันทดสอบ F-06** งานออกแบบอยู่ใน Issue #46; งาน implementation อยู่ใน Issue #47
+
+**NFR → planned verification** (อ้างอิง [SRS](../../srs.md); ยังไม่ใช่ผลรันทดสอบ):
+
+| NFR | ขอบเขตใน F-06 | Planned tests |
+|---|---|---|
+| NFR-01 | Access matrix: auth/role/ownership/CSRF และไม่เปิดเผยข้อมูลข้ามผู้ใช้ | TEST-41 |
+| NFR-03 | Persistence: อ่าน state/reference/timestamp กลับหลัง reload และ re-login | TEST-43 |
+| NFR-04 | Race ที่นั่งสุดท้ายและ duplicate cancel/reactivate ไม่ทำให้ record/history ซ้ำหรือ ACTIVE เกิน capacity | TEST-42 |
+| NFR-05 | Fresh disposable DB: migrate → seed แล้ว Registration/history ครบและ seed ซ้ำได้ | TEST-44(a) |
+| NFR-06 | Error format/code/message และการปฏิเสธสิทธิ์ตรง contract ไม่เปิดเผยข้อมูลภายใน | TEST-41 |
 
 ### Workflow / UI
 
@@ -300,3 +310,4 @@ DoD F-07 (ครบทุกข้อจึงถือว่าเสร็จ)
 | 0.2 | 23 พ.ย. 2026 | เติม F-06, AC-28–33, ALREADY_CANCELLED, response/migration/history และ lock/precedence; F-07 และ IDs เดิมไม่เปลี่ยน | ทำส่วน F-06 ของ #46 ให้พร้อม review ก่อน implementation #47; ยึด FR-09–10/12 และ BR-03–11/14 | M1 |
 | 0.3 | 24 พ.ย. 2026 | ระบุ own-registration lookup ผ่าน GET เดิม, ใช้ label registered_at ให้ตรงทั้ง own/roster และรวม regression assertions ใน DoD; เพิ่มตัวอย่าง release tag | แก้ข้อเสนอแนะก่อน approve PR #56 ให้ implementation/test expectations ชัดเจนและสอดคล้องกัน | M1 |
 | 0.4 | 24 พ.ย. 2026 | ระบุ REGISTERED history ใน seed/demo-data หลัง migration, UUID ของ SQL backfill และ UI ของ CANCELLED เมื่อเต็ม/ปิดรับ; ใช้สถานะ planned ที่ไม่อ้างรอ review | แก้ข้อเสนอแนะ PR #56 ให้ lifecycle ครบทั้ง legacy และ fresh DB และข้อความยังถูกต้องหลัง merge | M1 |
+| 0.5 | 24 พ.ย. 2026 | เพิ่ม linked NFR-01/03/04/05/06 และ mapping ไป TEST-41/43/42/44(a)/41 ตามลำดับ | เติม linked FR/BR/NFR ของ F-06 ให้ครบตาม D2 §3.2 จากข้อเสนอแนะ PR #56 | M1 |
