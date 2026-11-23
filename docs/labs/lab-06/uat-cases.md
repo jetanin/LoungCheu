@@ -2,7 +2,7 @@
 
 Product Team: TH-001_P3 (Jetanin Naitho, Paphangkorn Luanseng)
 UAT Team: TH-005_P5 (Napat Utbuawong, Nanthakorn Pinsupaporn)
-Release under test: see [handoff.md](handoff.md) (tag `v1.0.1-uat`)
+Release under test: tag `v1.0.1-uat`. URL, commit, deployed revision, setup and cleanup are in `handoff.md` in this folder (added once the release is deployed)
 Scope: Sprint 1 features F-01–F-05, acceptance criteria in [Sprint 1 contracts](../../sprints/sprint-1/contracts.md)
 
 ## How to use this file
@@ -200,15 +200,17 @@ Sprint 1 criteria not exercised by these manual cases, and why:
 - **Preconditions:** None (independent case). Logged in as `organizer.a`, on **กิจกรรมของฉัน** → **สร้างกิจกรรม**. Start each step from the valid inputs of UAT-01 (title `[UAT-07-<initials>] Validation`) and change only the field mentioned.
 - **Steps and expected results:**
 
+Steps 1–5 stay on the same form. In each step, first put back the valid value from the previous step, then change only the field named, then click **บันทึก DRAFT**.
+
 | # | Action | Expected result |
 |---|---|---|
-| 1 | ชื่อกิจกรรม = empty (or only spaces), click **บันทึก DRAFT** | Under the title: **กรุณากรอก 1–120 ตัวอักษร**. Stays on the form |
-| 2 | จำนวนที่นั่ง = `0` | **จำนวนที่นั่งต้องเป็นจำนวนเต็ม 1–1000** |
-| 3 | จำนวนที่นั่ง = `1001` | **จำนวนที่นั่งต้องเป็นจำนวนเต็ม 1–1000** |
-| 4 | ปิดรับลงทะเบียน = D+3 10:00 (after the start time D+3 09:00) | **เวลาปิดรับต้องไม่หลังเวลาเริ่ม** |
-| 5 | สิ้นสุดกิจกรรม = D+3 08:00 (before the start time) | **เวลาสิ้นสุดต้องหลังเวลาเริ่ม** |
-| 6 | Open **กิจกรรมของฉัน** | No `[UAT-07-…]` event was created by steps 1–5 |
-| 7 | Valid boundary: all valid inputs, จำนวนที่นั่ง = `1000`, click **บันทึก DRAFT** | Saved. Status **DRAFT**, **ว่าง 1000 / 1000 ที่นั่ง**. Leave it as DRAFT (do not publish) |
+| 1 | Fill all fields with the valid inputs, then clear ชื่อกิจกรรม (or type only spaces). Click **บันทึก DRAFT** | Under the title: **กรุณากรอก 1–120 ตัวอักษร**. Stays on the form, no event page opens |
+| 2 | Put the title back. Set จำนวนที่นั่ง = `0`. Click **บันทึก DRAFT** | **จำนวนที่นั่งต้องเป็นจำนวนเต็ม 1–1000**. Stays on the form |
+| 3 | Set จำนวนที่นั่ง = `1001`. Click **บันทึก DRAFT** | **จำนวนที่นั่งต้องเป็นจำนวนเต็ม 1–1000**. Stays on the form |
+| 4 | Set จำนวนที่นั่ง back to `2`. Set ปิดรับลงทะเบียน = D+3 10:00 (after the start time D+3 09:00). Click **บันทึก DRAFT** | **เวลาปิดรับต้องไม่หลังเวลาเริ่ม**. Stays on the form |
+| 5 | Set ปิดรับลงทะเบียน back to D+2 10:00. Set สิ้นสุดกิจกรรม = D+3 08:00 (before the start time). Click **บันทึก DRAFT** | **เวลาสิ้นสุดต้องหลังเวลาเริ่ม**. Stays on the form |
+| 6 | Leave the form and open **กิจกรรมของฉัน** | No `[UAT-07-…]` event appears (steps 1–5 saved nothing) |
+| 7 | On **กิจกรรมของฉัน**, click **สร้างกิจกรรม** again. Fill all valid inputs of UAT-01 with title `[UAT-07-<initials>] Validation` and จำนวนที่นั่ง = `1000`. Click **บันทึก DRAFT** | Goes to `/organizer/events/<id>`. Status **DRAFT**, **ว่าง 1000 / 1000 ที่นั่ง**. Leave it as DRAFT (do not publish) |
 
 ---
 
