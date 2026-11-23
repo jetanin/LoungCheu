@@ -44,5 +44,15 @@ export function createEventService(db: PrismaClient, now: () => number) {
       const updated = await tx.event.update({ where: { id }, data: { status: 'PUBLISHED', updatedAt: new Date(clock) } });
       return serialize({ ...updated, _count: event._count }, true, clock);
     }, { isolationLevel: Prisma.TransactionIsolationLevel.ReadCommitted }),
+    // F-06: append-only block so F-07 can independently append update().
+    close: (id: string, organizerId: string) => db.$transaction(async tx => {
+      const locked = await tx.$queryRaw<{ id: string }[]>`SELECT id FROM events WHERE id=${id}::uuid AND organizer_id=${organizerId}::uuid FOR UPDATE`;
+      if (!locked.length) throw missing();
+      const clock = now();
+      const event = await tx.event.findUniqueOrThrow({ where: { id }, include: counts });
+      if (event.status !== 'PUBLISHED') throw new ApiError(409, 'INVALID_TRANSITION', 'ปิดรับได้เฉพาะกิจกรรม PUBLISHED');
+      const updated = await tx.event.update({ where: { id }, data: { status: 'CLOSED', updatedAt: new Date(clock) } });
+      return serialize({ ...updated, _count: event._count }, true, clock);
+    }, { isolationLevel: Prisma.TransactionIsolationLevel.ReadCommitted }),
   };
 }

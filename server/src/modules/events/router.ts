@@ -19,5 +19,10 @@ export function createEventRouter({ authenticate, verifyCsrf, json, service }: {
   });
   router.get('/events', authenticate, async (_req, res) => res.json({ data: await service.list() }));
   router.get('/events/:id', authenticate, async (req, res) => res.json({ data: await service.detail(eventId(req.params.id)) }));
+  // F-06: keep this block separate from F-07 PATCH work.
+  router.post('/organizer/events/:id/close', authenticate, organizer, verifyCsrf, json, async (req, res) => {
+    const id = eventId(req.params.id); emptyInput(req.body);
+    res.json({ data: await service.close(id, res.locals.identity.id) });
+  });
   return router;
 }
