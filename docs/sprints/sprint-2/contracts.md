@@ -1,6 +1,6 @@
 # Sprint 2 — Feature Engineering Contracts (F-06, F-07)
 
-เอกสาร LC-S2-CONTRACT | v0.3 (draft for review) | 24 พฤศจิกายน 2026
+เอกสาร LC-S2-CONTRACT | v0.4 (planned design) | 24 พฤศจิกายน 2026
 
 ฐานของ Sprint 2: `sprint-2-staging` แตกจาก `main` ที่ `0b2cc80` (tag `v1.0.1-uat`) ใช้ SRS/System SDS baseline v0.5 และ IDs เดิมตาม [traceability](../../traceability.md) เอกสารนี้ต้อง merge เข้า `sprint-2-staging` **ก่อน** เริ่มเขียนโค้ด F-06/F-07 (D2 §3.2 "contracts before implementation")
 
@@ -36,7 +36,7 @@ F-06 ใช้ `REGISTRATION_CLOSED` เดิมเมื่อ cancel/reactiva
 
 **Links:** FR-09–10, FR-12; BR-03–11, BR-14; V2-01, V2-02, V2-04; dependency: F-03–05
 
-สถานะ: **planned / contract และ test design รอ teammate review; ยังไม่ implement และยังไม่มีผลรันทดสอบ F-06** งานออกแบบอยู่ใน Issue #46; งาน implementation อยู่ใน Issue #47
+สถานะ: **planned; ยังไม่ implement และยังไม่มีผลรันทดสอบ F-06** งานออกแบบอยู่ใน Issue #46; งาน implementation อยู่ใน Issue #47
 
 ### Workflow / UI
 
@@ -53,6 +53,7 @@ UI rules:
 - แสดงปุ่ม cancel บน own detail เฉพาะ ACTIVE ของกิจกรรม PUBLISHED ที่ยังไม่ถึง deadline และแสดงเวลาปิดรับเป็น Asia/Bangkok; server เป็นผู้ตัดสินเมื่อกดจริง การยกเลิก confirmation dialog ไม่ส่ง mutation
 - รายการและรายละเอียดของตน รวมถึงหัวคอลัมน์เวลาใน roster ใช้ชื่อ **ลงทะเบียนครั้งแรกเมื่อ** สำหรับ `registered_at` เหมือนกัน เพื่อไม่ให้เข้าใจว่าเป็นเวลาลงใหม่; own list/detail แสดง ACTIVE/CANCELLED และ `cancelled_at` เมื่อ CANCELLED ไม่เพิ่มหน้า history ใน Sprint 2
 - หน้ากิจกรรมของ Participant ใช้ `GET /api/my/registrations` เดิม แล้วเลือก record ที่ `record.event.id` ตรงกับ event ID ของหน้าปัจจุบันจากผลของ session ปัจจุบัน ไม่มี endpoint ใหม่สำหรับ lookup นี้; พบ ACTIVE แสดงว่าลงทะเบียนแล้ว พบ CANCELLED แสดง **ลงทะเบียนใหม่** เมื่อ registration_open=true และเมื่ออ่านสำเร็จแต่ไม่พบ record จึงแสดงปุ่มลงทะเบียนปกติ เมื่ออ่านล้มเหลวให้แสดง error/retry ไม่ตีความว่าไม่เคยลงทะเบียน ล้างผล lookup เมื่อ session/account หรือ event ID เปลี่ยน และไม่ให้ response เก่าทับ session/event ใหม่
+- หากพบ CANCELLED แต่กิจกรรม PUBLISHED ยังไม่ถึง deadline และ available_seats=0 ให้แสดง **คุณยกเลิกการลงทะเบียนแล้ว ขณะนี้กิจกรรมเต็ม** แทนปุ่มลงทะเบียนใหม่ พร้อมปุ่ม **รีเฟรชที่นั่ง**; หาก CLOSED หรือถึง deadline ให้แสดง **คุณยกเลิกการลงทะเบียนแล้ว กิจกรรมนี้ปิดรับลงทะเบียนแล้ว** และไม่แสดงปุ่มลงทะเบียนใหม่ เมื่อ refresh แล้วเปิดรับและมีที่นั่งจึงแสดงปุ่มลงทะเบียนใหม่ กรณีเงื่อนไขเปลี่ยนหลังอ่านข้อมูล server ยังปฏิเสธด้วย EVENT_FULL/REGISTRATION_CLOSED ตามลำดับตรวจเดิม
 - Organizer เห็นปุ่ม close เฉพาะ PUBLISHED; ก่อนยืนยันแจ้งว่าปิดแล้วเปิดกลับไม่ได้และไม่ยกเลิกรายการเดิม DRAFT/CLOSED ไม่มีปุ่มนี้
 - หลัง mutation สำเร็จโหลด own record, availability หรือ roster ที่เกี่ยวข้องใหม่จาก server; roster ยังคงแถว CANCELLED ไว้ แต่ `active_count` นับเฉพาะ ACTIVE และไม่เพิ่มแถวเมื่อ reactivate
 - แสดง loading/disabled กันการกดซ้ำ, 401 ล้างข้อมูลส่วนตัวและกลับ login, 403/404 ไม่แสดงข้อมูลข้ามสิทธิ์ เมื่อ 409 แสดงเหตุผลแล้ว refresh state ก่อนให้ตัดสินใจใหม่
@@ -106,7 +107,8 @@ UI rules:
 |---|---|
 | Registration | เพิ่ม Prisma `cancelledAt` → SQL/API `cancelled_at`, nullable `timestamptz(3)`; คง UNIQUE(event_id, participant_id), FK และ registered_at เดิม |
 | RegistrationHistory | เพิ่ม table `registration_history`: id UUID PK, registration_id FK → registrations, actor_id FK → users, action enum REGISTERED/CANCELLED/REACTIVATED, occurred_at `timestamptz(3)`; index (registration_id, occurred_at, id); FK ใช้ Restrict ไม่ cascade ลบหลักฐาน |
-| Backfill | versioned migration เพิ่ม REGISTERED 1 แถวต่อ Registration เดิม ใช้ actor_id=participant_id และ occurred_at=registered_at; ไม่สร้าง users/events/registrations ใหม่ ไม่แก้ reference/status/registered_at หรือ reset ข้อมูล Sprint 1 |
+| Backfill | versioned migration เพิ่ม REGISTERED 1 แถวต่อ Registration เดิม ใช้ actor_id=participant_id และ occurred_at=registered_at; SQL INSERT ต้องสร้าง history.id ด้วย `gen_random_uuid()` เพราะ `@default(uuid())` สร้าง UUID ฝั่ง Prisma client ไม่ใช่ SQL DEFAULT; ไม่สร้าง users/events/registrations ใหม่ ไม่แก้ reference/status/registered_at หรือ reset ข้อมูล Sprint 1 |
+| Seed / demo data | บน DB ใหม่ migration/backfill รันก่อน seed จึงต้องปรับเส้นทาง `server/prisma/seed.ts` และ `server/prisma/demo-data.ts` ให้ทุก Registration ที่สร้างหลัง migration มี REGISTERED history 1 แถวใน transaction เดียวกัน ใช้ actor_id=participant_id และ occurred_at=registered_at; seed ซ้ำหรือพร้อมกันไม่เพิ่ม Registration/history ซ้ำ ไม่สร้าง lifecycle ที่เดาเองหรือทับ state/history ของ record เดิม |
 | Consistency | ทุก Registration ใหม่มี REGISTERED history และทุก cancel/reactivate ที่สำเร็จ append history 1 แถวใน transaction เดียวกับ state; ถ้าเขียน history ไม่สำเร็จ rollback state ด้วย; rejected/repeated request ไม่เพิ่ม history และ close ไม่สร้าง RegistrationHistory |
 
 ก่อน migration ตรวจว่า legacy data ตรง baseline Sprint 1 (ACTIVE เท่านั้น); หากพบ CANCELLED เดิมที่ไม่มีเวลายกเลิกให้หยุดและจัดทำ data reconciliation ก่อน ห้ามสร้าง cancelled_at/history ที่เดาเอง การรัน migrate deploy ซ้ำไม่เพิ่ม backfill ซ้ำเพราะ migration version ถูกบันทึกแล้ว; การ cancel/reactivate หลายรอบต้อง append ได้ จึงไม่ใช้ unique(registration_id, action) ที่จะบล็อกวงจรถัดไป
@@ -160,7 +162,7 @@ DoD F-06 (ครบทุกข้อจึงถือว่าเสร็จ)
 1. AC-28–AC-33 ผ่านด้วย test ที่รันจริงตาม TEST-37–44 (unit/API/DB/concurrency/component/E2E และ migration) บันทึกคำสั่ง, commit, passed/failed/skipped; contract/STS นี้เป็นแผน ไม่ใช่ผล PASS
 2. เก็บ meaningful RED ก่อน implementation และ GREEN ของ test เดียวกัน พร้อม SHA/assertion/output; fixture หรือ migration error ไม่ใช้แทน RED ของกฎธุรกิจ
 3. Sprint 1 automated regression ผ่าน; ปรับ expected schema เฉพาะ cancelled_at ที่เพิ่มและเพิ่ม reactivate 200 พร้อมตรวจและอัปเดต component/E2E assertions ที่อ้าง label เดิม ลงทะเบียนเมื่อ ให้เป็น ลงทะเบียนครั้งแรกเมื่อ ทั้ง own list/detail และ roster โดยยัง assert ค่า registered_at ครั้งแรกเดิม และไม่ลด assertions ของ create/duplicate/access/time/concurrency เดิม
-4. versioned migration/backfill และ rollback-on-history-failure ผ่านบน test DB; อัปเดต System SDS (schema/API/error table), features.md และ traceability ให้ตรง implementation โดยประสานงานเอกสาร D2 ใน #51
+4. versioned migration/backfill และ rollback-on-history-failure ผ่านบน test DB; seed/demo-data ต้องสร้าง REGISTERED history ด้วยสำหรับ Registration ที่สร้างหลัง migration และผ่านการตรวจ fresh DB → migrate → seed รวม seed ซ้ำ/พร้อมกันโดยไม่เกิด record/history ซ้ำ; อัปเดต System SDS (schema/API/error table), features.md และ traceability ให้ตรง implementation โดยประสานงานเอกสาร D2 ใน #51
 5. Trace ได้ครบ: Issue #47 → branch `feature/47-…` จาก sprint-2-staging หลัง contract ผ่าน review/merge → PR ที่ teammate review แบบมีเนื้อหา + CI ผ่าน → staging integration → reviewed main release/deploy/tag ของ Sprint 2 (เช่น `v2.0.0-sprint-2` ให้ระบุได้แม้ candidate ภายหลังจะมีงานเพิ่ม); ไม่เปลี่ยนรุ่น Lab 6 ระหว่าง UAT โดยไม่แจ้งทีมคู่
 6. มีแถวใน completion table ของ Sprint 2 เชื่อม AC, implementation file/commit, executed TEST/result และ accepted release; ทดสอบ cancel × capacity edit และ close × edit ร่วมกับ #48 ก่อน release
 7. ผ่าน [Product DoD](../sprint-1/README.md) DOD-01–DOD-10 ที่เกี่ยวข้อง รวม persistence/race, no secrets, เปิดเผยงานไม่ครบ และ CI/GCP post-deploy checks; teammate review contract ใน #46 ก่อนเริ่มโค้ด #47
@@ -297,3 +299,4 @@ DoD F-07 (ครบทุกข้อจึงถือว่าเสร็จ)
 | 0.1 | 23 พ.ย. 2026 | ร่างส่วนร่วม, การจองเลข ID และ F-07 ครบ; F-06 รอ M1 | ฉบับแรกก่อน implementation | M2 |
 | 0.2 | 23 พ.ย. 2026 | เติม F-06, AC-28–33, ALREADY_CANCELLED, response/migration/history และ lock/precedence; F-07 และ IDs เดิมไม่เปลี่ยน | ทำส่วน F-06 ของ #46 ให้พร้อม review ก่อน implementation #47; ยึด FR-09–10/12 และ BR-03–11/14 | M1 |
 | 0.3 | 24 พ.ย. 2026 | ระบุ own-registration lookup ผ่าน GET เดิม, ใช้ label registered_at ให้ตรงทั้ง own/roster และรวม regression assertions ใน DoD; เพิ่มตัวอย่าง release tag | แก้ข้อเสนอแนะก่อน approve PR #56 ให้ implementation/test expectations ชัดเจนและสอดคล้องกัน | M1 |
+| 0.4 | 24 พ.ย. 2026 | ระบุ REGISTERED history ใน seed/demo-data หลัง migration, UUID ของ SQL backfill และ UI ของ CANCELLED เมื่อเต็ม/ปิดรับ; ใช้สถานะ planned ที่ไม่อ้างรอ review | แก้ข้อเสนอแนะ PR #56 ให้ lifecycle ครบทั้ง legacy และ fresh DB และข้อความยังถูกต้องหลัง merge | M1 |
