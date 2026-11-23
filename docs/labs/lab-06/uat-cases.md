@@ -2,7 +2,7 @@
 
 Product Team: TH-001_P3 (Jetanin Naitho, Paphangkorn Luanseng)
 UAT Team: TH-005_P5 (Napat Utbuawong, Nanthakorn Pinsupaporn)
-Release under test: tag `v1.0.1-uat`. URL, commit, deployed revision, setup and cleanup are in `handoff.md` in this folder (added once the release is deployed)
+Release under test: tag `v1.0.1-uat` (commit `0b2cc80`, revision `scccd8b05-00009-vvq`). URL, accounts, setup, cleanup and how to report findings are in [handoff.md](handoff.md)
 Scope: Sprint 1 features F-01–F-05, acceptance criteria in [Sprint 1 contracts](../../sprints/sprint-1/contracts.md)
 
 ## How to use this file
@@ -10,8 +10,8 @@ Scope: Sprint 1 features F-01–F-05, acceptance criteria in [Sprint 1 contracts
 - Run the cases in this order: **UAT-01 → UAT-04 → UAT-05**, because UAT-04 and UAT-05 reuse the event and registration that UAT-01 creates. UAT-02, UAT-03, UAT-06 and UAT-07 are independent and can run at any time.
 - Every case creates its own events. Start each title with `[UAT-xx-<your initials>]` (for example `[UAT-01-NU] ...`) so your data never collides with other testers or with demo data.
 - `D` means the day you run the test. All times are Asia/Bangkok (the form already uses Bangkok time).
-- Account labels only are listed here. Passwords were sent privately.
-- Write what you actually see in the "Actual" column of the results sheet. If a step cannot be executed, mark the case **BLOCKED** and write why.
+- Account labels only are listed here. All accounts share one password, sent to you by private message (see [handoff.md](handoff.md) §3).
+- Write what you actually see in the "Actual result" column of the results sheet. If a step cannot be executed, mark the case **BLOCKED** and write why.
 - In UAT-01 you record two IDs that later cases need:
   - **EVENT-01** = the event ID at the end of the URL `/organizer/events/<EVENT-01>`
   - **REG-01** = the reference number (เลขอ้างอิง) shown after participant.a registers
@@ -216,7 +216,7 @@ Steps 1–5 stay on the same form. In each step, first put back the valid value 
 
 ## Results sheet (UAT Team fills this in)
 
-| Case | Tester (name / team) | Date-time (Bangkok) | Tested version (`/api/ready` → version) | Inputs actually used | Actual result | PASS / FAIL / BLOCKED | Evidence ID |
+| Case | Tester (name / team) | Date-time (Bangkok) | Tested version (tag / first 7 characters of `/api/ready` version, e.g. `v1.0.1-uat / 0b2cc80`) | Inputs actually used | Actual result | PASS / FAIL / BLOCKED | Evidence ID |
 |---|---|---|---|---|---|---|---|
 | UAT-01 | | | | | | | |
 | UAT-02 | | | | | | | |
