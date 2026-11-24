@@ -1,0 +1,61 @@
+# Sprint 3 — Software Test Specification (F-08, F-09)
+
+เอกสาร LC-S3-STS | v0.1 (planned design) | 24 พฤศจิกายน 2026
+
+Contract: [contracts.md](contracts.md) ทุก test ต้องเขียนและ commit ให้ **fail ก่อน** implementation (RED) แล้วจึง implement ให้ผ่าน (GREEN) เก็บ SHA ทั้งสองจังหวะ
+
+สถานะ: **planned; ยังไม่ implement และยังไม่มีผลรันทดสอบ F-08/F-09**
+
+## 1. Environment และ fixtures
+
+ใช้ environment, runner (Vitest + Supertest, React Testing Library, Playwright), PostgreSQL test database, controlled clock และบัญชี PA/PB/PC/OA/OB/IX ตาม [Sprint 1 STS §1](../sprint-1/sts.md) ไม่เปลี่ยน
+
+เวลาอ้างอิง `t0 = 2026-11-06T03:00:00.000Z`; ทุก fixture มี closes=t0+1h, starts=t0+2h, ends=t0+4h เว้นแต่ระบุ
+
+| Fixture | Owner | Status | Capacity | Registrations |
+|---|---|---|---|---|
+| ECHECK3 | OA | PUBLISHED | 5 | PA ACTIVE, PB ACTIVE, PC CANCELLED (cancelled_at=t0+30 min) |
+| ECLOSED3 | OA | CLOSED | 5 | PA ACTIVE |
+| EOTHER3 | OB | PUBLISHED | 5 | PA ACTIVE |
+| ESUM3 | OA | PUBLISHED | 5 | PA ACTIVE เช็กชื่อแล้ว (ใส่ใน DB: checked_in_at=t0+2h10m, checked_in_by_id=OA), PB ACTIVE, PC CANCELLED |
+| ELIFE3 | OA | PUBLISHED | 5 | PA ACTIVE, PB ACTIVE, PC CANCELLED; ใช้ clock=t0+10 min (ก่อน deadline) สำหรับ lifecycle |
+| ERATE3 | OA | PUBLISHED | 32 | ACTIVE 32 คน (participant สังเคราะห์ที่สร้างใน fixture) เช็กชื่อ 1 คน |
+| EDRAFT3 | OA | DRAFT | 5 | ไม่มี |
+
+Registration ทุก record มี REGISTERED history ตาม F-06 CANCELLED มี CANCELLED history ด้วย
+
+"ข้อมูลไม่เปลี่ยน" หมายถึงอ่านจาก connection ใหม่แล้ว Registration ทุก field (status, registered_at, cancelled_at, checked_in_at, checked_in_by_id), จำนวน history และ Event ทุก field รวม updated_at เท่าค่าก่อน request
+
+## 2. F-08 test cases (TEST-53–TEST-59)
+
+| Test ID / AC | ระดับ | Preconditions / input | Action | Expected result |
+|---|---|---|---|---|
+| TEST-53 / AC-41 | API/DB | OA, ECHECK3, clock=t0+2h30m | POST check-in ของ PA → GET roster → GET own detail ของ PA | 200 RosterEntryS3 checked_in_at=t0+2h30m; DB checked_in_by_id=OA; status/registered_at เดิม, Event.updated_at เดิม, history ไม่เพิ่ม; roster checked_in_count=1 และแถว PA มี checked_in_at; PA own detail เห็น checked_in_at เดียวกัน |
+| TEST-54 / AC-42 | API/DB | ECHECK3 fixture ใหม่ทุก case; ECLOSED3 | check-in PA ที่ clock = (a) starts−1 ms (b) starts (c) ends (d) ends+1 ms (e) ECLOSED3 ที่ t0+3h (f) DRAFT ที่แก้เวลาด้วย F-07 แล้ว publish เช็กชื่อตามเวลาใหม่ | (a)(d) 409 CHECK_IN_NOT_OPEN ข้อมูลไม่เปลี่ยน (b)(c)(e) 200 (f) ใช้ starts/ends ใหม่ ไม่ใช่ค่าก่อนแก้ |
+| TEST-55 / AC-43 | API/DB | ECHECK3, clock=t0+3h | (a) check-in PC (CANCELLED) (b) check-in PA สองครั้งต่อกัน (c) check-in PC ที่ clock=ends+1 ms | (a) 409 REGISTRATION_NOT_ACTIVE (b) ครั้งแรก 200 ครั้งที่สอง 409 ALREADY_CHECKED_IN และ checked_in_at/checked_in_by_id ยังเป็นของครั้งแรก (c) 409 CHECK_IN_NOT_OPEN (เวลาตรวจก่อนสถานะ); ทุก rejection ข้อมูลไม่เปลี่ยน |
+| TEST-56 / AC-44 | Unit + API/DB | OA, ECHECK3, clock=t0+3h | eventId หรือ registrationId=`not-a-uuid`; body `null`, `[]`, `"x"`, `{"checked_in_at":"…"}`, `{"status":"ACTIVE"}`, เกิน 1 KiB, JSON ผิดรูป; ไม่มี body และ `{}` | input ผิดทั้งหมด 400 INVALID_INPUT ข้อมูลไม่เปลี่ยน; ไม่มี body และ `{}` ได้ 200 |
+| TEST-57 / AC-44, AC-45 | API/DB | ECHECK3, EOTHER3; clock=t0+3h; body={} | check-in PA ของ ECHECK3 โดย anonymous, PA, PB, OB; OA ด้วย registrationId ของ EOTHER3; OA ด้วย eventId ไม่มีจริง; OA ไม่มี CSRF และ CSRF ผิด; GET own detail ของ PA โดย PB; GET roster โดย PA และ OB | 401 AUTH_REQUIRED; 403 ROLE_FORBIDDEN (PA เช็กชื่อตัวเองก็ 403); 403; 404 EVENT_NOT_FOUND; 404 REGISTRATION_NOT_FOUND; 404 EVENT_NOT_FOUND; 403 CSRF_FAILED ทั้งคู่; 404 REGISTRATION_NOT_FOUND; 403 และ 404; response ไม่เปิดเผยชื่อ/เวลาของผู้อื่น; ข้อมูลไม่เปลี่ยนทุกกรณี |
+| TEST-58 / AC-46 | API/DB concurrency | ECHECK3 fixture ใหม่ทุกรอบ, clock=t0+3h; separate connections + Event lock barrier | (a) OA ส่ง check-in PA สองคำขอพร้อมกัน สลับลำดับได้ lock ทำ ≥20 รอบ (b) ถือ Event lock ไว้แล้วเลื่อน clock ไป ends+1 ms ก่อนปล่อยคำขอ check-in | (a) ทุกรอบ 200 หนึ่ง + 409 ALREADY_CHECKED_IN หนึ่ง; checked_in_at เป็นของผู้ชนะ; ไม่มี deadlock/500 (b) 409 CHECK_IN_NOT_OPEN ข้อมูลไม่เปลี่ยน |
+| TEST-59 / AC-45, AC-46 | Component + E2E (Chromium) | Component: mock API; E2E: server/DB จริงพร้อมกิจกรรมที่อยู่ในช่วงเช็กชื่อ OA/PA context แยก | OA เปิด roster → กดเช็กชื่อ → ยกเลิก dialog → กดใหม่แล้วยืนยัน → reload; PA เปิด own list และ own detail → logout/login → เปิดอีกครั้ง; component: busy, 409 แต่ละ code, 401, 403/404, network timeout, นอกช่วงเวลา, CANCELLED | ยกเลิก dialog ไม่ส่ง POST; ยืนยันแล้วแถวเป็น "เช็กชื่อแล้ว {เวลา}" ยอดเพิ่มและคงอยู่หลัง reload; PA เห็น "เช็กชื่อแล้วเมื่อ …" หลัง re-login; ระหว่างส่งปุ่ม disabled และส่งครั้งเดียว; 409 แสดงข้อความภาษาไทยตามตารางแล้วโหลด roster ใหม่; 401 ล้างข้อมูลไปหน้า login; 403/404 ล้าง roster; timeout ไม่ retry เอง; นอกช่วงเวลาและ CANCELLED ไม่มีปุ่ม |
+
+## 3. F-09 test cases (TEST-60–TEST-64)
+
+| Test ID / AC | ระดับ | Preconditions / input | Action | Expected result |
+|---|---|---|---|---|
+| TEST-60 / AC-47 | API/DB | OA, ESUM3; ELIFE3 | (a) GET summary ของ ESUM3 (b) ELIFE3: PC reactivate → PB cancel → PB reactivate แล้ว GET summary หลังแต่ละขั้น | (a) active=2, cancelled=1, checked_in=1 (CANCELLED ไม่นับ), rate="50.00" ตรงกับ COUNT จาก DB (b) active/cancelled = 3/0 → 2/1 → 3/0; ไม่สะสมจำนวนครั้ง cancel แม้ history ของ PB มี CANCELLED |
+| TEST-61 / AC-48 | Unit + API/DB | ฟังก์ชันคำนวณ rate และ ERATE3 | unit: (2,3), (1,3), (1,32), (3,3), (0,5), (0,0), (1,8); API: GET summary ของ ERATE3 | unit: "66.67", "33.33", "3.13", "100.00", "0.00", "0.00", "12.50"; API ERATE3 rate="3.13" (half-up ไม่ใช่ banker's rounding) และเป็น string 2 ตำแหน่ง |
+| TEST-62 / AC-49 | API/DB | ECHECK3 clock=t0+3h; EDRAFT3 | GET summary → check-in PA → GET summary; GET summary ของ EDRAFT3 | checked_in 0→1, rate "0.00"→"50.00", generated_at = clock; EDRAFT3 status=DRAFT ทุกยอด 0 rate="0.00" |
+| TEST-63 / AC-50 | API/DB | ESUM3, EOTHER3 | GET summary โดย anonymous, PA, OB (ของ OA), OA กับ eventId ไม่มีจริง, OA กับ `not-a-uuid` | 401; 403 ROLE_FORBIDDEN; 404 EVENT_NOT_FOUND; 404; 400 INVALID_INPUT; error ไม่มียอดหรือข้อมูลกิจกรรม |
+| TEST-64 / AC-50 | Component + E2E (Chromium) | Component: mock API; E2E: OA กับกิจกรรมที่มี ACTIVE/CANCELLED/เช็กชื่อแล้ว | OA เปิดรายละเอียด → ดูสรุปผล → เช็กชื่ออีกคนในอีกแท็บ → รีเฟรชสรุป; component: loading, ACTIVE=0, error+retry, 401, 403/404 | แสดง 4 ยอดและ rate ตรง API; รีเฟรชแล้วยอดเปลี่ยน; loading ไม่แสดง 0 ก่อนได้ข้อมูล; ACTIVE=0 แสดง 0.00% พร้อมข้อความ; error มีปุ่มลองใหม่; 401 ไป login; 403/404 ล้างข้อมูล |
+
+## 4. Regression
+
+ทุก PR เข้า `sprint-3-staging` ต้องรัน automated tests เดิมทั้งหมดของ Sprint 1–2 ผ่าน CI `test-and-docker` และรายงาน passed/failed/skipped ตามจริงใน PR; tests ที่อ้าง RosterEntry/MyRegistration ปรับ expected schema เฉพาะ field ที่เพิ่มโดยไม่ลด assertion เดิม
+
+## Revision history
+
+ใช้กฎเดียวกับ [contracts.md](contracts.md#revision-history)
+
+| Version | วันที่ | การเปลี่ยนแปลง | เหตุผล | ผู้เขียน |
+|---|---|---|---|---|
+| 0.1 | 24 พ.ย. 2026 | fixtures, F-08 TEST-53–59 และ F-09 TEST-60–64 | ฉบับแรกก่อน implementation #50 | M2 |
