@@ -44,8 +44,8 @@ const kinds = {
   EFULL2: { status: 'PUBLISHED', capacity: 1, active: ['PB'] },
   ECLOSED2: { status: 'CLOSED', capacity: 5, active: ['PA'] },
 } satisfies Record<string, { status: EventStatus; capacity: number; active: Who[] }>;
-async function fixture(kind: keyof typeof kinds) {
-  const { status, capacity, active } = kinds[kind], id = randomUUID(), before = new Date(t0 - 60_000);
+async function fixture(kind: keyof typeof kinds, status: EventStatus = kinds[kind].status) {
+  const { capacity, active } = kinds[kind], id = randomUUID(), before = new Date(t0 - 60_000);
   ids.push(id);
   const event = await db.event.create({ data: { id, organizerId: users.OA, title: kind, description: 'Synthetic F-07 fixture', location: 'KMUTT',
     capacity, status, registrationClosesAt: new Date(t0 + 3_600_000), startsAt: new Date(t0 + 7_200_000), endsAt: new Date(t0 + 14_400_000),
@@ -55,6 +55,17 @@ async function fixture(kind: keyof typeof kinds) {
     history: { create: { actorId: users[who], action: 'REGISTERED', occurredAt: before } },
   } });
   return event;
+}
+// F-06 × F-07 (contracts cross-feature table): ECLOSED2 starts PUBLISHED and is closed by the real F-06 endpoint.
+async function closedByF06() {
+  const event = await fixture('ECLOSED2', 'PUBLISHED');
+  clock = t0 + 30_000;
+  const r = await as('OA').agent.post(`/api/organizer/events/${event.id}/close`).set('X-CSRF-Token', as('OA').token).send({});
+  expect(r.status).toBe(200);
+  expect(r.body.data).toMatchObject({ id: event.id, status: 'CLOSED', capacity: 5, active_count: 1, registration_open: false,
+    updated_at: new Date(t0 + 30_000).toISOString() });
+  clock = t0 + 60_000; // a later clock, so a PATCH that wrongly wrote would also move updated_at
+  return db.event.findUniqueOrThrow({ where: { id: event.id } });
 }
 // "ข้อมูลไม่เปลี่ยน": the Event row (including updated_at) and its Registrations equal the pre-request state.
 async function unchanged(event: Event) {
@@ -125,7 +136,6 @@ describe('F-07 PATCH /api/organizer/events/{id} (TEST-45–TEST-51)', () => {
   });
 
   it('TEST-47 / AC-36 CLOSED is not editable and status is checked before field rules', async () => {
-    // Uses the CLOSED fixture until F-06 close is on sprint-2-staging (contracts: cross-feature table).
     const cases: [object, number, string][] = [
       [{ title: 'ชื่อใหม่' }, 409, 'EVENT_NOT_EDITABLE'],
       [{ starts_at: '2026-11-06T06:00:00.000Z' }, 409, 'EVENT_NOT_EDITABLE'], // step 4 before step 5
@@ -133,7 +143,7 @@ describe('F-07 PATCH /api/organizer/events/{id} (TEST-45–TEST-51)', () => {
       [{ title: '   ' }, 400, 'INVALID_INPUT'], // step 2 before step 4
     ];
     for (const [body, status, code] of cases) {
-      const event = await fixture('ECLOSED2');
+      const event = await closedByF06();
       error(await patch(as('OA'), event.id, body), status, code);
       await unchanged(event);
     }
@@ -234,5 +244,54 @@ describe('F-07 PATCH /api/organizer/events/{id} (TEST-45–TEST-51)', () => {
       expect({ name, status: r.status, code: r.body?.error?.code }).toEqual({ name, status, code });
       await unchanged(event);
     }
+  });
+});
+
+describe('F-06 × F-07 cross-feature (Sprint 2 STS TEST-44(c))', () => {
+  it('TEST-44(c) / AC-33 cancel → capacity down → reactivate full → capacity up → reactivate the same record', async () => {
+    const event = await fixture('EPUB2'); // capacity 3, ACTIVE PA + PB
+    const pa = await db.registration.findFirstOrThrow({ where: { eventId: event.id, participantId: users.PA } });
+    const active = () => db.registration.count({ where: { eventId: event.id, status: 'ACTIVE' } });
+    const history = async () => (await db.registrationHistory.findMany({ where: { registrationId: pa.id }, orderBy: { occurredAt: 'asc' } }))
+      .map(h => [h.action, h.actorId, h.occurredAt.getTime()]);
+
+    // 1. PA cancels: ACTIVE 2 → 1.
+    clock = t0 + 1_000;
+    const cancelled = await as('PA').agent.post(`/api/my/registrations/${pa.id}/cancel`).set('X-CSRF-Token', as('PA').token).send({});
+    expect(cancelled.status).toBe(200);
+    expect(cancelled.body.data).toMatchObject({ id: pa.id, status: 'CANCELLED', cancelled_at: new Date(t0 + 1_000).toISOString() });
+    expect(await active()).toBe(1);
+
+    // 2. OA lowers capacity to the new ACTIVE count (1) — allowed only because the cancel freed the seat.
+    clock = t0 + 2_000;
+    const lowered = await patch(as('OA'), event.id, { capacity: 1 });
+    expect(lowered.status).toBe(200);
+    expect(lowered.body.data).toMatchObject({ capacity: 1, active_count: 1, available_seats: 0, registration_open: false });
+
+    // 3. PA reactivates while full: 409 EVENT_FULL; the record stays CANCELLED with its cancel time and no new history.
+    clock = t0 + 3_000;
+    const beforeFull = await db.registration.findUniqueOrThrow({ where: { id: pa.id } });
+    error(await register(as('PA'), event.id), 409, 'EVENT_FULL');
+    expect(await db.registration.findUniqueOrThrow({ where: { id: pa.id } })).toEqual(beforeFull);
+    expect(beforeFull).toMatchObject({ status: 'CANCELLED', cancelledAt: new Date(t0 + 1_000) });
+    expect(await history()).toEqual([['REGISTERED', users.PA, t0 - 60_000], ['CANCELLED', users.PA, t0 + 1_000]]);
+    expect(await active()).toBe(1);
+
+    // 4. OA raises capacity to 2.
+    clock = t0 + 4_000;
+    const raised = await patch(as('OA'), event.id, { capacity: 2 });
+    expect(raised.status).toBe(200);
+    expect(raised.body.data).toMatchObject({ capacity: 2, active_count: 1, available_seats: 1, registration_open: true });
+
+    // 5. PA reactivates: 200 with the same record and first registration time; ACTIVE = 2 = capacity.
+    clock = t0 + 5_000;
+    const reactivated = await register(as('PA'), event.id);
+    expect(reactivated.status).toBe(200);
+    expect(reactivated.body.data).toMatchObject({ id: pa.id, status: 'ACTIVE', registered_at: pa.registeredAt.toISOString(), cancelled_at: null });
+    expect(await db.registration.count({ where: { eventId: event.id, participantId: users.PA } })).toBe(1);
+    expect(await active()).toBe(2);
+    expect(await history()).toEqual([['REGISTERED', users.PA, t0 - 60_000], ['CANCELLED', users.PA, t0 + 1_000], ['REACTIVATED', users.PA, t0 + 5_000]]);
+    // Read back on the other connection: full again at the edited capacity.
+    expect((await as('PC', 1).agent.get(`/api/events/${event.id}`).expect(200)).body.data).toMatchObject({ capacity: 2, available_seats: 0 });
   });
 });
