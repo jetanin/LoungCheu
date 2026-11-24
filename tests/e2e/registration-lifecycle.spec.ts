@@ -163,6 +163,8 @@ test('TEST-43: real cancel/re-login/full/reactivate/roster/close journey preserv
     expect((await db.event.findUniqueOrThrow({ where: { id: eventId } })).status).toBe('CLOSED');
   } catch (error) {
     console.error('F06_BROWSER failure before cleanup:', error instanceof Error ? error.message : String(error));
+    console.error('F06_BROWSER participant A visible state:', await a.locator('main').innerText().catch(() => 'unavailable'));
+    console.error('F06_BROWSER participant B visible state:', await b.locator('main').innerText().catch(() => 'unavailable'));
     throw error;
   } finally {
     await Promise.all([aContext.close(), bContext.close(), db.$disconnect()]);
