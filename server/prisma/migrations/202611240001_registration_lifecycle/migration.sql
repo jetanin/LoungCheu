@@ -1,5 +1,6 @@
--- One atomic, additive migration. Never invent missing cancellation timestamps.
-BEGIN;
+-- Validate before the explicit write transaction: if this guard raises inside
+-- BEGIN, Prisma's error recording can mask the reconciliation message with
+-- "current transaction is aborted". This precondition does not change data.
 DO $$
 BEGIN
   IF EXISTS (SELECT 1 FROM "registrations" WHERE "status" = 'CANCELLED') THEN
@@ -7,6 +8,8 @@ BEGIN
   END IF;
 END $$;
 
+-- Keep all schema changes and the backfill atomic after validation succeeds.
+BEGIN;
 ALTER TABLE "registrations" ADD COLUMN "cancelled_at" TIMESTAMPTZ(3);
 CREATE TYPE "RegistrationAction" AS ENUM ('REGISTERED', 'CANCELLED', 'REACTIVATED');
 CREATE TABLE "registration_history" (
