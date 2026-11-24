@@ -93,10 +93,11 @@ EventStatus มี DRAFT/PUBLISHED/CLOSED; RegistrationStatus มี ACTIVE/CANC
 | GET | /api/events; /api/events/:id | modules/events/router.ts |
 | GET | /api/organizer/events; /api/organizer/events/:id | modules/events/router.ts |
 | POST | /api/organizer/events; /api/organizer/events/:id/publish | modules/events/router.ts |
+| PATCH | /api/organizer/events/:id (F-07 edit, Sprint 2 #48) | modules/events/router.ts |
 | POST | /api/events/:id/registrations | modules/registrations/router.ts |
 | GET | /api/my/registrations; /api/my/registrations/:id; /api/organizer/events/:id/registrations | modules/registrations/read-router.ts |
 
-Module paths ในตารางอยู่ใต้ `server/src/`; routers mount ที่ `/api`. API response fields ยึด serializers/contracts จริง: own record มี id/status/registered_at/event; roster มี event_id/capacity/active_count/registrations และ participant.display_name. cancel/reactivate/close/edit/check-in/summary routes เป็น planned scope ของ F-06–09 ยังไม่ใช่ implemented endpoints.
+Module paths ในตารางอยู่ใต้ `server/src/`; routers mount ที่ `/api`. API response fields ยึด serializers/contracts จริง: own record มี id/status/registered_at/event; roster มี event_id/capacity/active_count/registrations และ participant.display_name. cancel/reactivate/close/check-in/summary routes เป็น planned scope ของ F-06, F-08–09 ยังไม่ใช่ implemented endpoints; edit (F-07) implement แล้วตาม [Sprint 2 contracts](sprints/sprint-2/contracts.md) ใน #48.
 
 ### Atomic registration
 
@@ -119,6 +120,7 @@ Concurrency tests ใช้ separate connections/transactions และ barrier 
 | /organizer | Organizer overview จาก own event list เดิม: จำนวน Event ตามสถานะ, สามรายการล่าสุด และลิงก์สร้าง/ดูทั้งหมด; F-02 UI presentation | 1 |
 | /organizer/events, /organizer/events/new | Organizer ดูของตนรวม DRAFT และสร้างกิจกรรม | 1 |
 | /organizer/events/{id} | เจ้าของ preview/publish/roster/count | 1 |
+| /organizer/events/{id}/edit | เจ้าของแก้กิจกรรม (F-07): DRAFT ทุก field, PUBLISHED เฉพาะ title/description/location/capacity (ช่องเวลา disabled), CLOSED ไม่มีฟอร์ม; ส่งเฉพาะ field ที่เปลี่ยน | 2 |
 | หน้าเดิมเพิ่ม Cancel/Close/Edit | ตาม role/ownership/deadline | 2 |
 | Roster เพิ่ม Check-in; own record เพิ่ม attendance; หน้า summary | ตาม permission matrix | 3 |
 
@@ -148,6 +150,7 @@ Express SPA fallback ใช้เฉพาะ frontend routes; unknown API ค�
 | 403 | ROLE_FORBIDDEN: role ไม่ผ่าน; CSRF_FAILED: token/origin ไม่ผ่าน |
 | 404 | EVENT_NOT_FOUND หรือ REGISTRATION_NOT_FOUND: ไม่พบ/นอก record scope; ROUTE_NOT_FOUND: unknown API |
 | 409 | INVALID_TRANSITION, DEADLINE_PASSED (publish), REGISTRATION_CLOSED, ALREADY_REGISTERED, EVENT_FULL; ALREADY_CHECKED_IN เริ่ม S3 |
+| 409 (S2 F-07 edit) | EVENT_NOT_EDITABLE: แก้กิจกรรม CLOSED; FIELD_NOT_EDITABLE: แก้ starts_at/ends_at/registration_closes_at ตอน PUBLISHED; CAPACITY_BELOW_ACTIVE: capacity ใหม่ต่ำกว่า ACTIVE count |
 | 500 | INTERNAL_ERROR: generic message, fields={} และไม่คืน internal details |
 
 ## 5. Role/permission matrix
@@ -162,7 +165,7 @@ Express SPA fallback ใช้เฉพาะ frontend routes; unknown API ค�
 | Own registration list/detail | 401 | ของตน; คนอื่น 404 | 403 |
 | Roster/count | 401 | 403 | ของตน; เจ้าของอื่น 404 |
 | Cancel/reactivate (S2) | 401 | ของตนตามกฎ | 403 |
-| Edit/close (S2) | 401 | 403 | ของตนตามกฎ |
+| Edit/close (S2) | 401 | 403 | ของตนตามกฎ; เจ้าของอื่น 404 |
 | Check-in/summary (S3) | 401 | 403 | ของตนตามกฎ |
 | Own attendance status (S3) | 401 | ของตนผ่าน registration | 403 |
 
