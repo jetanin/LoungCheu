@@ -1,7 +1,7 @@
 # Lab 6 — Sprint 1 UAT cases (LoungCheu)
 
 Product Team: TH-001_P3 (Jetanin Naitho, Paphangkorn Luanseng)
-UAT Team: TH-005_P5 (Napat Utbuawong, Nanthakorn Pinsupaporn)
+UAT Team: TH-005_P5 (Naphat Utabuawong, Nantakorn Pinsupaporn)
 Release under test: tag `v1.0.1-uat` (commit `0b2cc80`, revision `scccd8b05-00009-vvq`). URL, accounts, setup, cleanup and how to report findings are in [handoff.md](handoff.md)
 Scope: Sprint 1 features F-01–F-05, acceptance criteria in [Sprint 1 contracts](../../sprints/sprint-1/contracts.md)
 
