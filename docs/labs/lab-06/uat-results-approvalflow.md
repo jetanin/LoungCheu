@@ -18,7 +18,7 @@ UAT Team (เรา): TH-001_P3 LoungCheu — Paphangkorn Luanseng (67070501083,
 | Version freeze | ทีมคู่ยืนยันว่าจะไม่ deploy และไม่แก้ Cloud Run จนถึง 25 พ.ย. 12:00 | IG 24 พ.ย. (EV-B-00c) |
 | Handoff ที่ได้รับ | ทีมคู่ส่งทาง IG กลุ่ม 24 พ.ย. 11:35 (ก่อนกำหนด 12:00): ระบุ v0.2.0 / 1cbd8b4 / revision `00006-8rh` และลิงก์ `blob/staging/…/uat-handoff.md` ที่ยังเปิดไม่ได้ → เป็นที่มาของ Q1/Q2 | EV-B-00 |
 | Sprint 1 baseline | `v0.1.0` (PR #18); v0.1.0 → v0.2.0 เปลี่ยนเฉพาะ delivery + ข้อความหน้าแรก 1 ประโยค | handoff §1 |
-| วิธีเช็ก version | แอปไม่มี version endpoint — ทีมคู่สัญญาประกาศทุก deploy ใน IG; ไม่มีประกาศ deploy ระหว่างที่เราทดสอบ `<ยืนยันตอนจบ>` | handoff §1 |
+| วิธีเช็ก version | แอปไม่มี version endpoint — ทีมคู่สัญญาประกาศทุก deploy ใน IG; ไม่มีประกาศ deploy ระหว่างที่เราทดสอบ และหลังจบการทดสอบ (25 พ.ย.) ทีมคู่ยืนยันว่าไม่มีการ deploy หรือแก้ Cloud Run ตั้งแต่ส่ง handoff → ทุกเคสรันบน `v0.2.0 / 1cbd8b4 / 00006-8bp` | handoff §1; EV-B-00f |
 
 Tested version ที่ใช้ทุกแถวด้านล่าง: **`v0.2.0 / 1cbd8b4 / approvalflow-00006-8bp`**
 
@@ -59,7 +59,7 @@ Evidence: `docs/labs/lab-06/evidence/approvalflow/EV-B-<nn>_UAT-<xx>_<สั้�
 |---|---|---|---|---|---|---|---|---|---|---|---|---|---|
 | | | | | | | | | | | | | | |
 
-ถ้าไม่มี finding: **ไม่มี finding — ทั้ง 7 เคส PASS บน `v0.2.0 / 1cbd8b4 / 00006-8bp`** (แจ้งทีมคู่ใน IG พร้อมหลักฐาน)
+**ไม่มี finding — ทั้ง 7 เคส PASS บน `v0.2.0 / 1cbd8b4 / 00006-8bp`** แจ้งทีมคู่ใน IG กลุ่ม 25 พ.ย. 2026 01:02 พร้อมลิงก์ไฟล์นี้ (ก่อนกำหนด 12:00) — EV-B-out-01
 
 เกณฑ์ severity: Critical = ข้อมูลรั่ว/สิทธิ์ผิด/ข้อมูลเสีย; Major = journey หลักทำไม่ได้หรือผลผิด AC; Minor = ไม่กระทบผลลัพธ์ (ข้อความ, layout)
 
@@ -69,11 +69,14 @@ Evidence: `docs/labs/lab-06/evidence/approvalflow/EV-B-<nn>_UAT-<xx>_<สั้�
 |---|---|---|---|---|---|---|---|
 | | | | | | | | |
 
-| ผลตัดสิน (เลือกหนึ่ง) | Accepted / Accepted with documented minor limitations / Not Accepted |
+ไม่มี finding จึงไม่มี retest
+
+| ผลตัดสิน (เลือกหนึ่ง) | **Accepted** |
 |---|---|
-| Release ที่ตัดสิน | |
-| ผู้ตัดสิน / วันที่ | Paphangkorn Luanseng, Jetanin Naitho / |
-| เหตุผล | |
-| Minor limitations ที่ยอมรับ (ถ้ามี) | |
+| Release ที่ตัดสิน | `v0.2.0` / commit `1cbd8b4` / revision `approvalflow-00006-8bp` |
+| ผู้ตัดสิน / วันที่ | Paphangkorn Luanseng, Jetanin Naitho / 25 พ.ย. 2026 |
+| เหตุผล | ทั้ง 7 เคส (UAT-01 ถึง UAT-07) PASS ไม่มี finding (แจ้งทีมคู่ 25 พ.ย. 01:02, EV-B-out-01) และทีมคู่ยืนยันว่าไม่มีการ deploy หรือแก้ Cloud Run ระหว่างทดสอบ (EV-B-00f) |
+| Minor limitations ที่ยอมรับ (ถ้ามี) | ไม่มี |
+| ส่งผลตัดสินให้ทีมคู่ | IG กลุ่ม 25 พ.ย. 2026 (EV-B-dec-01) |
 
 ห้าม Accepted ถ้ายังมี critical/major ค้าง หรือมีเคส BLOCKED
