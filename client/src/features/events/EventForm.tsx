@@ -20,12 +20,13 @@ function changedFields(values: FormValues, initial: FormValues, status: OwnerEve
   return patch;
 }
 
-export function EventForm({ onCreated, onSaved, onAuthRequired, editing }: {
-  onCreated?: (event: OwnerEvent) => void; onSaved?: (event: OwnerEvent) => void; onAuthRequired: () => void; editing?: OwnerEvent;
+export function EventForm({ onCreated, onSaved, onLost, onAuthRequired, editing }: {
+  onCreated?: (event: OwnerEvent) => void; onSaved?: (event: OwnerEvent) => void; onLost?: (message: string) => void;
+  onAuthRequired: () => void; editing?: OwnerEvent;
 }) {
   const [initial] = useState<FormValues>(() => editing ? valuesOf(editing) : blank);
   const [values, setValues] = useState<FormValues>(initial);
-  // Latest status/active_count; refreshed after a 409 while keeping typed values.
+  // Latest status/active_count from page refreshes or a 409 reload; typed values stay.
   const [current, setCurrent] = useState(editing);
   const [fields, setFields] = useState<Record<string, string[]>>({}), [error, setError] = useState(''), [busy, setBusy] = useState(false);
   const inFlight = useRef(false);
@@ -35,6 +36,13 @@ export function EventForm({ onCreated, onSaved, onAuthRequired, editing }: {
     mounted.current = true;
     return () => { mounted.current = false; activeMutation.current?.abort(); };
   }, []);
+  function adopt(latest: OwnerEvent) {
+    setCurrent(latest);
+    // Time fields can no longer be edited once published: show the stored values.
+    if (latest.status !== 'DRAFT') setValues(v => ({ ...v, starts_at: bangkokInput(latest.starts_at), ends_at: bangkokInput(latest.ends_at),
+      registration_closes_at: bangkokInput(latest.registration_closes_at) }));
+  }
+  useEffect(() => { if (editing) adopt(editing); }, [editing]);
   const timesLocked = !!current && current.status !== 'DRAFT';
   const pending = current ? changedFields(values, initial, current.status) : null;
   function change(key: keyof FormValues, value: string) {
@@ -45,8 +53,12 @@ export function EventForm({ onCreated, onSaved, onAuthRequired, editing }: {
     if (hasSubmitted.current) setFields(validateForm(next).fields);
   }
   async function reload(id: string) {
-    try { const latest = await api<OwnerEvent>(`/organizer/events/${encodeURIComponent(id)}`); if (mounted.current) setCurrent(latest); }
-    catch (failure) { if (mounted.current && failure instanceof ApiError && failure.status === 401) onAuthRequired(); }
+    try { const latest = await api<OwnerEvent>(`/organizer/events/${encodeURIComponent(id)}`); if (mounted.current) adopt(latest); }
+    catch (failure) {
+      if (!mounted.current || !(failure instanceof ApiError)) return;
+      if (failure.status === 401) onAuthRequired();
+      else if ([403, 404].includes(failure.status)) onLost?.(failure.message);
+    }
   }
   async function submit(e: FormEvent) {
     e.preventDefault(); if (inFlight.current) return;
@@ -68,6 +80,7 @@ export function EventForm({ onCreated, onSaved, onAuthRequired, editing }: {
     catch (failure) {
       if (!mounted.current) return;
       if (failure instanceof ApiError && failure.status === 401) onAuthRequired();
+      else if (current && failure instanceof ApiError && [403, 404].includes(failure.status)) onLost?.(failure.message);
       else if (failure instanceof ApiError) {
         setFields(failure.fields); setError(failure.message);
         if (current && failure.status === 409) void reload(current.id);

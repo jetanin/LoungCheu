@@ -82,7 +82,8 @@ export function EventPage({ path, identity, onAuthRequired, onNavigate }: {
       <p className="mb-3">กิจกรรมนี้ปิดแล้ว แก้ไขไม่ได้</p><a className="btn btn-outline-success" href={`${base}/${event.id}`}>กลับหน้ากิจกรรม</a>
     </div>}
     {event && event.status !== 'CLOSED' && <EventForm key={event.id} editing={event as OwnerEvent} onAuthRequired={onAuthRequired}
-      onSaved={updated => { savedNotice = updated.id; onNavigate(`${base}/${updated.id}`); }}/>}
+      onSaved={updated => { savedNotice = updated.id; onNavigate(`${base}/${updated.id}`); }}
+      onLost={message => { scopeVersion.current++; generation.current++; setLoading(false); setData(null); setError(message); }}/>}
   </section>;
   return <section className={id ? 'event-detail-page' : undefined} aria-label={owner ? 'จัดการกิจกรรม' : 'กิจกรรม'}>
     {!id && <div className="page-heading">
