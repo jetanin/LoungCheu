@@ -30,10 +30,10 @@ Implementation file paths are repository-relative.
 |---|---|---|---|---|
 | AC-28 | registrations/cancellation.ts + cancellation-router.ts; queries.ts; RegistrationViews.tsx; API GREEN `0321258`, UI GREEN `5b12163` | TEST-37/40/43: lifecycle API, hardening, UI and real browser cancel/returned-seat flow | PASS: full before cancel, seat available after, same ref/first time, cancellation history/time; review/release pending | Pending |
 | AC-29 | registrations/service.ts + router.ts; RegistrationAction.tsx; API/UI GREEN above | TEST-38/40/42/43: two cycles, fresh201/reactivate200, capacity/duplicate, same-record DB/UI/history | PASS; browser A→B returned-seat use then A reactivation; review/release pending | Pending |
-| AC-30 | events/service.ts `close` + appended router block; EventPage.tsx/LifecycleMutation.tsx | TEST-39/40/43 and close races: before/at/after deadline, invalid transitions, preservation, CLOSED UI | PASS for F-06; close→PATCH belongs to teammate TEST-47 after integration | Pending |
+| AC-30 | events/service.ts `close` + appended router block; EventPage.tsx/LifecycleMutation.tsx | TEST-39/40/43 and close races: before/at/after deadline, invalid transitions, preservation, CLOSED UI | PASS for F-06; close→PATCH executed in teammate TEST-47/52 using the real close ([cross-feature evidence](evidence/f07-cross-feature/README.md)) | Pending |
 | AC-31 | Event→Registration locks; clock after Event lock; EmptyInput/auth pipeline | TEST-40/42: −1/0/+1 ms, precedence/input/spoof/parser budgets and deadline-crossing lock wait | PASS; real PostgreSQL lock queue tests, not timing-only assertions | Pending |
 | AC-32 | cancellation/events/registration routes; LifecycleMutation, RegistrationViews, RegistrationAction | TEST-41/43: role/ownership/CSRF/Origin/errors; confirmation, busy, 409, access rejection, uncertainty, stale reads, reload/re-login | PASS locally; independent UAT not established | Pending |
-| AC-33 | lifecycle SQL migration, schema.prisma, seed.ts/demo-data.ts; atomic history writes | TEST-42; TEST-44(a/b); process-restart readback | PARTIAL: races/backfill/fresh seed/rollback PASS; **TEST-44(c) pending** separate F-06×F-07 PR | Pending |
+| AC-33 | lifecycle SQL migration, schema.prisma, seed.ts/demo-data.ts; atomic history writes | TEST-42; TEST-44(a/b); process-restart readback | PASS locally: races/backfill/fresh seed/rollback; TEST-44(c) cancel×capacity edit PASS in `event-edit.test.ts` ([cross-feature evidence](evidence/f07-cross-feature/README.md)); review/CI/release pending | Pending |
 
 Server modules above are under `server/src/modules/`; UI files under
 `client/src/features/registrations/` or `features/events/`; migration under
@@ -49,7 +49,7 @@ Server modules above are under `server/src/modules/`; UI files under
 | TEST-43 browser | `tests/e2e/registration-lifecycle.spec.ts`: real publish/register/cancel/re-login/full/reactivate/roster/close; final DB identity/history assertions | [Chromium journey and screenshots](evidence/f06-browser/README.md) |
 | NFR-03 / TEST-43 persistence | `registration-lifecycle-restart.test.ts`: actual compiled server stopped/restarted twice on same DB, 3 distinct PIDs; cancelled then active/CLOSED readback with existing session and fresh logins | [Restart/migration RED](evidence/f06-migration-restart/README.md), [GREEN](evidence/f06-migration-green/README.md) |
 | TEST-44(a/b) | `registration-lifecycle-migration.test.ts`: 8 actual CLI/backfill/legacy guard/fresh+repeat+concurrent seed/transaction fault rollback cases | [Migration GREEN](evidence/f06-migration-green/README.md) |
-| TEST-44(c) | Cancel→PATCH capacity↓→reactivate rejected→PATCH capacity↑→reactivate same reference | **Not executed; separate integration PR after #47/#48 merge** |
+| TEST-44(c) | `server/tests/integration/event-edit.test.ts`: cancel→PATCH capacity↓→reactivate EVENT_FULL (record/history unchanged)→PATCH capacity↑→reactivate same reference | [Cross-feature evidence](evidence/f07-cross-feature/README.md) — PASS locally, integration PR `test/47-sprint-2-cross-feature` |
 
 Integration file paths in abbreviated rows are under `server/tests/integration/`.
 Concurrent-failure assertions distinguish the losing operation's effects from a
@@ -117,8 +117,8 @@ unverified locally. [Final local regression logs](evidence/f06-final/README.md).
 | PR, labels `documentation` where appropriate / `sprint-2`, assignee, CI `test-and-docker`, substantive teammate review | Not verified/completed by this local step; use actual #47 implementation PR metadata |
 | Kanban Specified → Started → PR Review → Done | User/team manages; no board change or Done claim made here |
 | Merge | User started merge of origin/sprint-2-staging; conflicts resolved and combined verification recorded separately. Merge commit still user-managed; no force push. F-06 PR review/merge into staging remains pending |
-| TEST-44(c) | Separate small integration PR after both #47/#48 merge; blocks claiming AC-33/whole Sprint 2 DoD complete |
-| TEST-47 | Teammate replaces CLOSED fixture with actual F-06 close after integration; close→PATCH lives only there |
+| TEST-44(c) | Done locally on `test/47-sprint-2-cross-feature` (agreed with M1; written by M2); PASS, see [cross-feature evidence](evidence/f07-cross-feature/README.md). PR review/CI pending before AC-33/Sprint 2 DoD can be claimed |
+| TEST-47 | Done locally on `test/47-sprint-2-cross-feature`: TEST-47 (API) and TEST-52 (UI) close through actual F-06 before PATCH/edit; PASS, see [cross-feature evidence](evidence/f07-cross-feature/README.md). PR review/CI pending |
 | NFR-03 broader acceptance | Actual backend process restart proven; deployment/redeploy and independent clean reproduction not established by this run |
 | Independent UAT / #44 partner findings | No new acceptance claimed; team triage deadline 25 November 2026 20:00 Asia/Bangkok per user |
 | Release | Reviewed Sprint 2 main release, deployment/version verification and actual tag (example `v2.0.0-sprint-2`) pending; example is not an existing release |

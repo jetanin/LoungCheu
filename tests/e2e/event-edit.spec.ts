@@ -1,7 +1,5 @@
 import { test, expect, type Browser, type Page } from '@playwright/test';
-import { randomUUID } from 'node:crypto';
 import { config } from 'dotenv';
-import pg from 'pg';
 import { fillEventTime } from './event-form.js';
 
 // F-07 Edit event — Sprint 2 STS TEST-52 (E2E, Chromium), AC-40.
@@ -22,18 +20,6 @@ async function register(browser: Browser, username: string, eventId: string) {
   const response = await page.request.post(`/api/events/${eventId}/registrations`, { headers: { 'X-CSRF-Token': token }, data: {} });
   expect(response.status()).toBe(201);
   return page;
-}
-// STS TEST-52: CLOSED comes from a fixture until F-06 close is on sprint-2-staging.
-async function closedFixture(title: string) {
-  const client = new pg.Client({ connectionString: process.env.TEST_DATABASE_URL });
-  await client.connect();
-  try {
-    const id = randomUUID();
-    await client.query(`INSERT INTO events (id, organizer_id, title, description, location, capacity, status, starts_at, ends_at, registration_closes_at, created_at, updated_at)
-      SELECT $1, id, $2, 'CLOSED fixture for F-07', 'KMUTT', 5, 'CLOSED', '2099-03-02T03:00:00Z', '2099-03-02T05:00:00Z', '2099-03-02T02:00:00Z', now(), now()
-      FROM users WHERE username = 'organizer.a'`, [id, title]);
-    return id;
-  } finally { await client.end(); }
 }
 
 test('TEST-52 / AC-40 Organizer edits DRAFT and PUBLISHED events; CLOSED has no edit', async ({ page, browser }) => {
@@ -102,12 +88,20 @@ test('TEST-52 / AC-40 Organizer edits DRAFT and PUBLISHED events; CLOSED has no 
   await expect(participantA.getByText('ว่าง 3 / 5 ที่นั่ง')).toBeVisible();
   await expect(participantA.locator('.event-details dd').first()).toHaveText('ห้องประชุมใหม่');
 
-  // CLOSED: no edit button, and the edit URL does not offer a form.
-  const closedId = await closedFixture(`F-07 closed ${Date.now()}`);
-  await page.goto(`/organizer/events/${closedId}`);
+  // F-06 × F-07: the owner closes this same event through the real F-06 UI; then there is no edit
+  // button, the edit URL does not offer a form, and the edited values survive the close.
+  await page.goto(`/organizer/events/${eventId}`);
+  const dialog = page.waitForEvent('dialog');
+  const clicked = page.getByRole('button', { name: 'ปิดรับกิจกรรม', exact: true }).click();
+  await (await dialog).accept();
+  await clicked;
+  await expect(page.locator('.event-detail .event-status')).toHaveText('CLOSED');
+  await page.reload();
   await expect(page.locator('.event-detail .event-status')).toHaveText('CLOSED');
   await expect(page.getByRole('link', { name: 'แก้ไขกิจกรรม' })).toHaveCount(0);
-  await page.goto(`/organizer/events/${closedId}/edit`);
+  await expect(page.getByRole('heading', { name: `${title} แก้แล้ว` })).toBeVisible();
+  await expect(page.locator('.event-details dd').first()).toHaveText('ห้องประชุมใหม่');
+  await page.goto(`/organizer/events/${eventId}/edit`);
   await expect(page.getByText('กิจกรรมนี้ปิดแล้ว แก้ไขไม่ได้')).toBeVisible();
   await expect(save).toHaveCount(0);
   await participantA.context().close();

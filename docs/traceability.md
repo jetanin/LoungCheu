@@ -31,7 +31,7 @@ Historical F-01–03 execution: parents 04106ff + ada659b ตาม [combined ve
 | FR-09 | F-06 | 2 | AC-28,31,32: own cancel/คืนที่นั่ง/deadline | TEST-37,40–43 | Local API/DB/UI/browser PASS; cancellation.ts + lifecycle tests; [F-06 completion](sprints/sprint-2/README.md) |
 | FR-10 | F-06 | 2 | AC-30–32: owner close และคง registrations/history | TEST-39–43 | Local API/DB/UI/browser PASS; events service.close + lifecycle tests; [F-06 completion](sprints/sprint-2/README.md) |
 | FR-11 | F-07 | 2 | V2-03: owner edit ตาม status; capacity ไม่ต่ำกว่า active แม้มี concurrent registration | กำหนด detailed STS ก่อน F-07 coding | — |
-| FR-12 | F-06 | 2 | AC-29,31,33: reactivate reference/first time เดิมและ history | TEST-38,40,42–44 | Local PASS สำหรับ reactivate/races/44(a,b); TEST-44(c) pending; [F-06 completion](sprints/sprint-2/README.md) |
+| FR-12 | F-06 | 2 | AC-29,31,33: reactivate reference/first time เดิมและ history | TEST-38,40,42–44 | Local PASS สำหรับ reactivate/races/44(a,b) และ TEST-44(c) ([cross-feature evidence](sprints/sprint-2/evidence/f07-cross-feature/README.md)); [F-06 completion](sprints/sprint-2/README.md) |
 | FR-13 | F-08 | 3 | V3-01: owner check-in ACTIVE ในช่วงกิจกรรม; reject invalid/duplicate/cross-owner | กำหนด detailed STS ก่อน F-08 coding | — |
 | FR-14 | F-08 | 3 | V3-02: own attendance status ผ่านหน้า F-04 | กำหนด detailed STS ก่อน F-08 coding | — |
 | FR-15 | F-09 | 3 | V3-03: totals ของสถานะปัจจุบัน/rate ตรง DB รวม reactivate และ 0 denominator; owner scope | กำหนด detailed STS ก่อน F-09 coding | — |
@@ -44,7 +44,7 @@ Historical F-01–03 execution: parents 04106ff + ada659b ตาม [combined ve
 | BR-02 | F-02,F-07 | 1/2 | AC-07–08; V2-03 | TEST-08–10 | F-02 ordering/past DRAFT/publish boundary PASS |
 | BR-03 | F-03,F-06 | 1/2 | AC-15; V2-01,02,04 | TEST-18 และ S2 lifecycle cases | F-03 PASS; F-06 TEST-40/42 deadline/precedence/post-lock clock local PASS; F-07 outside this result |
 | BR-04 | F-03,F-06 | 1/2 | AC-13,17; V2-04: lifecycle fields/history | TEST-16,21 และ S2 reactivation cases | F-03 PASS; F-06 TEST-38/42 reference/history/duplicate races local PASS |
-| BR-05 | F-03,F-06,F-07 | 1/2 | AC-14,17; V2-01,03,04 | TEST-17,20 และ S2 concurrent mutations | F-03 PASS; F-06 TEST-37/42 local PASS; F-07 capacity integration TEST-44(c) pending |
+| BR-05 | F-03,F-06,F-07 | 1/2 | AC-14,17; V2-01,03,04 | TEST-17,20 และ S2 concurrent mutations | F-03 PASS; F-06 TEST-37/42 local PASS; F-07 capacity integration TEST-44(c) local PASS ([cross-feature evidence](sprints/sprint-2/evidence/f07-cross-feature/README.md)) |
 | BR-06 | F-01,F-03,F-04,F-06,F-08 | 1/2/3 | AC-16,19; V2-01,04; V3-02 | TEST-19,23; regression เมื่อเพิ่ม endpoints | S1 PASS: current session/role + session-owned creation and own-read scope; registration-views.test.ts TEST-23, focused browser foreign-reference denial; 3313288. F-06 TEST-41 access matrix local PASS; S3 pending |
 | BR-07 | F-01,F-02,F-03,F-05–09 | 1/2/3 | AC-10,16,22; V2-02,03; V3-01,03 | TEST-12,13,19,27 และ future owner tests | S1 PASS: event/roster owner scope and role matrix; registration-views.test.ts TEST-27 (foreign Organizer404/Participant403/anonymous401). 3313288; F-06 close TEST-41 owner scope local PASS; F-07/S3 pending |
 | BR-08 | F-06 | 2 | AC-28,31: deadline equality/closed/already cancelled | TEST-37,40,42 | API/DB boundaries/precedence/post-lock clock PASS; [F-06 evidence](sprints/sprint-2/README.md) |
@@ -112,7 +112,7 @@ Historical F-01–03 execution: parents 04106ff + ada659b ตาม [combined ve
 | AC-30 | TEST-39,40,43 | close ก่อน/ที่/หลัง deadline, preserve registrations/history, CLOSED UI local PASS | Pending |
 | AC-31 | TEST-40,42 | precedence/input/boundaries และ clock หลัง lock local PASS | Pending |
 | AC-32 | TEST-41,43 | access/CSRF/Origin/error envelope; confirmation/busy/retry/409/401/stale responses local PASS | Pending |
-| AC-33 | TEST-42,44 | PARTIAL: races/migration/fresh seed/atomic rollback local PASS; TEST-44(c) integration pending | Pending |
+| AC-33 | TEST-42,44 | races/migration/fresh seed/atomic rollback และ TEST-44(c) cancel×capacity edit local PASS ([cross-feature evidence](sprints/sprint-2/evidence/f07-cross-feature/README.md)); review/CI pending | Pending |
 
 | NFR / linked tests | F-06 actual verification | Limits |
 |---|---|---|

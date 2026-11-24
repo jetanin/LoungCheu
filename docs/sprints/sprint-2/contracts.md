@@ -1,6 +1,6 @@
 # Sprint 2 — Feature Engineering Contracts (F-06, F-07)
 
-เอกสาร LC-S2-CONTRACT | v0.7 (F-06/F-07 integration reconciliation) | 24 พฤศจิกายน 2026
+เอกสาร LC-S2-CONTRACT | v0.8 (F-06 × F-07 cross-feature status) | 24 พฤศจิกายน 2026
 
 ฐานของ Sprint 2: `sprint-2-staging` แตกจาก `main` ที่ `0b2cc80` (tag `v1.0.1-uat`) ใช้ SRS/System SDS baseline v0.5 และ IDs เดิมตาม [traceability](../../traceability.md) เอกสารนี้ต้อง merge เข้า `sprint-2-staging` **ก่อน** เริ่มเขียนโค้ด F-06/F-07 (D2 §3.2 "contracts before implementation")
 
@@ -36,7 +36,7 @@ F-06 ใช้ `REGISTRATION_CLOSED` เดิมเมื่อ cancel/reactiva
 
 **Links:** FR-09–10, FR-12; BR-03–11, BR-14; NFR-01, NFR-03, NFR-04, NFR-05, NFR-06; V2-01, V2-02, V2-04; dependency: F-03–05
 
-สถานะ: **implemented; local verification recorded; ยังไม่ถือว่า Done/accepted release** งานออกแบบ #46 ปิดแล้วตามข้อมูลผู้ใช้; implementation #47 บน `feature/47-f06` ผูก source ล่าสุดที่ผู้ใช้ระบุ `ba89488079a2c884735a18642dbd7487b6872559` ดู [completion/หลักฐานและข้อจำกัด](README.md) ซึ่งแยกผลแต่ละ commit ออกจาก CI/review/merge/release ที่ยัง pending; TEST-44(c) ทำใน PR แยกหลัง #47/#48 เข้า staging ทั้งคู่
+สถานะ: **implemented; local verification recorded; ยังไม่ถือว่า Done/accepted release** งานออกแบบ #46 ปิดแล้วตามข้อมูลผู้ใช้; implementation #47 บน `feature/47-f06` ผูก source ล่าสุดที่ผู้ใช้ระบุ `ba89488079a2c884735a18642dbd7487b6872559` ดู [completion/หลักฐานและข้อจำกัด](README.md) ซึ่งแยกผลแต่ละ commit ออกจาก CI/review/merge/release ที่ยัง pending; TEST-44(c) และ TEST-47/52 แบบใช้ close จริงรันแล้วใน PR integration `test/47-sprint-2-cross-feature` ([ผล](evidence/f07-cross-feature/README.md))
 
 **NFR → verification design** (อ้างอิง [SRS](../../srs.md); ผลรันจริงอยู่ใน [completion](README.md); NFR-03 มี actual backend process restart เพิ่มจาก reload/re-login):
 
@@ -314,3 +314,4 @@ DoD F-07 (ครบทุกข้อจึงถือว่าเสร็จ)
 | 0.6 | 24 พ.ย. 2026 | F-07 UI: คำอธิบาย capacity แสดงเฉพาะ PUBLISHED; กำหนดข้อความสำเร็จหลังบันทึก "บันทึกการแก้ไขแล้ว"; ไม่เปลี่ยน API, AC หรือ TEST IDs | ระหว่าง implement #48 พบว่าคำอธิบายบน DRAFT จะเป็น "ไม่ต่ำกว่า 0" ซึ่งขัดกับขั้นต่ำ 1 ของ BR-01 และ v0.5 ไม่ได้ระบุข้อความสำเร็จ จึงระบุให้ตรวจได้ใน TEST-52 | M2 |
 | 0.6 | 24 พ.ย. 2026 | อัปเดตสถานะ F-06 และลิงก์ completion/evidence; ระบุ actual process restart และ TEST-44(c) แยก PR; AC/TEST/FR/BR และ F-07 คงเดิม | reconcile design กับ implementation/local runs โดยไม่อ้างว่า CI/review/merge/release ผ่านแล้ว | M1 |
 | 0.7 | 24 พ.ย. 2026 | รวม revision v0.6 ของ M1/F-06 และ M2/F-07 จากสอง branch โดยเก็บทั้งสองแถว; คง AC/TEST IDs และการแก้ F-07 ทุกข้อ | แก้ merge conflict หลังรวม sprint-2-staging เข้า feature/47-f06; TEST-44(c) ยังแยก PR และผลหลัง merge บันทึกแยกจากผลเดิม | M1 |
+| 0.8 | 24 พ.ย. 2026 | อัปเดตสถานะ: TEST-44(c) และ TEST-47/52 (close จริงของ F-06) รันแล้วใน PR integration; ไม่เปลี่ยน AC, API, TEST IDs หรือ expected | หลัง #59/#57 เข้า sprint-2-staging ทำ cross-feature ตามตาราง Cross-feature acceptance ได้แล้ว (M1 ตกลงให้ M2 เขียน TEST-44(c)) | M2 |
