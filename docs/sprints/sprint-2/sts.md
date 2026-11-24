@@ -1,6 +1,6 @@
 # Sprint 2 — Software Test Specification (F-06, F-07)
 
-เอกสาร LC-S2-STS | v0.7 (F-06/F-07 integration reconciliation) | 24 พฤศจิกายน 2026
+เอกสาร LC-S2-STS | v0.8 (F-06 × F-07 cross-feature) | 24 พฤศจิกายน 2026
 
 Contract: [contracts.md](contracts.md) Behaviour ใหม่ต้องเขียนและ commit test ให้ **fail ก่อน** implementation (RED) แล้วจึง implement ให้ผ่าน (GREEN) เก็บ SHA ทั้งสองจังหวะเป็นหลักฐาน TDD (D2 §3.2) ส่วน verification เพิ่มที่ผ่านบน implementation เดิมให้ระบุว่า coverage addition ไม่สร้าง RED ปลอม ดู [source/RED→GREEN ledger](README.md)
 
@@ -23,7 +23,7 @@ Fixtures เพิ่มเติม (เวลาอ้างอิง `t0 = 20
 
 ## 2. F-06 test cases (TEST-37–TEST-44)
 
-สถานะ: **F-06 implemented พร้อมผลทดสอบในเครื่อง; review/CI/release ยัง pending** ดู [completion และ executed verification](README.md) ที่แยก TEST-44(a/b) ที่รันจริงจาก TEST-44(c) ที่ pending ใน PR integration หลัง #47/#48 เข้า staging ทั้งคู่ ผลในเครื่องไม่ใช่ independent UAT หรือ accepted release; TEST-45–52 ของ F-07 คงเดิม
+สถานะ: **F-06 implemented พร้อมผลทดสอบในเครื่อง; review/CI/release ยัง pending** ดู [completion และ executed verification](README.md) ที่แยก TEST-44(a/b) จาก TEST-44(c) ซึ่งรันแล้วใน PR integration `test/47-sprint-2-cross-feature` ([ผล](evidence/f07-cross-feature/README.md)) ผลในเครื่องไม่ใช่ independent UAT หรือ accepted release; TEST-45–52 ของ F-07 คงเดิม
 
 ### Fixtures และวิธีตรวจ F-06
 
@@ -59,12 +59,12 @@ TEST-44 ใช้ disposable test database เท่านั้น ห้าม
 |---|---|---|---|---|
 | TEST-45 / AC-34 | API/DB | OA, EDRAFT2; patch ทุก 7 field ด้วยค่าที่ถูก (ลำดับเวลาใหม่ยังถูก) | PATCH แล้ว GET own detail | 200 OwnerEvent ค่าตรงกับ patch (เวลาเป็น UTC `.SSSZ`); organizer_id/status/created_at เดิม; updated_at > ค่าเดิม; GET own detail ใน request ใหม่ได้ค่าที่แก้ |
 | TEST-46 / AC-35 | API/DB | OA, EPUB2 | (a) patch title/description/location/capacity=4 (b) patch `starts_at` อย่างเดียว (c) patch title + `ends_at` (d) patch `registration_closes_at` เท่าค่าเดิม (e) `starts_at` ไม่มี offset (f) capacity=1 + `starts_at` ที่ถูกรูปแบบ | (a) 200 และทั้ง GET /api/events/{id} และ GET /api/events เห็นค่าใหม่, available_seats=2 (b)(c)(d)(f) 409 FIELD_NOT_EDITABLE (e) 400 INVALID_INPUT ข้อมูลไม่เปลี่ยน (ใน (c) title ก็ไม่เปลี่ยน); (e)(f) ยืนยันลำดับตรวจ รูปแบบ → field เวลา → capacity |
-| TEST-47 / AC-36 | API/DB | OA, ECLOSED2 (fixture ใหม่ทุกกรณี) | patch (a) title (b) `starts_at` ที่ถูกรูปแบบ (c) capacity=4 (d) title=`"   "` | (a)(b)(c) 409 EVENT_NOT_EDITABLE (status ตรวจก่อน field เวลาและ capacity) (d) 400 INVALID_INPUT (รูปแบบตรวจก่อน status); ข้อมูลไม่เปลี่ยนทุกกรณี |
+| TEST-47 / AC-36 | API/DB (F-06 × F-07) | OA, ECLOSED2 ใหม่ทุกกรณี: สร้างเป็น PUBLISHED แล้วปิดผ่าน `POST /api/organizer/events/{id}/close` จริง (200 CLOSED) ก่อน patch; จด Event หลัง close เป็นค่าก่อน request | patch (a) title (b) `starts_at` ที่ถูกรูปแบบ (c) capacity=4 (d) title=`"   "` | (a)(b)(c) 409 EVENT_NOT_EDITABLE (status ตรวจก่อน field เวลาและ capacity) (d) 400 INVALID_INPUT (รูปแบบตรวจก่อน status); ข้อมูลไม่เปลี่ยนทุกกรณี |
 | TEST-48 / AC-37 | Unit + API/DB | OA, EDRAFT2 | ส่งทีละกรณี: `{}`; ไม่มี body; title=`"   "`; title 121 code points; description 2001; location 201; capacity 0, 1001, `"5"`, 2.5, `true`, `null`; `starts_at` ไม่มี offset / เศษวินาที 4 หลัก; มี `id` / `organizer_id` / `status` / `created_at` / `foo`; DRAFT patch `registration_closes_at` = starts+1 ms; DRAFT patch `ends_at` = starts | ทุกกรณี 400 INVALID_INPUT และข้อมูลไม่เปลี่ยน; boundary ที่ถูก (title 120, description 2000, location 200 code points, capacity 1 และ 1000, closes=starts) ได้ 200 |
 | TEST-49 / AC-38 | API/DB | OA, EPUB2 (ACTIVE=2) และ EFULL2 | (a) EPUB2 capacity=2 (b) EPUB2 capacity=1 (c) EFULL2 capacity=2 แล้ว PC ลงทะเบียน | (a) 200, available_seats=0 (b) 409 CAPACITY_BELOW_ACTIVE ข้อมูลไม่เปลี่ยน (c) 200 แล้ว PC ได้ 201 ACTIVE count=2 |
 | TEST-50 / AC-39 | API/DB concurrency | EPUB2 capacity=3, ACTIVE=2 | separate connections + start barrier: OA ลด capacity เป็น 2 พร้อมกับ PC ลงทะเบียน; ทำซ้ำ ≥ 20 รอบ สร้าง fixture ใหม่ทุกรอบและสลับลำดับเริ่ม โดยถือ Event lock ไว้แล้วให้คำขอแรกรอ lock ก่อนปล่อยคำขอที่สอง (ควบคุมลำดับได้ lock) | ทุกรอบหลัง join: ACTIVE count ≤ capacity; ผลเป็นได้แค่ (PATCH 200 + register 409 EVENT_FULL) หรือ (register 201 + PATCH 409 CAPACITY_BELOW_ACTIVE) ตามลำดับที่ได้ lock; คำขอที่แพ้ไม่มีผลข้างเคียง (PATCH แพ้: Event row เท่าเดิมรวม updated_at, ACTIVE=3; register แพ้: capacity=2, ACTIVE=2, ไม่มี Registration ของ PC); ไม่มี deadlock/500 |
 | TEST-51 / AC-40 | API/DB | EPUB2; body = `{ "title": "<ค่าที่ถูกต้อง>" }` ทุกกรณี | PATCH แบบ anonymous; PA; OB; OA ไม่มี CSRF; OA CSRF ผิด; OA path `not-a-uuid`; OA UUID ที่ไม่มีจริง; OB body `{}` | 401 AUTH_REQUIRED; 403 ROLE_FORBIDDEN; 404 EVENT_NOT_FOUND; 403 CSRF_FAILED; 403 CSRF_FAILED; 400 INVALID_INPUT; 404 EVENT_NOT_FOUND; 400 INVALID_INPUT (input ตรวจก่อน record scope); ข้อมูลไม่เปลี่ยนทุกกรณี |
-| TEST-52 / AC-40 | Component + E2E (Chromium) | OA; สร้าง DRAFT/PUBLISHED ผ่าน UI, CLOSED จาก fixture (หรือปิดผ่าน F-06 เมื่อพร้อม); PUBLISHED มี ACTIVE ≥ 1 | เปิดหน้ารายละเอียด → แก้ไข → เปลี่ยนค่า → บันทึก → reload; กรณี PUBLISHED และ capacity ต่ำกว่า ACTIVE | ฟอร์มเติมค่าเดิม; PUBLISHED ช่องเวลา disabled พร้อมข้อความ; CLOSED ไม่มีปุ่มแก้ไข; capacity ต่ำกว่า ACTIVE แล้วกดบันทึก เห็นข้อความ 409 ภาษาไทย, คำอธิบาย ACTIVE อัปเดต และค่าที่พิมพ์ยังอยู่; บันทึกสำเร็จ reload แล้วเห็นค่าใหม่ทั้งหน้า owner และหน้าทั่วไป; ปุ่มบันทึกปิดเมื่อไม่มีการเปลี่ยนแปลง |
+| TEST-52 / AC-40 | Component + E2E (Chromium) | OA; สร้าง DRAFT/PUBLISHED ผ่าน UI, CLOSED ได้จากการกดปิดรับกิจกรรม (F-06) บนกิจกรรม PUBLISHED เดียวกันหลังแก้ไข; PUBLISHED มี ACTIVE ≥ 1 | เปิดหน้ารายละเอียด → แก้ไข → เปลี่ยนค่า → บันทึก → reload; กรณี PUBLISHED และ capacity ต่ำกว่า ACTIVE | ฟอร์มเติมค่าเดิม; PUBLISHED ช่องเวลา disabled พร้อมข้อความ; CLOSED ไม่มีปุ่มแก้ไข; capacity ต่ำกว่า ACTIVE แล้วกดบันทึก เห็นข้อความ 409 ภาษาไทย, คำอธิบาย ACTIVE อัปเดต และค่าที่พิมพ์ยังอยู่; บันทึกสำเร็จ reload แล้วเห็นค่าใหม่ทั้งหน้า owner และหน้าทั่วไป; ปุ่มบันทึกปิดเมื่อไม่มีการเปลี่ยนแปลง |
 
 ## 4. Regression
 
@@ -84,3 +84,4 @@ TEST-44 ใช้ disposable test database เท่านั้น ห้าม
 | 0.6 | 24 พ.ย. 2026 | F-07: TEST-46 เพิ่ม (e)(f), TEST-47 เพิ่ม (b)–(d), TEST-50 ระบุการควบคุมลำดับ lock และผลของคำขอที่แพ้, TEST-51 เพิ่ม CSRF ผิด และ OB body `{}`; ไม่เปลี่ยน TEST IDs/AC | ให้ STS ครอบ AC-39 ("ไม่มีผลข้างเคียง"), AC-40 ("ไม่มี/ผิด CSRF") และลำดับการตรวจข้อ 2–7 ของ F-07 contract ครบ; ปรับก่อน implementation (#48 RED) | M2 |
 | 0.6 | 24 พ.ย. 2026 | ลิงก์ผล F-06 และ RED/GREEN/coverage ledger; ระบุ TEST-44(c) pending; test cases/IDs/F-07 คงเดิม | แยก test design, ผล local execution และ workflow/release acceptance ตามหลักฐานจริง | M1 |
 | 0.7 | 24 พ.ย. 2026 | รวม revision v0.6 ของ M1/F-06 และ M2/F-07 จากสอง branch โดยเก็บทั้งสองแถว; คง AC/TEST IDs และการแก้ F-07 ทุกข้อ | แก้ merge conflict หลังรวม sprint-2-staging เข้า feature/47-f06; TEST-44(c) ยังแยก PR และผลหลัง merge บันทึกแยกจากผลเดิม | M1 |
+| 0.8 | 24 พ.ย. 2026 | F-07: TEST-47 และ TEST-52 ได้ CLOSED จาก F-06 close จริงแทน fixture/insert ตรง; TEST-52 ตรวจเพิ่มว่าค่าที่แก้ยังอยู่หลังปิด; บันทึกว่า TEST-44(c) รันแล้ว (ตกลงกับ M1 ให้ M2 เขียน); ไม่เปลี่ยน AC/TEST IDs/expected | F-06 อยู่บน sprint-2-staging แล้ว (#59) ตามตาราง cross-feature ของ contract; เป็น coverage addition ที่ผ่านบน implementation เดิม ไม่ใช่ RED ใหม่ | M2 |
