@@ -1,6 +1,6 @@
 # Sprint 2 — Feature Engineering Contracts (F-06, F-07)
 
-เอกสาร LC-S2-CONTRACT | v0.6 (F-06 implementation/evidence reconciliation; F-07 design unchanged) | 24 พฤศจิกายน 2026
+เอกสาร LC-S2-CONTRACT | v0.7 (F-06/F-07 integration reconciliation) | 24 พฤศจิกายน 2026
 
 ฐานของ Sprint 2: `sprint-2-staging` แตกจาก `main` ที่ `0b2cc80` (tag `v1.0.1-uat`) ใช้ SRS/System SDS baseline v0.5 และ IDs เดิมตาม [traceability](../../traceability.md) เอกสารนี้ต้อง merge เข้า `sprint-2-staging` **ก่อน** เริ่มเขียนโค้ด F-06/F-07 (D2 §3.2 "contracts before implementation")
 
@@ -187,7 +187,7 @@ DoD F-06 (ครบทุกข้อจึงถือว่าเสร็จ)
 
 ### Workflow / UI
 
-Organizer เปิดกิจกรรมของตน (`/organizer/events/{id}`) → กด **แก้ไขกิจกรรม** → ฟอร์มเติมค่าปัจจุบันไว้ → แก้ค่า → กด **บันทึกการแก้ไข** → กลับหน้ารายละเอียดพร้อมข้อความสำเร็จและค่าที่อ่านกลับจาก server
+Organizer เปิดกิจกรรมของตน (`/organizer/events/{id}`) → กด **แก้ไขกิจกรรม** → ฟอร์มเติมค่าปัจจุบันไว้ → แก้ค่า → กด **บันทึกการแก้ไข** → กลับหน้ารายละเอียดพร้อมข้อความสำเร็จ "บันทึกการแก้ไขแล้ว" และค่าที่อ่านกลับจาก server
 
 สิ่งที่แก้ได้ขึ้นกับสถานะ (FR-11, BR-09, BR-11):
 
@@ -201,7 +201,7 @@ UI rules:
 
 - ปุ่ม **แก้ไขกิจกรรม** แสดงเฉพาะ DRAFT/PUBLISHED บนหน้า owner detail เปิด `/organizer/events/{id}/edit`
 - PUBLISHED: ช่องเวลาทั้งสามแสดงค่าเดิมแบบ disabled พร้อมข้อความ "เผยแพร่แล้ว แก้เวลาไม่ได้"
-- ช่อง capacity แสดงคำอธิบาย "มีผู้ลงทะเบียน ACTIVE n คน ตั้งได้ไม่ต่ำกว่า n" (ค่า n จาก `active_count` ตอนเปิดฟอร์ม) เป็นคำอธิบายเท่านั้น ไม่บล็อกการกดบันทึก เพราะยอดอาจเปลี่ยนระหว่างแก้ server เป็นผู้ตัดสิน
+- เมื่อ PUBLISHED ช่อง capacity แสดงคำอธิบาย "มีผู้ลงทะเบียน ACTIVE n คน ตั้งได้ไม่ต่ำกว่า n" (DRAFT ไม่แสดง เพราะลงทะเบียนได้เฉพาะ PUBLISHED จึงมี ACTIVE = 0 เสมอ) (ค่า n จาก `active_count` ตอนเปิดฟอร์ม) เป็นคำอธิบายเท่านั้น ไม่บล็อกการกดบันทึก เพราะยอดอาจเปลี่ยนระหว่างแก้ server เป็นผู้ตัดสิน
 - ส่งเฉพาะ field ที่เปลี่ยน ถ้าไม่มีอะไรเปลี่ยน ปุ่มบันทึกถูกปิด
 - ใช้ validation ฝั่ง client แบบเดียวกับหน้าสร้าง (BR-01/02) แต่ backend เป็นผู้ตัดสิน; แสดง loading/disabled ระหว่างส่ง
 - เมื่อได้ 409 แสดงเหตุผลภาษาไทย แล้วโหลดข้อมูลกิจกรรมล่าสุด (status, active_count) มาแสดงใหม่ โดยคงค่าที่ผู้ใช้พิมพ์ไว้ในฟอร์ม (เช่น มีคนลงทะเบียนเพิ่มระหว่างแก้จนคำอธิบาย capacity ต้องเปลี่ยน)
@@ -311,4 +311,6 @@ DoD F-07 (ครบทุกข้อจึงถือว่าเสร็จ)
 | 0.3 | 24 พ.ย. 2026 | ระบุ own-registration lookup ผ่าน GET เดิม, ใช้ label registered_at ให้ตรงทั้ง own/roster และรวม regression assertions ใน DoD; เพิ่มตัวอย่าง release tag | แก้ข้อเสนอแนะก่อน approve PR #56 ให้ implementation/test expectations ชัดเจนและสอดคล้องกัน | M1 |
 | 0.4 | 24 พ.ย. 2026 | ระบุ REGISTERED history ใน seed/demo-data หลัง migration, UUID ของ SQL backfill และ UI ของ CANCELLED เมื่อเต็ม/ปิดรับ; ใช้สถานะ planned ที่ไม่อ้างรอ review | แก้ข้อเสนอแนะ PR #56 ให้ lifecycle ครบทั้ง legacy และ fresh DB และข้อความยังถูกต้องหลัง merge | M1 |
 | 0.5 | 24 พ.ย. 2026 | เพิ่ม linked NFR-01/03/04/05/06 และ mapping ไป TEST-41/43/42/44(a)/41 ตามลำดับ | เติม linked FR/BR/NFR ของ F-06 ให้ครบตาม D2 §3.2 จากข้อเสนอแนะ PR #56 | M1 |
+| 0.6 | 24 พ.ย. 2026 | F-07 UI: คำอธิบาย capacity แสดงเฉพาะ PUBLISHED; กำหนดข้อความสำเร็จหลังบันทึก "บันทึกการแก้ไขแล้ว"; ไม่เปลี่ยน API, AC หรือ TEST IDs | ระหว่าง implement #48 พบว่าคำอธิบายบน DRAFT จะเป็น "ไม่ต่ำกว่า 0" ซึ่งขัดกับขั้นต่ำ 1 ของ BR-01 และ v0.5 ไม่ได้ระบุข้อความสำเร็จ จึงระบุให้ตรวจได้ใน TEST-52 | M2 |
 | 0.6 | 24 พ.ย. 2026 | อัปเดตสถานะ F-06 และลิงก์ completion/evidence; ระบุ actual process restart และ TEST-44(c) แยก PR; AC/TEST/FR/BR และ F-07 คงเดิม | reconcile design กับ implementation/local runs โดยไม่อ้างว่า CI/review/merge/release ผ่านแล้ว | M1 |
+| 0.7 | 24 พ.ย. 2026 | รวม revision v0.6 ของ M1/F-06 และ M2/F-07 จากสอง branch โดยเก็บทั้งสองแถว; คง AC/TEST IDs และการแก้ F-07 ทุกข้อ | แก้ merge conflict หลังรวม sprint-2-staging เข้า feature/47-f06; TEST-44(c) ยังแยก PR และผลหลัง merge บันทึกแยกจากผลเดิม | M1 |

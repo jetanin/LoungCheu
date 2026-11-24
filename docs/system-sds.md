@@ -26,7 +26,7 @@ flowchart LR
     A --> X[PostgreSQL session store]
 ```
 
-Modules: accounts (auth/seed), events (create/publish/list/close; F-07 edit แยกงาน), registrations (allocate seats/own records/roster/cancel/reactivate), attendance (S3 check-in/summary) และ shared (errors/time/config/version) Backend/DB บังคับกฎ; frontend validation ช่วยผู้ใช้
+Modules: accounts (auth/seed), events (create/publish/list/close/update; F-07 edit รวมจาก staging แล้วใน working tree), registrations (allocate seats/own records/roster/cancel/reactivate), attendance (S3 check-in/summary) และ shared (errors/time/config/version) Backend/DB บังคับกฎ; frontend validation ช่วยผู้ใช้
 
 ### Planned source layout
 
@@ -96,12 +96,13 @@ EventStatus มี DRAFT/PUBLISHED/CLOSED; RegistrationStatus มี ACTIVE/CANC
 | GET | /api/events; /api/events/:id | modules/events/router.ts |
 | GET | /api/organizer/events; /api/organizer/events/:id | modules/events/router.ts |
 | POST | /api/organizer/events; /api/organizer/events/:id/publish | modules/events/router.ts |
+| PATCH | /api/organizer/events/:id (F-07 edit, Sprint 2 #48) | modules/events/router.ts |
 | POST | /api/events/:id/registrations | modules/registrations/router.ts |
 | GET | /api/my/registrations; /api/my/registrations/:id; /api/organizer/events/:id/registrations | modules/registrations/read-router.ts |
 | POST | /api/my/registrations/:id/cancel | modules/registrations/cancellation-router.ts (F-06) |
 | POST | /api/organizer/events/:id/close | modules/events/router.ts (F-06 appended block) |
 
-Module paths ในตารางอยู่ใต้ `server/src/`; routers mount ที่ `/api`. F-06 own record มี id/status/registered_at/cancelled_at/event; create/reactivate ใช้ POST register เดิม (201/200 ตามลำดับ) พร้อม required cancelled_at=null ในผลสำเร็จ; roster fields คงเดิม ไม่มี history endpoint. F-07 edit และ F-08/09 check-in/summary เป็นงานแยก ไม่อ้างผลจาก F-06
+Module paths ในตารางอยู่ใต้ `server/src/`; routers mount ที่ `/api`. F-06 own record มี id/status/registered_at/cancelled_at/event; create/reactivate ใช้ POST register เดิม (201/200 ตามลำดับ) พร้อม required cancelled_at=null ในผลสำเร็จ; roster fields คงเดิม ไม่มี history endpoint. F-07 edit implement แล้วจาก #48/PR #57 และรวมใน working tree นี้ตาม [Sprint 2 contracts](sprints/sprint-2/contracts.md); F-08/09 check-in/summary ยัง planned
 
 ### Atomic registration
 
@@ -124,7 +125,8 @@ Concurrency tests ใช้ separate connections/transactions และ barrier 
 | /organizer | Organizer overview จาก own event list เดิม: จำนวน Event ตามสถานะ, สามรายการล่าสุด และลิงก์สร้าง/ดูทั้งหมด; F-02 UI presentation | 1 |
 | /organizer/events, /organizer/events/new | Organizer ดูของตนรวม DRAFT และสร้างกิจกรรม | 1 |
 | /organizer/events/{id} | เจ้าของ preview/publish/roster/count | 1 |
-| หน้าเดิมเพิ่ม Cancel/Close (F-06 implemented), Edit (F-07 แยกงาน) | ตาม role/ownership/deadline | 2 |
+| /organizer/events/{id}/edit | เจ้าของแก้กิจกรรม (F-07): DRAFT ทุก field, PUBLISHED เฉพาะ title/description/location/capacity (ช่องเวลา disabled), CLOSED ไม่มีฟอร์ม; ส่งเฉพาะ field ที่เปลี่ยน | 2 |
+| หน้าเดิมเพิ่ม Cancel/Close/Edit (F-06/F-07 implemented) | ตาม role/ownership/deadline; edit อยู่ก่อน close ใน action row เดิม | 2 |
 | Roster เพิ่ม Check-in; own record เพิ่ม attendance; หน้า summary | ตาม permission matrix | 3 |
 
 Loading ปิดปุ่มซ้ำ; empty มีทางเลือกดู/สร้างกิจกรรม; field errors อยู่ใต้ input; conflicts อธิบายเหตุผลและ refresh availability; network errors retry ได้; expired session กลับ Login และล้าง private state; 403/404 ไม่เปิดเผยข้อมูลนอกสิทธิ์ เวลา UI แสดง Asia/Bangkok
@@ -152,7 +154,8 @@ Express SPA fallback ใช้เฉพาะ frontend routes; unknown API ค�
 | 401 | INVALID_CREDENTIALS: Login ผิด; AUTH_REQUIRED: protected request ไม่มี/หมดอายุ/inactive session |
 | 403 | ROLE_FORBIDDEN: role ไม่ผ่าน; CSRF_FAILED: token/origin ไม่ผ่าน |
 | 404 | EVENT_NOT_FOUND หรือ REGISTRATION_NOT_FOUND: ไม่พบ/นอก record scope; ROUTE_NOT_FOUND: unknown API |
-| 409 | INVALID_TRANSITION, DEADLINE_PASSED (publish), REGISTRATION_CLOSED, ALREADY_REGISTERED, ALREADY_CANCELLED (F-06 cancel ซ้ำก่อน deadline), EVENT_FULL; FIELD_NOT_EDITABLE / EVENT_NOT_EDITABLE / CAPACITY_BELOW_ACTIVE สงวนสำหรับ F-07; ALREADY_CHECKED_IN เริ่ม S3 |
+| 409 | INVALID_TRANSITION, DEADLINE_PASSED (publish), REGISTRATION_CLOSED, ALREADY_REGISTERED, ALREADY_CANCELLED (F-06 cancel ซ้ำก่อน deadline), EVENT_FULL; ALREADY_CHECKED_IN เริ่ม S3 |
+| 409 (S2 F-07 edit) | EVENT_NOT_EDITABLE: แก้กิจกรรม CLOSED; FIELD_NOT_EDITABLE: แก้ starts_at/ends_at/registration_closes_at ตอน PUBLISHED; CAPACITY_BELOW_ACTIVE: capacity ใหม่ต่ำกว่า ACTIVE count |
 | 500 | INTERNAL_ERROR: generic message, fields={} และไม่คืน internal details |
 
 ## 5. Role/permission matrix
@@ -167,7 +170,7 @@ Express SPA fallback ใช้เฉพาะ frontend routes; unknown API ค�
 | Own registration list/detail | 401 | ของตน; คนอื่น 404 | 403 |
 | Roster/count | 401 | 403 | ของตน; เจ้าของอื่น 404 |
 | Cancel/reactivate (S2) | 401 | ของตนตามกฎ | 403 |
-| Edit/close (S2) | 401 | 403 | ของตนตามกฎ |
+| Edit/close (S2) | 401 | 403 | ของตนตามกฎ; เจ้าของอื่น 404 |
 | Check-in/summary (S3) | 401 | 403 | ของตนตามกฎ |
 | Own attendance status (S3) | 401 | ของตนผ่าน registration | 403 |
 
@@ -251,3 +254,9 @@ Migration `202611240001_registration_lifecycle` ตรวจ legacy CANCELLED �
 UI เพิ่ม cancel confirmation ใน own detail และ close confirmation ใน action row เดิมของ owner detail (ตำแหน่งหลังปุ่ม edit ของ F-07 เมื่อรวมงาน). RegistrationAction ใช้ GET `/api/my/registrations` แล้วเลือกด้วย event.id; ไม่เพิ่ม lookup endpoint. CANCELLED ขณะเต็ม/ปิดรับมีข้อความเฉพาะและไม่มี re-register; own/roster ใช้ label ลงทะเบียนครั้งแรกเมื่อ. Cancel/close ใช้ LifecycleMutation สำหรับ CSRF/busy/uncertainty และตรวจสถานะก่อนให้ retry; lookup response มี account/event/generation guards และล้างข้อมูลเมื่อ session ใช้ไม่ได้
 
 รายละเอียดไฟล์, AC/TEST mapping, RED/GREEN SHAs, PostgreSQL races และ actual compiled-process restart อยู่ใน [completion record](sprints/sprint-2/README.md). ผล local ไม่ใช่ GitHub CI, independent UAT, staging merge หรือ release acceptance; TEST-44(c) และ close→PATCH TEST-47 ต้องตรวจหลังรวม F-07 ตามข้อตกลง
+
+## 12. F-06/F-07 staging integration — 24 พฤศจิกายน 2026
+
+รวม F-07 จาก origin/sprint-2-staging ระหว่าง merge ที่ผู้ใช้เริ่มเอง: Event service เก็บทั้ง close และ update เป็นบล็อกแยก ใช้ Event lock/clock/serializer เดียวกับเดิม Router มีทั้ง PATCH และ POST close; owner detail วาง edit ก่อน close และเก็บ F-07 edit route/refresh/404 handling พร้อม F-06 cancellation/close behaviour. Contract/STS v0.7 เก็บ revision v0.6 ของทั้งสอง branch โดยไม่ทิ้งแถวประวัติหรือเปลี่ยน AC/TEST IDs
+
+F-07 integration fixture เพิ่ม REGISTERED history ใน nested create เดียวกับ Registration; cleanup ลบเฉพาะ suite-owned history → Registration → Event ใน transaction เดียวก่อนปิด connections เพื่อรองรับ Restrict FK ของ F-06 โดยไม่เปลี่ยน assertions ของ TEST-45–51. [ผลทดสอบหลังรวม](sprints/sprint-2/evidence/f06-staging-merge/README.md) แยกจาก historical F-06-only runs. TEST-44(c) ยังเป็น PR แยกหลังทั้งสอง feature เข้า staging; TEST-47/52 เปลี่ยนจาก CLOSED fixture เป็น actual close ในขั้น integration ตามข้อตกลง ไม่ถือว่าผ่านเพียงเพราะ local merge นี้

@@ -1,0 +1,59 @@
+
+> loungcheu@0.1.0 test
+> vitest run --reporter=dot --maxWorkers=1
+
+
+ RUN  v5.1.0 C:/Work/2569/CPE334/GroupWork/LoungCheu
+
+····································stdout | server/tests/integration/registration-lifecycle-restart.test.ts > NFR-03 / TEST-43 persistence: CANCELLED then reactivated/CLOSED state survives actual compiled backend process restarts
+F06_RESTART {"event":"ready","pid":8976,"port":50699,"version":"f06-restart-09dab42a-b213-4776-a65d-8f1befdfe2dd-1"}
+
+stdout | server/tests/integration/registration-lifecycle-restart.test.ts > NFR-03 / TEST-43 persistence: CANCELLED then reactivated/CLOSED state survives actual compiled backend process restarts
+F06_RESTART {"event":"stopped","pid":8976}
+
+stdout | server/tests/integration/registration-lifecycle-restart.test.ts > NFR-03 / TEST-43 persistence: CANCELLED then reactivated/CLOSED state survives actual compiled backend process restarts
+F06_RESTART {"event":"ready","pid":5464,"port":50699,"version":"f06-restart-09dab42a-b213-4776-a65d-8f1befdfe2dd-2"}
+
+stdout | server/tests/integration/registration-lifecycle-restart.test.ts > NFR-03 / TEST-43 persistence: CANCELLED then reactivated/CLOSED state survives actual compiled backend process restarts
+F06_RESTART {"event":"stopped","pid":5464}
+
+stdout | server/tests/integration/registration-lifecycle-restart.test.ts > NFR-03 / TEST-43 persistence: CANCELLED then reactivated/CLOSED state survives actual compiled backend process restarts
+F06_RESTART {"event":"ready","pid":54540,"port":50699,"version":"f06-restart-09dab42a-b213-4776-a65d-8f1befdfe2dd-3"}
+
+stdout | server/tests/integration/registration-lifecycle-restart.test.ts > NFR-03 / TEST-43 persistence: CANCELLED then reactivated/CLOSED state survives actual compiled backend process restarts
+F06_RESTART {"event":"verified","distinctProcesses":3,"stoppedAndRestarted":2,"registrationRows":1,"historyRows":3}
+
+stdout | server/tests/integration/registration-lifecycle-restart.test.ts > NFR-03 / TEST-43 persistence: CANCELLED then reactivated/CLOSED state survives actual compiled backend process restarts
+F06_RESTART {"event":"stopped","pid":54540}
+
+·································································································································································································································
+⎯⎯⎯⎯⎯⎯ Unhandled Errors ⎯⎯⎯⎯⎯⎯
+
+Vitest caught 1 unhandled error during the test run.
+This might cause false positive tests. Resolve unhandled errors to make sure your tests are not affected.
+
+⎯⎯⎯⎯⎯⎯ Unhandled Error ⎯⎯⎯⎯⎯⎯⎯
+Error: [vitest-pool]: Worker forks emitted error.
+ ❯ EventEmitter.onTaskError node_modules/vitest/dist/chunks/index.Di8au7q4.js:5926:21
+ ❯ EventEmitter.emit node:events:509:28
+ ❯ ChildProcess.emitUnexpectedExit node_modules/vitest/dist/chunks/index.Di8au7q4.js:5401:22
+ ❯ ChildProcess.emit node:events:509:28
+ ❯ Process.ChildProcess._handle.onexit node:internal/child_process:295:12
+
+Caused by: Error: Worker exited unexpectedly with exit code 3221226505 during started state while running test file C:/Work/2569/CPE334/GroupWork/LoungCheu/server/tests/integration/registration-views.test.ts
+ ❯ ChildProcess.emitUnexpectedExit node_modules/vitest/dist/chunks/index.Di8au7q4.js:5399:33
+ ❯ ChildProcess.emit node:events:509:28
+ ❯ Process.ChildProcess._handle.onexit node:internal/child_process:295:12
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯
+
+
+ Test Files  24 passed (25)
+      Tests  261 passed (263)
+     Errors  1 error
+   Start at  16:06:43
+   Duration  69.17s (tests 85%, environment 8%, import 7%, transform 1%)
+
+    Isolate  25 workers spawned · ~321ms startup each (spawn + environment, per file)
+             at least ~7.70s faster with isolate: false — reuses workers across files instead of one per file
+

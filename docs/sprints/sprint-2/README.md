@@ -6,6 +6,11 @@ Contract design Issue #46 is closed according to the user. This record covers
 F-06 only; F-07/#48 is owned by the teammate and is not accepted by this record.
 
 **Status: implemented and locally verified; not Done or an accepted release.**
+Integration update: the user started `git merge origin/sprint-2-staging` into
+`feature/47-f06` after the F-07 review. Conflict resolution and combined runs
+are recorded in [staging merge evidence](evidence/f06-staging-merge/README.md).
+This imports F-07 implementation; the original F-06-only evidence below keeps
+its original source/totals. The user must finish the merge commit after review.
 Latest source SHA supplied by the user before this documentation/final-run step:
 `ba89488079a2c884735a18642dbd7487b6872559`. The assistant ran no Git commands
 and has not independently verified ancestry, remote publication or board state.
@@ -111,7 +116,7 @@ unverified locally. [Final local regression logs](evidence/f06-final/README.md).
 | Intermittent browser timeout | One full run timed out on B's disabled register action. Three targeted repetitions and the final full 38-test run passed without application changes; root cause not established, retained for review in final evidence |
 | PR, labels `documentation` where appropriate / `sprint-2`, assignee, CI `test-and-docker`, substantive teammate review | Not verified/completed by this local step; use actual #47 implementation PR metadata |
 | Kanban Specified → Started → PR Review → Done | User/team manages; no board change or Done claim made here |
-| Merge | Teammate review; use Create a merge commit. Later feature merger merges latest sprint-2-staging into their branch, resolves conflicts and reruns all tests; no force push |
+| Merge | User started merge of origin/sprint-2-staging; conflicts resolved and combined verification recorded separately. Merge commit still user-managed; no force push. F-06 PR review/merge into staging remains pending |
 | TEST-44(c) | Separate small integration PR after both #47/#48 merge; blocks claiming AC-33/whole Sprint 2 DoD complete |
 | TEST-47 | Teammate replaces CLOSED fixture with actual F-06 close after integration; close→PATCH lives only there |
 | NFR-03 broader acceptance | Actual backend process restart proven; deployment/redeploy and independent clean reproduction not established by this run |

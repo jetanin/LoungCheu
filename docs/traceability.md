@@ -126,4 +126,6 @@ Latest source supplied before final reconciliation: `ba89488079a2c884735a18642db
 
 ## 6. Coverage gaps และการอัปเดต
 
+24 พ.ย. 2026 staging integration: ผู้ใช้เริ่ม merge origin/sprint-2-staging เข้า feature/47-f06 และรวม F-07 implementation แล้วใน working tree; ดู [ผลรัน F-06/F-07 หลังแก้ conflict](sprints/sprint-2/evidence/f06-staging-merge/README.md). ผลนี้แยกจาก F-06-only/เก่า และไม่ปิด TEST-44(c), independent acceptance หรือ release gates อัตโนมัติ; ผู้ใช้ยังต้อง commit merge และทำ PR workflow
+
 FR/BR/NFR allocation คง baseline เดิม; automated results159/37/typecheck/build/smoke3 อ้าง recorded source3313288 ตาม [verification](registration/views-verification.md). PR #7/#10 approved/merged staging แล้วตาม snapshot12พ.ย. ผลนี้ไม่ใช่ release-linked rerun. OS-process restart, independent clean reproduction/UAT, final board และ reviewed main release acceptance ยัง pending; GAP-02 OPEN และ Product DoD ยังไม่ครบ
