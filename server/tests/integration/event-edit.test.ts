@@ -50,7 +50,10 @@ async function fixture(kind: keyof typeof kinds) {
   const event = await db.event.create({ data: { id, organizerId: users.OA, title: kind, description: 'Synthetic F-07 fixture', location: 'KMUTT',
     capacity, status, registrationClosesAt: new Date(t0 + 3_600_000), startsAt: new Date(t0 + 7_200_000), endsAt: new Date(t0 + 14_400_000),
     createdAt: before, updatedAt: before } });
-  for (const who of active as Who[]) await db.registration.create({ data: { eventId: id, participantId: users[who], registeredAt: before } });
+  for (const who of active as Who[]) await db.registration.create({ data: {
+    eventId: id, participantId: users[who], registeredAt: before,
+    history: { create: { actorId: users[who], action: 'REGISTERED', occurredAt: before } },
+  } });
   return event;
 }
 // "ข้อมูลไม่เปลี่ยน": the Event row (including updated_at) and its Registrations equal the pre-request state.
@@ -68,10 +71,17 @@ beforeAll(async () => {
 });
 afterEach(() => { clock = t0; });
 afterAll(async () => {
-  await db.registration.deleteMany({ where: { eventId: { in: ids } } });
-  await db.event.deleteMany({ where: { id: { in: ids } } });
-  await Promise.all(runtimes.map(runtime => runtime.close()));
-  await Promise.all([db, a, b, locker].map(client => client.$disconnect()));
+  try {
+    // F-06 adds Restrict history FKs: clean only this suite's records, children first.
+    await db.$transaction([
+      db.registrationHistory.deleteMany({ where: { registration: { eventId: { in: ids } } } }),
+      db.registration.deleteMany({ where: { eventId: { in: ids } } }),
+      db.event.deleteMany({ where: { id: { in: ids } } }),
+    ]);
+  } finally {
+    await Promise.all(runtimes.map(runtime => runtime.close()));
+    await Promise.all([db, a, b, locker].map(client => client.$disconnect()));
+  }
 });
 
 describe('F-07 PATCH /api/organizer/events/{id} (TEST-45–TEST-51)', () => {

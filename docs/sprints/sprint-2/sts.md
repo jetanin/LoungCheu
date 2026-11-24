@@ -1,8 +1,8 @@
 # Sprint 2 — Software Test Specification (F-06, F-07)
 
-เอกสาร LC-S2-STS | v0.6 (planned design) | 24 พฤศจิกายน 2026
+เอกสาร LC-S2-STS | v0.7 (F-06/F-07 integration reconciliation) | 24 พฤศจิกายน 2026
 
-Contract: [contracts.md](contracts.md) ทุก test ต้องเขียนและ commit ให้ **fail ก่อน** implementation (RED) แล้วจึง implement ให้ผ่าน (GREEN) เก็บ SHA ทั้งสองจังหวะเป็นหลักฐาน TDD (D2 §3.2)
+Contract: [contracts.md](contracts.md) Behaviour ใหม่ต้องเขียนและ commit test ให้ **fail ก่อน** implementation (RED) แล้วจึง implement ให้ผ่าน (GREEN) เก็บ SHA ทั้งสองจังหวะเป็นหลักฐาน TDD (D2 §3.2) ส่วน verification เพิ่มที่ผ่านบน implementation เดิมให้ระบุว่า coverage addition ไม่สร้าง RED ปลอม ดู [source/RED→GREEN ledger](README.md)
 
 ## 1. Environment และ fixtures
 
@@ -23,7 +23,7 @@ Fixtures เพิ่มเติม (เวลาอ้างอิง `t0 = 20
 
 ## 2. F-06 test cases (TEST-37–TEST-44)
 
-สถานะ: **planned; ยังไม่ implement และยังไม่มีผลรันทดสอบ F-06** ต้องผ่าน review/merge พร้อม F-06 contract ก่อน implementation #47 ส่วน TEST-45–52 ของ F-07 คงเดิม
+สถานะ: **F-06 implemented พร้อมผลทดสอบในเครื่อง; review/CI/release ยัง pending** ดู [completion และ executed verification](README.md) ที่แยก TEST-44(a/b) ที่รันจริงจาก TEST-44(c) ที่ pending ใน PR integration หลัง #47/#48 เข้า staging ทั้งคู่ ผลในเครื่องไม่ใช่ independent UAT หรือ accepted release; TEST-45–52 ของ F-07 คงเดิม
 
 ### Fixtures และวิธีตรวจ F-06
 
@@ -82,3 +82,5 @@ TEST-44 ใช้ disposable test database เท่านั้น ห้าม
 | 0.4 | 24 พ.ย. 2026 | TEST-38 ระบุ history 5 แถว; TEST-43 เพิ่ม CANCELLED ขณะเต็ม/ปิดรับ; TEST-44 เพิ่ม fresh migrate→seed/history, repeat/concurrent seed และ SQL UUID; ใช้สถานะ planned | แก้ข้อเสนอแนะ PR #56 ให้พิสูจน์ history ของ seed หลัง backfill และผล UI ครบโดยไม่อ้างผลที่ยังไม่รัน | M1 |
 | 0.5 | 24 พ.ย. 2026 | เพิ่ม ECANCEL2/ECYCLE2 ในตาราง fixtures §1 และอ้างตารางจาก protocol F-06; NFR mapping อยู่ใน contracts v0.5 โดยไม่เปลี่ยน TEST IDs | ให้ fixture inventory ครบและสอดคล้องกับ linked NFR/test design ตามข้อเสนอแนะ PR #56 | M1 |
 | 0.6 | 24 พ.ย. 2026 | F-07: TEST-46 เพิ่ม (e)(f), TEST-47 เพิ่ม (b)–(d), TEST-50 ระบุการควบคุมลำดับ lock และผลของคำขอที่แพ้, TEST-51 เพิ่ม CSRF ผิด และ OB body `{}`; ไม่เปลี่ยน TEST IDs/AC | ให้ STS ครอบ AC-39 ("ไม่มีผลข้างเคียง"), AC-40 ("ไม่มี/ผิด CSRF") และลำดับการตรวจข้อ 2–7 ของ F-07 contract ครบ; ปรับก่อน implementation (#48 RED) | M2 |
+| 0.6 | 24 พ.ย. 2026 | ลิงก์ผล F-06 และ RED/GREEN/coverage ledger; ระบุ TEST-44(c) pending; test cases/IDs/F-07 คงเดิม | แยก test design, ผล local execution และ workflow/release acceptance ตามหลักฐานจริง | M1 |
+| 0.7 | 24 พ.ย. 2026 | รวม revision v0.6 ของ M1/F-06 และ M2/F-07 จากสอง branch โดยเก็บทั้งสองแถว; คง AC/TEST IDs และการแก้ F-07 ทุกข้อ | แก้ merge conflict หลังรวม sprint-2-staging เข้า feature/47-f06; TEST-44(c) ยังแยก PR และผลหลัง merge บันทึกแยกจากผลเดิม | M1 |

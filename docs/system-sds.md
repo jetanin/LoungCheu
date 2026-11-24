@@ -1,5 +1,7 @@
 # Part C — System-Level Software Design Specification
 
+**F-06 update — 24 พ.ย. 2026:** cancel/reactivate/close และ cancelled_at/history implement แล้วบน `feature/47-f06` พร้อม local API/DB/UI/browser และ actual process-restart evidence ดู [Sprint 2 completion](sprints/sprint-2/README.md). Snapshot Sprint 1 ด้านล่างเป็นประวัติของผลเดิม; F-06 ยังไม่ใช่ accepted release และไม่แทน independent UAT/clean reproduction. F-07 และ Sprint 3 ไม่ถูกนับว่าผ่านจากผลนี้
+
 **Implementation/evidence update — 14 พ.ย. 2026:** PR #7/#10 ได้ teammate review โดย i3artuf และ merge เข้า sprint-1-staging แล้ว ตาม snapshot 12 พ.ย.; PR #10 reviewed head `0bd3468`, merge `97a5b91` (10 พ.ย. 16:26:11 Asia/Bangkok). ผล 159 Vitest / 37 Chromium / typecheck / build / compiled smoke 3 PASS เป็นผลรัน 8 พ.ย. ของ source ที่ commit เป็น `3313288`; รอบแก้เอกสารนี้ไม่ได้รันทดสอบแอปใหม่. OS-process restart, independent clean reproduction/UAT และ reviewed main release ยังขาดหลักฐาน; GAP-02 ยัง OPEN และ Product DoD ยังไม่ครบ. [Review/merge evidence](deliverable-1/evidence/review-merge-20261112/README.md). Baseline FR/BR/NFR/AC ไม่เปลี่ยน; F-06–09 อยู่ Sprint 2/3
 
 เอกสาร LC-SYS-SDS | Documentation baseline v0.5 | 5 พฤศจิกายน 2026
@@ -24,7 +26,7 @@ flowchart LR
     A --> X[PostgreSQL session store]
 ```
 
-Modules: accounts (auth/seed), events (create/publish/list; S2 edit/close), registrations (allocate seats/own records/roster; S2 cancel/reactivate), attendance (S3 check-in/summary) และ shared (errors/time/config/version) Backend/DB บังคับกฎ; frontend validation ช่วยผู้ใช้
+Modules: accounts (auth/seed), events (create/publish/list/close/update; F-07 edit รวมจาก staging แล้วใน working tree), registrations (allocate seats/own records/roster/cancel/reactivate), attendance (S3 check-in/summary) และ shared (errors/time/config/version) Backend/DB บังคับกฎ; frontend validation ช่วยผู้ใช้
 
 ### Planned source layout
 
@@ -62,9 +64,9 @@ erDiagram
 |---|---|---|
 | User | id, username, password_hash (salt/hash/parameters), display_name, role, is_active | username unique; role PARTICIPANT/ORGANIZER |
 | Event | id, organizer_id, title, description, location, starts_at, ends_at, registration_closes_at, capacity, status, created_at, updated_at | FK User; owner immutable; capacity 1–1000; ordered timestamps; DRAFT/PUBLISHED/CLOSED |
-| Registration | id, event_id, participant_id, status, registered_at | FK Event/User; UNIQUE(event_id, participant_id); enum ACTIVE/CANCELLED; S1 สร้าง ACTIVE เท่านั้น |
-| Registration extensions | cancelled_at (S2), checked_in_at/checked_in_by_id (S3) | nullable จนเกิด action; checked_in_by_id FK User |
-| RegistrationHistory (S2) | id, registration_id, actor_id, action, occurred_at | FK Registration/User; REGISTERED/CANCELLED/REACTIVATED; backfill initial REGISTERED ของ S1 |
+| Registration | id, event_id, participant_id, status, registered_at, cancelled_at | FK Event/User; UNIQUE(event_id, participant_id); enum ACTIVE/CANCELLED; cancelled_at nullable; F-06 reuse record/first registered_at เมื่อ reactivate |
+| Registration extensions (S3 planned) | checked_in_at/checked_in_by_id | nullable จนเกิด action; checked_in_by_id FK User |
+| RegistrationHistory (F-06 implemented) | id, registration_id, actor_id, action, occurred_at | FK Registration/User Restrict; REGISTERED/CANCELLED/REACTIVATED; backfill initial REGISTERED ของ S1; index (registration_id, occurred_at, id) |
 
 IDs ใช้ UUID; timestamps ใช้ `timestamptz(3)` UTC ตาม BR-14 Fields ใน S1 required/non-null เพิ่ม S2/S3 fields/history ผ่าน versioned migrations ไม่มี hard delete และไม่มี history UI ใน baseline
 
@@ -74,7 +76,7 @@ Prisma schema กำหนด relations/enums/unique; migrations เพิ่ม
 
 Implemented Sprint 1 indexes (schema.prisma): Event(status, starts_at), Event(organizer_id), Registration(participant_id, registered_at), Registration(event_id, status)
 
-### Implemented schema names and routes — reconciliation 14 November 2026
+### Implemented schema names and routes — Sprint 1 baseline with F-06 update 24 November 2026
 
 ตาราง entity ด้านบนใช้ชื่อ SQL/API แบบ snake_case; Prisma ใช้ camelCase ผ่าน `@map` และ `@@map` ตาม `server/prisma/schema.prisma`:
 
@@ -82,9 +84,10 @@ Implemented Sprint 1 indexes (schema.prisma): Event(status, starts_at), Event(or
 |---|---|
 | User / users | passwordHash → password_hash (ไม่คืน API); displayName → display_name; isActive → is_active |
 | Event / events | organizerId → organizer_id; startsAt → starts_at; endsAt → ends_at; registrationClosesAt → registration_closes_at; createdAt → created_at; updatedAt → updated_at |
-| Registration / registrations | eventId → event_id; participantId → participant_id; registeredAt → registered_at |
+| Registration / registrations | eventId → event_id; participantId → participant_id; registeredAt → registered_at; cancelledAt → cancelled_at (F-06) |
+| RegistrationHistory / registration_history | registrationId → registration_id; actorId → actor_id; occurredAt → occurred_at; action enum RegistrationAction (F-06) |
 
-EventStatus มี DRAFT/PUBLISHED/CLOSED; RegistrationStatus มี ACTIVE/CANCELLED ตาม enum จริง แต่ Sprint1 ไม่มี cancel/reactivate mutation. Registration extensions, RegistrationHistory และเส้นเชื่อม history ใน ER diagram เป็น design สำหรับ S2/S3 ยังไม่มีใน schema/migrations ปัจจุบัน. ส่วน session store เป็น infrastructure แยกจาก Prisma domain models.
+EventStatus มี DRAFT/PUBLISHED/CLOSED; RegistrationStatus มี ACTIVE/CANCELLED ตาม enum จริง Sprint 1 ไม่มี cancel/reactivate mutation แต่ F-06 เพิ่มแล้วพร้อม Registration.cancelledAt, RegistrationHistory และเส้นเชื่อม history ใน ER diagram; fields check-in ของ S3 ยัง planned. ส่วน session store เป็น infrastructure แยกจาก Prisma domain models.
 
 | HTTP | Implemented API route | Implementation |
 |---|---|---|
@@ -96,15 +99,17 @@ EventStatus มี DRAFT/PUBLISHED/CLOSED; RegistrationStatus มี ACTIVE/CANC
 | PATCH | /api/organizer/events/:id (F-07 edit, Sprint 2 #48) | modules/events/router.ts |
 | POST | /api/events/:id/registrations | modules/registrations/router.ts |
 | GET | /api/my/registrations; /api/my/registrations/:id; /api/organizer/events/:id/registrations | modules/registrations/read-router.ts |
+| POST | /api/my/registrations/:id/cancel | modules/registrations/cancellation-router.ts (F-06) |
+| POST | /api/organizer/events/:id/close | modules/events/router.ts (F-06 appended block) |
 
-Module paths ในตารางอยู่ใต้ `server/src/`; routers mount ที่ `/api`. API response fields ยึด serializers/contracts จริง: own record มี id/status/registered_at/event; roster มี event_id/capacity/active_count/registrations และ participant.display_name. cancel/reactivate/close/check-in/summary routes เป็น planned scope ของ F-06, F-08–09 ยังไม่ใช่ implemented endpoints; edit (F-07) implement แล้วตาม [Sprint 2 contracts](sprints/sprint-2/contracts.md) ใน #48.
+Module paths ในตารางอยู่ใต้ `server/src/`; routers mount ที่ `/api`. F-06 own record มี id/status/registered_at/cancelled_at/event; create/reactivate ใช้ POST register เดิม (201/200 ตามลำดับ) พร้อม required cancelled_at=null ในผลสำเร็จ; roster fields คงเดิม ไม่มี history endpoint. F-07 edit implement แล้วจาก #48/PR #57 และรวมใน working tree นี้ตาม [Sprint 2 contracts](sprints/sprint-2/contracts.md); F-08/09 check-in/summary ยัง planned
 
 ### Atomic registration
 
 1. ตรวจ active session/role และ lock Event ด้วย parameterized `SELECT ... FOR UPDATE` ใน Prisma interactive transaction
 2. หลังได้ lock ตรวจ event status และเรียก server application clock ใหม่เพื่อตรวจ deadline
-3. ใช้ precedence ตาม F-03 contract: event scope → status/deadline → duplicate → capacity; นับ ACTIVE ใหม่หลัง lock, insert ACTIVE แล้ว commit
-4. คืน 201 หลัง commit; failure ไม่เพิ่ม record/count; validation และ registered_at ใช้ค่าจาก clock หลัง lock เดียวกัน
+3. ใช้ precedence event scope → status/deadline → ACTIVE duplicate → capacity; นับ ACTIVE ใหม่หลัง lock แล้วสร้าง ACTIVE หรือ reactivate CANCELLED record เดิม พร้อม append history ใน transaction เดียว
+4. คืน 201 สำหรับ create หรือ 200 สำหรับ reactivate หลัง commit; failure ไม่เพิ่ม record/count/history; registered_at ใหม่ใช้ clock หลัง lock ส่วน reactivate คงเวลาครั้งแรกและล้าง cancelled_at
 
 ใช้ READ COMMITTED และ transaction client เดียวตลอด operation Seat mutations ของ publish/close/cancel/reactivate/capacity edit ใช้ lock order Event → Registration เดียวกัน Unique pair ป้องกัน duplicate ชั้นสุดท้าย; แปลง constraint conflicts เป็น domain errors โดยไม่คืน SQL
 
@@ -121,7 +126,7 @@ Concurrency tests ใช้ separate connections/transactions และ barrier 
 | /organizer/events, /organizer/events/new | Organizer ดูของตนรวม DRAFT และสร้างกิจกรรม | 1 |
 | /organizer/events/{id} | เจ้าของ preview/publish/roster/count | 1 |
 | /organizer/events/{id}/edit | เจ้าของแก้กิจกรรม (F-07): DRAFT ทุก field, PUBLISHED เฉพาะ title/description/location/capacity (ช่องเวลา disabled), CLOSED ไม่มีฟอร์ม; ส่งเฉพาะ field ที่เปลี่ยน | 2 |
-| หน้าเดิมเพิ่ม Cancel/Close/Edit | ตาม role/ownership/deadline | 2 |
+| หน้าเดิมเพิ่ม Cancel/Close/Edit (F-06/F-07 implemented) | ตาม role/ownership/deadline; edit อยู่ก่อน close ใน action row เดิม | 2 |
 | Roster เพิ่ม Check-in; own record เพิ่ม attendance; หน้า summary | ตาม permission matrix | 3 |
 
 Loading ปิดปุ่มซ้ำ; empty มีทางเลือกดู/สร้างกิจกรรม; field errors อยู่ใต้ input; conflicts อธิบายเหตุผลและ refresh availability; network errors retry ได้; expired session กลับ Login และล้าง private state; 403/404 ไม่เปิดเผยข้อมูลนอกสิทธิ์ เวลา UI แสดง Asia/Bangkok
@@ -149,7 +154,7 @@ Express SPA fallback ใช้เฉพาะ frontend routes; unknown API ค�
 | 401 | INVALID_CREDENTIALS: Login ผิด; AUTH_REQUIRED: protected request ไม่มี/หมดอายุ/inactive session |
 | 403 | ROLE_FORBIDDEN: role ไม่ผ่าน; CSRF_FAILED: token/origin ไม่ผ่าน |
 | 404 | EVENT_NOT_FOUND หรือ REGISTRATION_NOT_FOUND: ไม่พบ/นอก record scope; ROUTE_NOT_FOUND: unknown API |
-| 409 | INVALID_TRANSITION, DEADLINE_PASSED (publish), REGISTRATION_CLOSED, ALREADY_REGISTERED, EVENT_FULL; ALREADY_CHECKED_IN เริ่ม S3 |
+| 409 | INVALID_TRANSITION, DEADLINE_PASSED (publish), REGISTRATION_CLOSED, ALREADY_REGISTERED, ALREADY_CANCELLED (F-06 cancel ซ้ำก่อน deadline), EVENT_FULL; ALREADY_CHECKED_IN เริ่ม S3 |
 | 409 (S2 F-07 edit) | EVENT_NOT_EDITABLE: แก้กิจกรรม CLOSED; FIELD_NOT_EDITABLE: แก้ starts_at/ends_at/registration_closes_at ตอน PUBLISHED; CAPACITY_BELOW_ACTIVE: capacity ใหม่ต่ำกว่า ACTIVE count |
 | 500 | INTERNAL_ERROR: generic message, fields={} และไม่คืน internal details |
 
@@ -199,7 +204,7 @@ README implementation ต้องระบุ runtime/dependency versions แ�
 
 1. Install dependencies ตาม lockfile และเตรียม safe environment
 2. สร้าง PostgreSQL database/account และ run versioned migrations/Prisma Client generation
-3. Run idempotent synthetic seed; test database แยกจาก demo/deployment ปัจจุบันใช้ instance 5432 เดียวกัน โดย `db:setup:test` เตรียม test DB/URL และไม่ start PostgreSQL เพิ่ม
+3. Run idempotent synthetic seed; test database แยกจาก demo/deployment สำหรับผล F-06 ใช้ Docker test profile ที่ 55433 ผ่าน process-only TEST_DATABASE_URL; ไม่ migrate/reset legacy data เดิมที่ 5432 ดู [reproduction/guard](sprints/sprint-2/README.md)
 4. Build/run client/server, unit/API/DB/browser tests
 5. ทำ normal journey, restart persistence และ teammate clean reproduction
 
@@ -239,3 +244,19 @@ Delivery: PR build/tests gate → teammate review → staging integration → re
 Event module แยก router/input/service ใช้ Auth/session/role/CSRF/error convention เดิม Shared schema/migration reuse จาก #3 โดยตรง Owner queries scope ด้วย session; shared คืนเฉพาะ PUBLISHED/CLOSED พร้อม ACTIVE count จริง Read/create ใช้ REPEATABLE READ snapshot; publish ใช้ READ COMMITTED + Event row lock แล้วอ่าน server clock ใหม่ ตรวจ status ก่อน deadline และคืนผลหลัง commit
 
 Frontend มี owner list/create/preview/publish และ shared list/detail โดย reuse RegistrationAction ของ #3 และคง action mounted ระหว่าง focus/refresh รวม transient read failure Backend Event/Registration routers mount ร่วมกันก่อน unknown-API fallback ใช้ session/CSRF/clock เดียวกัน รายละเอียดใน [integration](events/integration.md) และ [combined verification](events/consistency-review.md) ไม่เพิ่ม edit/close/cancel/roster/check-in
+
+## 11. F-06 implementation update — 24 พฤศจิกายน 2026
+
+Cancellation ใช้ scoped read หา event_id ของ registration ที่ session เป็นเจ้าของ จากนั้น lock Event → Registration และ recheck state ใน READ COMMITTED transaction เดียว อ่าน clock หลัง Event lock; ตรวจ PUBLISHED/deadline ก่อน ALREADY_CANCELLED แล้วตั้ง cancelled_at พร้อม CANCELLED history. Register/reactivate ใช้ Event lock เดิม ตรวจ ACTIVE duplicate ก่อน capacity และ update record เดิมเมื่อ CANCELLED พร้อม REACTIVATED history. Close lock Event ที่ id/organizer_id ตรง session แล้วเปลี่ยน PUBLISHED → CLOSED แม้เลย deadline โดยไม่แก้ Registration/history. ทุก mutation commit ก่อนส่ง response; cancel/reactivate ไม่แก้ Event.updated_at
+
+Migration `202611240001_registration_lifecycle` ตรวจ legacy CANCELLED ก่อน BEGIN เพื่อให้ Prisma CLI แสดงเหตุผล reconcile ได้ชัดเจนโดยไม่เปลี่ยนข้อมูล จากนั้น DDL และ REGISTERED backfill อยู่ใน transaction เดียวกัน ใช้ `gen_random_uuid()` ฝั่ง SQL. Fresh seed/demo-data สร้าง REGISTERED history พร้อม Registration ใน transaction เดียว; fault-injection tests ยืนยัน rollback create/cancel/reactivate/seed. ห้ามเดาเวลา legacy cancel หรือ reset ฐานเดิมเพื่อให้ migration ผ่าน; เมื่อมี legacy data ต้องจัดทำ reconciliation ก่อน migration โดยทีมแยกจากการทดสอบนี้
+
+UI เพิ่ม cancel confirmation ใน own detail และ close confirmation ใน action row เดิมของ owner detail (ตำแหน่งหลังปุ่ม edit ของ F-07 เมื่อรวมงาน). RegistrationAction ใช้ GET `/api/my/registrations` แล้วเลือกด้วย event.id; ไม่เพิ่ม lookup endpoint. CANCELLED ขณะเต็ม/ปิดรับมีข้อความเฉพาะและไม่มี re-register; own/roster ใช้ label ลงทะเบียนครั้งแรกเมื่อ. Cancel/close ใช้ LifecycleMutation สำหรับ CSRF/busy/uncertainty และตรวจสถานะก่อนให้ retry; lookup response มี account/event/generation guards และล้างข้อมูลเมื่อ session ใช้ไม่ได้
+
+รายละเอียดไฟล์, AC/TEST mapping, RED/GREEN SHAs, PostgreSQL races และ actual compiled-process restart อยู่ใน [completion record](sprints/sprint-2/README.md). ผล local ไม่ใช่ GitHub CI, independent UAT, staging merge หรือ release acceptance; TEST-44(c) และ close→PATCH TEST-47 ต้องตรวจหลังรวม F-07 ตามข้อตกลง
+
+## 12. F-06/F-07 staging integration — 24 พฤศจิกายน 2026
+
+รวม F-07 จาก origin/sprint-2-staging ระหว่าง merge ที่ผู้ใช้เริ่มเอง: Event service เก็บทั้ง close และ update เป็นบล็อกแยก ใช้ Event lock/clock/serializer เดียวกับเดิม Router มีทั้ง PATCH และ POST close; owner detail วาง edit ก่อน close และเก็บ F-07 edit route/refresh/404 handling พร้อม F-06 cancellation/close behaviour. Contract/STS v0.7 เก็บ revision v0.6 ของทั้งสอง branch โดยไม่ทิ้งแถวประวัติหรือเปลี่ยน AC/TEST IDs
+
+F-07 integration fixture เพิ่ม REGISTERED history ใน nested create เดียวกับ Registration; cleanup ลบเฉพาะ suite-owned history → Registration → Event ใน transaction เดียวก่อนปิด connections เพื่อรองรับ Restrict FK ของ F-06 โดยไม่เปลี่ยน assertions ของ TEST-45–51. [ผลทดสอบหลังรวม](sprints/sprint-2/evidence/f06-staging-merge/README.md) แยกจาก historical F-06-only runs. TEST-44(c) ยังเป็น PR แยกหลังทั้งสอง feature เข้า staging; TEST-47/52 เปลี่ยนจาก CLOSED fixture เป็น actual close ในขั้น integration ตามข้อตกลง ไม่ถือว่าผ่านเพียงเพราะ local merge นี้

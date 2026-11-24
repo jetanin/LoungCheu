@@ -1,0 +1,18 @@
+
+> loungcheu@0.1.0 test:e2e
+> playwright test tests/e2e/events-registration.spec.ts tests/e2e/registration-views.spec.ts
+
+[WebServer] (node:63412) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+[WebServer] (Use `node --trace-warnings ...` to show where the warning was created)
+[WebServer] (node:61568) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+[WebServer] (Use `node --trace-warnings ...` to show where the warning was created)
+
+Running 3 tests using 1 worker
+
+(node:50956) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ok 1 tests\e2e\events-registration.spec.ts:11:1 › real #1/#2/#3 journey: publish, register across focus refresh, keep reference and reject stale full attempt (3.1s)
+  ok 2 tests\e2e\registration-views.spec.ts:35:1 › TEST-24/29/30: real publish → register → own detail/re-login → owner roster journey (3.0s)
+  ok 3 tests\e2e\registration-views.spec.ts:89:1 › TEST-25: own list empty/error/retry, session rejection and wrong-role direct access (1.0s)
+
+  3 passed (14.6s)

@@ -1,0 +1,153 @@
+
+> loungcheu@0.1.0 test
+> vitest run server/tests/integration/registration-lifecycle.test.ts --reporter=verbose
+
+
+ RUN  v5.1.0 C:/Work/2569/CPE334/GroupWork/LoungCheu
+
+ × server/tests/integration/registration-lifecycle.test.ts > F-06 lifecycle / initial RED slice > TEST-37: cancel frees the last seat for a previously rejected participant 81ms
+   → expected 404 to be 200 // Object.is equality
+ × server/tests/integration/registration-lifecycle.test.ts > F-06 lifecycle / initial RED slice > TEST-38: two cancel/reactivate cycles retain one reference and first registration time 33ms
+   → expected 404 to be 200 // Object.is equality
+ × server/tests/integration/registration-lifecycle.test.ts > F-06 lifecycle / initial RED slice > TEST-39: close is allowed at deadline offset -1 ms and preserves registrations 41ms
+   → expected 404 to be 200 // Object.is equality
+ × server/tests/integration/registration-lifecycle.test.ts > F-06 lifecycle / initial RED slice > TEST-39: close is allowed at deadline offset 0 ms and preserves registrations 36ms
+   → expected 404 to be 200 // Object.is equality
+ × server/tests/integration/registration-lifecycle.test.ts > F-06 lifecycle / initial RED slice > TEST-39: close is allowed at deadline offset 1 ms and preserves registrations 39ms
+   → expected 404 to be 200 // Object.is equality
+ × server/tests/integration/registration-lifecycle.test.ts > F-06 lifecycle / initial RED slice > TEST-40: cancel enforces deadline offset -1 ms without changing rejected records 37ms
+   → expected 404 to be 200 // Object.is equality
+ × server/tests/integration/registration-lifecycle.test.ts > F-06 lifecycle / initial RED slice > TEST-40: cancel enforces deadline offset 0 ms without changing rejected records 36ms
+   → expected 404 to be 409 // Object.is equality
+ × server/tests/integration/registration-lifecycle.test.ts > F-06 lifecycle / initial RED slice > TEST-40: cancel enforces deadline offset 1 ms without changing rejected records 31ms
+   → expected 404 to be 409 // Object.is equality
+ × server/tests/integration/registration-lifecycle.test.ts > F-06 lifecycle / initial RED slice > TEST-41: cancel and close enforce auth, role, ownership and CSRF 30ms
+   → expected 404 to be 401 // Object.is equality
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 9 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  server/tests/integration/registration-lifecycle.test.ts > F-06 lifecycle / initial RED slice > TEST-37: cancel frees the last seat for a previously rejected participant
+AssertionError: expected 404 to be 200 // Object.is equality
+
+- Expected
++ Received
+
+- 200
++ 404
+
+ ❯ server/tests/integration/registration-lifecycle.test.ts:118:27
+    116|
+    117|     const result = await cancel('pa', reference);
+    118|     expect(result.status).toBe(200);
+       |                           ^
+    119|     expect(result.body.data).toMatchObject({
+    120|       id: reference, status: 'CANCELLED', registered_at: new Date(t0).…
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/9]⎯
+
+ FAIL  server/tests/integration/registration-lifecycle.test.ts > F-06 lifecycle / initial RED slice > TEST-38: two cancel/reactivate cycles retain one reference and first registration time
+AssertionError: expected 404 to be 200 // Object.is equality
+
+- Expected
++ Received
+
+- 200
++ 404
+
+ ❯ server/tests/integration/registration-lifecycle.test.ts:151:54
+    149|     for (const [cancelTime, reactivateTime] of [[t0 - 3_600_000, t0], …
+    150|       clock = cancelTime;
+    151|       expect((await cancel('pa', reference)).status).toBe(200);
+       |                                                      ^
+    152|       actions.push('CANCELLED');
+    153|       clock = reactivateTime;
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[2/9]⎯
+
+ FAIL  server/tests/integration/registration-lifecycle.test.ts > F-06 lifecycle / initial RED slice > TEST-39: close is allowed at deadline offset -1 ms and preserves registrations
+ FAIL  server/tests/integration/registration-lifecycle.test.ts > F-06 lifecycle / initial RED slice > TEST-39: close is allowed at deadline offset 0 ms and preserves registrations
+ FAIL  server/tests/integration/registration-lifecycle.test.ts > F-06 lifecycle / initial RED slice > TEST-39: close is allowed at deadline offset 1 ms and preserves registrations
+AssertionError: expected 404 to be 200 // Object.is equality
+
+- Expected
++ Received
+
+- 200
++ 404
+
+ ❯ server/tests/integration/registration-lifecycle.test.ts:174:27
+    172|     clock = event.registrationClosesAt.getTime() + offset;
+    173|     const result = await close('oa', event.id);
+    174|     expect(result.status).toBe(200);
+       |                           ^
+    175|     expect(result.body.data).toMatchObject({ id: event.id, status: 'CL…
+    176|       active_count: 1, available_seats: 0, registration_open: false, u…
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[3/9]⎯
+
+ FAIL  server/tests/integration/registration-lifecycle.test.ts > F-06 lifecycle / initial RED slice > TEST-40: cancel enforces deadline offset -1 ms without changing rejected records
+AssertionError: expected 404 to be 200 // Object.is equality
+
+- Expected
++ Received
+
+- 200
++ 404
+
+ ❯ server/tests/integration/registration-lifecycle.test.ts:195:29
+    193|     const result = await cancel('pa', reference);
+    194|     if (offset < 0) {
+    195|       expect(result.status).toBe(200);
+       |                             ^
+    196|       expect(result.body.data.cancelled_at).toBe(new Date(clock).toISO…
+    197|       error(await cancel('pa', reference), 409, 'ALREADY_CANCELLED');
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[4/9]⎯
+
+ FAIL  server/tests/integration/registration-lifecycle.test.ts > F-06 lifecycle / initial RED slice > TEST-40: cancel enforces deadline offset 0 ms without changing rejected records
+ FAIL  server/tests/integration/registration-lifecycle.test.ts > F-06 lifecycle / initial RED slice > TEST-40: cancel enforces deadline offset 1 ms without changing rejected records
+AssertionError: expected 404 to be 409 // Object.is equality
+
+- Expected
++ Received
+
+- 409
++ 404
+
+ ❯ error server/tests/integration/registration-lifecycle.test.ts:51:27
+     49| }
+     50| function error(response: request.Response, status: number, code: strin…
+     51|   expect(response.status).toBe(status);
+       |                           ^
+     52|   expect(response.body).toEqual({ error: { code, message: expect.any(S…
+     53| }
+ ❯ server/tests/integration/registration-lifecycle.test.ts:199:7
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[5/9]⎯
+
+ FAIL  server/tests/integration/registration-lifecycle.test.ts > F-06 lifecycle / initial RED slice > TEST-41: cancel and close enforce auth, role, ownership and CSRF
+AssertionError: expected 404 to be 401 // Object.is equality
+
+- Expected
++ Received
+
+- 401
++ 404
+
+ ❯ error server/tests/integration/registration-lifecycle.test.ts:51:27
+     49| }
+     50| function error(response: request.Response, status: number, code: strin…
+     51|   expect(response.status).toBe(status);
+       |                           ^
+     52|   expect(response.body).toEqual({ error: { code, message: expect.any(S…
+     53| }
+ ❯ server/tests/integration/registration-lifecycle.test.ts:212:49
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[6/9]⎯
+
+
+ Test Files  1 failed (1)
+      Tests  9 failed (9)
+   Start at  01:42:58
+   Duration  1.47s (tests 65%, import 26%, transform 8%)
+

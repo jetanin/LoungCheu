@@ -1,6 +1,6 @@
 # Sprint 2 — Feature Engineering Contracts (F-06, F-07)
 
-เอกสาร LC-S2-CONTRACT | v0.6 (planned design) | 24 พฤศจิกายน 2026
+เอกสาร LC-S2-CONTRACT | v0.7 (F-06/F-07 integration reconciliation) | 24 พฤศจิกายน 2026
 
 ฐานของ Sprint 2: `sprint-2-staging` แตกจาก `main` ที่ `0b2cc80` (tag `v1.0.1-uat`) ใช้ SRS/System SDS baseline v0.5 และ IDs เดิมตาม [traceability](../../traceability.md) เอกสารนี้ต้อง merge เข้า `sprint-2-staging` **ก่อน** เริ่มเขียนโค้ด F-06/F-07 (D2 §3.2 "contracts before implementation")
 
@@ -36,9 +36,9 @@ F-06 ใช้ `REGISTRATION_CLOSED` เดิมเมื่อ cancel/reactiva
 
 **Links:** FR-09–10, FR-12; BR-03–11, BR-14; NFR-01, NFR-03, NFR-04, NFR-05, NFR-06; V2-01, V2-02, V2-04; dependency: F-03–05
 
-สถานะ: **planned; ยังไม่ implement และยังไม่มีผลรันทดสอบ F-06** งานออกแบบอยู่ใน Issue #46; งาน implementation อยู่ใน Issue #47
+สถานะ: **implemented; local verification recorded; ยังไม่ถือว่า Done/accepted release** งานออกแบบ #46 ปิดแล้วตามข้อมูลผู้ใช้; implementation #47 บน `feature/47-f06` ผูก source ล่าสุดที่ผู้ใช้ระบุ `ba89488079a2c884735a18642dbd7487b6872559` ดู [completion/หลักฐานและข้อจำกัด](README.md) ซึ่งแยกผลแต่ละ commit ออกจาก CI/review/merge/release ที่ยัง pending; TEST-44(c) ทำใน PR แยกหลัง #47/#48 เข้า staging ทั้งคู่
 
-**NFR → planned verification** (อ้างอิง [SRS](../../srs.md); ยังไม่ใช่ผลรันทดสอบ):
+**NFR → verification design** (อ้างอิง [SRS](../../srs.md); ผลรันจริงอยู่ใน [completion](README.md); NFR-03 มี actual backend process restart เพิ่มจาก reload/re-login):
 
 | NFR | ขอบเขตใน F-06 | Planned tests |
 |---|---|---|
@@ -111,7 +111,7 @@ UI rules:
 
 ทุก rejection ต้องไม่ทำให้ operation นั้นเปลี่ยน Event/Registration/history แม้แต่ timestamp; cancel/reactivate ไม่แก้ Event fields หรือ updated_at และ close ไม่แก้ Registration/history จำนวนที่นั่งว่างยังเป็น capacity − ACTIVE count แต่ CLOSED มี registration_open=false เสมอ การเปลี่ยนที่เกิดจาก transaction คู่แข่งที่สำเร็จไม่ใช่ side effect ของ request ที่ถูกปฏิเสธ
 
-**Data / migration (planned ใน #47):**
+**Data / migration (implemented ใน #47; ผล CLI/seed/rollback อยู่ใน completion):**
 
 | ส่วน | การเปลี่ยนแปลง |
 |---|---|
@@ -312,3 +312,5 @@ DoD F-07 (ครบทุกข้อจึงถือว่าเสร็จ)
 | 0.4 | 24 พ.ย. 2026 | ระบุ REGISTERED history ใน seed/demo-data หลัง migration, UUID ของ SQL backfill และ UI ของ CANCELLED เมื่อเต็ม/ปิดรับ; ใช้สถานะ planned ที่ไม่อ้างรอ review | แก้ข้อเสนอแนะ PR #56 ให้ lifecycle ครบทั้ง legacy และ fresh DB และข้อความยังถูกต้องหลัง merge | M1 |
 | 0.5 | 24 พ.ย. 2026 | เพิ่ม linked NFR-01/03/04/05/06 และ mapping ไป TEST-41/43/42/44(a)/41 ตามลำดับ | เติม linked FR/BR/NFR ของ F-06 ให้ครบตาม D2 §3.2 จากข้อเสนอแนะ PR #56 | M1 |
 | 0.6 | 24 พ.ย. 2026 | F-07 UI: คำอธิบาย capacity แสดงเฉพาะ PUBLISHED; กำหนดข้อความสำเร็จหลังบันทึก "บันทึกการแก้ไขแล้ว"; ไม่เปลี่ยน API, AC หรือ TEST IDs | ระหว่าง implement #48 พบว่าคำอธิบายบน DRAFT จะเป็น "ไม่ต่ำกว่า 0" ซึ่งขัดกับขั้นต่ำ 1 ของ BR-01 และ v0.5 ไม่ได้ระบุข้อความสำเร็จ จึงระบุให้ตรวจได้ใน TEST-52 | M2 |
+| 0.6 | 24 พ.ย. 2026 | อัปเดตสถานะ F-06 และลิงก์ completion/evidence; ระบุ actual process restart และ TEST-44(c) แยก PR; AC/TEST/FR/BR และ F-07 คงเดิม | reconcile design กับ implementation/local runs โดยไม่อ้างว่า CI/review/merge/release ผ่านแล้ว | M1 |
+| 0.7 | 24 พ.ย. 2026 | รวม revision v0.6 ของ M1/F-06 และ M2/F-07 จากสอง branch โดยเก็บทั้งสองแถว; คง AC/TEST IDs และการแก้ F-07 ทุกข้อ | แก้ merge conflict หลังรวม sprint-2-staging เข้า feature/47-f06; TEST-44(c) ยังแยก PR และผลหลัง merge บันทึกแยกจากผลเดิม | M1 |
