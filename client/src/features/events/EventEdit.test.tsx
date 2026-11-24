@@ -131,6 +131,36 @@ describe('F-07 edit event UI (TEST-52 component, AC-40)', () => {
     expect(await screen.findByText('กรุณากรอก 1–200 ตัวอักษร')).toBeTruthy();
   });
 
+  it('a focus refresh that returns PUBLISHED locks the time fields and keeps typed details', async () => {
+    const calls = server([ok(ownerEvent()), ok(ownerEvent({ status: 'PUBLISHED', active_count: 1, available_seats: 2 }))],
+      body => ok(ownerEvent({ status: 'PUBLISHED', title: (body as { title: string }).title })));
+    open(editPath);
+    await screen.findByRole('heading', { name: 'แก้ไขกิจกรรม' });
+    fireEvent.change(field('ชื่อกิจกรรม'), { target: { value: 'ชื่อที่พิมพ์ไว้' } });
+    fireEvent.change(field('เวลาเริ่มกิจกรรม'), { target: { value: '10:30' } });
+    fireEvent.focus(window); // published in another tab
+    await screen.findByText('เผยแพร่แล้ว แก้เวลาไม่ได้');
+    expect(field('เวลาเริ่มกิจกรรม').closest('fieldset')?.disabled).toBe(true);
+    expect(field('เวลาเริ่มกิจกรรม').value).toBe('10:00');
+    expect(screen.getByText('มีผู้ลงทะเบียน ACTIVE 1 คน ตั้งได้ไม่ต่ำกว่า 1')).toBeTruthy();
+    expect(field('ชื่อกิจกรรม').value).toBe('ชื่อที่พิมพ์ไว้');
+    fireEvent.click(saveButton());
+    await waitFor(() => expect(calls.filter(c => c.method === 'PATCH')).toHaveLength(1));
+    expect(calls.find(c => c.method === 'PATCH')!.body).toEqual({ title: 'ชื่อที่พิมพ์ไว้' });
+  });
+
+  it('PATCH 404 clears the protected record and shows not found like owner detail', async () => {
+    server([ok(ownerEvent())], () => [404, { error: { code: 'EVENT_NOT_FOUND', message: 'ไม่พบกิจกรรมนี้', fields: {} } }]);
+    open(editPath);
+    await screen.findByRole('heading', { name: 'แก้ไขกิจกรรม' });
+    fireEvent.change(field('ชื่อกิจกรรม'), { target: { value: 'ชื่อใหม่' } });
+    fireEvent.click(saveButton());
+    expect(await screen.findByText(/ไม่พบกิจกรรมนี้/)).toBeTruthy();
+    expect(screen.queryByRole('button', { name: 'บันทึกการแก้ไข' })).toBeNull();
+    expect(screen.queryByLabelText('ชื่อกิจกรรม', { exact: true })).toBeNull();
+    expect(screen.queryByDisplayValue('กิจกรรมเดิม')).toBeNull();
+  });
+
   it('CLOSED has no edit form; 404 and Participant are refused like owner routes', async () => {
     server([ok(ownerEvent({ status: 'CLOSED' }))]);
     open(editPath);
