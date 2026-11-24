@@ -1,0 +1,79 @@
+
+> loungcheu@0.1.0 test
+> vitest run server/tests/integration/registration-lifecycle-migration.test.ts server/tests/integration/registration-lifecycle-restart.test.ts --reporter=verbose
+
+
+ RUN  v5.1.0 C:/Work/2569/CPE334/GroupWork/LoungCheu
+
+ ✓ server/tests/integration/registration-lifecycle-migration.test.ts > TEST-44(a): real S1→S2 migrate preserves legacy data, backfills REGISTERED once and enforces history FKs 7521ms
+ × server/tests/integration/registration-lifecycle-migration.test.ts > TEST-44(a): legacy CANCELLED without its timestamp stops migration without inventing data 3173ms
+   → expected 'Datasource "db": PostgreSQL database …' to contain 'Legacy CANCELLED registrations requir…'
+ ✓ server/tests/integration/registration-lifecycle-migration.test.ts > TEST-44(a): fresh migrate→actual seed entry point creates history and repeated/concurrent seed preserves it 3527ms
+ ✓ server/tests/integration/registration-lifecycle-migration.test.ts > TEST-44(a): concurrent actual seed processes on a fresh database create one REGISTERED entry per record 2357ms
+ ✓ server/tests/integration/registration-lifecycle-migration.test.ts > TEST-44(b): create rolls back state and history when the history INSERT fails 1752ms
+ ✓ server/tests/integration/registration-lifecycle-migration.test.ts > TEST-44(b): cancel rolls back state and history when the history INSERT fails 1779ms
+ ✓ server/tests/integration/registration-lifecycle-migration.test.ts > TEST-44(b): reactivate rolls back state and history when the history INSERT fails 1857ms
+ ✓ server/tests/integration/registration-lifecycle-migration.test.ts > TEST-44(a/b): demo-data history failure rolls back newly seeded events and registrations 1771ms
+stdout | server/tests/integration/registration-lifecycle-restart.test.ts > NFR-03 / TEST-43 persistence: CANCELLED then reactivated/CLOSED state survives actual compiled backend process restarts
+F06_RESTART {"event":"ready","pid":49884,"port":65432,"version":"f06-restart-e7503ec5-fed3-4225-809e-2c55e2b2331a-1"}
+
+stdout | server/tests/integration/registration-lifecycle-restart.test.ts > NFR-03 / TEST-43 persistence: CANCELLED then reactivated/CLOSED state survives actual compiled backend process restarts
+F06_RESTART {"event":"stopped","pid":49884}
+
+stdout | server/tests/integration/registration-lifecycle-restart.test.ts > NFR-03 / TEST-43 persistence: CANCELLED then reactivated/CLOSED state survives actual compiled backend process restarts
+F06_RESTART {"event":"ready","pid":36380,"port":65432,"version":"f06-restart-e7503ec5-fed3-4225-809e-2c55e2b2331a-2"}
+
+stdout | server/tests/integration/registration-lifecycle-restart.test.ts > NFR-03 / TEST-43 persistence: CANCELLED then reactivated/CLOSED state survives actual compiled backend process restarts
+F06_RESTART {"event":"stopped","pid":36380}
+
+stdout | server/tests/integration/registration-lifecycle-restart.test.ts > NFR-03 / TEST-43 persistence: CANCELLED then reactivated/CLOSED state survives actual compiled backend process restarts
+F06_RESTART {"event":"ready","pid":48144,"port":65432,"version":"f06-restart-e7503ec5-fed3-4225-809e-2c55e2b2331a-3"}
+
+stdout | server/tests/integration/registration-lifecycle-restart.test.ts > NFR-03 / TEST-43 persistence: CANCELLED then reactivated/CLOSED state survives actual compiled backend process restarts
+F06_RESTART {"event":"verified","distinctProcesses":3,"stoppedAndRestarted":2,"registrationRows":1,"historyRows":3}
+
+stdout | server/tests/integration/registration-lifecycle-restart.test.ts > NFR-03 / TEST-43 persistence: CANCELLED then reactivated/CLOSED state survives actual compiled backend process restarts
+F06_RESTART {"event":"stopped","pid":48144}
+
+ ✓ server/tests/integration/registration-lifecycle-restart.test.ts > NFR-03 / TEST-43 persistence: CANCELLED then reactivated/CLOSED state survives actual compiled backend process restarts 5325ms
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 1 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  server/tests/integration/registration-lifecycle-migration.test.ts > TEST-44(a): legacy CANCELLED without its timestamp stops migration without inventing data
+AssertionError: expected 'Datasource "db": PostgreSQL database …' to contain 'Legacy CANCELLED registrations requir…'
+
+- Expected
++ Received
+
+- Legacy CANCELLED registrations require data reconciliation
++ Datasource "db": PostgreSQL database "loungcheu_test_f06_96017ccd973f4940934638358bb9fad3", schema "public" at "127.0.0.1:55433"
++
++ 3 migrations found in prisma/migrations
++
++ Applying migration `202611240001_registration_lifecycle`
++ Loaded Prisma config from server\prisma.config.ts.
++
++ Prisma schema loaded from server\prisma\schema.prisma.
++ Error: ERROR: current transaction is aborted, commands ignored until end of transaction block
++
++
++
+
+ ❯ server/tests/integration/registration-lifecycle-migration.test.ts:71:45
+     69|       const result = await deployLifecycleMigrations(url);
+     70|       expect(result.code).not.toBe(0);
+     71|       expect(result.stdout + result.stderr).toContain('Legacy CANCELLE…
+       |                                             ^
+     72|       expect((await client.query('SELECT * FROM registrations ORDER BY…
+     73|       expect((await client.query("SELECT to_regclass('public.registrat…
+ ❯ withLifecycleDatabase server/tests/helpers/lifecycle-environment.ts:29:12
+ ❯ server/tests/integration/registration-lifecycle-migration.test.ts:63:3
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/1]⎯
+
+
+ Test Files  1 failed | 1 passed (2)
+      Tests  1 failed | 8 passed (9)
+   Start at  12:06:13
+   Duration  32.44s (tests 91%, import 8%, transform 1%)
+
