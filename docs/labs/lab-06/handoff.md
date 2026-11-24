@@ -1,7 +1,7 @@
 # Lab 6 — UAT handoff (LoungCheu)
 
 From: Product Team TH-001_P3 (Jetanin Naitho, Paphangkorn Luanseng)
-To: UAT Team TH-005_P5 (Napat Utbuawong, Nanthakorn Pinsupaporn)
+To: UAT Team TH-005_P5 (Naphat Utabuawong, Nantakorn Pinsupaporn)
 Test cases: [uat-cases.md](uat-cases.md)
 
 ## 1. Release under test
