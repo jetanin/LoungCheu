@@ -49,7 +49,7 @@ Prefix ข้อมูลของเรา: `UAT-P3-<เคส>` | Actual = ส
 | UAT-07 | Sign-in / session | Paphangkorn / TH-001_P3 | 24 พ.ย. 2026 18:37–18:43; step 5 ทำซ้ำ 19:16 เพื่อเก็บภาพหลัง reload | `v0.2.0 / 1cbd8b4 / 00006-8bp` | REQ-ENG1; ไม่ login เปิด `/requests`; `req.eng1@example.com` + `wrong-password-1`; `nobody@example.com` + รหัสสุ่ม; ` REQ.ENG1@Example.com ` + รหัสจริง | (1) URL `/requests` แสดงฟอร์ม Email/Password/Sign in ไม่เห็นรายการคำขอ (2) ข้อความแดง "Email or password is incorrect", ช่อง email ยังเป็น req.eng1@example.com, ช่องรหัสว่าง (3) ข้อความเดียวกันทุกตัวอักษร, email nobody@example.com ยังอยู่ (4) เข้าสู่ `/requests` header "Anan (Engineering requester) · Requester", เมนูมี My requests / New request ไม่มี Review queue (5) Sign out → Back → reload: URL `/requests` แสดงฟอร์ม Sign in ไม่เห็น My requests (รอบ 18:43 ก่อน reload ก็อยู่หน้า Sign in) | PASS (tester ยืนยันว่า step 4 พิมพ์ email มีเว้นวรรค+ตัวพิมพ์ใหญ่ตามเคส) | EV-B-01 – EV-B-05 |
 | **รวม** | | | | | | | PASS `7` / FAIL `0` / BLOCKED `0` | |
 
-Evidence: `docs/labs/lab-06/evidence/approvalflow/EV-B-<nn>_UAT-<xx>_<สั้น>_2026-11-<dd>T<hhmm>.png` (ไม่มีรหัสผ่านในภาพ)
+Evidence: `docs/labs/lab-06/evidence/approvalflow/EV-B-<nn>_UAT-<xx>_<สั้น>_2026-11-<dd>T<hhmm>.png` (ไม่มีรหัสผ่านในภาพ). ภาพแชต IG กับทีมคู่ (EV-B-00, EV-B-00a–00f, EV-B-out-01, EV-B-dec-01) ไม่อยู่ใน repo — แนบใน PDF Lab 6; EV-B-out-01 และ EV-B-00f เป็นภาพเดียวกัน (ข้อความแจ้งไม่มี finding + คำยืนยันไม่ deploy)
 
 ## 4. Finding ที่ส่งทีมคู่ (L6 §3.3 Report reproducible defects)
 
@@ -63,7 +63,7 @@ Evidence: `docs/labs/lab-06/evidence/approvalflow/EV-B-<nn>_UAT-<xx>_<สั้�
 
 เกณฑ์ severity: Critical = ข้อมูลรั่ว/สิทธิ์ผิด/ข้อมูลเสีย; Major = journey หลักทำไม่ได้หรือผลผิด AC; Minor = ไม่กระทบผลลัพธ์ (ข้อความ, layout)
 
-## 5. Retest และผลตัดสิน (L6 §3.4 — กรอก 26 พ.ย.)
+## 5. Retest และผลตัดสิน (L6 §3.4)
 
 | Finding | Version ใหม่ (commit / revision / digest) | เคสที่รันซ้ำ | Tester | วันที่-เวลา | Actual | ผล | Evidence |
 |---|---|---|---|---|---|---|---|
