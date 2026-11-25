@@ -13,7 +13,7 @@ body:
     id: reporter
     attributes:
       label: Reporter (name / team)
-      placeholder: "e.g. Napat Utbuawong / TH-005_P5"
+      placeholder: "e.g. Naphat Utabuawong / TH-005_P5"
     validations:
       required: true
 
