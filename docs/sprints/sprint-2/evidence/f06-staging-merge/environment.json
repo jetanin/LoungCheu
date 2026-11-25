@@ -1,0 +1,8 @@
+{
+  "node": "v24.15.0",
+  "platform": "win32",
+  "arch": "x64",
+  "testDatabase": "127.0.0.1:55433/loungcheu_test",
+  "browserApiPort": 3011,
+  "browserWebPort": 5183
+}

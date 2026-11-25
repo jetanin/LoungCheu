@@ -20,6 +20,7 @@ model User {
   isActive     Boolean @default(true) @map("is_active")
   events       Event[]
   registrations Registration[]
+  registrationHistory RegistrationHistory[]
 
   @@map("users")
 }
@@ -33,6 +34,12 @@ enum EventStatus {
 enum RegistrationStatus {
   ACTIVE
   CANCELLED
+}
+
+enum RegistrationAction {
+  REGISTERED
+  CANCELLED
+  REACTIVATED
 }
 
 // Minimal shared Event foundation required by F-03. Event APIs remain owned by #2.
@@ -63,11 +70,26 @@ model Registration {
   participantId String             @map("participant_id") @db.Uuid
   status        RegistrationStatus @default(ACTIVE)
   registeredAt  DateTime           @map("registered_at") @db.Timestamptz(3)
+  cancelledAt   DateTime?          @map("cancelled_at") @db.Timestamptz(3)
   event         Event              @relation(fields: [eventId], references: [id], onDelete: Restrict)
   participant   User               @relation(fields: [participantId], references: [id], onDelete: Restrict)
+  history       RegistrationHistory[]
 
   @@unique([eventId, participantId])
   @@index([participantId, registeredAt])
   @@index([eventId, status])
   @@map("registrations")
+}
+
+model RegistrationHistory {
+  id             String             @id @default(uuid()) @db.Uuid
+  registrationId String             @map("registration_id") @db.Uuid
+  actorId        String             @map("actor_id") @db.Uuid
+  action         RegistrationAction
+  occurredAt     DateTime           @map("occurred_at") @db.Timestamptz(3)
+  registration   Registration       @relation(fields: [registrationId], references: [id], onDelete: Restrict)
+  actor          User               @relation(fields: [actorId], references: [id], onDelete: Restrict)
+
+  @@index([registrationId, occurredAt, id])
+  @@map("registration_history")
 }

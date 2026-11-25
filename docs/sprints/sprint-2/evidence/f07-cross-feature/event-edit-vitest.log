@@ -1,0 +1,17 @@
+
+ RUN  v5.1.0 C:/Kmutt/Senior/CPE334/Final/LoungCheu
+
+ ✓ server/tests/integration/event-edit.test.ts > F-07 PATCH /api/organizer/events/{id} (TEST-45–TEST-51) > TEST-45 / AC-34 owner edits every EventInput field of a DRAFT and reads it back 54ms
+ ✓ server/tests/integration/event-edit.test.ts > F-07 PATCH /api/organizer/events/{id} (TEST-45–TEST-51) > TEST-46 / AC-35 PUBLISHED allows details/capacity but rejects any time field 168ms
+ ✓ server/tests/integration/event-edit.test.ts > F-07 PATCH /api/organizer/events/{id} (TEST-45–TEST-51) > TEST-47 / AC-36 CLOSED is not editable and status is checked before field rules 88ms
+ ✓ server/tests/integration/event-edit.test.ts > F-07 PATCH /api/organizer/events/{id} (TEST-45–TEST-51) > TEST-48 / AC-37 rejects invalid EventPatch and merged BR-02 order without changes; accepts boundaries 209ms
+ ✓ server/tests/integration/event-edit.test.ts > F-07 PATCH /api/organizer/events/{id} (TEST-45–TEST-51) > TEST-49 / AC-38 capacity may equal ACTIVE but not go below; raising a full event reopens it 90ms
+ ✓ server/tests/integration/event-edit.test.ts > F-07 PATCH /api/organizer/events/{id} (TEST-45–TEST-51) > TEST-50 / AC-39 capacity decrease and last-seat registration serialize on the Event lock 1382ms
+ ✓ server/tests/integration/event-edit.test.ts > F-07 PATCH /api/organizer/events/{id} (TEST-45–TEST-51) > TEST-51 / AC-40 enforces auth → role → CSRF → input → ownership without changes 93ms
+ ✓ server/tests/integration/event-edit.test.ts > F-06 × F-07 cross-feature (Sprint 2 STS TEST-44(c)) > TEST-44(c) / AC-33 cancel → capacity down → reactivate full → capacity up → reactivate the same record 130ms
+
+ Test Files  1 passed (1)
+      Tests  8 passed (8)
+   Start at  17:57:52
+   Duration  4.74s (tests 89%, import 9%, transform 2%)
+

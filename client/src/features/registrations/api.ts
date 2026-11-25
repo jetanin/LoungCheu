@@ -5,6 +5,7 @@ export interface RegistrationCreated {
   event_id: string;
   status: 'ACTIVE';
   registered_at: string;
+  cancelled_at: string | null;
 }
 
 export class RegistrationFailure extends Error {
@@ -24,7 +25,7 @@ export async function registerForEvent(eventId: string, csrfToken: string, signa
   }
   const payload = { data };
   if (typeof payload?.data?.id !== 'string' || payload.data.event_id !== eventId ||
-    payload.data.status !== 'ACTIVE' || typeof payload.data.registered_at !== 'string') {
+    payload.data.status !== 'ACTIVE' || typeof payload.data.registered_at !== 'string' || payload.data.cancelled_at !== null) {
     throw new Error('Invalid registration response');
   }
   return payload.data;

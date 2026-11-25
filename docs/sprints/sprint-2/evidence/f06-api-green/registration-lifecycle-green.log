@@ -1,0 +1,22 @@
+
+> loungcheu@0.1.0 test
+> vitest run server/tests/integration/registration-lifecycle.test.ts --reporter=verbose
+
+
+ RUN  v5.1.0 C:/Work/2569/CPE334/GroupWork/LoungCheu
+
+ ✓ server/tests/integration/registration-lifecycle.test.ts > F-06 lifecycle / initial RED slice > TEST-37: cancel frees the last seat for a previously rejected participant 185ms
+ ✓ server/tests/integration/registration-lifecycle.test.ts > F-06 lifecycle / initial RED slice > TEST-38: two cancel/reactivate cycles retain one reference and first registration time 137ms
+ ✓ server/tests/integration/registration-lifecycle.test.ts > F-06 lifecycle / initial RED slice > TEST-39: close is allowed at deadline offset -1 ms and preserves registrations 109ms
+ ✓ server/tests/integration/registration-lifecycle.test.ts > F-06 lifecycle / initial RED slice > TEST-39: close is allowed at deadline offset 0 ms and preserves registrations 102ms
+ ✓ server/tests/integration/registration-lifecycle.test.ts > F-06 lifecycle / initial RED slice > TEST-39: close is allowed at deadline offset 1 ms and preserves registrations 106ms
+ ✓ server/tests/integration/registration-lifecycle.test.ts > F-06 lifecycle / initial RED slice > TEST-40: cancel enforces deadline offset -1 ms without changing rejected records 86ms
+ ✓ server/tests/integration/registration-lifecycle.test.ts > F-06 lifecycle / initial RED slice > TEST-40: cancel enforces deadline offset 0 ms without changing rejected records 66ms
+ ✓ server/tests/integration/registration-lifecycle.test.ts > F-06 lifecycle / initial RED slice > TEST-40: cancel enforces deadline offset 1 ms without changing rejected records 66ms
+ ✓ server/tests/integration/registration-lifecycle.test.ts > F-06 lifecycle / initial RED slice > TEST-41: cancel and close enforce auth, role, ownership and CSRF 122ms
+
+ Test Files  1 passed (1)
+      Tests  9 passed (9)
+   Start at  01:56:15
+   Duration  2.30s (tests 71%, import 20%, transform 8%)
+

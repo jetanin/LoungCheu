@@ -1,0 +1,34 @@
+
+> loungcheu@0.1.0 test
+> vitest run server/tests/integration/registration-lifecycle-hardening.test.ts --reporter=verbose
+
+
+ RUN  v5.1.0 C:/Work/2569/CPE334/GroupWork/LoungCheu
+
+ ✓ server/tests/integration/registration-lifecycle-hardening.test.ts > F-06 TEST-40 / strict input and domain precedence > register rejects invalid/spoofed bodies, content types and parser overflow without side effects 237ms
+ ✓ server/tests/integration/registration-lifecycle-hardening.test.ts > F-06 TEST-40 / strict input and domain precedence > cancel rejects invalid/spoofed bodies, content types and parser overflow without side effects 207ms
+ ✓ server/tests/integration/registration-lifecycle-hardening.test.ts > F-06 TEST-40 / strict input and domain precedence > close rejects invalid/spoofed bodies, content types and parser overflow without side effects 192ms
+ ✓ server/tests/integration/registration-lifecycle-hardening.test.ts > F-06 TEST-40 / strict input and domain precedence > register accepts absent body and {} when domain conditions allow it 61ms
+ ✓ server/tests/integration/registration-lifecycle-hardening.test.ts > F-06 TEST-40 / strict input and domain precedence > cancel accepts absent body and {} when domain conditions allow it 57ms
+ ✓ server/tests/integration/registration-lifecycle-hardening.test.ts > F-06 TEST-40 / strict input and domain precedence > close accepts absent body and {} when domain conditions allow it 47ms
+ ✓ server/tests/integration/registration-lifecycle-hardening.test.ts > F-06 TEST-40 / strict input and domain precedence > reactivate respects deadline offset -1 ms and preserves rejected state/history 35ms
+ ✓ server/tests/integration/registration-lifecycle-hardening.test.ts > F-06 TEST-40 / strict input and domain precedence > reactivate respects deadline offset 0 ms and preserves rejected state/history 32ms
+ ✓ server/tests/integration/registration-lifecycle-hardening.test.ts > F-06 TEST-40 / strict input and domain precedence > reactivate respects deadline offset 1 ms and preserves rejected state/history 31ms
+ ✓ server/tests/integration/registration-lifecycle-hardening.test.ts > F-06 TEST-40 / strict input and domain precedence > checks event-open before cancelled/duplicate/full, and duplicate before capacity 208ms
+ ✓ server/tests/integration/registration-lifecycle-hardening.test.ts > F-06 TEST-41 / error schema and permission precedence > register checks auth → role → CSRF/Origin → input → scope 83ms
+ ✓ server/tests/integration/registration-lifecycle-hardening.test.ts > F-06 TEST-41 / error schema and permission precedence > cancel checks auth → role → CSRF/Origin → input → scope 71ms
+ ✓ server/tests/integration/registration-lifecycle-hardening.test.ts > F-06 TEST-41 / error schema and permission precedence > close checks auth → role → CSRF/Origin → input → scope 68ms
+ ✓ server/tests/integration/registration-lifecycle-hardening.test.ts > F-06 TEST-42 / observed PostgreSQL lock races > double cancel: one transition/history entry (20 fresh rounds, alternating connection order) 1269ms
+ ✓ server/tests/integration/registration-lifecycle-hardening.test.ts > F-06 TEST-42 / observed PostgreSQL lock races > double reactivate: one transition/history entry (20 fresh rounds, alternating connection order) 1312ms
+ ✓ server/tests/integration/registration-lifecycle-hardening.test.ts > F-06 TEST-42 / observed PostgreSQL lock races > reactivate vs new registration: exactly one last-seat winner (20 fresh rounds, both orders) 1205ms
+ ✓ server/tests/integration/registration-lifecycle-hardening.test.ts > F-06 TEST-42 / observed PostgreSQL lock races > close vs create: committed order is preserved (20 fresh rounds, both orders) 1230ms
+ ✓ server/tests/integration/registration-lifecycle-hardening.test.ts > F-06 TEST-42 / observed PostgreSQL lock races > close vs reactivate: committed order is preserved (20 fresh rounds, both orders) 1414ms
+ ✓ server/tests/integration/registration-lifecycle-hardening.test.ts > F-06 TEST-42 / observed PostgreSQL lock races > close vs cancel: committed order is preserved (20 fresh rounds, both orders) 1268ms
+ ✓ server/tests/integration/registration-lifecycle-hardening.test.ts > F-06 TEST-42 / observed PostgreSQL lock races > cancel reads clock after a deadline-crossing lock wait (20 fresh rounds) 772ms
+ ✓ server/tests/integration/registration-lifecycle-hardening.test.ts > F-06 TEST-42 / observed PostgreSQL lock races > reactivate reads clock after a deadline-crossing lock wait (20 fresh rounds) 709ms
+
+ Test Files  1 passed (1)
+      Tests  21 passed (21)
+   Start at  02:30:59
+   Duration  11.84s (tests 96%, import 3%, transform 1%)
+

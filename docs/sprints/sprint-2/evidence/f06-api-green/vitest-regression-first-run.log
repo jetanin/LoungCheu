@@ -1,0 +1,46 @@
+
+> loungcheu@0.1.0 test
+> vitest run --reporter=dot
+
+
+ RUN  v5.1.0 C:/Work/2569/CPE334/GroupWork/LoungCheu
+
+···············································································································································x·································
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 1 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  server/tests/unit/registration-queries.test.ts > F-04/F-05 scoped reads > scopes own list in the query and serializes only contract fields (TEST-22)
+AssertionError: expected [ { id: 'reference', …(4) } ] to deeply equal [ { id: 'reference', …(3) } ]
+
+- Expected
++ Received
+
+@@ -1,7 +1,8 @@
+  [
+    {
++     "cancelled_at": null,
+      "event": {
+        "ends_at": "2026-11-07T03:00:00.000Z",
+        "id": "event",
+        "location": "Campus",
+        "registration_closes_at": "2026-11-07T03:00:00.000Z",
+
+ ❯ server/tests/unit/registration-queries.test.ts:20:47
+     18|   it('scopes own list in the query and serializes only contract fields…
+     19|     const { tx, service } = fixture();
+     20|     expect(await service.list('participant')).toEqual([{ id: 'referenc…
+       |                                               ^
+     21|       id: 'event', title: 'Workshop', location: 'Campus', starts_at: d…
+     22|     } }]);
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/1]⎯
+
+
+ Test Files  1 failed | 16 passed (17)
+      Tests  1 failed | 176 passed (177)
+   Start at  01:59:36
+   Duration  28.74s (tests 57%, environment 22%, import 18%, transform 2%)
+
+    Isolate  17 workers spawned · ~494ms startup each (spawn + environment, per file)
+             at least ~7.90s faster with isolate: false — reuses workers across files instead of one per file
+

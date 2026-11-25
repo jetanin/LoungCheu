@@ -1,0 +1,59 @@
+
+> loungcheu@0.1.0 test
+> vitest run server/tests/integration/event-edit.test.ts --reporter=verbose
+
+
+ RUN  v5.1.0 C:/Work/2569/CPE334/GroupWork/LoungCheu
+
+ ✓ server/tests/integration/event-edit.test.ts > F-07 PATCH /api/organizer/events/{id} (TEST-45–TEST-51) > TEST-45 / AC-34 owner edits every EventInput field of a DRAFT and reads it back 67ms
+ ✓ server/tests/integration/event-edit.test.ts > F-07 PATCH /api/organizer/events/{id} (TEST-45–TEST-51) > TEST-46 / AC-35 PUBLISHED allows details/capacity but rejects any time field 138ms
+ ✓ server/tests/integration/event-edit.test.ts > F-07 PATCH /api/organizer/events/{id} (TEST-45–TEST-51) > TEST-47 / AC-36 CLOSED is not editable and status is checked before field rules 46ms
+ ✓ server/tests/integration/event-edit.test.ts > F-07 PATCH /api/organizer/events/{id} (TEST-45–TEST-51) > TEST-48 / AC-37 rejects invalid EventPatch and merged BR-02 order without changes; accepts boundaries 264ms
+ ✓ server/tests/integration/event-edit.test.ts > F-07 PATCH /api/organizer/events/{id} (TEST-45–TEST-51) > TEST-49 / AC-38 capacity may equal ACTIVE but not go below; raising a full event reopens it 46ms
+ ✓ server/tests/integration/event-edit.test.ts > F-07 PATCH /api/organizer/events/{id} (TEST-45–TEST-51) > TEST-50 / AC-39 capacity decrease and last-seat registration serialize on the Event lock 1604ms
+ ✓ server/tests/integration/event-edit.test.ts > F-07 PATCH /api/organizer/events/{id} (TEST-45–TEST-51) > TEST-51 / AC-40 enforces auth → role → CSRF → input → ownership without changes 91ms
+
+⎯⎯⎯⎯⎯⎯ Failed Suites 1 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  server/tests/integration/event-edit.test.ts [ server/tests/integration/event-edit.test.ts ]
+PrismaClientKnownRequestError: 
+Invalid `db.registration.deleteMany()` invocation in
+C:/Work/2569/CPE334/GroupWork/LoungCheu/server/tests/integration/event-edit.test.ts:71:25
+
+  68 });
+  69 afterEach(() => { clock = t0; });
+  70 afterAll(async () => {
+→ 71   await db.registration.deleteMany(
+Foreign key constraint violated on the constraint: `registration_history_registration_id_fkey`
+ ❯ vn.handleRequestError node_modules/@prisma/client/src/runtime/RequestHandler.ts:238:13
+ ❯ vn.handleAndLogRequestError node_modules/@prisma/client/src/runtime/RequestHandler.ts:184:12
+ ❯ vn.request node_modules/@prisma/client/src/runtime/RequestHandler.ts:153:12
+ ❯ a node_modules/@prisma/client/src/runtime/getPrismaClient.ts:1012:24
+ ❯ server/tests/integration/event-edit.test.ts:71:3
+     69| afterEach(() => { clock = t0; });
+     70| afterAll(async () => {
+     71|   await db.registration.deleteMany({ where: { eventId: { in: ids } } }…
+       |   ^
+     72|   await db.event.deleteMany({ where: { id: { in: ids } } });
+     73|   await Promise.all(runtimes.map(runtime => runtime.close()));
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯
+Serialized Error: { code: 'P2003', meta: { modelName: 'Registration', driverAdapterError: { stack: 'DriverAdapterError: ForeignKeyConstraintViolation
+    at PrismaPgAdapter.onError (file:///C:/Work/2569/CPE334/GroupWork/LoungCheu/node_modules/@prisma/adapter-pg/dist/index.mjs:666:11)
+    at PrismaPgAdapter.performIO (file:///C:/Work/2569/CPE334/GroupWork/LoungCheu/node_modules/@prisma/adapter-pg/dist/index.mjs:661:12)
+    at processTicksAndRejections (node:internal/process/task_queues:104:5)
+    at PrismaPgAdapter.executeRaw (file:///C:/Work/2569/CPE334/GroupWork/LoungCheu/node_modules/@prisma/adapter-pg/dist/index.mjs:634:13)
+    at C:\Work\2569\CPE334\GroupWork\LoungCheu\node_modules\@prisma\client\runtime\client.js:11:70205
+    at e.run (C:\Work\2569\CPE334\GroupWork\LoungCheu\node_modules\@prisma\client\runtime\client.js:11:69220)
+    at execute (C:\Work\2569\CPE334\GroupWork\LoungCheu\node_modules\@prisma\client\runtime\client.js:57:815)
+    at yr.request (C:\Work\2569\CPE334\GroupWork\LoungCheu\node_modules\@prisma\client\runtime\client.js:58:2425)
+    at Object.singleLoader (C:\Work\2569\CPE334\GroupWork\LoungCheu\node_modules\@prisma\client\runtime\client.js:65:6917)
+    at vn.request (C:\Work\2569\CPE334\GroupWork\LoungCheu\node_modules\@prisma\client\runtime\client.js:65:7523)', message: 'ForeignKeyConstraintViolation', name: 'DriverAdapterError', cause: { originalCode: '23503', originalMessage: 'update or delete on table "registrations" violates foreign key constraint "registration_history_registration_id_fkey" on table "registration_history"', kind: 'ForeignKeyConstraintViolation', constraint: { index: 'registration_history_registration_id_fkey' } }, constructor: 'Function<DriverAdapterError>', toString: 'Function<toString>' } }, clientVersion: '7.10.1', batchRequestIdx: undefined }
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/1]⎯
+
+
+ Test Files  1 failed (1)
+      Tests  7 passed (7)
+   Start at  16:05:19
+   Duration  5.84s (tests 60%, import 37%, transform 3%)
+

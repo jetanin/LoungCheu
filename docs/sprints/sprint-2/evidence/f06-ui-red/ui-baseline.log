@@ -1,0 +1,17 @@
+
+> loungcheu@0.1.0 test
+> vitest run client/src/features/registrations/RegistrationViews.test.tsx client/src/features/registrations/RegistrationAction.test.tsx client/src/features/registrations/RegistrationPage.test.tsx --reporter=dot
+
+
+ RUN  v5.1.0 C:/Work/2569/CPE334/GroupWork/LoungCheu
+
+··························
+
+ Test Files  3 passed (3)
+      Tests  26 passed (26)
+   Start at  02:09:05
+   Duration  8.66s (environment 67%, import 17%, tests 15%, transform 1%)
+
+    Isolate  3 workers spawned · ~2.00s startup each (spawn + environment, per file)
+             at least ~3.99s faster with isolate: false — reuses workers across files instead of one per file
+

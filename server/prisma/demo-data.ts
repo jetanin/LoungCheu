@@ -56,8 +56,13 @@ export async function seedDemoEvents(db: PrismaClient, now = new Date()) {
         registrationClosesAt: wall(scenario.closeDays, 18), createdAt, updatedAt: createdAt } });
       result.createdEvents++;
       for (const username of scenario.attendees) {
-        await tx.registration.create({ data: { eventId: scenario.id, participantId: accountId(username), status: 'ACTIVE',
-          registeredAt: wall(scenario.status === 'CLOSED' ? -5 : -1, 12) } });
+        const participantId = accountId(username), registeredAt = wall(scenario.status === 'CLOSED' ? -5 : -1, 12);
+        const registration = await tx.registration.create({ data: {
+          eventId: scenario.id, participantId, status: 'ACTIVE', registeredAt,
+        } });
+        await tx.registrationHistory.create({ data: {
+          registrationId: registration.id, actorId: participantId, action: 'REGISTERED', occurredAt: registeredAt,
+        } });
         result.createdRegistrations++;
       }
     }
