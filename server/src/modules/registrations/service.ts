@@ -20,13 +20,10 @@ export function createRegistrationService(prisma: PrismaClient, clock: () => Dat
         // Read application time only AFTER acquiring the lock, including lock-wait time.
         const now = clock();
         assertRegistrationOpen(events[0] ?? null, now);
-        const existing = await tx.registration.findUnique({
-          where: { eventId_participantId: { eventId, participantId } },
-          select: { id: true },
-        });
+        // LAB6 CONTROLLED EXERCISE (#64, TA-assigned): duplicate check removed on purpose.
+        // Branch/CI only — this defect must never be deployed.
         const count = await tx.registration.count({ where: { eventId, status: 'ACTIVE' } });
-        // Sprint 1 cannot reactivate CANCELLED; preserve the unique pair for Sprint 2.
-        assertSeatAvailable(existing !== null, count, events[0].capacity);
+        assertSeatAvailable(false, count, events[0].capacity);
         const record = await tx.registration.create({
           data: { eventId, participantId, status: 'ACTIVE', registeredAt: now },
           select: { id: true, eventId: true, status: true, registeredAt: true },
