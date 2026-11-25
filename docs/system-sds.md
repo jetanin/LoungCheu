@@ -1,5 +1,7 @@
 # Part C — System-Level Software Design Specification
 
+**Staging update — 25 พ.ย. 2026:** F-06 (PR #59), F-07 (PR #57) และ cross-feature TEST-44(c)/47/52 (PR #60) review และ merge เข้า `sprint-2-staging` แล้ว CI `test-and-docker` ผ่าน (Vitest 264/264, Playwright 39/39 @ `2e6ddc2`); ยังไม่ release บน main. Main ปัจจุบัน `v1.0.1-uat`/`0b2cc80` deploy บน Cloud Run และผ่าน independent UAT (Accepted 25 พ.ย.). ข้อความลงวันที่ก่อนหน้านี้คงไว้เป็นประวัติ
+
 **F-06 update — 24 พ.ย. 2026:** cancel/reactivate/close และ cancelled_at/history implement แล้วบน `feature/47-f06` พร้อม local API/DB/UI/browser และ actual process-restart evidence ดู [Sprint 2 completion](sprints/sprint-2/README.md). Snapshot Sprint 1 ด้านล่างเป็นประวัติของผลเดิม; F-06 ยังไม่ใช่ accepted release และไม่แทน independent UAT/clean reproduction. F-07 และ Sprint 3 ไม่ถูกนับว่าผ่านจากผลนี้
 
 **Implementation/evidence update — 14 พ.ย. 2026:** PR #7/#10 ได้ teammate review โดย i3artuf และ merge เข้า sprint-1-staging แล้ว ตาม snapshot 12 พ.ย.; PR #10 reviewed head `0bd3468`, merge `97a5b91` (10 พ.ย. 16:26:11 Asia/Bangkok). ผล 159 Vitest / 37 Chromium / typecheck / build / compiled smoke 3 PASS เป็นผลรัน 8 พ.ย. ของ source ที่ commit เป็น `3313288`; รอบแก้เอกสารนี้ไม่ได้รันทดสอบแอปใหม่. OS-process restart, independent clean reproduction/UAT และ reviewed main release ยังขาดหลักฐาน; GAP-02 ยัง OPEN และ Product DoD ยังไม่ครบ. [Review/merge evidence](deliverable-1/evidence/review-merge-20261112/README.md). Baseline FR/BR/NFR/AC ไม่เปลี่ยน; F-06–09 อยู่ Sprint 2/3
@@ -26,7 +28,7 @@ flowchart LR
     A --> X[PostgreSQL session store]
 ```
 
-Modules: accounts (auth/seed), events (create/publish/list/close/update; F-07 edit รวมจาก staging แล้วใน working tree), registrations (allocate seats/own records/roster/cancel/reactivate), attendance (S3 check-in/summary) และ shared (errors/time/config/version) Backend/DB บังคับกฎ; frontend validation ช่วยผู้ใช้
+Modules: accounts (auth/seed), events (create/publish/list/close/update; F-07 edit — PR #57 merge เข้า sprint-2-staging แล้ว), registrations (allocate seats/own records/roster/cancel/reactivate), attendance (S3 check-in/summary) และ shared (errors/time/config/version) Backend/DB บังคับกฎ; frontend validation ช่วยผู้ใช้
 
 ### Planned source layout
 
@@ -92,6 +94,7 @@ EventStatus มี DRAFT/PUBLISHED/CLOSED; RegistrationStatus มี ACTIVE/CANC
 | HTTP | Implemented API route | Implementation |
 |---|---|---|
 | GET | /api/health; /api/auth/csrf; /api/auth/me | server/src/app.ts |
+| GET | /api/ready (DB `SELECT 1` + `version` = APP_VERSION; 503 เมื่อ DB ไม่พร้อม; ใช้เช็ก version หลัง deploy) | server/src/app.ts |
 | POST | /api/auth/login; /api/auth/logout | server/src/app.ts |
 | GET | /api/events; /api/events/:id | modules/events/router.ts |
 | GET | /api/organizer/events; /api/organizer/events/:id | modules/events/router.ts |
@@ -216,7 +219,7 @@ Fixtures/time control และ expected results ตาม [STS](sprints/sprint-
 |---|---|
 | DATABASE_URL | PostgreSQL connection |
 | SESSION_SECRET | Session signing secret |
-| NODE_ENV / PORT | Runtime mode/listening port |
+| NODE_ENV / PORT / HOST | Runtime mode/listening port/bind address (Cloud Run ใช้ HOST=0.0.0.0) |
 | APP_ORIGIN | Origin/CSRF validation |
 | API_PROXY_TARGET | Vite development proxy target |
 | SESSION_COOKIE_SECURE | true บน HTTPS; false เฉพาะ local HTTP |
@@ -226,6 +229,8 @@ Fixtures/time control และ expected results ตาม [STS](sprints/sprint-
 แอปต้องอ่าน/validate config เอง Frontend build ห้ามมี DB/session/seed secrets
 
 Lab 5 design: multi-stage Docker build ให้ Express serve SPA/API ใน image เดียว; ใช้ external durable PostgreSQL สำหรับ domain/session data เสนอ Cloud Run + Cloud SQL โดยยืนยัน resources ตาม Lab 5 ก่อน deploy
+
+**Implemented (Lab 5, อัปเดต 25 พ.ย. 2026):** push เข้า main → `.github/workflows/deploy.yml` build/push image ผูก commit → Cloud Run job `scccd8b05-migrate` รัน `npm run db:migrate && npm run db:seed` → update Cloud Run service (NODE_ENV=production, HOST=0.0.0.0, SESSION_COOKIE_SECURE=true, APP_ORIGIN, APP_VERSION=commit; DATABASE_URL และ SESSION_SECRET จาก Secret Manager ที่ course จัดให้) → smoke test เช็ก `/api/ready` ว่า version ตรง commit. Rollback ใช้ SHA ของ image เดิมผ่าน workflow_dispatch. Release ล่าสุด: `v1.0.1-uat`/`0b2cc80`, revision `scccd8b05-00009-vvq`
 
 Delivery: PR build/tests gate → teammate review → staging integration → reviewed release PR เข้า main → image ผูก commit → controlled versioned migration → deploy → workflow/persistence/version checks ดู milestones ใน [Sprint plan](sprints/plan.md) มี health/version metadata สำหรับตรวจ release
 
@@ -260,3 +265,5 @@ UI เพิ่ม cancel confirmation ใน own detail และ close confirm
 รวม F-07 จาก origin/sprint-2-staging ระหว่าง merge ที่ผู้ใช้เริ่มเอง: Event service เก็บทั้ง close และ update เป็นบล็อกแยก ใช้ Event lock/clock/serializer เดียวกับเดิม Router มีทั้ง PATCH และ POST close; owner detail วาง edit ก่อน close และเก็บ F-07 edit route/refresh/404 handling พร้อม F-06 cancellation/close behaviour. Contract/STS v0.7 เก็บ revision v0.6 ของทั้งสอง branch โดยไม่ทิ้งแถวประวัติหรือเปลี่ยน AC/TEST IDs
 
 F-07 integration fixture เพิ่ม REGISTERED history ใน nested create เดียวกับ Registration; cleanup ลบเฉพาะ suite-owned history → Registration → Event ใน transaction เดียวก่อนปิด connections เพื่อรองรับ Restrict FK ของ F-06 โดยไม่เปลี่ยน assertions ของ TEST-45–51. [ผลทดสอบหลังรวม](sprints/sprint-2/evidence/f06-staging-merge/README.md) แยกจาก historical F-06-only runs. TEST-44(c) ยังเป็น PR แยกหลังทั้งสอง feature เข้า staging; TEST-47/52 เปลี่ยนจาก CLOSED fixture เป็น actual close ในขั้น integration ตามข้อตกลง ไม่ถือว่าผ่านเพียงเพราะ local merge นี้
+
+**อัปเดต 25 พ.ย. 2026:** TEST-44(c) และ TEST-47/52 แบบปิดผ่าน F-06 จริงทำใน PR #60 (review โดย jetanin, CI ผ่าน, merge `128c35c`) ไม่มีการเปลี่ยน application code; ดู [cross-feature evidence](sprints/sprint-2/evidence/f07-cross-feature/README.md) และ [F-07 completion](sprints/sprint-2/README.md#f-07-completion-record)
