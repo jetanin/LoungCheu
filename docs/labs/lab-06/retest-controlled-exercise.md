@@ -50,7 +50,7 @@ Stay logged in as `participant.a` on the LoungCheu site.
 ```js
 const TITLE = '[RT-CX-XX] Duplicate retest'; // <-- change to your title
 const call = async (url, init) => { const r = await fetch(url, init); return { status: r.status, body: await r.json().catch(() => null) }; };
-const ready = (await call('/api/ready')).body;
+const ready = (await call('/api/ready')).body.data;
 const ev = (await call('/api/events')).body.data.find((e) => e.title === TITLE);
 if (!ev) throw new Error('Event not found - check TITLE');
 const csrf = (await call('/api/auth/csrf')).body.data.csrf_token;
