@@ -1,3 +1,4 @@
+NOTE (added 26 Nov 2026 after review on PR #65; raw output below unchanged): 6fbd0d0 is the local pre-rebase hash of the defect-report commit, later folded with a fixup into 446396c and never pushed. Its server/ tree is identical to the defect commit 97268f4 (git diff 97268f4 6fbd0d0 -- server was empty when checked locally). The committed RED test is fe31120; CI RED on that commit is run 45661984995.
 RED: new test LAB6-CX-01 run on top of defect commit 6fbd0d0 (test file uncommitted at run time; committed next as the RED test commit)
 command: npx vitest run server/tests/integration/registration.test.ts -t LAB6-CX-01
 database: local PostgreSQL loungcheu_test
