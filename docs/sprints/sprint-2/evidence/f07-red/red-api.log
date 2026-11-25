@@ -1,0 +1,273 @@
+commit: ef94a3f test(events): add failing F-07 edit event tests (#48)
+
+ RUN  v5.1.0 <worktree>
+
+ × server/tests/integration/event-edit.test.ts > F-07 PATCH /api/organizer/events/{id} (TEST-45–TEST-51) > TEST-45 / AC-34 owner edits every EventInput field of a DRAFT and reads it back 19ms
+   → expected 404 to be 200 // Object.is equality
+ × server/tests/integration/event-edit.test.ts > F-07 PATCH /api/organizer/events/{id} (TEST-45–TEST-51) > TEST-46 / AC-35 PUBLISHED allows details/capacity but rejects any time field 16ms
+   → expected 404 to be 200 // Object.is equality
+ × server/tests/integration/event-edit.test.ts > F-07 PATCH /api/organizer/events/{id} (TEST-45–TEST-51) > TEST-47 / AC-36 CLOSED is not editable and status is checked before field rules 12ms
+   → expected { Object (status, code) } to deeply equal { status: 409, …(1) }
+ × server/tests/integration/event-edit.test.ts > F-07 PATCH /api/organizer/events/{id} (TEST-45–TEST-51) > TEST-48 / AC-37 rejects invalid EventPatch and merged BR-02 order without changes; accepts boundaries 8ms
+   → expected { body: {}, status: 404, …(1) } to deeply equal { body: {}, status: 400, …(1) }
+ × server/tests/integration/event-edit.test.ts > F-07 PATCH /api/organizer/events/{id} (TEST-45–TEST-51) > TEST-49 / AC-38 capacity may equal ACTIVE but not go below; raising a full event reopens it 10ms
+   → expected 404 to be 200 // Object.is equality
+ × server/tests/integration/event-edit.test.ts > F-07 PATCH /api/organizer/events/{id} (TEST-45–TEST-51) > TEST-50 / AC-39 capacity decrease and last-seat registration serialize on the Event lock 8067ms
+   → round 0: PATCH waits on Event lock: expected false to be true // Object.is equality
+ × server/tests/integration/event-edit.test.ts > F-07 PATCH /api/organizer/events/{id} (TEST-45–TEST-51) > TEST-51 / AC-40 enforces auth → role → CSRF → input → ownership without changes 10ms
+   → expected { Object (name, status, ...) } to deeply equal { Object (name, status, ...) }
+ × server/tests/unit/event-patch.test.ts > F-07 EventPatch validation (TEST-48 unit, AC-37) > normalizes only the fields that were sent 17ms
+   → expected {} to deeply equal { title: 'ชื่อใหม่ 🌱' }
+ × server/tests/unit/event-patch.test.ts > F-07 EventPatch validation (TEST-48 unit, AC-37) > accepts the EventInput boundaries 4ms
+   → expected {} to deeply equal { …(4) }
+ × server/tests/unit/event-patch.test.ts > F-07 EventPatch validation (TEST-48 unit, AC-37) > rejects empty, malformed, null, out-of-range and non-editable input with 400 INVALID_INPUT 4ms
+   → undefined: expected null to match object { status: 400, code: 'INVALID_INPUT' }
+ × server/tests/unit/event-patch.test.ts > F-07 EventPatch validation (TEST-48 unit, AC-37) > reuses the create-form field messages 1ms
+   → expected undefined to deeply equal { Object (title) }
+System.Management.Automation.RemoteException
+⎯⎯⎯⎯⎯⎯ Failed Tests 11 ⎯⎯⎯⎯⎯⎯⎯
+System.Management.Automation.RemoteException
+ FAIL  server/tests/integration/event-edit.test.ts > F-07 PATCH /api/organizer/events/{id} (TEST-45–TEST-51) > TEST-45 / AC-34 owner edits every EventInput field of a DRAFT and reads it back
+AssertionError: expected 404 to be 200 // Object.is equality
+System.Management.Automation.RemoteException
+- Expected
++ Received
+System.Management.Automation.RemoteException
+- 200
++ 404
+System.Management.Automation.RemoteException
+ ❯ server/tests/integration/event-edit.test.ts:83:22
+     81|     const r = await patch(as('OA'), event.id, { title: '  แก้ชื่อ 🌱 '…
+     82|       starts_at: '2026-11-08T10:00:00+07:00', ends_at: '2026-11-08T12:…
+     83|     expect(r.status).toBe(200);
+       |                      ^
+     84|     expect(r.body.data).toMatchObject({ id: event.id, title: 'แก้ชื่อ …
+     85|       starts_at: '2026-11-08T03:00:00.000Z', ends_at: '2026-11-08T05:3…
+System.Management.Automation.RemoteException
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/11]⎯
+System.Management.Automation.RemoteException
+ FAIL  server/tests/integration/event-edit.test.ts > F-07 PATCH /api/organizer/events/{id} (TEST-45–TEST-51) > TEST-46 / AC-35 PUBLISHED allows details/capacity but rejects any time field
+AssertionError: expected 404 to be 200 // Object.is equality
+System.Management.Automation.RemoteException
+- Expected
++ Received
+System.Management.Automation.RemoteException
+- 200
++ 404
+System.Management.Automation.RemoteException
+ ❯ server/tests/integration/event-edit.test.ts:95:22
+     93|     const published = await fixture('EPUB2');
+     94|     const r = await patch(as('OA'), published.id, { title: 'ชื่อใหม่',…
+     95|     expect(r.status).toBe(200);
+       |                      ^
+     96|     expect(r.body.data).toMatchObject({ status: 'PUBLISHED', title: 'ช…
+     97|     const shared = (await as('PA', 1).agent.get(`/api/events/${publish…
+System.Management.Automation.RemoteException
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[2/11]⎯
+System.Management.Automation.RemoteException
+ FAIL  server/tests/integration/event-edit.test.ts > F-07 PATCH /api/organizer/events/{id} (TEST-45–TEST-51) > TEST-47 / AC-36 CLOSED is not editable and status is checked before field rules
+AssertionError: expected { Object (status, code) } to deeply equal { status: 409, …(1) }
+System.Management.Automation.RemoteException
+- Expected
++ Received
+System.Management.Automation.RemoteException
+  {
+-   "code": "EVENT_NOT_EDITABLE",
+-   "status": 409,
++   "code": "ROUTE_NOT_FOUND",
++   "status": 404,
+  }
+System.Management.Automation.RemoteException
+ ❯ error server/tests/integration/event-edit.test.ts:37:59
+     35| const register = (session: Session, id: string) => session.agent.post(…
+     36| function error(r: request.Response, status: number, code: string) {
+     37|   expect({ status: r.status, code: r.body?.error?.code }).toEqual({ st…
+       |                                                           ^
+     38| }
+     39|
+ ❯ server/tests/integration/event-edit.test.ts:127:7
+System.Management.Automation.RemoteException
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[3/11]⎯
+System.Management.Automation.RemoteException
+ FAIL  server/tests/integration/event-edit.test.ts > F-07 PATCH /api/organizer/events/{id} (TEST-45–TEST-51) > TEST-48 / AC-37 rejects invalid EventPatch and merged BR-02 order without changes; accepts boundaries
+AssertionError: expected { body: {}, status: 404, …(1) } to deeply equal { body: {}, status: 400, …(1) }
+System.Management.Automation.RemoteException
+- Expected
++ Received
+System.Management.Automation.RemoteException
+  {
+    "body": {},
+-   "code": "INVALID_INPUT",
+-   "status": 400,
++   "code": "ROUTE_NOT_FOUND",
++   "status": 404,
+  }
+System.Management.Automation.RemoteException
+ ❯ server/tests/integration/event-edit.test.ts:141:69
+    139|     for (const body of invalid) {
+    140|       const r = await patch(as('OA'), event.id, body);
+    141|       expect({ body, status: r.status, code: r.body?.error?.code }).to…
+       |                                                                     ^
+    142|       await unchanged(event);
+    143|     }
+System.Management.Automation.RemoteException
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[4/11]⎯
+System.Management.Automation.RemoteException
+ FAIL  server/tests/integration/event-edit.test.ts > F-07 PATCH /api/organizer/events/{id} (TEST-45–TEST-51) > TEST-49 / AC-38 capacity may equal ACTIVE but not go below; raising a full event reopens it
+AssertionError: expected 404 to be 200 // Object.is equality
+System.Management.Automation.RemoteException
+- Expected
++ Received
+System.Management.Automation.RemoteException
+- 200
++ 404
+System.Management.Automation.RemoteException
+ ❯ server/tests/integration/event-edit.test.ts:155:22
+    153|     const equal = await fixture('EPUB2');
+    154|     const r = await patch(as('OA'), equal.id, { capacity: 2 });
+    155|     expect(r.status).toBe(200);
+       |                      ^
+    156|     expect(r.body.data).toMatchObject({ capacity: 2, active_count: 2, …
+    157|
+System.Management.Automation.RemoteException
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[5/11]⎯
+System.Management.Automation.RemoteException
+ FAIL  server/tests/integration/event-edit.test.ts > F-07 PATCH /api/organizer/events/{id} (TEST-45–TEST-51) > TEST-50 / AC-39 capacity decrease and last-seat registration serialize on the Event lock
+AssertionError: round 0: PATCH waits on Event lock: expected false to be true // Object.is equality
+System.Management.Automation.RemoteException
+- Expected
++ Received
+System.Management.Automation.RemoteException
+- true
++ false
+System.Management.Automation.RemoteException
+ ❯ server/tests/integration/event-edit.test.ts:193:124
+    191|       let edit: Promise<request.Response>, join: Promise<request.Respo…
+    192|       try {
+    193|         if (patchFirst) { edit = start.patch(); expect(await waiting([…
+       |                                                                                                                            ^
+    194|         else { join = start.register(); expect(await waiting([pidB]), …
+    195|         expect(await waiting([pidA, pidB]), `round ${round}: both wait…
+System.Management.Automation.RemoteException
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[6/11]⎯
+System.Management.Automation.RemoteException
+ FAIL  server/tests/integration/event-edit.test.ts > F-07 PATCH /api/organizer/events/{id} (TEST-45–TEST-51) > TEST-51 / AC-40 enforces auth → role → CSRF → input → ownership without changes
+AssertionError: expected { Object (name, status, ...) } to deeply equal { Object (name, status, ...) }
+System.Management.Automation.RemoteException
+- Expected
++ Received
+System.Management.Automation.RemoteException
+  {
+-   "code": "AUTH_REQUIRED",
++   "code": "ROUTE_NOT_FOUND",
+    "name": "anonymous",
+-   "status": 401,
++   "status": 404,
+  }
+System.Management.Automation.RemoteException
+ ❯ server/tests/integration/event-edit.test.ts:224:69
+    222|     for (const [name, send, status, code] of cases) {
+    223|       const r = await send();
+    224|       expect({ name, status: r.status, code: r.body?.error?.code }).to…
+       |                                                                     ^
+    225|       await unchanged(event);
+    226|     }
+System.Management.Automation.RemoteException
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[7/11]⎯
+System.Management.Automation.RemoteException
+ FAIL  server/tests/unit/event-patch.test.ts > F-07 EventPatch validation (TEST-48 unit, AC-37) > normalizes only the fields that were sent
+AssertionError: expected {} to deeply equal { title: 'ชื่อใหม่ 🌱' }
+System.Management.Automation.RemoteException
+- Expected
++ Received
+System.Management.Automation.RemoteException
+- {
+-   "title": "ชื่อใหม่ 🌱",
+- }
++ {}
+System.Management.Automation.RemoteException
+ ❯ server/tests/unit/event-patch.test.ts:15:53
+     13| describe('F-07 EventPatch validation (TEST-48 unit, AC-37)', () => {
+     14|   it('normalizes only the fields that were sent', () => {
+     15|     expect(eventPatch({ title: '  ชื่อใหม่ 🌱 ' })).toEqual({ title: '…
+       |                                                     ^
+     16|     expect(eventPatch({ capacity: 1000, location: ' ห้อง 2 ' })).toEqu…
+     17|     expect(eventPatch({ starts_at: '2026-11-08T10:00:00.5+07:00', ends…
+System.Management.Automation.RemoteException
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[8/11]⎯
+System.Management.Automation.RemoteException
+ FAIL  server/tests/unit/event-patch.test.ts > F-07 EventPatch validation (TEST-48 unit, AC-37) > accepts the EventInput boundaries
+AssertionError: expected {} to deeply equal { …(4) }
+System.Management.Automation.RemoteException
+- Expected
++ Received
+System.Management.Automation.RemoteException
+- {
+-   "capacity": 1,
+-   "description": "กกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกกก",
+-   "location": "🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱",
+-   "title": "🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱",
+- }
++ {}
+System.Management.Automation.RemoteException
+ ❯ server/tests/unit/event-patch.test.ts:23:8
+     21|   it('accepts the EventInput boundaries', () => {
+     22|     expect(eventPatch({ title: '🌱'.repeat(120), description: 'ก'.repe…
+     23|       .toEqual({ title: '🌱'.repeat(120), description: 'ก'.repeat(2000…
+       |        ^
+     24|   });
+     25|
+System.Management.Automation.RemoteException
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[9/11]⎯
+System.Management.Automation.RemoteException
+ FAIL  server/tests/unit/event-patch.test.ts > F-07 EventPatch validation (TEST-48 unit, AC-37) > rejects empty, malformed, null, out-of-range and non-editable input with 400 INVALID_INPUT
+AssertionError: undefined: expected null to match object { status: 400, code: 'INVALID_INPUT' }
+System.Management.Automation.RemoteException
+- Expected:
+{
+  "code": "INVALID_INPUT",
+  "status": 400,
+}
+System.Management.Automation.RemoteException
++ Received:
+null
+System.Management.Automation.RemoteException
+ ❯ server/tests/unit/event-patch.test.ts:33:94
+     31|       { starts_at: '2026-11-06T05:00:00' }, { starts_at: '2026-11-06T0…
+     32|       ...['id', 'organizer_id', 'status', 'created_at', 'updated_at', …
+     33|     for (const body of invalid) expect(rejection(body), JSON.stringify…
+       |                                                                                              ^
+     34|   });
+     35|
+System.Management.Automation.RemoteException
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[10/11]⎯
+System.Management.Automation.RemoteException
+ FAIL  server/tests/unit/event-patch.test.ts > F-07 EventPatch validation (TEST-48 unit, AC-37) > reuses the create-form field messages
+AssertionError: expected undefined to deeply equal { Object (title) }
+System.Management.Automation.RemoteException
+- Expected:
+{
+  "title": [
+    "กรุณากรอก 1–120 ตัวอักษร",
+  ],
+}
+System.Management.Automation.RemoteException
++ Received:
+undefined
+System.Management.Automation.RemoteException
+ ❯ server/tests/unit/event-patch.test.ts:37:46
+     35|
+     36|   it('reuses the create-form field messages', () => {
+     37|     expect(rejection({ title: '' })?.fields).toEqual({ title: ['กรุณาก…
+       |                                              ^
+     38|     expect(rejection({ capacity: 0 })?.fields).toEqual({ capacity: ['จ…
+     39|   });
+System.Management.Automation.RemoteException
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[11/11]⎯
+System.Management.Automation.RemoteException
+
+ Test Files  2 failed (2)
+      Tests  11 failed (11)
+   Start at  18:37:26
+   Duration  11.24s (tests 94%, import 5%, transform 1%)
+

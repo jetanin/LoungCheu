@@ -117,11 +117,57 @@ unverified locally. [Final local regression logs](evidence/f06-final/README.md).
 | PR, labels `documentation` where appropriate / `sprint-2`, assignee, CI `test-and-docker`, substantive teammate review | Not verified/completed by this local step; use actual #47 implementation PR metadata |
 | Kanban Specified → Started → PR Review → Done | User/team manages; no board change or Done claim made here |
 | Merge | User started merge of origin/sprint-2-staging; conflicts resolved and combined verification recorded separately. Merge commit still user-managed; no force push. F-06 PR review/merge into staging remains pending |
-| TEST-44(c) | Done locally on `test/47-sprint-2-cross-feature` (agreed with M1; written by M2); PASS, see [cross-feature evidence](evidence/f07-cross-feature/README.md). PR review/CI pending before AC-33/Sprint 2 DoD can be claimed |
-| TEST-47 | Done locally on `test/47-sprint-2-cross-feature`: TEST-47 (API) and TEST-52 (UI) close through actual F-06 before PATCH/edit; PASS, see [cross-feature evidence](evidence/f07-cross-feature/README.md). PR review/CI pending |
+| TEST-44(c) | Done locally on `test/47-sprint-2-cross-feature` (agreed with M1; written by M2); PASS, see [cross-feature evidence](evidence/f07-cross-feature/README.md). PR review/CI pending before AC-33/Sprint 2 DoD can be claimed. **Update 25 Nov 2026:** PR #60 reviewed (jetanin), CI SUCCESS, merged `128c35c` |
+| TEST-47 | Done locally on `test/47-sprint-2-cross-feature`: TEST-47 (API) and TEST-52 (UI) close through actual F-06 before PATCH/edit; PASS, see [cross-feature evidence](evidence/f07-cross-feature/README.md). PR review/CI pending. **Update 25 Nov 2026:** PR #60 reviewed (jetanin), CI SUCCESS, merged `128c35c` |
 | NFR-03 broader acceptance | Actual backend process restart proven; deployment/redeploy and independent clean reproduction not established by this run |
 | Independent UAT / #44 partner findings | No new acceptance claimed; team triage deadline 25 November 2026 20:00 Asia/Bangkok per user |
 | Release | Reviewed Sprint 2 main release, deployment/version verification and actual tag (example `v2.0.0-sprint-2`) pending; example is not an existing release |
+
+## F-07 completion record
+
+Added 25 November 2026 (Asia/Bangkok). Issue **#48**, owner M2. The F-06
+record above is unchanged. [Contract](contracts.md) AC-34–40,
+[test design](sts.md) TEST-45–52 (STS v0.8).
+
+**Status: implemented, reviewed, merged into `sprint-2-staging` with CI
+passing; not yet released to `main` or accepted.**
+
+| AC | Implementation / source | Executed verification | Result | Accepted release |
+|---|---|---|---|---|
+| AC-34 | `server/src/modules/events/service.ts` (update), `router.ts` (PATCH), `input.ts` (EventPatch) | TEST-45: DRAFT patch of all 7 fields, own GET readback | PASS | Pending (Sprint 2 release) |
+| AC-35 | same; PUBLISHED editable-field check | TEST-46 (a)–(f): content/capacity edits, time fields → 409 FIELD_NOT_EDITABLE, data unchanged | PASS | Pending |
+| AC-36 | same; CLOSED → EVENT_NOT_EDITABLE | TEST-47: event closed by the real F-06 close endpoint, then PATCH → 409, data unchanged | PASS | Pending |
+| AC-37 | `input.ts` strict EventPatch parser | TEST-48 unit (`event-patch.test.ts`) + API/DB: empty/type/null/length/capacity/time format/system and unknown fields, DRAFT order → 400 | PASS | Pending |
+| AC-38 | `service.ts` capacity check after Event lock | TEST-49: capacity = ACTIVE OK, ACTIVE−1 → 409 CAPACITY_BELOW_ACTIVE, raise capacity then new registration OK | PASS | Pending |
+| AC-39 | Event row lock shared with registration | TEST-50: capacity decrease × last-seat registration, separate connections, lock wait observed in `pg_stat_activity`, 20 rounds; ACTIVE ≤ capacity every round | PASS | Pending |
+| AC-40 | `router.ts` auth/role/CSRF pipeline; `client/src/features/events/EventForm.tsx`, `EventPage.tsx`, `model.ts`, `lib/api.ts`, `app/App.tsx` | TEST-51 API access matrix; TEST-52 component (`EventEdit.test.tsx`) + Chromium (`tests/e2e/event-edit.spec.ts`) | PASS | Pending |
+
+| Step | Commit / evidence |
+|---|---|
+| STS revised before coding | `31bb715` (STS v0.6) |
+| API RED → GREEN | `ef94a3f` failing tests → `78efae7` implementation ([logs](evidence/f07-red/README.md)) |
+| UI RED → GREEN | `1fd71db` failing tests → `086f149` implementation ([logs](evidence/f07-red/README.md)) |
+| Review fix (form refresh, save 404) | `7c79d95` test → `9eb9afb` fix |
+| PR #57 → `sprint-2-staging` | head `9eb9afb`, approved by jetanin, CI `test-and-docker` SUCCESS ([run 45347142610](https://github.com/jetanin/LoungCheu/actions/runs/45347142610)), merged `582a60d` on 24 Nov 2026 |
+| PR #60 cross-feature (TEST-47/52 via F-06 close, TEST-44(c)) | head `2e6ddc2`, approved by jetanin, CI SUCCESS ([run 45380720656](https://github.com/jetanin/LoungCheu/actions/runs/45380720656): Vitest 264/264, Playwright 39/39), merged `128c35c`; local logs in [cross-feature evidence](evidence/f07-cross-feature/README.md) |
+| Sprint 2 release to `main`, deploy, tag | Pending |
+
+F-07 test counts in CI (from the job logs; 0 failed / 0 skipped in both runs):
+
+| Command (CI `test-and-docker`) | Run 45347142610 @ `9eb9afb` | Run 45380720656 @ `2e6ddc2` |
+|---|---|---|
+| Vitest `server/tests/integration/event-edit.test.ts` (TEST-45–51; + TEST-44(c) in #60) | 7 passed | 8 passed |
+| Vitest `server/tests/unit/event-patch.test.ts` (TEST-48 unit) | 4 passed | 4 passed |
+| Vitest `client/src/features/events/EventEdit.test.tsx` (TEST-52 component) | 10 passed | 10 passed |
+| Vitest full suite (includes Sprint 1 regression) | 19 files, 189 passed | 25 files, 264 passed |
+| Playwright Chromium full suite (includes TEST-52 `event-edit.spec.ts`) | 38 passed | 39 passed |
+
+**TDD RED/GREEN output:** no failing output was saved when the RED commits
+were made (CI ran only on `ac28a9d` and `9eb9afb`). On 25 Nov 2026 the four
+commits were re-run unchanged and the logs retained: API `ef94a3f` 11 failed →
+`78efae7` 11 passed; UI `1fd71db` 7 failed / 1 passed → `086f149` 8 passed.
+All RED failures are assertion failures. See
+[F-07 RED/GREEN evidence](evidence/f07-red/README.md).
 
 AI assistance: Codex implemented/tested and reconciled documentation/evidence
 as recorded here. The user runs Git; the human teammate reviews/accepts. Local
