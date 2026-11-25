@@ -1,6 +1,6 @@
 # Part C — System-Level Software Design Specification
 
-**Release update — 26 พ.ย. 2026:** Sprint 2 (F-06/F-07) release บน main เป็น `v2.0.0-sprint-2` (`c0faf24`, PR #67) CI run 45666007554 ผ่าน (Vitest 264/264, Playwright 39/39 บน head `0643806` ซึ่ง tree เดียวกับ `c0faf24`) แล้ว deploy ผ่าน pipeline (run 45668146212, migration `202611240001_registration_lifecycle`, revision `scccd8b05-00011-fvb`). Main ปัจจุบัน `v2.0.1-lab6` (`6f49d32`, revision `scccd8b05-00012-msg`) เพิ่มเพียง test/เอกสาร Lab 6; schema/routes ตามเอกสารนี้ไม่เปลี่ยน
+**Release update — 26 พ.ย. 2026:** Sprint 2 (F-06/F-07) release บน main เป็น `v2.0.0-sprint-2` (`c0faf24`, PR #67) CI run 45666007554 ผ่าน (Vitest 264/264, Playwright 39/39 บน head `0643806` ซึ่ง tree เดียวกับ `c0faf24`) แล้ว deploy ผ่าน pipeline (run 45668146212: job test บน `c0faf24` Vitest 264/264, Playwright 39/39 → build image → migrate job `scccd8b05-migrate` ด้วย image ที่มี migration `202611240001_registration_lifecycle` → revision `scccd8b05-00011-fvb` → smoke test). Main ปัจจุบัน `v2.0.1-lab6` (`6f49d32`, revision `scccd8b05-00012-msg`) เพิ่มเพียง test/เอกสาร Lab 6; schema/routes ตามเอกสารนี้ไม่เปลี่ยน
 
 **Staging update — 25 พ.ย. 2026 (ประวัติ):** F-06 (PR #59), F-07 (PR #57) และ cross-feature TEST-44(c)/47/52 (PR #60) review และ merge เข้า `sprint-2-staging` แล้ว CI `test-and-docker` ผ่าน (Vitest 264/264, Playwright 39/39 @ `2e6ddc2`); ยังไม่ release บน main. Main ปัจจุบัน `v1.0.1-uat`/`0b2cc80` deploy บน Cloud Run และผ่าน independent UAT (Accepted 25 พ.ย.). ข้อความลงวันที่ก่อนหน้านี้คงไว้เป็นประวัติ
 

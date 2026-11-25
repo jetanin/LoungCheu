@@ -3,7 +3,7 @@
 **Sprint 2 release — 26 November 2026 (Asia/Bangkok):** F-06 and F-07 are released on `main` as tag `v2.0.0-sprint-2` (`c0faf24`).
 - Release PR #67 (`sprint-2-staging` → `main`): authored by jetanin, approved by i3artuf, merged 26 Nov 00:45 with a merge commit.
 - CI `test-and-docker` [run 45666007554](https://github.com/jetanin/LoungCheu/actions/runs/45666007554) on release head `0643806` (same tree as `c0faf24`): Vitest 25 files, 264/264 passed; Playwright 39/39 passed; 0 failed, 0 skipped.
-- Deploy run 45668146212 (migration `202611240001_registration_lifecycle`, smoke test) → Cloud Run revision `scccd8b05-00011-fvb`; `/api/ready` returned `ready`, `db: connected`, version `c0faf24`.
+- Deploy run 45668146212 on `c0faf24`: its test job passed again (Vitest 264/264, Playwright 39/39). It then built the image and ran migrate job `scccd8b05-migrate` with that image, which includes migration `202611240001_registration_lifecycle`. The smoke test passed and the run deployed Cloud Run revision `scccd8b05-00011-fvb`. `/api/ready` returned `ready`, `db: connected`, version `c0faf24`.
 - The UAT Team was told before the deploy (Lab 6 evidence EV-0-05). No independent UAT of Sprint 2 has run yet.
 - The later `v2.0.1-lab6` (`6f49d32`) adds only Lab 6 exercise tests and docs. The Sprint 2 release stays identifiable as `v2.0.0-sprint-2` (`c0faf24`).
 
@@ -14,7 +14,7 @@ Updated 24 November 2026 (Asia/Bangkok). Issue **#47**, branch
 Contract design Issue #46 is closed according to the user. This record covers
 F-06 only; F-07/#48 is owned by the teammate and is not accepted by this record.
 
-**Status: implemented and locally verified; not Done or an accepted release.**
+**Status (24 Nov record, superseded by the release block at the top): implemented and locally verified; not Done or an accepted release.**
 Integration update: the user started `git merge origin/sprint-2-staging` into
 `feature/47-f06` after the F-07 review. Conflict resolution and combined runs
 are recorded in [staging merge evidence](evidence/f06-staging-merge/README.md).
