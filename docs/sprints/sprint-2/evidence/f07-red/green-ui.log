@@ -1,0 +1,18 @@
+commit: 086f149 feat(events): add F-07 edit event UI (#48)
+
+ RUN  v5.1.0 <worktree>
+
+ ✓ client/src/features/events/EventEdit.test.tsx > F-07 edit event UI (TEST-52 component, AC-40) > owner detail shows แก้ไขกิจกรรม only for DRAFT/PUBLISHED (DRAFT) 246ms
+ ✓ client/src/features/events/EventEdit.test.tsx > F-07 edit event UI (TEST-52 component, AC-40) > owner detail shows แก้ไขกิจกรรม only for DRAFT/PUBLISHED (PUBLISHED) 44ms
+ ✓ client/src/features/events/EventEdit.test.tsx > F-07 edit event UI (TEST-52 component, AC-40) > owner detail shows แก้ไขกิจกรรม only for DRAFT/PUBLISHED (CLOSED) 43ms
+ ✓ client/src/features/events/EventEdit.test.tsx > F-07 edit event UI (TEST-52 component, AC-40) > prefills current values, enables save only after a real change and sends only changed fields 147ms
+ ✓ client/src/features/events/EventEdit.test.tsx > F-07 edit event UI (TEST-52 component, AC-40) > PUBLISHED keeps the three time fields disabled with a note and explains the ACTIVE floor 43ms
+ ✓ client/src/features/events/EventEdit.test.tsx > F-07 edit event UI (TEST-52 component, AC-40) > on 409 shows the Thai reason, reloads ACTIVE/status and keeps what the user typed 71ms
+ ✓ client/src/features/events/EventEdit.test.tsx > F-07 edit event UI (TEST-52 component, AC-40) > shows client and server (400) field errors in Thai under the input 75ms
+ ✓ client/src/features/events/EventEdit.test.tsx > F-07 edit event UI (TEST-52 component, AC-40) > CLOSED has no edit form; 404 and Participant are refused like owner routes 42ms
+
+ Test Files  1 passed (1)
+      Tests  8 passed (8)
+   Start at  18:37:06
+   Duration  3.15s (environment 56%, tests 24%, import 14%, transform 6%)
+
