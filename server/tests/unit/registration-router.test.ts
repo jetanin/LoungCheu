@@ -8,7 +8,7 @@ interface RegistrationIdentity { id: string; role: 'PARTICIPANT' | 'ORGANIZER'; 
 
 const participant = { id: '11111111-1111-4111-8111-111111111111', role: 'PARTICIPANT' as const, is_active: true };
 const eventId = '22222222-2222-4222-8222-222222222222';
-const record = { id: '33333333-3333-4333-8333-333333333333', event_id: eventId, status: 'ACTIVE' as const, registered_at: '2026-11-06T03:00:00.000Z' };
+const record = { id: '33333333-3333-4333-8333-333333333333', event_id: eventId, status: 'ACTIVE' as const, registered_at: '2026-11-06T03:00:00.000Z', cancelled_at: null };
 
 // Only checks the registration router boundary; these injected guards are NOT #1 auth tests.
 function setup(identity: RegistrationIdentity | null = participant, csrf = true) {

@@ -1,0 +1,331 @@
+
+> loungcheu@0.1.0 test
+> vitest run --reporter=dot
+
+
+ RUN  v5.1.0 C:/Work/2569/CPE334/GroupWork/LoungCheu
+
+········---------------------stdout | server/tests/integration/registration-lifecycle-restart.test.ts > NFR-03 / TEST-43 persistence: CANCELLED then reactivated/CLOSED state survives actual compiled backend process restarts
+F06_RESTART {"event":"ready","pid":48732,"port":59626,"version":"f06-restart-a6826d1c-39a9-4b20-adc3-54ed7abd1637-1"}
+
+stdout | server/tests/integration/registration-lifecycle-restart.test.ts > NFR-03 / TEST-43 persistence: CANCELLED then reactivated/CLOSED state survives actual compiled backend process restarts
+F06_RESTART {"event":"stopped","pid":48732}
+
+stdout | server/tests/integration/registration-lifecycle-restart.test.ts > NFR-03 / TEST-43 persistence: CANCELLED then reactivated/CLOSED state survives actual compiled backend process restarts
+F06_RESTART {"event":"ready","pid":53628,"port":59626,"version":"f06-restart-a6826d1c-39a9-4b20-adc3-54ed7abd1637-2"}
+
+stdout | server/tests/integration/registration-lifecycle-restart.test.ts > NFR-03 / TEST-43 persistence: CANCELLED then reactivated/CLOSED state survives actual compiled backend process restarts
+F06_RESTART {"event":"stopped","pid":53628}
+
+stdout | server/tests/integration/registration-lifecycle-restart.test.ts > NFR-03 / TEST-43 persistence: CANCELLED then reactivated/CLOSED state survives actual compiled backend process restarts
+F06_RESTART {"event":"ready","pid":49560,"port":59626,"version":"f06-restart-a6826d1c-39a9-4b20-adc3-54ed7abd1637-3"}
+
+stdout | server/tests/integration/registration-lifecycle-restart.test.ts > NFR-03 / TEST-43 persistence: CANCELLED then reactivated/CLOSED state survives actual compiled backend process restarts
+F06_RESTART {"event":"verified","distinctProcesses":3,"stoppedAndRestarted":2,"registrationRows":1,"historyRows":3}
+
+stdout | server/tests/integration/registration-lifecycle-restart.test.ts > NFR-03 / TEST-43 persistence: CANCELLED then reactivated/CLOSED state survives actual compiled backend process restarts
+F06_RESTART {"event":"stopped","pid":49560}
+
+·---------------------------------------------------------------------------------------·····································································································
+
+⎯⎯⎯⎯⎯⎯ Failed Suites 7 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  server/tests/integration/auth.test.ts [ server/tests/integration/auth.test.ts ]
+PrismaClientKnownRequestError: 
+Invalid `db.user.upsert()` invocation in
+C:/Work/2569/CPE334/GroupWork/LoungCheu/scripts/test-fixtures.ts:15:19
+
+  12 if (!password) throw new Error('A private test fixture password is required');
+  13 for (const user of demoUsers) {
+  14   const passwordHash = await hashPassword(password);
+→ 15   await db.user.upsert(
+The table `public.users` does not exist in the current database.
+ ❯ vn.handleRequestError node_modules/@prisma/client/src/runtime/RequestHandler.ts:238:13
+ ❯ vn.handleAndLogRequestError node_modules/@prisma/client/src/runtime/RequestHandler.ts:184:12
+ ❯ vn.request node_modules/@prisma/client/src/runtime/RequestHandler.ts:153:12
+ ❯ a node_modules/@prisma/client/src/runtime/getPrismaClient.ts:1012:24
+ ❯ resetTestUsers scripts/test-fixtures.ts:15:5
+     13|   for (const user of demoUsers) {
+     14|     const passwordHash = await hashPassword(password);
+     15|     await db.user.upsert({ where: { username: user.username }, create:…
+       |     ^
+     16|   }
+     17| }
+ ❯ server/tests/integration/auth.test.ts:42:3
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/12]⎯
+
+ FAIL  server/tests/integration/demo-seed.test.ts [ server/tests/integration/demo-seed.test.ts ]
+PrismaClientKnownRequestError: 
+Invalid `db.event.count()` invocation in
+C:/Work/2569/CPE334/GroupWork/LoungCheu/server/tests/integration/demo-seed.test.ts:23:22
+
+  20   return { agent, token, identity };
+  21 }
+  22 beforeAll(async () => {
+→ 23   if (await db.event.count(
+The table `public.events` does not exist in the current database.
+ ❯ vn.handleRequestError node_modules/@prisma/client/src/runtime/RequestHandler.ts:238:13
+ ❯ vn.handleAndLogRequestError node_modules/@prisma/client/src/runtime/RequestHandler.ts:184:12
+ ❯ vn.request node_modules/@prisma/client/src/runtime/RequestHandler.ts:153:12
+ ❯ a node_modules/@prisma/client/src/runtime/getPrismaClient.ts:1012:24
+ ❯ server/tests/integration/demo-seed.test.ts:23:7
+     21| }
+     22| beforeAll(async () => {
+     23|   if (await db.event.count({ where: { id: { in: ids } } })) throw new …
+       |       ^
+     24|   ownsFixtures = true;
+     25|   await resetTestUsers(db, password);
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[2/12]⎯
+
+ FAIL  server/tests/integration/events.test.ts [ server/tests/integration/events.test.ts ]
+PrismaClientKnownRequestError: 
+Invalid `db.user.upsert()` invocation in
+C:/Work/2569/CPE334/GroupWork/LoungCheu/scripts/test-fixtures.ts:15:19
+
+  12 if (!password) throw new Error('A private test fixture password is required');
+  13 for (const user of demoUsers) {
+  14   const passwordHash = await hashPassword(password);
+→ 15   await db.user.upsert(
+The table `public.users` does not exist in the current database.
+ ❯ vn.handleRequestError node_modules/@prisma/client/src/runtime/RequestHandler.ts:238:13
+ ❯ vn.handleAndLogRequestError node_modules/@prisma/client/src/runtime/RequestHandler.ts:184:12
+ ❯ vn.request node_modules/@prisma/client/src/runtime/RequestHandler.ts:153:12
+ ❯ a node_modules/@prisma/client/src/runtime/getPrismaClient.ts:1012:24
+ ❯ resetTestUsers scripts/test-fixtures.ts:15:5
+     13|   for (const user of demoUsers) {
+     14|     const passwordHash = await hashPassword(password);
+     15|     await db.user.upsert({ where: { username: user.username }, create:…
+       |     ^
+     16|   }
+     17| }
+ ❯ server/tests/integration/events.test.ts:38:3
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[3/12]⎯
+
+ FAIL  server/tests/integration/events.test.ts [ server/tests/integration/events.test.ts ]
+PrismaClientKnownRequestError: 
+Invalid `db.registrationHistory.deleteMany()` invocation in
+C:/Work/2569/CPE334/GroupWork/LoungCheu/server/tests/integration/events.test.ts:45:32
+
+  42 });
+  43 beforeEach(() => { clock = t0; });
+  44 afterAll(async () => {
+→ 45   await db.registrationHistory.deleteMany(
+The table `public.registration_history` does not exist in the current database.
+ ❯ vn.handleRequestError node_modules/@prisma/client/src/runtime/RequestHandler.ts:238:13
+ ❯ vn.handleAndLogRequestError node_modules/@prisma/client/src/runtime/RequestHandler.ts:184:12
+ ❯ vn.request node_modules/@prisma/client/src/runtime/RequestHandler.ts:153:12
+ ❯ a node_modules/@prisma/client/src/runtime/getPrismaClient.ts:1012:24
+ ❯ server/tests/integration/events.test.ts:45:3
+     43| beforeEach(() => { clock = t0; });
+     44| afterAll(async () => {
+     45|   await db.registrationHistory.deleteMany({ where: { registration: { e…
+       |   ^
+     46|   await db.registration.deleteMany({ where: { eventId: { in: ids } } }…
+     47|   await db.event.deleteMany({ where: { id: { in: ids } } });
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[4/12]⎯
+
+ FAIL  server/tests/integration/registration-lifecycle-hardening.test.ts [ server/tests/integration/registration-lifecycle-hardening.test.ts ]
+PrismaClientKnownRequestError: 
+Invalid `db.user.createMany()` invocation in
+C:/Work/2569/CPE334/GroupWork/LoungCheu/server/tests/integration/registration-lifecycle-hardening.test.ts:72:17
+
+  69 beforeAll(async () => {
+  70   expect(await db.$queryRaw`SELECT current_database() AS name`).toEqual([{ name: 'loungcheu_test' }]);
+  71   const passwordHash = await hashPassword(password);
+→ 72   await db.user.createMany(
+The table `public.users` does not exist in the current database.
+ ❯ vn.handleRequestError node_modules/@prisma/client/src/runtime/RequestHandler.ts:238:13
+ ❯ vn.handleAndLogRequestError node_modules/@prisma/client/src/runtime/RequestHandler.ts:184:12
+ ❯ vn.request node_modules/@prisma/client/src/runtime/RequestHandler.ts:153:12
+ ❯ a node_modules/@prisma/client/src/runtime/getPrismaClient.ts:1012:24
+ ❯ server/tests/integration/registration-lifecycle-hardening.test.ts:72:3
+     70|   expect(await db.$queryRaw`SELECT current_database() AS name`).toEqua…
+     71|   const passwordHash = await hashPassword(password);
+     72|   await db.user.createMany({ data: (Object.keys(ids) as Account[]).map…
+       |   ^
+     73|     username: `f06-hard-${ids[account]}`, displayName: account.toUpper…
+     74|     role: account.startsWith('o') ? 'ORGANIZER' as const : 'PARTICIPAN…
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[5/12]⎯
+
+ FAIL  server/tests/integration/registration-lifecycle-hardening.test.ts [ server/tests/integration/registration-lifecycle-hardening.test.ts ]
+PrismaClientKnownRequestError: 
+Invalid `db.user.deleteMany()` invocation in
+C:/Work/2569/CPE334/GroupWork/LoungCheu/server/tests/integration/registration-lifecycle-hardening.test.ts:100:19
+
+   97 afterAll(async () => {
+   98   try {
+   99     await Promise.all(runtimes.map(runtime => runtime.close()));
+→ 100     await db.user.deleteMany(
+The table `public.users` does not exist in the current database.
+ ❯ vn.handleRequestError node_modules/@prisma/client/src/runtime/RequestHandler.ts:238:13
+ ❯ vn.handleAndLogRequestError node_modules/@prisma/client/src/runtime/RequestHandler.ts:184:12
+ ❯ vn.request node_modules/@prisma/client/src/runtime/RequestHandler.ts:153:12
+ ❯ a node_modules/@prisma/client/src/runtime/getPrismaClient.ts:1012:24
+ ❯ server/tests/integration/registration-lifecycle-hardening.test.ts:100:5
+     98|   try {
+     99|     await Promise.all(runtimes.map(runtime => runtime.close()));
+    100|     await db.user.deleteMany({ where: { id: { in: Object.values(ids) }…
+       |     ^
+    101|   } finally { await Promise.all([db, a, b, locker].map(connection => c…
+    102| });
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[6/12]⎯
+
+ FAIL  server/tests/integration/registration-lifecycle.test.ts [ server/tests/integration/registration-lifecycle.test.ts ]
+PrismaClientKnownRequestError: 
+Invalid `db.user.createMany()` invocation in
+C:/Work/2569/CPE334/GroupWork/LoungCheu/server/tests/integration/registration-lifecycle.test.ts:66:17
+
+  63 const target = await db.$queryRaw<{ name: string }[]>`SELECT current_database() AS name`;
+  64 expect(target).toEqual([{ name: 'loungcheu_test' }]);
+  65 const passwordHash = await hashPassword(password);
+→ 66 await db.user.createMany(
+The table `public.users` does not exist in the current database.
+ ❯ vn.handleRequestError node_modules/@prisma/client/src/runtime/RequestHandler.ts:238:13
+ ❯ vn.handleAndLogRequestError node_modules/@prisma/client/src/runtime/RequestHandler.ts:184:12
+ ❯ vn.request node_modules/@prisma/client/src/runtime/RequestHandler.ts:153:12
+ ❯ a node_modules/@prisma/client/src/runtime/getPrismaClient.ts:1012:24
+ ❯ server/tests/integration/registration-lifecycle.test.ts:66:3
+     64|   expect(target).toEqual([{ name: 'loungcheu_test' }]);
+     65|   const passwordHash = await hashPassword(password);
+     66|   await db.user.createMany({ data: (Object.keys(ids) as Account[]).map…
+       |   ^
+     67|     id: ids[account], username: `f06-${ids[account]}`, passwordHash, d…
+     68|     role: account.startsWith('o') ? 'ORGANIZER' as const : 'PARTICIPAN…
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[7/12]⎯
+
+ FAIL  server/tests/integration/registration-lifecycle.test.ts [ server/tests/integration/registration-lifecycle.test.ts ]
+PrismaClientKnownRequestError: 
+Invalid `db.user.deleteMany()` invocation in
+C:/Work/2569/CPE334/GroupWork/LoungCheu/server/tests/integration/registration-lifecycle.test.ts:104:19
+
+  101 afterAll(async () => {
+  102   try {
+  103     if (runtime) await runtime.close();
+→ 104     await db.user.deleteMany(
+The table `public.users` does not exist in the current database.
+ ❯ vn.handleRequestError node_modules/@prisma/client/src/runtime/RequestHandler.ts:238:13
+ ❯ vn.handleAndLogRequestError node_modules/@prisma/client/src/runtime/RequestHandler.ts:184:12
+ ❯ vn.request node_modules/@prisma/client/src/runtime/RequestHandler.ts:153:12
+ ❯ a node_modules/@prisma/client/src/runtime/getPrismaClient.ts:1012:24
+ ❯ server/tests/integration/registration-lifecycle.test.ts:104:5
+    102|   try {
+    103|     if (runtime) await runtime.close();
+    104|     await db.user.deleteMany({ where: { id: { in: Object.values(ids) }…
+       |     ^
+    105|   } finally { await db.$disconnect(); }
+    106| });
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[8/12]⎯
+
+ FAIL  server/tests/integration/registration-views.test.ts [ server/tests/integration/registration-views.test.ts ]
+PrismaClientKnownRequestError: 
+Invalid `db.user.createMany()` invocation in
+C:/Work/2569/CPE334/GroupWork/LoungCheu/server/tests/integration/registration-views.test.ts:32:17
+
+  29 }
+  30 beforeAll(async () => {
+  31   const passwordHash = await hashPassword(password);
+→ 32   await db.user.createMany(
+The table `public.users` does not exist in the current database.
+ ❯ vn.handleRequestError node_modules/@prisma/client/src/runtime/RequestHandler.ts:238:13
+ ❯ vn.handleAndLogRequestError node_modules/@prisma/client/src/runtime/RequestHandler.ts:184:12
+ ❯ vn.request node_modules/@prisma/client/src/runtime/RequestHandler.ts:153:12
+ ❯ a node_modules/@prisma/client/src/runtime/getPrismaClient.ts:1012:24
+ ❯ server/tests/integration/registration-views.test.ts:32:3
+     30| beforeAll(async () => {
+     31|   const passwordHash = await hashPassword(password);
+     32|   await db.user.createMany({ data: users.map((id, index) => ({ id, use…
+       |   ^
+     33|     displayName: `Synthetic ${index}`, role: index < 2 ? 'ORGANIZER' :…
+     34|   for (const [index, id] of events.entries()) await db.event.create({ …
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[9/12]⎯
+
+ FAIL  server/tests/integration/registration-views.test.ts [ server/tests/integration/registration-views.test.ts ]
+PrismaClientKnownRequestError: 
+Invalid `db.registrationHistory.deleteMany()` invocation in
+C:/Work/2569/CPE334/GroupWork/LoungCheu/server/tests/integration/registration-views.test.ts:47:34
+
+  44 afterAll(async () => {
+  45   if (runtime) await runtime.close();
+  46   try {
+→ 47     await db.registrationHistory.deleteMany(
+The table `public.registration_history` does not exist in the current database.
+ ❯ vn.handleRequestError node_modules/@prisma/client/src/runtime/RequestHandler.ts:238:13
+ ❯ vn.handleAndLogRequestError node_modules/@prisma/client/src/runtime/RequestHandler.ts:184:12
+ ❯ vn.request node_modules/@prisma/client/src/runtime/RequestHandler.ts:153:12
+ ❯ a node_modules/@prisma/client/src/runtime/getPrismaClient.ts:1012:24
+ ❯ server/tests/integration/registration-views.test.ts:47:5
+     45|   if (runtime) await runtime.close();
+     46|   try {
+     47|     await db.registrationHistory.deleteMany({ where: { registration: {…
+       |     ^
+     48|     await db.registration.deleteMany({ where: { eventId: { in: events …
+     49|     await db.event.deleteMany({ where: { id: { in: events } } });
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[10/12]⎯
+
+ FAIL  server/tests/integration/registration.test.ts [ server/tests/integration/registration.test.ts ]
+PrismaClientKnownRequestError: 
+Invalid `db.user.createMany()` invocation in
+C:/Work/2569/CPE334/GroupWork/LoungCheu/server/tests/integration/registration.test.ts:60:17
+
+  57 beforeAll(async () => {
+  58   await Promise.all([db.$connect(), a.$connect(), b.$connect(), locker.$connect()]);
+  59   const passwordHash = await hashPassword(password);
+→ 60   await db.user.createMany(
+The table `public.users` does not exist in the current database.
+ ❯ vn.handleRequestError node_modules/@prisma/client/src/runtime/RequestHandler.ts:238:13
+ ❯ vn.handleAndLogRequestError node_modules/@prisma/client/src/runtime/RequestHandler.ts:184:12
+ ❯ vn.request node_modules/@prisma/client/src/runtime/RequestHandler.ts:153:12
+ ❯ a node_modules/@prisma/client/src/runtime/getPrismaClient.ts:1012:24
+ ❯ server/tests/integration/registration.test.ts:60:3
+     58|   await Promise.all([db.$connect(), a.$connect(), b.$connect(), locker…
+     59|   const passwordHash = await hashPassword(password);
+     60|   await db.user.createMany({ data: [
+       |   ^
+     61|     { id: ownerId, username: `test-${ownerId}`, passwordHash, displayN…
+     62|     ...[participantA, participantB].map((id, index) => ({ id, username…
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[11/12]⎯
+
+ FAIL  server/tests/integration/registration.test.ts [ server/tests/integration/registration.test.ts ]
+PrismaClientKnownRequestError: 
+Invalid `db.user.deleteMany()` invocation in
+C:/Work/2569/CPE334/GroupWork/LoungCheu/server/tests/integration/registration.test.ts:90:23
+
+  87 });
+  88 afterAll(async () => {
+  89   await Promise.all(runtimes.map((runtime) => runtime.close()));
+→ 90   try { await db.user.deleteMany(
+The table `public.users` does not exist in the current database.
+ ❯ vn.handleRequestError node_modules/@prisma/client/src/runtime/RequestHandler.ts:238:13
+ ❯ vn.handleAndLogRequestError node_modules/@prisma/client/src/runtime/RequestHandler.ts:184:12
+ ❯ vn.request node_modules/@prisma/client/src/runtime/RequestHandler.ts:153:12
+ ❯ a node_modules/@prisma/client/src/runtime/getPrismaClient.ts:1012:24
+ ❯ server/tests/integration/registration.test.ts:90:9
+     88| afterAll(async () => {
+     89|   await Promise.all(runtimes.map((runtime) => runtime.close()));
+     90|   try { await db.user.deleteMany({ where: { id: { in: [ownerId, partic…
+       |         ^
+     91|   finally { await Promise.all([db.$disconnect(), a.$disconnect(), b.$d…
+     92| });
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[12/12]⎯
+
+
+ Test Files  7 failed | 14 passed (21)
+      Tests  110 passed | 108 skipped (218)
+   Start at  12:14:08
+   Duration  38.94s (tests 73%, environment 14%, import 12%, transform 1%)
+
+    Isolate  21 workers spawned · ~364ms startup each (spawn + environment, per file)
+             at least ~7.27s faster with isolate: false — reuses workers across files instead of one per file
+

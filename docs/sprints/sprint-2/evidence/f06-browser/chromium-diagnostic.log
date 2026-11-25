@@ -1,0 +1,141 @@
+
+> loungcheu@0.1.0 test:e2e
+> playwright test tests/e2e/registration-lifecycle.spec.ts
+
+[WebServer] (node:38472) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+[WebServer] (Use `node --trace-warnings ...` to show where the warning was created)
+[WebServer] (node:27580) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+[WebServer] (Use `node --trace-warnings ...` to show where the warning was created)
+
+Running 1 test using 1 worker
+
+(node:19932) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+F06_BROWSER cancelled and screenshot saved
+F06_BROWSER failure before cleanup: ExpectError: expect(locator).toHaveCount(expected) failed
+
+Locator:  getByText('ลงทะเบียนครั้งแรกเมื่อ', { exact: true }).locator('..').locator('dd').filter({ hasText: '24 พ.ย. 2569 12:36:55' })
+Expected: 1
+Received: 2
+Timeout:  5000ms
+
+Call log:
+  - Expect "toHaveCount" getByText('ลงทะเบียนครั้งแรกเมื่อ', { exact: true }).locator('..').locator('dd').filter({ hasText: '24 พ.ย. 2569 12:36:55' }) with timeout 5000ms
+  - waiting for getByText('ลงทะเบียนครั้งแรกเมื่อ', { exact: true }).locator('..').locator('dd').filter({ hasText: '24 พ.ย. 2569 12:36:55' })
+    14 × locator resolved to 2 elements
+       - unexpected value "2"
+
+    at C:\Work\2569\CPE334\GroupWork\LoungCheu\tests\e2e\registration-lifecycle.spec.ts:96:31 {
+  matcherResult: {
+    actual: 2,
+    expected: 1,
+    message: '\x1B[2mexpect(\x1B[22m\x1B[31mlocator\x1B[39m\x1B[2m).\x1B[22mtoHaveCount\x1B[2m(\x1B[22m\x1B[32mexpected\x1B[39m\x1B[2m)\x1B[22m failed\n' +
+      '\n' +
+      "Locator:  getByText('ลงทะเบียนครั้งแรกเมื่อ', { exact: true }).locator('..').locator('dd').filter({ hasText: '24 พ.ย. 2569 12:36:55' })\n" +
+      'Expected: \x1B[32m1\x1B[39m\n' +
+      'Received: \x1B[31m2\x1B[39m\n' +
+      'Timeout:  5000ms\n' +
+      '\n' +
+      'Call log:\n' +
+      `\x1B[2m  - Expect "toHaveCount" getByText('ลงทะเบียนครั้งแรกเมื่อ', { exact: true }).locator('..').locator('dd').filter({ hasText: '24 พ.ย. 2569 12:36:55' }) with timeout 5000ms\x1B[22m\n` +
+      "\x1B[2m  - waiting for getByText('ลงทะเบียนครั้งแรกเมื่อ', { exact: true }).locator('..').locator('dd').filter({ hasText: '24 พ.ย. 2569 12:36:55' })\x1B[22m\n" +
+      '\x1B[2m    14 × locator resolved to 2 elements\x1B[22m\n' +
+      '\x1B[2m       - unexpected value "2"\x1B[22m\n',
+    name: 'toHaveCount',
+    pass: false,
+    log: [
+      `  - Expect "toHaveCount" getByText('ลงทะเบียนครั้งแรกเมื่อ', { exact: true }).locator('..').locator('dd').filter({ hasText: '24 พ.ย. 2569 12:36:55' }) with timeout 5000ms`,
+      "  - waiting for getByText('ลงทะเบียนครั้งแรกเมื่อ', { exact: true }).locator('..').locator('dd').filter({ hasText: '24 พ.ย. 2569 12:36:55' })",
+      '    14 × locator resolved to 2 elements',
+      '       - unexpected value "2"'
+    ],
+    timeout: 5000,
+    ariaSnapshot: undefined
+  },
+  Symbol(step): {
+    category: 'expect',
+    title: 'Expect "toHaveCount"',
+    subtitle: "getByText('ลงทะเบียนครั้งแรกเมื่อ', { exact: true }).locator('..').locator('dd').filter({ hasText: '24 พ.ย. 2569 12:36:55' })",
+    stack: [ [Object] ],
+    params: {
+      locator: "getByText('ลงทะเบียนครั้งแรกเมื่อ', { exact: true }).locator('..').locator('dd').filter({ hasText: '24 พ.ย. 2569 12:36:55' })",
+      expected: 1
+    },
+    stepId: 'hlgz@143',
+    group: undefined,
+    boxedStack: undefined,
+    steps: [],
+    attachmentIndices: [],
+    info: TestStepInfoImpl {
+      annotations: [],
+      _testInfo: [TestInfoImpl],
+      _stepId: 'hlgz@143',
+      _title: 'Expect "toHaveCount"',
+      _parentStep: undefined,
+      skip: [Function (anonymous)]
+    },
+    complete: [Function: complete],
+    endWallTime: 1795498621398,
+    error: {
+      message: 'Error: \x1B[2mexpect(\x1B[22m\x1B[31mlocator\x1B[39m\x1B[2m).\x1B[22mtoHaveCount\x1B[2m(\x1B[22m\x1B[32mexpected\x1B[39m\x1B[2m)\x1B[22m failed\n' +
+        '\n' +
+        "Locator:  getByText('ลงทะเบียนครั้งแรกเมื่อ', { exact: true }).locator('..').locator('dd').filter({ hasText: '24 พ.ย. 2569 12:36:55' })\n" +
+        'Expected: \x1B[32m1\x1B[39m\n' +
+        'Received: \x1B[31m2\x1B[39m\n' +
+        'Timeout:  5000ms\n' +
+        '\n' +
+        'Call log:\n' +
+        `\x1B[2m  - Expect "toHaveCount" getByText('ลงทะเบียนครั้งแรกเมื่อ', { exact: true }).locator('..').locator('dd').filter({ hasText: '24 พ.ย. 2569 12:36:55' }) with timeout 5000ms\x1B[22m\n` +
+        "\x1B[2m  - waiting for getByText('ลงทะเบียนครั้งแรกเมื่อ', { exact: true }).locator('..').locator('dd').filter({ hasText: '24 พ.ย. 2569 12:36:55' })\x1B[22m\n" +
+        '\x1B[2m    14 × locator resolved to 2 elements\x1B[22m\n' +
+        '\x1B[2m       - unexpected value "2"\x1B[22m\n',
+      stack: 'Error: \x1B[2mexpect(\x1B[22m\x1B[31mlocator\x1B[39m\x1B[2m).\x1B[22mtoHaveCount\x1B[2m(\x1B[22m\x1B[32mexpected\x1B[39m\x1B[2m)\x1B[22m failed\n' +
+        '\n' +
+        "Locator:  getByText('ลงทะเบียนครั้งแรกเมื่อ', { exact: true }).locator('..').locator('dd').filter({ hasText: '24 พ.ย. 2569 12:36:55' })\n" +
+        'Expected: \x1B[32m1\x1B[39m\n' +
+        'Received: \x1B[31m2\x1B[39m\n' +
+        'Timeout:  5000ms\n' +
+        '\n' +
+        'Call log:\n' +
+        `\x1B[2m  - Expect "toHaveCount" getByText('ลงทะเบียนครั้งแรกเมื่อ', { exact: true }).locator('..').locator('dd').filter({ hasText: '24 พ.ย. 2569 12:36:55' }) with timeout 5000ms\x1B[22m\n` +
+        "\x1B[2m  - waiting for getByText('ลงทะเบียนครั้งแรกเมื่อ', { exact: true }).locator('..').locator('dd').filter({ hasText: '24 พ.ย. 2569 12:36:55' })\x1B[22m\n" +
+        '\x1B[2m    14 × locator resolved to 2 elements\x1B[22m\n' +
+        '\x1B[2m       - unexpected value "2"\x1B[22m\n' +
+        '\n' +
+        '    at C:\\Work\\2569\\CPE334\\GroupWork\\LoungCheu\\tests\\e2e\\registration-lifecycle.spec.ts:96:31',
+      cause: undefined
+    }
+  }
+}
+  x  1 tests\e2e\registration-lifecycle.spec.ts:31:1 › TEST-43: real cancel/re-login/full/reactivate/roster/close journey preserves identity and history (8.3s)
+
+
+  1) tests\e2e\registration-lifecycle.spec.ts:31:1 › TEST-43: real cancel/re-login/full/reactivate/roster/close journey preserves identity and history 
+
+    Error: expect(locator).toHaveCount(expected) failed
+
+    Locator:  getByText('ลงทะเบียนครั้งแรกเมื่อ', { exact: true }).locator('..').locator('dd').filter({ hasText: '24 พ.ย. 2569 12:36:55' })
+    Expected: 1
+    Received: 2
+    Timeout:  5000ms
+
+    Call log:
+      - Expect "toHaveCount" getByText('ลงทะเบียนครั้งแรกเมื่อ', { exact: true }).locator('..').locator('dd').filter({ hasText: '24 พ.ย. 2569 12:36:55' }) with timeout 5000ms
+      - waiting for getByText('ลงทะเบียนครั้งแรกเมื่อ', { exact: true }).locator('..').locator('dd').filter({ hasText: '24 พ.ย. 2569 12:36:55' })
+        14 × locator resolved to 2 elements
+           - unexpected value "2"
+
+
+      94 |     await expect(a).toHaveURL(new RegExp(`/my/registrations/${reference}$`));
+      95 |     await expect(a.getByText('CANCELLED', { exact: true })).toBeVisible();
+    > 96 |     await expect(firstTime()).toHaveCount(1);
+         |                               ^
+      97 |     console.log('F06_BROWSER re-login preserved cancelled registration');
+      98 |
+      99 |     // B takes precisely the seat A returned. A's cancelled record must not be
+        at C:\Work\2569\CPE334\GroupWork\LoungCheu\tests\e2e\registration-lifecycle.spec.ts:96:31
+
+    Error Context: test-results\registration-lifecycle-TES-ca9a7-serves-identity-and-history\error-context.md
+
+  1 failed
+    tests\e2e\registration-lifecycle.spec.ts:31:1 › TEST-43: real cancel/re-login/full/reactivate/roster/close journey preserves identity and history 

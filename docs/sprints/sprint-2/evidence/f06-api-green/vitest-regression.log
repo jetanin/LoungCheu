@@ -1,0 +1,17 @@
+
+> loungcheu@0.1.0 test
+> vitest run --reporter=dot
+
+
+ RUN  v5.1.0 C:/Work/2569/CPE334/GroupWork/LoungCheu
+
+·················································································································································································
+
+ Test Files  17 passed (17)
+      Tests  177 passed (177)
+   Start at  02:00:56
+   Duration  25.07s (tests 65%, environment 17%, import 16%, transform 1%, worker 1%)
+
+    Isolate  17 workers spawned · ~374ms startup each (spawn + environment, per file)
+             at least ~5.98s faster with isolate: false — reuses workers across files instead of one per file
+

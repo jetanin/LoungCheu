@@ -1,0 +1,17 @@
+
+> loungcheu@0.1.0 test
+> vitest run client/src/features/registrations --reporter=dot
+
+
+ RUN  v5.1.0 C:/Work/2569/CPE334/GroupWork/LoungCheu
+
+·····································
+
+ Test Files  4 passed (4)
+      Tests  37 passed (37)
+   Start at  02:18:03
+   Duration  10.29s (environment 64%, import 18%, tests 16%, transform 2%)
+
+    Isolate  4 workers spawned · ~1.72s startup each (spawn + environment, per file)
+             at least ~5.16s faster with isolate: false — reuses workers across files instead of one per file
+

@@ -79,6 +79,7 @@ beforeAll(async () => {
   }
 });
 afterEach(async () => {
+  await db.registrationHistory.deleteMany({ where: { registration: { eventId: { in: eventIds } } } });
   await db.registration.deleteMany({ where: { eventId: { in: eventIds } } });
   await db.event.deleteMany({ where: { id: { in: eventIds } } });
   eventIds.length = 0;
@@ -126,7 +127,7 @@ describe('F-03 real PostgreSQL / API (TEST-15–21)', () => {
     const event = await fixture();
     const response = await post(app(a), event.id).send({});
     expect(response.status).toBe(201);
-    expect(response.body.data).toEqual({ id: expect.any(String), event_id: event.id, status: 'ACTIVE', registered_at: t0.toISOString() });
+    expect(response.body.data).toEqual({ id: expect.any(String), event_id: event.id, status: 'ACTIVE', registered_at: t0.toISOString(), cancelled_at: null });
     const record = await db.registration.findUniqueOrThrow({ where: { id: response.body.data.id } });
     expect(record.participantId).toBe(participantA);
     expect(record.registeredAt).toEqual(t0);

@@ -42,6 +42,7 @@ beforeAll(async () => {
 });
 beforeEach(() => { clock = t0; });
 afterAll(async () => {
+  await db.registrationHistory.deleteMany({ where: { registration: { eventId: { in: ids } } } });
   await db.registration.deleteMany({ where: { eventId: { in: ids } } });
   await db.event.deleteMany({ where: { id: { in: ids } } });
   if (runtime) await runtime.close(); await db.$disconnect(); await pool.end();
@@ -172,6 +173,7 @@ it('TEST-11 fields/counts use committed snapshots during concurrent capacity/reg
         await tx.event.update({ where: { id: event.id }, data: { capacity: 2 } });
         await tx.registration.create({ data: { eventId: event.id, participantId: participant, registeredAt: new Date(t0) } });
       } else {
+        await tx.registrationHistory.deleteMany({ where: { registration: { eventId: event.id } } });
         await tx.registration.deleteMany({ where: { eventId: event.id } });
         await tx.event.update({ where: { id: event.id }, data: { capacity: 1 } });
       }

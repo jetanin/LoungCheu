@@ -1,0 +1,21 @@
+commit: 78efae7 feat(events): implement F-07 edit event API (#48)
+
+ RUN  v5.1.0 <worktree>
+
+ ✓ server/tests/integration/event-edit.test.ts > F-07 PATCH /api/organizer/events/{id} (TEST-45–TEST-51) > TEST-45 / AC-34 owner edits every EventInput field of a DRAFT and reads it back 68ms
+ ✓ server/tests/integration/event-edit.test.ts > F-07 PATCH /api/organizer/events/{id} (TEST-45–TEST-51) > TEST-46 / AC-35 PUBLISHED allows details/capacity but rejects any time field 157ms
+ ✓ server/tests/integration/event-edit.test.ts > F-07 PATCH /api/organizer/events/{id} (TEST-45–TEST-51) > TEST-47 / AC-36 CLOSED is not editable and status is checked before field rules 57ms
+ ✓ server/tests/integration/event-edit.test.ts > F-07 PATCH /api/organizer/events/{id} (TEST-45–TEST-51) > TEST-48 / AC-37 rejects invalid EventPatch and merged BR-02 order without changes; accepts boundaries 266ms
+ ✓ server/tests/integration/event-edit.test.ts > F-07 PATCH /api/organizer/events/{id} (TEST-45–TEST-51) > TEST-49 / AC-38 capacity may equal ACTIVE but not go below; raising a full event reopens it 61ms
+ ✓ server/tests/integration/event-edit.test.ts > F-07 PATCH /api/organizer/events/{id} (TEST-45–TEST-51) > TEST-50 / AC-39 capacity decrease and last-seat registration serialize on the Event lock 1123ms
+ ✓ server/tests/integration/event-edit.test.ts > F-07 PATCH /api/organizer/events/{id} (TEST-45–TEST-51) > TEST-51 / AC-40 enforces auth → role → CSRF → input → ownership without changes 76ms
+ ✓ server/tests/unit/event-patch.test.ts > F-07 EventPatch validation (TEST-48 unit, AC-37) > normalizes only the fields that were sent 3ms
+ ✓ server/tests/unit/event-patch.test.ts > F-07 EventPatch validation (TEST-48 unit, AC-37) > accepts the EventInput boundaries 1ms
+ ✓ server/tests/unit/event-patch.test.ts > F-07 EventPatch validation (TEST-48 unit, AC-37) > rejects empty, malformed, null, out-of-range and non-editable input with 400 INVALID_INPUT 3ms
+ ✓ server/tests/unit/event-patch.test.ts > F-07 EventPatch validation (TEST-48 unit, AC-37) > reuses the create-form field messages 1ms
+
+ Test Files  2 passed (2)
+      Tests  11 passed (11)
+   Start at  18:36:48
+   Duration  4.88s (tests 85%, import 10%, transform 4%)
+
