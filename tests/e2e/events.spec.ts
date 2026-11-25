@@ -157,7 +157,7 @@ for (const outcome of ['pending', 'success', 'uncertain'] as const) test(`F-02/#
   await page.route(`**/api/events/${id}/registrations`, async route => {
     if (outcome === 'pending') await gate;
     if (outcome === 'uncertain') await route.abort();
-    else await route.fulfill({ status: 201, json: { data: { id: 'registration-reference', event_id: id, status: 'ACTIVE', registered_at: '2026-11-06T03:00:00.000Z' } } });
+    else await route.fulfill({ status: 201, json: { data: { id: 'registration-reference', event_id: id, status: 'ACTIVE', registered_at: '2026-11-06T03:00:00.000Z', cancelled_at: null } } });
   });
   await page.goto(`/events/${id}`);
   await page.getByRole('button', { name: 'ลงทะเบียน', exact: true }).click();

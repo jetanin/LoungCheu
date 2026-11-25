@@ -4,7 +4,7 @@ import { act, cleanup, fireEvent, render, screen, waitFor } from '@testing-libra
 import { RegistrationAction, type RegistrationActionProps } from './RegistrationAction.js';
 
 const eventId = '22222222-2222-4222-8222-222222222222';
-const result = { id: 'registration-reference', event_id: eventId, status: 'ACTIVE', registered_at: '2026-11-06T03:00:00.000Z' };
+const result = { id: 'registration-reference', event_id: eventId, status: 'ACTIVE', registered_at: '2026-11-06T03:00:00.000Z', cancelled_at: null };
 function props(): RegistrationActionProps {
   return {
     event: { id: eventId, registration_open: true, available_seats: 1 },
@@ -14,15 +14,27 @@ function props(): RegistrationActionProps {
   };
 }
 function reply(ok: boolean, payload: unknown) { return { ok, json: async () => payload }; }
+
+// The legacy assertions below still observe mutation calls. F-06's additional
+// own-list GET is covered separately by RegistrationLifecycle.test.tsx.
+function installFetch(mutation: (...args: any[]) => unknown) {
+  vi.stubGlobal('fetch', vi.fn((path: string, init?: RequestInit) => path === '/api/my/registrations'
+    ? Promise.resolve(reply(true, { data: [] })) : mutation(path, init)));
+}
+async function readyToRegister() {
+  const button = screen.getByRole('button', { name: 'ลงทะเบียน' }) as HTMLButtonElement;
+  await waitFor(() => expect(button.disabled).toBe(false));
+  return button;
+}
 afterEach(() => { cleanup(); vi.unstubAllGlobals(); vi.useRealTimers(); });
 
 describe('F-03 registration UI', () => {
   it('submits only event reference/empty input, disables repeat clicks, and displays reference', async () => {
     let resolve!: (value: unknown) => void;
     const fetchMock = vi.fn().mockReturnValue(new Promise((r) => { resolve = r; }));
-    vi.stubGlobal('fetch', fetchMock);
+    installFetch(fetchMock);
     render(<RegistrationAction {...props()} />);
-    const button = screen.getByRole('button', { name: 'ลงทะเบียน' });
+    const button = await readyToRegister();
     fireEvent.click(button);
     fireEvent.click(button);
     expect((button as HTMLButtonElement).disabled).toBe(true);
@@ -37,16 +49,16 @@ describe('F-03 registration UI', () => {
   });
   it.each(['EVENT_FULL', 'REGISTRATION_CLOSED', 'ALREADY_REGISTERED'])('explains %s and refreshes availability', async (code) => {
     const options = props();
-    vi.stubGlobal('fetch', vi.fn().mockResolvedValue(reply(false, { error: { code } })));
+    installFetch(vi.fn().mockResolvedValue(reply(false, { error: { code } })));
     render(<RegistrationAction {...options} />);
-    fireEvent.click(screen.getByRole('button', { name: 'ลงทะเบียน' }));
+    fireEvent.click(await readyToRegister());
     expect(await screen.findByRole('alert')).toBeTruthy();
     await waitFor(() => expect(options.refreshEvent).toHaveBeenCalledTimes(1));
   });
   it('requires checking own records before retrying an uncertain network result', async () => {
-    vi.stubGlobal('fetch', vi.fn().mockRejectedValue(new TypeError('network failed')));
+    installFetch(vi.fn().mockRejectedValue(new TypeError('network failed')));
     render(<RegistrationAction {...props()} />);
-    fireEvent.click(screen.getByRole('button', { name: 'ลงทะเบียน' }));
+    fireEvent.click(await readyToRegister());
     expect((await screen.findByRole('alert')).textContent).toContain('คำขออาจบันทึกแล้ว');
     expect((screen.getByRole('button', { name: 'ลงทะเบียน' }) as HTMLButtonElement).disabled).toBe(true);
     expect(screen.getByRole('link', { name: 'ตรวจรายการของฉัน' })).toBeTruthy();
@@ -55,38 +67,39 @@ describe('F-03 registration UI', () => {
   });
   it('handles expired authentication and blocks further submissions', async () => {
     const options = props();
-    vi.stubGlobal('fetch', vi.fn().mockResolvedValue(reply(false, { error: { code: 'AUTH_REQUIRED' } })));
+    installFetch(vi.fn().mockResolvedValue(reply(false, { error: { code: 'AUTH_REQUIRED' } })));
     render(<RegistrationAction {...options} />);
-    fireEvent.click(screen.getByRole('button', { name: 'ลงทะเบียน' }));
+    fireEvent.click(await readyToRegister());
     await waitFor(() => expect(options.onAuthRequired).toHaveBeenCalledTimes(1));
     expect(screen.getByRole('link', { name: 'เข้าสู่ระบบ' })).toBeTruthy();
     expect((screen.getByRole('button', { name: 'ลงทะเบียน' }) as HTMLButtonElement).disabled).toBe(true);
   });
   it('treats request timeout as uncertain instead of automatically retrying', async () => {
-    vi.useFakeTimers();
     const fetchMock = vi.fn((_path: string, options: RequestInit) => new Promise((_resolve, reject) => {
       options.signal!.addEventListener('abort', () => reject(new DOMException('Aborted', 'AbortError')));
     }));
-    vi.stubGlobal('fetch', fetchMock);
+    installFetch(fetchMock);
     render(<RegistrationAction {...props()} />);
-    await act(async () => { fireEvent.click(screen.getByRole('button', { name: 'ลงทะเบียน' })); });
+    const button = await readyToRegister();
+    vi.useFakeTimers();
+    await act(async () => { fireEvent.click(button); });
     await act(async () => { await vi.advanceTimersByTimeAsync(15_000); });
     expect(screen.getByRole('alert').textContent).toContain('คำขออาจบันทึกแล้ว');
     expect(fetchMock).toHaveBeenCalledTimes(1);
   });
   it('does not send a mutation when CSRF bootstrap fails', async () => {
     const fetchMock = vi.fn();
-    vi.stubGlobal('fetch', fetchMock);
+    installFetch(fetchMock);
     render(<RegistrationAction {...props()} getCsrfToken={vi.fn().mockRejectedValue(new TypeError('offline'))} />);
-    fireEvent.click(screen.getByRole('button', { name: 'ลงทะเบียน' }));
+    fireEvent.click(await readyToRegister());
     expect((await screen.findByRole('alert')).textContent).toBe('เชื่อมต่อไม่สำเร็จ กรุณาลองใหม่');
     expect(fetchMock).not.toHaveBeenCalled();
   });
   it('clears private success on account change', async () => {
-    vi.stubGlobal('fetch', vi.fn().mockResolvedValue(reply(true, { data: result })));
+    installFetch(vi.fn().mockResolvedValue(reply(true, { data: result })));
     const options = props();
     const view = render(<RegistrationAction {...options} />);
-    fireEvent.click(screen.getByRole('button', { name: 'ลงทะเบียน' }));
+    fireEvent.click(await readyToRegister());
     await screen.findByText(result.id);
     view.rerender(<RegistrationAction {...options} identity={{ id: 'participant-b', role: 'PARTICIPANT' }} />);
     expect(screen.queryByText(result.id)).toBeNull();
@@ -95,10 +108,10 @@ describe('F-03 registration UI', () => {
   it('ignores a pending response after changing account', async () => {
     let resolve!: (value: unknown) => void;
     const fetchMock = vi.fn().mockReturnValue(new Promise((r) => { resolve = r; }));
-    vi.stubGlobal('fetch', fetchMock);
+    installFetch(fetchMock);
     const options = props();
     const view = render(<RegistrationAction {...options} />);
-    fireEvent.click(screen.getByRole('button', { name: 'ลงทะเบียน' }));
+    fireEvent.click(await readyToRegister());
     await waitFor(() => expect(fetchMock).toHaveBeenCalledTimes(1));
     view.rerender(<RegistrationAction {...options} identity={{ id: 'participant-b', role: 'PARTICIPANT' }} />);
     await act(async () => resolve(reply(true, { data: result })));

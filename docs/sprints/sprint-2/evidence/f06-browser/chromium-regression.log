@@ -1,0 +1,48 @@
+
+> loungcheu@0.1.0 test:e2e
+> playwright test tests/e2e/registration-lifecycle.spec.ts tests/e2e/events-registration.spec.ts tests/e2e/registration-views.spec.ts
+
+[WebServer] (node:54240) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+[WebServer] (Use `node --trace-warnings ...` to show where the warning was created)
+[WebServer] (node:7880) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+[WebServer] (Use `node --trace-warnings ...` to show where the warning was created)
+
+Running 4 tests using 1 worker
+
+(node:16868) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ok 1 tests\e2e\events-registration.spec.ts:11:1 › real #1/#2/#3 journey: publish, register across focus refresh, keep reference and reject stale full attempt (2.8s)
+F06_BROWSER cancelled and screenshot saved
+F06_BROWSER failure before cleanup: locator.fill: Timeout 10000ms exceeded.
+Call log:
+  - waiting for getByLabel('ชื่อผู้ใช้')
+
+  x  2 tests\e2e\registration-lifecycle.spec.ts:31:1 › TEST-43: real cancel/re-login/full/reactivate/roster/close journey preserves identity and history (12.6s)
+(node:16708) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ok 3 tests\e2e\registration-views.spec.ts:35:1 › TEST-24/29/30: real publish → register → own detail/re-login → owner roster journey (3.1s)
+  ok 4 tests\e2e\registration-views.spec.ts:89:1 › TEST-25: own list empty/error/retry, session rejection and wrong-role direct access (997ms)
+
+
+  1) tests\e2e\registration-lifecycle.spec.ts:31:1 › TEST-43: real cancel/re-login/full/reactivate/roster/close journey preserves identity and history 
+
+    TimeoutError: locator.fill: Timeout 10000ms exceeded.
+    Call log:
+      - waiting for getByLabel('ชื่อผู้ใช้')
+
+
+       7 | async function login(page: Page, username: string) {
+       8 |   await page.goto('/login');
+    >  9 |   await page.getByLabel('ชื่อผู้ใช้').fill(username);
+         |                                       ^
+      10 |   await page.getByLabel('รหัสผ่าน', { exact: true }).fill(process.env.E2E_PASSWORD!);
+      11 |   await page.getByRole('button', { name: 'เข้าสู่ระบบ', exact: true }).click();
+      12 |   await expect(page).toHaveURL(/\/events$/);
+        at login (C:\Work\2569\CPE334\GroupWork\LoungCheu\tests\e2e\registration-lifecycle.spec.ts:9:39)
+        at C:\Work\2569\CPE334\GroupWork\LoungCheu\tests\e2e\registration-lifecycle.spec.ts:91:5
+
+    Error Context: test-results\registration-lifecycle-TES-ca9a7-serves-identity-and-history\error-context.md
+
+  1 failed
+    tests\e2e\registration-lifecycle.spec.ts:31:1 › TEST-43: real cancel/re-login/full/reactivate/roster/close journey preserves identity and history 
+  3 passed (23.8s)

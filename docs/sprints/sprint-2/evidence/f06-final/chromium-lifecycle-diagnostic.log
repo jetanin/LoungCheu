@@ -1,0 +1,34 @@
+
+> loungcheu@0.1.0 test:e2e
+> playwright test tests/e2e/registration-lifecycle.spec.ts --repeat-each=3
+
+[WebServer] (node:50232) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+[WebServer] (Use `node --trace-warnings ...` to show where the warning was created)
+[WebServer] (node:56348) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+[WebServer] (Use `node --trace-warnings ...` to show where the warning was created)
+
+Running 3 tests using 1 worker
+
+(node:57116) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+F06_BROWSER cancelled and screenshot saved
+F06_BROWSER re-login preserved cancelled registration
+F06_BROWSER second participant returned seat
+F06_BROWSER reactivated original reference
+  ok 1 tests\e2e\registration-lifecycle.spec.ts:31:1 › TEST-43: real cancel/re-login/full/reactivate/roster/close journey preserves identity and history (4.9s)
+(node:53684) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+F06_BROWSER cancelled and screenshot saved
+F06_BROWSER re-login preserved cancelled registration
+F06_BROWSER second participant returned seat
+F06_BROWSER reactivated original reference
+  ok 2 tests\e2e\registration-lifecycle.spec.ts:31:1 › TEST-43: real cancel/re-login/full/reactivate/roster/close journey preserves identity and history (4.7s)
+(node:5184) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+F06_BROWSER cancelled and screenshot saved
+F06_BROWSER re-login preserved cancelled registration
+F06_BROWSER second participant returned seat
+F06_BROWSER reactivated original reference
+  ok 3 tests\e2e\registration-lifecycle.spec.ts:31:1 › TEST-43: real cancel/re-login/full/reactivate/roster/close journey preserves identity and history (4.8s)
+
+  3 passed (19.6s)

@@ -1,14 +1,14 @@
 import { Router, json, type RequestHandler } from 'express';
 import { invalidInput } from '../../shared/errors.js';
 import { requireRole } from '../../middleware/auth.js';
-import type { RegistrationCreated } from './service.js';
+import type { RegistrationResult } from './service.js';
 
 export interface RegistrationDependencies {
   // Staging requireAuth verifies the server-side session and the current active user.
   authenticate: RequestHandler;
   // #1 must check the session-bound token AND APP_ORIGIN, after authentication/role.
   verifyCsrf: RequestHandler;
-  register: (eventId: string, participantId: string) => Promise<RegistrationCreated>;
+  register: (eventId: string, participantId: string) => Promise<RegistrationResult>;
 }
 
 const uuid = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i;
@@ -25,8 +25,8 @@ export function createRegistrationRouter(deps: RegistrationDependencies) {
         throw invalidInput();
       }
       const identity = res.locals.identity;
-      const record = await deps.register(String(req.params.id).toLowerCase(), identity.id);
-      res.status(201).json({ data: record });
+      const { reactivated, ...record } = await deps.register(String(req.params.id).toLowerCase(), identity.id);
+      res.status(reactivated ? 200 : 201).json({ data: record });
     });
   return router;
 }

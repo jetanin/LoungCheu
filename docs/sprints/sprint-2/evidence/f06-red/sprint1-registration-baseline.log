@@ -1,0 +1,30 @@
+
+> loungcheu@0.1.0 test
+> vitest run server/tests/integration/registration.test.ts --reporter=verbose
+
+
+ RUN  v5.1.0 C:/Work/2569/CPE334/GroupWork/LoungCheu
+
+ ✓ server/tests/integration/registration.test.ts > F-03 real PostgreSQL / API (TEST-15–21) > persists session-owned ACTIVE and exact post-lock timestamp (TEST-15) 64ms
+ ✓ server/tests/integration/registration.test.ts > F-03 real PostgreSQL / API (TEST-15–21) > rejects duplicate with unchanged record at capacity 1 (TEST-16) 46ms
+ ✓ server/tests/integration/registration.test.ts > F-03 real PostgreSQL / API (TEST-15–21) > rejects duplicate with unchanged record at capacity 2 (TEST-16) 37ms
+ ✓ server/tests/integration/registration.test.ts > F-03 real PostgreSQL / API (TEST-15–21) > rejects full event without inserting a loser (TEST-17) 37ms
+ ✓ server/tests/integration/registration.test.ts > F-03 real PostgreSQL / API (TEST-15–21) > rejects DRAFT before duplicate/full checks (TEST-18) 27ms
+ ✓ server/tests/integration/registration.test.ts > F-03 real PostgreSQL / API (TEST-15–21) > rejects CLOSED before duplicate/full checks (TEST-18) 27ms
+ ✓ server/tests/integration/registration.test.ts > F-03 real PostgreSQL / API (TEST-15–21) > returns 404 for a missing valid UUID (TEST-18) 16ms
+ ✓ server/tests/integration/registration.test.ts > F-03 real PostgreSQL / API (TEST-15–21) > enforces deadline at offset -1 ms (TEST-18) 23ms
+ ✓ server/tests/integration/registration.test.ts > F-03 real PostgreSQL / API (TEST-15–21) > enforces deadline at offset 0 ms (TEST-18) 19ms
+ ✓ server/tests/integration/registration.test.ts > F-03 real PostgreSQL / API (TEST-15–21) > enforces deadline at offset 1 ms (TEST-18) 17ms
+ ✓ server/tests/integration/registration.test.ts > F-03 real PostgreSQL / API (TEST-15–21) > checks deadline ahead of duplicate/full for expired PUBLISHED (TEST-18) 25ms
+ ✓ server/tests/integration/registration.test.ts > F-03 real PostgreSQL / API (TEST-15–21) > rejects role, missing identity, CSRF, Origin, and spoofing without DB writes (TEST-19) 55ms
+ ✓ server/tests/integration/registration.test.ts > F-03 real PostgreSQL / API (TEST-15–21) > rejects when clock crosses deadline while waiting for the lock (TEST-18) 60ms
+ ✓ server/tests/integration/registration.test.ts > F-03 real PostgreSQL / API (TEST-15–21) > allocates exactly one last seat across separate connections (TEST-20) 56ms
+ ✓ server/tests/integration/registration.test.ts > F-03 real PostgreSQL / API (TEST-15–21) > inserts only one concurrent registration for the same participant (TEST-21) 49ms
+ ✓ server/tests/integration/registration.test.ts > F-03 real PostgreSQL / API (TEST-15–21) > uses staging token rotation and logout enforcement for registration 75ms
+ ✓ server/tests/integration/registration.test.ts > F-03 real PostgreSQL / API (TEST-15–21) > uses staging current-user and absolute-expiry checks before registration 154ms
+
+ Test Files  1 passed (1)
+      Tests  17 passed (17)
+   Start at  01:42:41
+   Duration  2.16s (tests 74%, import 22%, transform 3%)
+

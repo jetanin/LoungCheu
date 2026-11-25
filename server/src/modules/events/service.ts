@@ -1,6 +1,6 @@
 import { Prisma, type PrismaClient, type Event } from '@prisma/client';
-import { ApiError } from '../../shared/errors.js';
-import type { eventInput } from './input.js';
+import { ApiError, invalidInput } from '../../shared/errors.js';
+import { scheduleErrors, type EventPatch, type eventInput } from './input.js';
 
 const counts = { _count: { select: { registrations: { where: { status: 'ACTIVE' as const } } } } };
 type CountedEvent = Event & { _count: { registrations: number } };
@@ -42,6 +42,36 @@ export function createEventService(db: PrismaClient, now: () => number) {
       if (event.status !== 'DRAFT') throw new ApiError(409, 'INVALID_TRANSITION', 'เผยแพร่ได้เฉพาะกิจกรรม DRAFT');
       if (clock >= event.registrationClosesAt.getTime()) throw new ApiError(409, 'DEADLINE_PASSED', 'เลยกำหนดปิดรับลงทะเบียนแล้ว');
       const updated = await tx.event.update({ where: { id }, data: { status: 'PUBLISHED', updatedAt: new Date(clock) } });
+      return serialize({ ...updated, _count: event._count }, true, clock);
+    }, { isolationLevel: Prisma.TransactionIsolationLevel.ReadCommitted }),
+    // F-06: append-only block so F-07 can independently append update().
+    close: (id: string, organizerId: string) => db.$transaction(async tx => {
+      const locked = await tx.$queryRaw<{ id: string }[]>`SELECT id FROM events WHERE id=${id}::uuid AND organizer_id=${organizerId}::uuid FOR UPDATE`;
+      if (!locked.length) throw missing();
+      const clock = now();
+      const event = await tx.event.findUniqueOrThrow({ where: { id }, include: counts });
+      if (event.status !== 'PUBLISHED') throw new ApiError(409, 'INVALID_TRANSITION', 'ปิดรับได้เฉพาะกิจกรรม PUBLISHED');
+      const updated = await tx.event.update({ where: { id }, data: { status: 'CLOSED', updatedAt: new Date(clock) } });
+      return serialize({ ...updated, _count: event._count }, true, clock);
+    }, { isolationLevel: Prisma.TransactionIsolationLevel.ReadCommitted }),
+    // F-07 edit: contract check order steps 3–8. Same Event → Registration lock
+    // order as register/publish, so a capacity decrease and a last-seat
+    // registration serialize (BR-05, BR-10); the clock is read after the lock (BR-14).
+    update: (id: string, organizerId: string, patch: EventPatch) => db.$transaction(async tx => {
+      const locked = await tx.$queryRaw<{ id: string }[]>`SELECT id FROM events WHERE id=${id}::uuid AND organizer_id=${organizerId}::uuid FOR UPDATE`;
+      if (!locked.length) throw missing();
+      const clock = now();
+      const event = await tx.event.findUniqueOrThrow({ where: { id }, include: counts });
+      if (event.status === 'CLOSED') throw new ApiError(409, 'EVENT_NOT_EDITABLE', 'กิจกรรมนี้ปิดแล้ว แก้ไขไม่ได้');
+      const timed = patch.startsAt !== undefined || patch.endsAt !== undefined || patch.registrationClosesAt !== undefined;
+      if (event.status === 'PUBLISHED' && timed) throw new ApiError(409, 'FIELD_NOT_EDITABLE', 'กิจกรรมเผยแพร่แล้ว แก้เวลาเริ่ม เวลาสิ้นสุด และเวลาปิดรับไม่ได้');
+      const order = scheduleErrors(patch.startsAt ?? event.startsAt, patch.endsAt ?? event.endsAt, patch.registrationClosesAt ?? event.registrationClosesAt);
+      if (Object.keys(order).length) throw invalidInput(order);
+      const active = event._count.registrations;
+      if (patch.capacity !== undefined && patch.capacity < active) {
+        throw new ApiError(409, 'CAPACITY_BELOW_ACTIVE', `จำนวนที่นั่งต้องไม่น้อยกว่าผู้ลงทะเบียน ACTIVE ปัจจุบัน (${active} คน)`);
+      }
+      const updated = await tx.event.update({ where: { id }, data: { ...patch, updatedAt: new Date(clock) } });
       return serialize({ ...updated, _count: event._count }, true, clock);
     }, { isolationLevel: Prisma.TransactionIsolationLevel.ReadCommitted }),
   };

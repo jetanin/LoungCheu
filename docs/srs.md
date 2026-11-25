@@ -32,8 +32,9 @@ Out of scope: self-registration, reset password, email verification, หลา�
 - Backend: Node.js + Express + TypeScript
 - Database/data access: PostgreSQL + Prisma
 - Architecture: REST-style APIs
-- Testing: Vitest + Supertest เป็นชุดหลัก; ใช้ Playwright สำหรับ selected automated browser E2E ของ F-01/F-02 และ audit regressions แล้ว (execution update 6 พ.ย. 2026; [ผลจริง](events/verification.md))
-- Workflow: GitHub Issues/Projects, feature/* → sprint-1-staging → main พร้อม teammate review ตาม DEC-15
+- Testing: Vitest + Supertest เป็นชุดหลัก; ใช้ Playwright สำหรับ selected automated browser E2E ของ F-01/F-02 และ audit regressions แล้ว (execution update 6 พ.ย. 2026; [ผลจริง](events/verification.md)). **อัปเดต 25 พ.ย. 2026:** Playwright (Chromium) ครอบคลุม F-01–F-07 แล้ว; CI `test-and-docker` รัน Vitest + Playwright ทุก PR ที่เข้า staging branch และ main
+- Workflow: GitHub Issues/Projects, feature/* → sprint-1-staging → main พร้อม teammate review ตาม DEC-15. **อัปเดต 25 พ.ย. 2026:** ใช้ integration branch ต่อ sprint/lab (`sprint-2-staging`, `lab6-staging`, `sprint-3-staging`) ตามรูปแบบเดียวกัน; release บน main ติด tag (`v1.0.0-sprint-1`, `v1.0.1-uat`)
+- Deployment (เพิ่ม 25 พ.ย. 2026): Docker image deploy บน GCP Cloud Run ผ่าน GitHub Actions เมื่อ push เข้า main; ตรวจ version ที่ deploy ด้วย `/api/ready` (Lab 5)
 
 ## 4. คำศัพท์และสถานะ
 
@@ -115,3 +116,20 @@ Out of scope: self-registration, reset password, email verification, หลา�
 ## 9. Assumptions และ scope changes
 
 รายละเอียดที่ทีมเลือกเอง เช่น session อายุ 2 ชั่วโมง capacity สูงสุด และกติกายกเลิก/check-in อยู่ใน [Decisions](decisions.md) การเปลี่ยนกฎต้องปรับ AC/STS/traceability และบันทึกเหตุผลใน [Changelog](changelog.md)
+
+## 10. สถานะเทียบผลิตภัณฑ์ปัจจุบัน — 25 พฤศจิกายน 2026
+
+ข้อความ FR/BR/NFR ด้านบนยังเป็น baseline v0.5 ที่ teammate อนุมัติ ไม่มีการเปลี่ยนข้อกำหนดที่อนุมัติแล้วหลังจากนั้น ส่วนนี้บอกเพียงว่าแต่ละ FR อยู่ขั้นไหนของผลิตภัณฑ์จริง หลักฐานรายละเอียดอยู่ใน [traceability](traceability.md)
+
+| FR | Feature | สถานะ ณ 25 พ.ย. 2026 |
+|---|---|---|
+| FR-01–FR-08 | F-01–F-05 | Implemented และ tested; release บน main tag `v1.0.0-sprint-1` แล้วแก้ CI ใน `v1.0.1-uat` (`0b2cc80`); independent UAT โดยทีม TH-005_P5 ผ่าน 7/7 เคส ผลตัดสิน **Accepted** 25 พ.ย. 2026 |
+| FR-09, FR-10, FR-12 | F-06 | Implemented, tested, teammate-reviewed และ merge เข้า `sprint-2-staging` (PR #59, #60) CI ผ่าน; ยังไม่ release บน main |
+| FR-11 | F-07 | Implemented, tested, teammate-reviewed และ merge เข้า `sprint-2-staging` (PR #57, #60) CI ผ่าน; ยังไม่ release บน main |
+| FR-13, FR-14 | F-08 | Planned: contract/AC/STS ร่างแล้ว (Issue #49) ยังไม่ merge; ยังไม่ implement |
+| FR-15 | F-09 | Planned: contract/AC/STS ร่างแล้ว (Issue #49) ยังไม่ merge; ยังไม่ implement |
+
+ประเด็นที่ยังเปิดอยู่ (ยังไม่แก้ข้อความ baseline):
+
+- **BR-13 การปัดเศษ:** baseline ระบุแค่ "ปัดทศนิยม 2 ตำแหน่ง"; DEC-18 (ร่าง Sprint 3, Issue #49) เสนอปัดครึ่งขึ้น (half-up) ด้วยจำนวนเต็ม จะปรับข้อความ BR-13 เมื่อ contract Sprint 3 ผ่าน review
+- **NFR-09 re-test accepted defect:** UAT Lab 6 ไม่พบ defect จึงไม่มี accepted defect ให้ re-test; ตาม Lab 6 ทีมขอ controlled defect exercise จาก TA แทน — NFR-09 ส่วน re-test ยังไม่ครบจนกว่าจะทำ exercise นั้น

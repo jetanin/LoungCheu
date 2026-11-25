@@ -13,6 +13,12 @@ export const bangkokTime = (value: string) => new Intl.DateTimeFormat('th-TH', {
 export const labels = { title: 'ชื่อกิจกรรม', description: 'รายละเอียด', location: 'สถานที่', capacity: 'จำนวนที่นั่ง',
   starts_at: 'เริ่มกิจกรรม', ends_at: 'สิ้นสุดกิจกรรม', registration_closes_at: 'ปิดรับลงทะเบียน' };
 export type FormValues = Record<keyof typeof labels, string>;
+// Inverse of validateForm's Bangkok wall time: a UTC instant shown as the
+// Asia/Bangkok value of the date/time inputs (seconds/ms only when present).
+export function bangkokInput(value: string) {
+  const local = new Date(Date.parse(value) + 7 * 60 * 60 * 1000).toISOString().slice(0, 23);
+  return local.endsWith(':00.000') ? local.slice(0, 16) : local.endsWith('.000') ? local.slice(0, 19) : local;
+}
 export function validateForm(values: FormValues) {
   const fields: Record<string, string[]> = {};
   for (const [key, max] of [['title', 120], ['description', 2000], ['location', 200]] as const) {

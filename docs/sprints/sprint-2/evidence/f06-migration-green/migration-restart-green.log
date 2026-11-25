@@ -1,0 +1,43 @@
+
+> loungcheu@0.1.0 test
+> vitest run server/tests/integration/registration-lifecycle-migration.test.ts server/tests/integration/registration-lifecycle-restart.test.ts --reporter=verbose
+
+
+ RUN  v5.1.0 C:/Work/2569/CPE334/GroupWork/LoungCheu
+
+ ✓ server/tests/integration/registration-lifecycle-migration.test.ts > TEST-44(a): real S1→S2 migrate preserves legacy data, backfills REGISTERED once and enforces history FKs 4226ms
+ ✓ server/tests/integration/registration-lifecycle-migration.test.ts > TEST-44(a): legacy CANCELLED without its timestamp stops migration without inventing data 2905ms
+ ✓ server/tests/integration/registration-lifecycle-migration.test.ts > TEST-44(a): fresh migrate→actual seed entry point creates history and repeated/concurrent seed preserves it 2972ms
+ ✓ server/tests/integration/registration-lifecycle-migration.test.ts > TEST-44(a): concurrent actual seed processes on a fresh database create one REGISTERED entry per record 2299ms
+ ✓ server/tests/integration/registration-lifecycle-migration.test.ts > TEST-44(b): create rolls back state and history when the history INSERT fails 1668ms
+ ✓ server/tests/integration/registration-lifecycle-migration.test.ts > TEST-44(b): cancel rolls back state and history when the history INSERT fails 1596ms
+ ✓ server/tests/integration/registration-lifecycle-migration.test.ts > TEST-44(b): reactivate rolls back state and history when the history INSERT fails 1708ms
+ ✓ server/tests/integration/registration-lifecycle-migration.test.ts > TEST-44(a/b): demo-data history failure rolls back newly seeded events and registrations 1770ms
+stdout | server/tests/integration/registration-lifecycle-restart.test.ts > NFR-03 / TEST-43 persistence: CANCELLED then reactivated/CLOSED state survives actual compiled backend process restarts
+F06_RESTART {"event":"ready","pid":53728,"port":61796,"version":"f06-restart-62b47396-99ca-46ff-bd54-5f4e36a455bf-1"}
+
+stdout | server/tests/integration/registration-lifecycle-restart.test.ts > NFR-03 / TEST-43 persistence: CANCELLED then reactivated/CLOSED state survives actual compiled backend process restarts
+F06_RESTART {"event":"stopped","pid":53728}
+
+stdout | server/tests/integration/registration-lifecycle-restart.test.ts > NFR-03 / TEST-43 persistence: CANCELLED then reactivated/CLOSED state survives actual compiled backend process restarts
+F06_RESTART {"event":"ready","pid":23968,"port":61796,"version":"f06-restart-62b47396-99ca-46ff-bd54-5f4e36a455bf-2"}
+
+stdout | server/tests/integration/registration-lifecycle-restart.test.ts > NFR-03 / TEST-43 persistence: CANCELLED then reactivated/CLOSED state survives actual compiled backend process restarts
+F06_RESTART {"event":"stopped","pid":23968}
+
+stdout | server/tests/integration/registration-lifecycle-restart.test.ts > NFR-03 / TEST-43 persistence: CANCELLED then reactivated/CLOSED state survives actual compiled backend process restarts
+F06_RESTART {"event":"ready","pid":33228,"port":61796,"version":"f06-restart-62b47396-99ca-46ff-bd54-5f4e36a455bf-3"}
+
+stdout | server/tests/integration/registration-lifecycle-restart.test.ts > NFR-03 / TEST-43 persistence: CANCELLED then reactivated/CLOSED state survives actual compiled backend process restarts
+F06_RESTART {"event":"verified","distinctProcesses":3,"stoppedAndRestarted":2,"registrationRows":1,"historyRows":3}
+
+stdout | server/tests/integration/registration-lifecycle-restart.test.ts > NFR-03 / TEST-43 persistence: CANCELLED then reactivated/CLOSED state survives actual compiled backend process restarts
+F06_RESTART {"event":"stopped","pid":33228}
+
+ ✓ server/tests/integration/registration-lifecycle-restart.test.ts > NFR-03 / TEST-43 persistence: CANCELLED then reactivated/CLOSED state survives actual compiled backend process restarts 4970ms
+
+ Test Files  2 passed (2)
+      Tests  9 passed (9)
+   Start at  12:13:06
+   Duration  24.88s (tests 98%, import 2%)
+

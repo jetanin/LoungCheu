@@ -1,0 +1,38 @@
+
+> loungcheu@0.1.0 test
+> vitest run --reporter=dot --pool=threads --maxWorkers=1
+
+
+ RUN  v5.1.0 C:/Work/2569/CPE334/GroupWork/LoungCheu
+
+·····························stdout | server/tests/integration/registration-lifecycle-restart.test.ts > NFR-03 / TEST-43 persistence: CANCELLED then reactivated/CLOSED state survives actual compiled backend process restarts
+F06_RESTART {"event":"ready","pid":55168,"port":62872,"version":"f06-restart-55c4364b-bffe-4b4d-a813-5f3362c41a6d-1"}
+
+stdout | server/tests/integration/registration-lifecycle-restart.test.ts > NFR-03 / TEST-43 persistence: CANCELLED then reactivated/CLOSED state survives actual compiled backend process restarts
+F06_RESTART {"event":"stopped","pid":55168}
+
+stdout | server/tests/integration/registration-lifecycle-restart.test.ts > NFR-03 / TEST-43 persistence: CANCELLED then reactivated/CLOSED state survives actual compiled backend process restarts
+F06_RESTART {"event":"ready","pid":58908,"port":62872,"version":"f06-restart-55c4364b-bffe-4b4d-a813-5f3362c41a6d-2"}
+
+stdout | server/tests/integration/registration-lifecycle-restart.test.ts > NFR-03 / TEST-43 persistence: CANCELLED then reactivated/CLOSED state survives actual compiled backend process restarts
+F06_RESTART {"event":"stopped","pid":58908}
+
+stdout | server/tests/integration/registration-lifecycle-restart.test.ts > NFR-03 / TEST-43 persistence: CANCELLED then reactivated/CLOSED state survives actual compiled backend process restarts
+F06_RESTART {"event":"ready","pid":16332,"port":62872,"version":"f06-restart-55c4364b-bffe-4b4d-a813-5f3362c41a6d-3"}
+
+stdout | server/tests/integration/registration-lifecycle-restart.test.ts > NFR-03 / TEST-43 persistence: CANCELLED then reactivated/CLOSED state survives actual compiled backend process restarts
+F06_RESTART {"event":"verified","distinctProcesses":3,"stoppedAndRestarted":2,"registrationRows":1,"historyRows":3}
+
+stdout | server/tests/integration/registration-lifecycle-restart.test.ts > NFR-03 / TEST-43 persistence: CANCELLED then reactivated/CLOSED state survives actual compiled backend process restarts
+F06_RESTART {"event":"stopped","pid":16332}
+
+··········································································································································································································································
+
+ Test Files  25 passed (25)
+      Tests  263 passed (263)
+   Start at  16:09:46
+   Duration  70.53s (tests 86%, environment 7%, import 6%)
+
+    Isolate  25 workers spawned · ~294ms startup each (spawn + environment, per file)
+             at least ~7.06s faster with isolate: false — reuses workers across files instead of one per file
+

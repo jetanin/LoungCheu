@@ -1,0 +1,110 @@
+
+> loungcheu@0.1.0 test:e2e
+> playwright test
+
+[WebServer] (node:3176) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+[WebServer] (Use `node --trace-warnings ...` to show where the warning was created)
+[WebServer] (node:22432) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+[WebServer] (Use `node --trace-warnings ...` to show where the warning was created)
+
+Running 38 tests using 1 worker
+
+(node:57056) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ok  1 tests\e2e\auth.spec.ts:3:3 › F-01 participant.a: login, refresh, logout and browser back (744ms)
+  ok  2 tests\e2e\auth.spec.ts:3:3 › F-01 organizer.a: login, refresh, logout and browser back (905ms)
+  ok  3 tests\e2e\auth.spec.ts:18:1 › F-01 invalid form, generic credentials and pending submit (1.1s)
+  ok  4 tests\e2e\auth.spec.ts:29:1 › F-01 expired session clears private UI on focus (390ms)
+  ok  5 tests\e2e\auth.spec.ts:37:1 › F-01 failed logout clears private UI and offers a working retry (521ms)
+  ok  6 tests\e2e\auth.spec.ts:50:1 › F-01 ignores an older successful session response after a newer 401 (457ms)
+  ok  7 tests\e2e\auth.spec.ts:76:1 › F-01 rechecks a restored page after its session was logged out elsewhere (407ms)
+  ok  8 tests\e2e\consistency.spec.ts:10:1 › F-02 consistency: field errors follow corrected values and dependent time ordering (835ms)
+  ok  9 tests\e2e\consistency.spec.ts:37:1 › F-02 consistency: CLOSED totals and forbidden refresh discard older private overview data (770ms)
+  ok 10 tests\e2e\events-audit.spec.ts:20:36 › TEST-03/14 owner event read 401 clears the session after a newer refresh fails (737ms)
+  ok 11 tests\e2e\events-audit.spec.ts:20:36 › TEST-03/14 shared event read 401 clears the session after a newer refresh fails (933ms)
+  ok 12 tests\e2e\events-audit.spec.ts:51:1 › TEST-03/14 a late event read 401 cannot clear the next signed-in account (819ms)
+  ok 13 tests\e2e\events-audit.spec.ts:66:34 › TEST-14 publish 403 removes cached private record even if an old refresh returns later (641ms)
+  ok 14 tests\e2e\events-audit.spec.ts:66:34 › TEST-14 publish 404 removes cached private record even if an old refresh returns later (596ms)
+  ok 15 tests\e2e\events-audit.spec.ts:83:34 › TEST-14 read 403 cannot be overwritten by an earlier publish success (626ms)
+  ok 16 tests\e2e\events-audit.spec.ts:83:34 › TEST-14 read 404 cannot be overwritten by an earlier publish success (626ms)
+  ok 17 tests\e2e\events-audit.spec.ts:102:1 › TEST-09/14 publish conflict explains rejection and refreshes the committed event status (542ms)
+  ok 18 tests\e2e\events-audit.spec.ts:113:1 › TEST-14 a late create success cannot navigate the next signed-in account to the previous owner record (1.1s)
+  ok 19 tests\e2e\events-audit.spec.ts:134:1 › TEST-14 a late publish 401 cannot clear the next account session (975ms)
+  ok 20 tests\e2e\events-audit.spec.ts:149:1 › TEST-14 canonical detail and create routes work with a trailing slash (534ms)
+  ok 21 tests\e2e\events-audit.spec.ts:155:1 › TEST-14 a definitive session 401 still wins over a later temporary identity failure (481ms)
+  ok 22 tests\e2e\events-registration.spec.ts:11:1 › real #1/#2/#3 journey: publish, register across focus refresh, keep reference and reject stale full attempt (2.6s)
+  ok 23 tests\e2e\events.spec.ts:10:1 › TEST-07/09/14/36 Organizer creates, previews, publishes; Participant browses persisted shared detail (3.1s)
+  ok 24 tests\e2e\events.spec.ts:103:1 › TEST-14 list loading, empty, failure and retry; detail 404 and publish conflict (1.1s)
+  ok 25 tests\e2e\events.spec.ts:128:1 › TEST-09/14 an older availability refresh cannot overwrite a successful publish (642ms)
+  ok 26 tests\e2e\events.spec.ts:149:69 › F-02/#3 focus and availability refresh preserve RegistrationAction pending (1.2s)
+  ok 27 tests\e2e\events.spec.ts:149:69 › F-02/#3 focus and availability refresh preserve RegistrationAction success (1.5s)
+  ok 28 tests\e2e\events.spec.ts:149:69 › F-02/#3 focus and availability refresh preserve RegistrationAction uncertain (1.2s)
+  ok 29 tests\e2e\overview.spec.ts:17:1 › F-02 overview empty state, active navigation and create entry work on desktop and mobile (793ms)
+  ok 30 tests\e2e\overview.spec.ts:35:1 › F-02 overview uses real owner-list counts/order, excludes another owner and preserves all-list/detail routes (1.7s)
+  ok 31 tests\e2e\overview.spec.ts:69:1 › F-02 overview distinguishes loading/error from zero and retries; 401 clears private overview (586ms)
+  ok 32 tests\e2e\overview.spec.ts:89:1 › F-02 Participant keeps shared browsing and cannot open Organizer overview (497ms)
+F06_BROWSER cancelled and screenshot saved
+F06_BROWSER re-login preserved cancelled registration
+F06_BROWSER failure before cleanup: locator.click: Timeout 10000ms exceeded.
+Call log:
+  - waiting for getByRole('button', { name: 'ลงทะเบียน', exact: true })
+    - locator resolved to <button disabled type="button" class="btn btn-primary">ลงทะเบียน</button>
+  - attempting click action
+    2 × waiting for element to be visible, enabled and stable
+      - element is not enabled
+    - retrying click action
+    - waiting 20ms
+    2 × waiting for element to be visible, enabled and stable
+      - element is not enabled
+    - retrying click action
+      - waiting 100ms
+    19 × waiting for element to be visible, enabled and stable
+       - element is not enabled
+     - retrying click action
+       - waiting 500ms
+
+  x  33 tests\e2e\registration-lifecycle.spec.ts:31:1 › TEST-43: real cancel/re-login/full/reactivate/roster/close journey preserves identity and history (13.2s)
+(node:6060) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ok 34 tests\e2e\registration-views.spec.ts:35:1 › TEST-24/29/30: real publish → register → own detail/re-login → owner roster journey (3.2s)
+  ok 35 tests\e2e\registration-views.spec.ts:89:1 › TEST-25: own list empty/error/retry, session rejection and wrong-role direct access (1.0s)
+  ok 36 tests\e2e\visual-consistency.spec.ts:14:39 › visual consistency: page hierarchy, branding, controls and layout at 1280px (3.8s)
+  ok 37 tests\e2e\visual-consistency.spec.ts:14:39 › visual consistency: page hierarchy, branding, controls and layout at 390px (3.8s)
+  ok 38 tests\e2e\visual-consistency.spec.ts:14:39 › visual consistency: page hierarchy, branding, controls and layout at 320px (3.9s)
+
+
+  1) tests\e2e\registration-lifecycle.spec.ts:31:1 › TEST-43: real cancel/re-login/full/reactivate/roster/close journey preserves identity and history 
+
+    TimeoutError: locator.click: Timeout 10000ms exceeded.
+    Call log:
+      - waiting for getByRole('button', { name: 'ลงทะเบียน', exact: true })
+        - locator resolved to <button disabled type="button" class="btn btn-primary">ลงทะเบียน</button>
+      - attempting click action
+        2 × waiting for element to be visible, enabled and stable
+          - element is not enabled
+        - retrying click action
+        - waiting 20ms
+        2 × waiting for element to be visible, enabled and stable
+          - element is not enabled
+        - retrying click action
+          - waiting 100ms
+        19 × waiting for element to be visible, enabled and stable
+           - element is not enabled
+         - retrying click action
+           - waiting 500ms
+
+
+      104 |     await b.goto(`/events/${eventId}`);
+      105 |     await expect(b.getByText('ว่าง 1 / 1 ที่นั่ง', { exact: true })).toBeVisible();
+    > 106 |     await b.getByRole('button', { name: 'ลงทะเบียน', exact: true }).click();
+          |                                                                     ^
+      107 |     const bSuccess = b.getByRole('status').filter({ hasText: 'ลงทะเบียนสำเร็จ' });
+      108 |     await expect(bSuccess).toBeVisible();
+      109 |     const bReference = await bSuccess.locator('strong').innerText();
+        at C:\Work\2569\CPE334\GroupWork\LoungCheu\tests\e2e\registration-lifecycle.spec.ts:106:69
+
+    Error Context: test-results\registration-lifecycle-TES-ca9a7-serves-identity-and-history\error-context.md
+
+  1 failed
+    tests\e2e\registration-lifecycle.spec.ts:31:1 › TEST-43: real cancel/re-login/full/reactivate/roster/close journey preserves identity and history 
+  37 passed (1.1m)

@@ -1,9 +1,10 @@
 import { useCallback, useEffect, useRef, useState } from 'react';
 import { api, ApiError, type Identity } from '../../lib/api';
 import { bangkokTime } from '../events/model';
+import { LifecycleMutation } from './LifecycleMutation';
 
 export interface MyRegistration {
-  id: string; status: 'ACTIVE' | 'CANCELLED'; registered_at: string;
+  id: string; status: 'ACTIVE' | 'CANCELLED'; registered_at: string; cancelled_at: string | null;
   event: { id: string; title: string; location: string; starts_at: string; ends_at: string; registration_closes_at: string; status: 'DRAFT' | 'PUBLISHED' | 'CLOSED' };
 }
 export interface Roster {
@@ -14,20 +15,23 @@ export interface Roster {
 function usePrivateRead<T>(path: string, allowed: boolean, onAuthRequired: () => void) {
   const [data, setData] = useState<T | null>(null), [loading, setLoading] = useState(allowed), [error, setError] = useState('');
   const generation = useRef(0), active = useRef<AbortController | null>(null);
-  const refresh = useCallback(async () => {
-    if (!allowed) return;
+  const refresh = useCallback(async (preserveData = false) => {
+    if (!allowed) return false;
     active.current?.abort();
     const controller = new AbortController(), version = ++generation.current;
     active.current = controller;
-    setData(null); setLoading(true); setError('');
+    if (!preserveData) setData(null);
+    setLoading(true); setError('');
     try {
       const result = await api<T>(path, { signal: controller.signal });
-      if (!controller.signal.aborted && version === generation.current) setData(result);
+      if (!controller.signal.aborted && version === generation.current) { setData(result); return true; }
+      return false;
     } catch (failure) {
-      if (controller.signal.aborted || version !== generation.current) return;
+      if (controller.signal.aborted || version !== generation.current) return false;
       setData(null);
       if (failure instanceof ApiError && failure.status === 401) onAuthRequired();
       else setError(failure instanceof ApiError ? failure.message : 'โหลดข้อมูลไม่สำเร็จ กรุณาลองใหม่');
+      return false;
     } finally { if (!controller.signal.aborted && version === generation.current) setLoading(false); }
   }, [path, allowed, onAuthRequired]);
   useEffect(() => {
@@ -36,7 +40,10 @@ function usePrivateRead<T>(path: string, allowed: boolean, onAuthRequired: () =>
     window.addEventListener('focus', focus);
     return () => { generation.current++; active.current?.abort(); window.removeEventListener('focus', focus); };
   }, [refresh]);
-  return { data, loading, error, refresh };
+  function replace(value: T | null, message = '') {
+    generation.current++; active.current?.abort(); setData(value); setLoading(false); setError(message);
+  }
+  return { data, loading, error, refresh, replace };
 }
 
 type Props = { identity: Identity; onAuthRequired: () => void };
@@ -45,7 +52,7 @@ export function MyRegistrations({ id, ...props }: Props & { id?: string }) {
 }
 function MyRegistrationsContent({ id, identity, onAuthRequired }: Props & { id?: string }) {
   const allowed = identity.role === 'PARTICIPANT';
-  const { data, loading, error, refresh } = usePrivateRead<MyRegistration | MyRegistration[]>(
+  const { data, loading, error, refresh, replace } = usePrivateRead<MyRegistration | MyRegistration[]>(
     `/my/registrations${id ? `/${encodeURIComponent(id)}` : ''}`, allowed, onAuthRequired);
   if (!allowed) return <section className="card page-panel" role="alert"><h1 className="page-title">เฉพาะผู้เข้าร่วมเท่านั้นที่ดูรายการลงทะเบียนได้</h1></section>;
   const records = data ? (Array.isArray(data) ? data : [data]) : [];
@@ -65,10 +72,19 @@ function MyRegistrationsContent({ id, identity, onAuthRequired }: Props & { id?:
         <dt>เริ่มกิจกรรม</dt><dd>{bangkokTime(record.event.starts_at)}</dd>
         <dt>สิ้นสุดกิจกรรม</dt><dd>{bangkokTime(record.event.ends_at)}</dd>
         <dt>ปิดรับลงทะเบียน</dt><dd>{bangkokTime(record.event.registration_closes_at)}</dd>
-        <dt>ลงทะเบียนเมื่อ</dt><dd>{bangkokTime(record.registered_at)}</dd>
+        <dt>ลงทะเบียนครั้งแรกเมื่อ</dt><dd>{bangkokTime(record.registered_at)}</dd>
+        {record.status === 'CANCELLED' && record.cancelled_at && <><dt>ยกเลิกเมื่อ</dt><dd>{bangkokTime(record.cancelled_at)}</dd></>}
         <dt>สถานะกิจกรรม</dt><dd>{record.event.status}</dd>
       </dl><p className="small text-secondary">เวลาประเทศไทย (Asia/Bangkok)</p>
       <a className="link-success" href={`/events/${record.event.id}`}>ดูรายละเอียดกิจกรรม</a>
+      {id && <div className="mt-3"><LifecycleMutation<MyRegistration>
+        path={`/my/registrations/${encodeURIComponent(record.id)}/cancel`}
+        label="ยกเลิกการลงทะเบียน" busyLabel="กำลังยกเลิก…"
+        confirmation="ยืนยันยกเลิกการลงทะเบียนนี้และคืนที่นั่งให้ผู้เข้าร่วมคนอื่น?"
+        visible={record.status === 'ACTIVE' && record.event.status === 'PUBLISHED'
+          && Date.now() < Date.parse(record.event.registration_closes_at)}
+        onSuccess={updated => { replace(updated); void refresh(true); }} refresh={() => refresh(true)}
+        onAuthRequired={() => { replace(null); onAuthRequired(); }} onDenied={message => replace(null, message)}/></div>}
     </article></div>)}</div>
   </section>;
 }
@@ -88,7 +104,7 @@ function OrganizerRosterContent({ eventId, identity, onAuthRequired }: Props & {
     {data && <div className="card page-panel"><p>ลงทะเบียน ACTIVE <strong>{data.active_count}</strong> / {data.capacity} คน</p>
       {!data.registrations.length ? <p className="page-state">ยังไม่มีผู้ลงทะเบียน</p> : <div className="table-responsive"><table className="table align-middle">
         <caption>เวลาประเทศไทย (Asia/Bangkok) · เรียงตามเวลาลงทะเบียนจากเก่าไปใหม่</caption>
-        <thead><tr><th scope="col">เลขอ้างอิง</th><th scope="col">ชื่อผู้เข้าร่วม</th><th scope="col">สถานะ</th><th scope="col">ลงทะเบียนเมื่อ</th></tr></thead>
+        <thead><tr><th scope="col">เลขอ้างอิง</th><th scope="col">ชื่อผู้เข้าร่วม</th><th scope="col">สถานะ</th><th scope="col">ลงทะเบียนครั้งแรกเมื่อ</th></tr></thead>
         <tbody>{data.registrations.map(record => <tr key={record.id}><td className="text-break">{record.id}</td><td>{record.participant.display_name}</td><td>{record.status}</td><td>{bangkokTime(record.registered_at)}</td></tr>)}</tbody>
       </table></div>}
     </div>}
