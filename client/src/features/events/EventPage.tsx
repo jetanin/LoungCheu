@@ -3,12 +3,18 @@ import { api, ApiError, mutate, type Identity } from '../../lib/api';
 import { RegistrationAction } from '../registrations/RegistrationAction';
 import { bangkokTime, type OwnerEvent, type EventView } from './model';
 import { EventForm } from './EventForm';
+import { LifecycleMutation } from '../registrations/LifecycleMutation';
+
+// F-07: one-shot notice for the owner detail shown right after a saved edit.
+let savedNotice: string | null = null;
 
 export function EventPage({ path, identity, onAuthRequired, onNavigate }: {
   path: string; identity: Identity; onAuthRequired: () => void; onNavigate: (path: string) => void;
 }) {
   const owner = path.startsWith('/organizer/events'), base = owner ? '/organizer/events' : '/events';
-  const id = path.replace(/\/+$/, '').slice(base.length + 1), creating = owner && id === 'new';
+  const editMatch = owner ? /^\/organizer\/events\/([^/]+)\/edit\/?$/.exec(path) : null;
+  const id = editMatch ? editMatch[1] : path.replace(/\/+$/, '').slice(base.length + 1), creating = owner && id === 'new';
+  const [saved] = useState(() => !editMatch && !!id && savedNotice === id);
   const [data, setData] = useState<EventView | EventView[] | null>(null), [loading, setLoading] = useState(true), [error, setError] = useState('');
   const [publishing, setPublishing] = useState(false);
   const generation = useRef(0), publishInFlight = useRef(false);
@@ -17,6 +23,7 @@ export function EventPage({ path, identity, onAuthRequired, onNavigate }: {
     mounted.current = true;
     return () => { mounted.current = false; activeMutation.current?.abort(); };
   }, []);
+  useEffect(() => { if (saved) savedNotice = null; }, [saved]);
   const refresh = useCallback(async (preserveError = false) => {
     if (creating) return;
     const version = ++generation.current; setLoading(true); if (!preserveError) setError('');
@@ -66,9 +73,38 @@ export function EventPage({ path, identity, onAuthRequired, onNavigate }: {
       }
     } finally { publishInFlight.current = false; if (mounted.current) setPublishing(false); }
   }
+  // F-06: an uncertain close is retryable only after a successful scoped read.
+  async function refreshClose() {
+    const version = ++generation.current, scope = scopeVersion.current;
+    try {
+      const latest = await api<OwnerEvent>(`${base}/${encodeURIComponent(id)}`);
+      if (!mounted.current || scope !== scopeVersion.current || version !== generation.current) return false;
+      setData(latest); setLoading(false); return true;
+    } catch (failure) {
+      if (!mounted.current || scope !== scopeVersion.current || version !== generation.current) return false;
+      if (failure instanceof ApiError && failure.status === 401) {
+        scopeVersion.current++; generation.current++; setData(null); setLoading(false); onAuthRequired();
+      }
+      else {
+        if (failure instanceof ApiError && [403, 404].includes(failure.status)) { scopeVersion.current++; setData(null); }
+        setError(failure instanceof ApiError ? failure.message : 'ตรวจสถานะล่าสุดไม่สำเร็จ กรุณาลองใหม่');
+      }
+      return false;
+    }
+  }
   if (owner && identity.role !== 'ORGANIZER') return <section className="card page-panel" role="alert"><h1 className="page-title">ไม่มีสิทธิ์ใช้งาน</h1></section>;
   if (creating) return <EventForm onAuthRequired={onAuthRequired} onCreated={event => onNavigate(`${base}/${event.id}`)}/>;
   const event = data && !Array.isArray(data) ? data : null;
+  if (editMatch) return <section aria-label="แก้ไขกิจกรรม">
+    {loading && !event && <p className="event-meta" role="status">กำลังโหลดกิจกรรม…</p>}
+    {error && !event && <div className="alert alert-warning" role="alert">{error} <button className="btn btn-outline-secondary btn-sm" onClick={() => void refresh()}>ลองใหม่</button></div>}
+    {event && event.status === 'CLOSED' && <div className="card page-panel" role="alert">
+      <p className="mb-3">กิจกรรมนี้ปิดแล้ว แก้ไขไม่ได้</p><a className="btn btn-outline-success" href={`${base}/${event.id}`}>กลับหน้ากิจกรรม</a>
+    </div>}
+    {event && event.status !== 'CLOSED' && <EventForm key={event.id} editing={event as OwnerEvent} onAuthRequired={onAuthRequired}
+      onSaved={updated => { savedNotice = updated.id; onNavigate(`${base}/${updated.id}`); }}
+      onLost={message => { scopeVersion.current++; generation.current++; setLoading(false); setData(null); setError(message); }}/>}
+  </section>;
   return <section className={id ? 'event-detail-page' : undefined} aria-label={owner ? 'จัดการกิจกรรม' : 'กิจกรรม'}>
     {!id && <div className="page-heading">
       {owner ? <h1 className="page-title">กิจกรรมของฉัน</h1> : <h2 className="section-title">กิจกรรมในมหาวิทยาลัย</h2>}
@@ -83,6 +119,7 @@ export function EventPage({ path, identity, onAuthRequired, onNavigate }: {
       <p className="event-meta">{item.location}</p><p className="event-meta">{bangkokTime(item.starts_at)} · Asia/Bangkok</p>
       <p className="event-card-availability">ว่าง {item.available_seats} / {item.capacity} ที่นั่ง · {item.registration_open ? 'เปิดรับลงทะเบียน' : 'ยังไม่เปิดรับ / ปิดรับแล้ว'}</p>
     </article></div>)}</div>}
+    {event && saved && <p className="alert alert-success" role="status">บันทึกการแก้ไขแล้ว</p>}
     {event && <article className="card page-panel event-detail">
       <span className="event-status mb-3" data-status={event.status}>{event.status}</span><h1 className="page-title">{event.title}</h1>
       {owner && event.status === 'DRAFT' && <p className="text-secondary">ตัวอย่างกิจกรรม · กิจกรรมนี้จะปรากฏในรายการทั่วไปหลังเผยแพร่</p>}
@@ -98,8 +135,17 @@ export function EventPage({ path, identity, onAuthRequired, onNavigate }: {
       <div className="event-actions">
         {owner && <a className="btn btn-outline-success" href={`/organizer/events/${event.id}/registrations`}>ดูรายชื่อผู้ลงทะเบียน</a>}
         <button className="btn btn-outline-secondary" onClick={() => void refresh()}>รีเฟรชที่นั่ง</button>
+        {owner && event.status !== 'CLOSED' && <a className="btn btn-outline-success" href={`${base}/${event.id}/edit`}>แก้ไขกิจกรรม</a>}
         {owner && event.status === 'DRAFT' && <button className="btn btn-success" disabled={publishing} onClick={() => void publish()}>{publishing ? 'กำลังเผยแพร่…' : 'เผยแพร่กิจกรรม'}</button>}
         {owner && event.status !== 'DRAFT' && <a className="btn btn-outline-success" href={`/events/${event.id}`}>ดูหน้ากิจกรรมทั่วไป</a>}
+        {/* F-06: keep close after the F-07 edit control in this existing action row. */}
+        {owner && <LifecycleMutation<OwnerEvent> key={`close:${identity.id}:${event.id}`}
+          path={`/organizer/events/${encodeURIComponent(event.id)}/close`}
+          label="ปิดรับกิจกรรม" busyLabel="กำลังปิดรับ…" visible={event.status === 'PUBLISHED'}
+          confirmation="ยืนยันปิดรับกิจกรรม? ปิดแล้วเปิดกลับไม่ได้ และไม่ยกเลิกรายการลงทะเบียนเดิม"
+          onSuccess={closed => { generation.current++; setLoading(false); setData(closed); }}
+          refresh={refreshClose} onAuthRequired={() => { scopeVersion.current++; generation.current++; setData(null); onAuthRequired(); }}
+          onDenied={message => { scopeVersion.current++; generation.current++; setLoading(false); setData(null); setError(message); }}/>}
       </div>
       {!owner && <RegistrationAction event={event} identity={identity} getCsrfToken={async signal => (await api<{ csrf_token: string }>('/auth/csrf', { signal })).csrf_token}
         refreshEvent={refresh} onAuthRequired={onAuthRequired}/>}

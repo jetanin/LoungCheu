@@ -27,6 +27,7 @@ beforeAll(async () => {
 });
 afterEach(async () => {
   if (!ownsFixtures) return;
+  await db.registrationHistory.deleteMany({ where: { registration: { eventId: { in: ids } } } });
   await db.registration.deleteMany({ where: { eventId: { in: ids } } });
   await db.event.deleteMany({ where: { id: { in: ids } } });
 });
@@ -61,6 +62,7 @@ it('rerunning preserves edited events, consumed seats, references and removed ex
   const pa = await login('participant.a');
   await pa.agent.post(`/api/events/${demoEventIds.open}/registrations`).set('X-CSRF-Token', pa.token).send({}).expect(201);
   await db.event.update({ where: { id: demoEventIds.full }, data: { title: 'ผู้ใช้แก้ข้อมูลตัวอย่าง', capacity: 3 } });
+  await db.registrationHistory.deleteMany({ where: { registration: { eventId: demoEventIds.closed } } });
   await db.registration.deleteMany({ where: { eventId: demoEventIds.closed } });
   const snapshot = async () => ({ events: await db.event.findMany({ where: { id: { in: ids } }, orderBy: { id: 'asc' } }),
     registrations: await db.registration.findMany({ where: { eventId: { in: ids } }, orderBy: { id: 'asc' } }) });

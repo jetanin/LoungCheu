@@ -1,0 +1,64 @@
+
+> loungcheu@0.1.0 test:e2e
+> playwright test tests/e2e/registration-lifecycle.spec.ts
+
+[WebServer] (node:53984) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+[WebServer] (Use `node --trace-warnings ...` to show where the warning was created)
+[WebServer] (node:30060) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+[WebServer] (Use `node --trace-warnings ...` to show where the warning was created)
+
+Running 1 test using 1 worker
+
+(node:7420) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  x  1 tests\e2e\registration-lifecycle.spec.ts:31:1 › TEST-43: real cancel/re-login/full/reactivate/roster/close journey preserves identity and history (1.5m)
+
+
+  1) tests\e2e\registration-lifecycle.spec.ts:31:1 › TEST-43: real cancel/re-login/full/reactivate/roster/close journey preserves identity and history 
+
+    Test timeout of 90000ms exceeded.
+
+    Error: browserContext.close: Test ended.
+    Browser logs:
+
+    <launching> C:\Users\jetan\AppData\Local\ms-playwright\chromium_headless_shell-1248\chrome-headless-shell-win64\chrome-headless-shell.exe --disable-field-trial-config --disable-background-networking --disable-background-timer-throttling --disable-backgrounding-occluded-windows --disable-back-forward-cache --disable-breakpad --disable-client-side-phishing-detection --disable-component-extensions-with-background-pages --disable-component-update --no-default-browser-check --disable-default-apps --disable-dev-shm-usage --disable-edgeupdater --disable-extensions --disable-features=AvoidUnnecessaryBeforeUnloadCheckSync,DestroyProfileOnBrowserClose,DialMediaRouteProvider,GlobalMediaControls,HttpsUpgrades,LensOverlay,MediaRouter,PaintHolding,ThirdPartyStoragePartitioning,BlockOriginHeaderModificationOnRedirect,AvoidCorsURLLoaderRestartOnRedirect,Translate,AutoDeElevate,OptimizationHints,NetworkTimeServiceQuerying,AimEnabled,msForceBrowserSignIn,msEdgeUpdateLaunchServicesPreferredVersion --enable-features=CDPScreenshotNewSurface --allow-pre-commit-input --disable-hang-monitor --disable-ipc-flooding-protection --disable-popup-blocking --disable-prompt-on-repost --disable-renderer-backgrounding --disable-updater-scheduler --force-color-profile=srgb --metrics-recording-only --no-first-run --password-store=basic --use-mock-keychain --no-service-autorun --export-tagged-pdf --disable-search-engine-choice-screen --unsafely-disable-devtools-self-xss-warnings --edge-skip-compat-layer-relaunch --disable-infobars --disable-search-engine-choice-screen --disable-sync --enable-unsafe-swiftshader --headless --hide-scrollbars --mute-audio --blink-settings=primaryHoverType=2,availableHoverTypes=2,primaryPointerType=4,availablePointerTypes=4 --no-sandbox --user-data-dir=C:\Users\jetan\AppData\Local\Temp\playwright_chromiumdev_profile-TsBsM2 --remote-debugging-pipe --no-startup-window
+    <launched> pid=14104
+    [pid=14104][err] [1124/123415.196:INFO:CONSOLE:789] "[vite] connecting...", source: http://127.0.0.1:5183/@vite/client (789)
+    [pid=14104][err] [1124/123415.216:INFO:CONSOLE:912] "[vite] connected.", source: http://127.0.0.1:5183/@vite/client (912)
+    [pid=14104][err] [1124/123415.253:INFO:CONSOLE:22428] "%cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold", source: http://127.0.0.1:5183/node_modules/.vite/deps/react-dom_client.js?v=ab963dd0 (22428)
+    [pid=14104][err] [1124/123415.637:INFO:CONSOLE:789] "[vite] connecting...", source: http://127.0.0.1:5183/@vite/client (789)
+    [pid=14104][err] [1124/123415.641:INFO:CONSOLE:912] "[vite] connected.", source: http://127.0.0.1:5183/@vite/client (912)
+    [pid=14104][err] [1124/123415.647:INFO:CONSOLE:22428] "%cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold", source: http://127.0.0.1:5183/node_modules/.vite/deps/react-dom_client.js?v=ab963dd0 (22428)
+    [pid=14104][err] [1124/123416.466:INFO:CONSOLE:789] "[vite] connecting...", source: http://127.0.0.1:5183/@vite/client (789)
+    [pid=14104][err] [1124/123416.472:INFO:CONSOLE:912] "[vite] connected.", source: http://127.0.0.1:5183/@vite/client (912)
+    [pid=14104][err] [1124/123416.513:INFO:CONSOLE:22428] "%cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold", source: http://127.0.0.1:5183/node_modules/.vite/deps/react-dom_client.js?v=ab963dd0 (22428)
+    [pid=14104][err] [1124/123416.810:INFO:CONSOLE:789] "[vite] connecting...", source: http://127.0.0.1:5183/@vite/client (789)
+    [pid=14104][err] [1124/123416.816:INFO:CONSOLE:912] "[vite] connected.", source: http://127.0.0.1:5183/@vite/client (912)
+    [pid=14104][err] [1124/123416.854:INFO:CONSOLE:22428] "%cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold", source: http://127.0.0.1:5183/node_modules/.vite/deps/react-dom_client.js?v=ab963dd0 (22428)
+    [pid=14104][err] [1124/123417.117:INFO:CONSOLE:789] "[vite] connecting...", source: http://127.0.0.1:5183/@vite/client (789)
+    [pid=14104][err] [1124/123417.122:INFO:CONSOLE:912] "[vite] connected.", source: http://127.0.0.1:5183/@vite/client (912)
+    [pid=14104][err] [1124/123417.124:INFO:CONSOLE:22428] "%cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold", source: http://127.0.0.1:5183/node_modules/.vite/deps/react-dom_client.js?v=ab963dd0 (22428)
+    [pid=14104][err] [1124/123417.364:INFO:CONSOLE:789] "[vite] connecting...", source: http://127.0.0.1:5183/@vite/client (789)
+    [pid=14104][err] [1124/123417.367:INFO:CONSOLE:912] "[vite] connected.", source: http://127.0.0.1:5183/@vite/client (912)
+    [pid=14104][err] [1124/123417.373:INFO:CONSOLE:22428] "%cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold", source: http://127.0.0.1:5183/node_modules/.vite/deps/react-dom_client.js?v=ab963dd0 (22428)
+    [pid=14104][err] [1124/123417.721:INFO:CONSOLE:789] "[vite] connecting...", source: http://127.0.0.1:5183/@vite/client (789)
+    [pid=14104][err] [1124/123417.727:INFO:CONSOLE:912] "[vite] connected.", source: http://127.0.0.1:5183/@vite/client (912)
+    [pid=14104][err] [1124/123417.731:INFO:CONSOLE:22428] "%cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold", source: http://127.0.0.1:5183/node_modules/.vite/deps/react-dom_client.js?v=ab963dd0 (22428)
+    [pid=14104][err] [1124/123417.841:INFO:CONSOLE:789] "[vite] connecting...", source: http://127.0.0.1:5183/@vite/client (789)
+    [pid=14104][err] [1124/123417.846:INFO:CONSOLE:912] "[vite] connected.", source: http://127.0.0.1:5183/@vite/client (912)
+    [pid=14104][err] [1124/123417.851:INFO:CONSOLE:22428] "%cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold", source: http://127.0.0.1:5183/node_modules/.vite/deps/react-dom_client.js?v=ab963dd0 (22428)
+    [pid=14104] <gracefully close start>
+
+      154 |     expect((await db.event.findUniqueOrThrow({ where: { id: eventId } })).status).toBe('CLOSED');
+      155 |   } finally {
+    > 156 |     await aContext.close(); await bContext.close(); await db.$disconnect();
+          |     ^
+      157 |   }
+      158 | });
+      159 |
+        at C:\Work\2569\CPE334\GroupWork\LoungCheu\tests\e2e\registration-lifecycle.spec.ts:156:5
+
+    Error Context: test-results\registration-lifecycle-TES-ca9a7-serves-identity-and-history\error-context.md
+
+  1 failed
+    tests\e2e\registration-lifecycle.spec.ts:31:1 › TEST-43: real cancel/re-login/full/reactivate/roster/close journey preserves identity and history 

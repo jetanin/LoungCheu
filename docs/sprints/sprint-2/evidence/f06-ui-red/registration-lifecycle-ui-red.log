@@ -1,0 +1,2405 @@
+
+> loungcheu@0.1.0 test
+> vitest run client/src/features/registrations/RegistrationLifecycle.test.tsx --reporter=verbose
+
+
+ RUN  v5.1.0 C:/Work/2569/CPE334/GroupWork/LoungCheu
+
+ × client/src/features/registrations/RegistrationLifecycle.test.tsx > F-06 TEST-43 / initial UI RED slice > uses the first-registration label in own records without changing its timestamp 175ms
+   → Unable to find an element with the text: ลงทะเบียนครั้งแรกเมื่อ, which matches selector 'dt'. This could be because the text is broken up by multiple elements. In this case, you can provide a function for your text matcher to make your matcher more flexible.
+
+Ignored nodes: comments, script, style
+[36m<body>[39m
+  [36m<div>[39m
+    [36m<section[39m
+      [33maria-label[39m=[32m"รายการลงทะเบียนของฉัน"[39m
+    [36m>[39m
+      [36m<div[39m
+        [33mclass[39m=[32m"page-heading"[39m
+      [36m>[39m
+        [36m<h1[39m
+          [33mclass[39m=[32m"page-title"[39m
+        [36m>[39m
+          [0mรายการลงทะเบียนของฉัน[0m
+        [36m</h1>[39m
+        [36m<button[39m
+          [33mclass[39m=[32m"btn btn-outline-success"[39m
+        [36m>[39m
+          [0mรีเฟรชรายการ[0m
+        [36m</button>[39m
+      [36m</div>[39m
+      [36m<div[39m
+        [33mclass[39m=[32m"row g-3"[39m
+      [36m>[39m
+        [36m<div[39m
+          [33mclass[39m=[32m"col-md-6"[39m
+        [36m>[39m
+          [36m<article[39m
+            [33mclass[39m=[32m"card page-panel h-100"[39m
+          [36m>[39m
+            [36m<span[39m
+              [33mclass[39m=[32m"event-status"[39m
+            [36m>[39m
+              [0mACTIVE[0m
+            [36m</span>[39m
+            [36m<h2[39m
+              [33mclass[39m=[32m"event-card-title mt-3"[39m
+            [36m>[39m
+              [36m<a[39m
+                [33mclass[39m=[32m"link-success"[39m
+                [33mhref[39m=[32m"/my/registrations/registration-a"[39m
+              [36m>[39m
+                [0mLifecycle workshop[0m
+              [36m</a>[39m
+            [36m</h2>[39m
+            [36m<p[39m
+              [33mclass[39m=[32m"text-break"[39m
+            [36m>[39m
+              [0mเลขอ้างอิง: [0m
+              [36m<strong>[39m
+                [0mregistration-a[0m
+              [36m</strong>[39m
+            [36m</p>[39m
+            [36m<dl[39m
+              [33mclass[39m=[32m"event-details"[39m
+            [36m>[39m
+              [36m<dt>[39m
+                [0mสถานที่[0m
+              [36m</dt>[39m
+              [36m<dd>[39m
+                [0mTest room[0m
+              [36m</dd>[39m
+              [36m<dt>[39m
+                [0mเริ่มกิจกรรม[0m
+              [36m</dt>[39m
+              [36m<dd>[39m
+                [0m7 พ.ย. 2569 10:00:00[0m
+              [36m</dd>[39m
+              [36m<dt>[39m
+                [0mสิ้นสุดกิจกรรม[0m
+              [36m</dt>[39m
+              [36m<dd>[39m
+                [0m7 พ.ย. 2569 13:00:00[0m
+              [36m</dd>[39m
+              [36m<dt>[39m
+                [0mปิดรับลงทะเบียน[0m
+              [36m</dt>[39m
+              [36m<dd>[39m
+                [0m6 พ.ย. 2569 11:00:00[0m
+              [36m</dd>[39m
+              [36m<dt>[39m
+                [0mลงทะเบียนเมื่อ[0m
+              [36m</dt>[39m
+              [36m<dd>[39m
+                [0m6 พ.ย. 2569 08:00:00[0m
+              [36m</dd>[39m
+              [36m<dt>[39m
+                [0mสถานะกิจกรรม[0m
+              [36m</dt>[39m
+              [36m<dd>[39m
+                [0mPUBLISHED[0m
+              [36m</dd>[39m
+            [36m</dl>[39m
+            [36m<p[39m
+              [33mclass[39m=[32m"small text-secondary"[39m
+            [36m>[39m
+              [0mเวลาประเทศไทย (Asia/Bangkok)[0m
+            [36m</p>[39m
+            [36m<a[39m
+              [33mclass[39m=[32m"link-success"[39m
+              [33mhref[39m=[32m"/events/event-a"[39m
+            [36m>[39m
+              [0mดูรายละเอียดกิจกรรม[0m
+            [36m</a>[39m
+          [36m</article>[39m
+        [36m</div>[39m
+      [36m</div>[39m
+    [36m</section>[39m
+  [36m</div>[39m
+[36m</body>[39m
+ × client/src/features/registrations/RegistrationLifecycle.test.tsx > F-06 TEST-43 / initial UI RED slice > uses the same first-registration label in the organizer roster 111ms
+   → Unable to find an accessible element with the role "columnheader" and name "ลงทะเบียนครั้งแรกเมื่อ"
+
+Here are the accessible roles:
+
+  region:
+
+  Name "รายชื่อผู้ลงทะเบียน":
+  [36m<section[39m
+    [33maria-label[39m=[32m"รายชื่อผู้ลงทะเบียน"[39m
+  [36m/>[39m
+
+  --------------------------------------------------
+  heading:
+
+  Name "รายชื่อผู้ลงทะเบียน":
+  [36m<h1[39m
+    [33mclass[39m=[32m"page-title"[39m
+  [36m/>[39m
+
+  --------------------------------------------------
+  button:
+
+  Name "รีเฟรชรายชื่อ":
+  [36m<button[39m
+    [33mclass[39m=[32m"btn btn-outline-success"[39m
+  [36m/>[39m
+
+  --------------------------------------------------
+  paragraph:
+
+  Name "":
+  [36m<p />[39m
+
+  Name "":
+  [36m<p />[39m
+
+  --------------------------------------------------
+  link:
+
+  Name "กลับรายละเอียดกิจกรรม":
+  [36m<a[39m
+    [33mclass[39m=[32m"link-success"[39m
+    [33mhref[39m=[32m"/organizer/events/event-a"[39m
+  [36m/>[39m
+
+  --------------------------------------------------
+  strong:
+
+  Name "":
+  [36m<strong />[39m
+
+  --------------------------------------------------
+  table:
+
+  Name "เวลาประเทศไทย (Asia/Bangkok) · เรียงตามเวลาลงทะเบียนจากเก่าไปใหม่":
+  [36m<table[39m
+    [33mclass[39m=[32m"table align-middle"[39m
+  [36m/>[39m
+
+  --------------------------------------------------
+  caption:
+
+  Name "เวลาประเทศไทย (Asia/Bangkok) · เรียงตามเวลาลงทะเบียนจากเก่าไปใหม่":
+  [36m<caption />[39m
+
+  --------------------------------------------------
+  rowgroup:
+
+  Name "":
+  [36m<thead />[39m
+
+  Name "":
+  [36m<tbody />[39m
+
+  --------------------------------------------------
+  row:
+
+  Name "เลขอ้างอิง ชื่อผู้เข้าร่วม สถานะ ลงทะเบียนเมื่อ":
+  [36m<tr />[39m
+
+  Name "registration-a Participant A ACTIVE 6 พ.ย. 2569 08:00:00":
+  [36m<tr />[39m
+
+  --------------------------------------------------
+  columnheader:
+
+  Name "เลขอ้างอิง":
+  [36m<th[39m
+    [33mscope[39m=[32m"col"[39m
+  [36m/>[39m
+
+  Name "ชื่อผู้เข้าร่วม":
+  [36m<th[39m
+    [33mscope[39m=[32m"col"[39m
+  [36m/>[39m
+
+  Name "สถานะ":
+  [36m<th[39m
+    [33mscope[39m=[32m"col"[39m
+  [36m/>[39m
+
+  Name "ลงทะเบียนเมื่อ":
+  [36m<th[39m
+    [33mscope[39m=[32m"col"[39m
+  [36m/>[39m
+
+  --------------------------------------------------
+  cell:
+
+  Name "registration-a":
+  [36m<td[39m
+    [33mclass[39m=[32m"text-break"[39m
+  [36m/>[39m
+
+  Name "Participant A":
+  [36m<td />[39m
+
+  Name "ACTIVE":
+  [36m<td />[39m
+
+  Name "6 พ.ย. 2569 08:00:00":
+  [36m<td />[39m
+
+  --------------------------------------------------
+
+Ignored nodes: comments, script, style
+[36m<body>[39m
+  [36m<div>[39m
+    [36m<section[39m
+      [33maria-label[39m=[32m"รายชื่อผู้ลงทะเบียน"[39m
+    [36m>[39m
+      [36m<div[39m
+        [33mclass[39m=[32m"page-heading"[39m
+      [36m>[39m
+        [36m<h1[39m
+          [33mclass[39m=[32m"page-title"[39m
+        [36m>[39m
+          [0mรายชื่อผู้ลงทะเบียน[0m
+        [36m</h1>[39m
+        [36m<button[39m
+          [33mclass[39m=[32m"btn btn-outline-success"[39m
+        [36m>[39m
+          [0mรีเฟรชรายชื่อ[0m
+        [36m</button>[39m
+      [36m</div>[39m
+      [36m<p>[39m
+        [36m<a[39m
+          [33mclass[39m=[32m"link-success"[39m
+          [33mhref[39m=[32m"/organizer/events/event-a"[39m
+        [36m>[39m
+          [0mกลับรายละเอียดกิจกรรม[0m
+        [36m</a>[39m
+      [36m</p>[39m
+      [36m<div[39m
+        [33mclass[39m=[32m"card page-panel"[39m
+      [36m>[39m
+        [36m<p>[39m
+          [0mลงทะเบียน ACTIVE [0m
+          [36m<strong>[39m
+            [0m1[0m
+          [36m</strong>[39m
+          [0m / [0m
+          [0m2[0m
+          [0m คน[0m
+        [36m</p>[39m
+        [36m<div[39m
+          [33mclass[39m=[32m"table-responsive"[39m
+        [36m>[39m
+          [36m<table[39m
+            [33mclass[39m=[32m"table align-middle"[39m
+          [36m>[39m
+            [36m<caption>[39m
+              [0mเวลาประเทศไทย (Asia/Bangkok) · เรียงตามเวลาลงทะเบียนจากเก่าไปใหม่[0m
+            [36m</caption>[39m
+            [36m<thead>[39m
+              [36m<tr>[39m
+                [36m<th[39m
+                  [33mscope[39m=[32m"col"[39m
+                [36m>[39m
+                  [0mเลขอ้างอิง[0m
+                [36m</th>[39m
+                [36m<th[39m
+                  [33mscope[39m=[32m"col"[39m
+                [36m>[39m
+                  [0mชื่อผู้เข้าร่วม[0m
+                [36m</th>[39m
+                [36m<th[39m
+                  [33mscope[39m=[32m"col"[39m
+                [36m>[39m
+                  [0mสถานะ[0m
+                [36m</th>[39m
+                [36m<th[39m
+                  [33mscope[39m=[32m"col"[39m
+                [36m>[39m
+                  [0mลงทะเบียนเมื่อ[0m
+                [36m</th>[39m
+              [36m</tr>[39m
+            [36m</thead>[39m
+            [36m<tbody>[39m
+              [36m<tr>[39m
+                [36m<td[39m
+                  [33mclass[39m=[32m"text-break"[39m
+                [36m>[39m
+                  [0mregistration-a[0m
+                [36m</td>[39m
+                [36m<td>[39m
+                  [0mParticipant A[0m
+                [36m</td>[39m
+                [36m<td>[39m
+                  [0mACTIVE[0m
+                [36m</td>[39m
+                [36m<td>[39m
+                  [0m6 พ.ย. 2569 08:00:00[0m
+                [36m</td>[39m
+              [36m</tr>[39m
+            [36m</tbody>[39m
+          [36m</table>[39m
+        [36m</div>[39m
+      [36m</div>[39m
+    [36m</section>[39m
+  [36m</div>[39m
+[36m</body>[39m
+ × client/src/features/registrations/RegistrationLifecycle.test.tsx > F-06 TEST-43 / initial UI RED slice > cancel asks for confirmation (accepted=false) and never sends a duplicate mutation 83ms
+   → Unable to find an accessible element with the role "button" and name "ยกเลิกการลงทะเบียน"
+
+Here are the accessible roles:
+
+  region:
+
+  Name "รายการลงทะเบียนของฉัน":
+  [36m<section[39m
+    [33maria-label[39m=[32m"รายการลงทะเบียนของฉัน"[39m
+  [36m/>[39m
+
+  --------------------------------------------------
+  heading:
+
+  Name "รายละเอียดการลงทะเบียน":
+  [36m<h1[39m
+    [33mclass[39m=[32m"page-title"[39m
+  [36m/>[39m
+
+  Name "Lifecycle workshop":
+  [36m<h2[39m
+    [33mclass[39m=[32m"event-card-title mt-3"[39m
+  [36m/>[39m
+
+  --------------------------------------------------
+  button:
+
+  Name "รีเฟรชรายการ":
+  [36m<button[39m
+    [33mclass[39m=[32m"btn btn-outline-success"[39m
+  [36m/>[39m
+
+  --------------------------------------------------
+  paragraph:
+
+  Name "":
+  [36m<p />[39m
+
+  Name "":
+  [36m<p[39m
+    [33mclass[39m=[32m"text-break"[39m
+  [36m/>[39m
+
+  Name "":
+  [36m<p[39m
+    [33mclass[39m=[32m"small text-secondary"[39m
+  [36m/>[39m
+
+  --------------------------------------------------
+  link:
+
+  Name "กลับรายการลงทะเบียนของฉัน":
+  [36m<a[39m
+    [33mclass[39m=[32m"link-success"[39m
+    [33mhref[39m=[32m"/my/registrations"[39m
+  [36m/>[39m
+
+  Name "ดูรายละเอียดกิจกรรม":
+  [36m<a[39m
+    [33mclass[39m=[32m"link-success"[39m
+    [33mhref[39m=[32m"/events/event-a"[39m
+  [36m/>[39m
+
+  --------------------------------------------------
+  article:
+
+  Name "":
+  [36m<article[39m
+    [33mclass[39m=[32m"card page-panel h-100"[39m
+  [36m/>[39m
+
+  --------------------------------------------------
+  strong:
+
+  Name "":
+  [36m<strong />[39m
+
+  --------------------------------------------------
+  term:
+
+  Name "":
+  [36m<dt />[39m
+
+  Name "":
+  [36m<dt />[39m
+
+  Name "":
+  [36m<dt />[39m
+
+  Name "":
+  [36m<dt />[39m
+
+  Name "":
+  [36m<dt />[39m
+
+  Name "":
+  [36m<dt />[39m
+
+  --------------------------------------------------
+  definition:
+
+  Name "":
+  [36m<dd />[39m
+
+  Name "":
+  [36m<dd />[39m
+
+  Name "":
+  [36m<dd />[39m
+
+  Name "":
+  [36m<dd />[39m
+
+  Name "":
+  [36m<dd />[39m
+
+  Name "":
+  [36m<dd />[39m
+
+  --------------------------------------------------
+
+Ignored nodes: comments, script, style
+[36m<body>[39m
+  [36m<div>[39m
+    [36m<section[39m
+      [33maria-label[39m=[32m"รายการลงทะเบียนของฉัน"[39m
+    [36m>[39m
+      [36m<div[39m
+        [33mclass[39m=[32m"page-heading"[39m
+      [36m>[39m
+        [36m<h1[39m
+          [33mclass[39m=[32m"page-title"[39m
+        [36m>[39m
+          [0mรายละเอียดการลงทะเบียน[0m
+        [36m</h1>[39m
+        [36m<button[39m
+          [33mclass[39m=[32m"btn btn-outline-success"[39m
+        [36m>[39m
+          [0mรีเฟรชรายการ[0m
+        [36m</button>[39m
+      [36m</div>[39m
+      [36m<p>[39m
+        [36m<a[39m
+          [33mclass[39m=[32m"link-success"[39m
+          [33mhref[39m=[32m"/my/registrations"[39m
+        [36m>[39m
+          [0mกลับรายการลงทะเบียนของฉัน[0m
+        [36m</a>[39m
+      [36m</p>[39m
+      [36m<div[39m
+        [33mclass[39m=[32m"row g-3"[39m
+      [36m>[39m
+        [36m<div[39m
+          [33mclass[39m=[32m"col-12"[39m
+        [36m>[39m
+          [36m<article[39m
+            [33mclass[39m=[32m"card page-panel h-100"[39m
+          [36m>[39m
+            [36m<span[39m
+              [33mclass[39m=[32m"event-status"[39m
+            [36m>[39m
+              [0mACTIVE[0m
+            [36m</span>[39m
+            [36m<h2[39m
+              [33mclass[39m=[32m"event-card-title mt-3"[39m
+            [36m>[39m
+              [0mLifecycle workshop[0m
+            [36m</h2>[39m
+            [36m<p[39m
+              [33mclass[39m=[32m"text-break"[39m
+            [36m>[39m
+              [0mเลขอ้างอิง: [0m
+              [36m<strong>[39m
+                [0mregistration-a[0m
+              [36m</strong>[39m
+            [36m</p>[39m
+            [36m<dl[39m
+              [33mclass[39m=[32m"event-details"[39m
+            [36m>[39m
+              [36m<dt>[39m
+                [0mสถานที่[0m
+              [36m</dt>[39m
+              [36m<dd>[39m
+                [0mTest room[0m
+              [36m</dd>[39m
+              [36m<dt>[39m
+                [0mเริ่มกิจกรรม[0m
+              [36m</dt>[39m
+              [36m<dd>[39m
+                [0m7 พ.ย. 2569 10:00:00[0m
+              [36m</dd>[39m
+              [36m<dt>[39m
+                [0mสิ้นสุดกิจกรรม[0m
+              [36m</dt>[39m
+              [36m<dd>[39m
+                [0m7 พ.ย. 2569 13:00:00[0m
+              [36m</dd>[39m
+              [36m<dt>[39m
+                [0mปิดรับลงทะเบียน[0m
+              [36m</dt>[39m
+              [36m<dd>[39m
+                [0m6 พ.ย. 2569 11:00:00[0m
+              [36m</dd>[39m
+              [36m<dt>[39m
+                [0mลงทะเบียนเมื่อ[0m
+              [36m</dt>[39m
+              [36m<dd>[39m
+                [0m6 พ.ย. 2569 08:00:00[0m
+              [36m</dd>[39m
+              [36m<dt>[39m
+                [0mสถานะกิจกรรม[0m
+              [36m</dt>[39m
+              [36m<dd>[39m
+                [0mPUBLISHED[0m
+              [36m</dd>[39m
+            [36m</dl>[39m
+            [36m<p[39m
+              [33mclass[39m=[32m"small text-secondary"[39m
+            [36m>[39m
+              [0mเวลาประเทศไทย (Asia/Bangkok)[0m
+            [36m</p>[39m
+            [36m<a[39m
+              [33mclass[39m=[32m"link-success"[39m
+              [33mhref[39m=[32m"/events/event-a"[39m
+            [36m>[39m
+              [0mดูรายละเอียดกิจกรรม[0m
+            [36m</a>[39m
+          [36m</article>[39m
+        [36m</div>[39m
+      [36m</div>[39m
+    [36m</section>[39m
+  [36m</div>[39m
+[36m</body>[39m
+ × client/src/features/registrations/RegistrationLifecycle.test.tsx > F-06 TEST-43 / initial UI RED slice > cancel asks for confirmation (accepted=true) and never sends a duplicate mutation 89ms
+   → Unable to find an accessible element with the role "button" and name "ยกเลิกการลงทะเบียน"
+
+Here are the accessible roles:
+
+  region:
+
+  Name "รายการลงทะเบียนของฉัน":
+  [36m<section[39m
+    [33maria-label[39m=[32m"รายการลงทะเบียนของฉัน"[39m
+  [36m/>[39m
+
+  --------------------------------------------------
+  heading:
+
+  Name "รายละเอียดการลงทะเบียน":
+  [36m<h1[39m
+    [33mclass[39m=[32m"page-title"[39m
+  [36m/>[39m
+
+  Name "Lifecycle workshop":
+  [36m<h2[39m
+    [33mclass[39m=[32m"event-card-title mt-3"[39m
+  [36m/>[39m
+
+  --------------------------------------------------
+  button:
+
+  Name "รีเฟรชรายการ":
+  [36m<button[39m
+    [33mclass[39m=[32m"btn btn-outline-success"[39m
+  [36m/>[39m
+
+  --------------------------------------------------
+  paragraph:
+
+  Name "":
+  [36m<p />[39m
+
+  Name "":
+  [36m<p[39m
+    [33mclass[39m=[32m"text-break"[39m
+  [36m/>[39m
+
+  Name "":
+  [36m<p[39m
+    [33mclass[39m=[32m"small text-secondary"[39m
+  [36m/>[39m
+
+  --------------------------------------------------
+  link:
+
+  Name "กลับรายการลงทะเบียนของฉัน":
+  [36m<a[39m
+    [33mclass[39m=[32m"link-success"[39m
+    [33mhref[39m=[32m"/my/registrations"[39m
+  [36m/>[39m
+
+  Name "ดูรายละเอียดกิจกรรม":
+  [36m<a[39m
+    [33mclass[39m=[32m"link-success"[39m
+    [33mhref[39m=[32m"/events/event-a"[39m
+  [36m/>[39m
+
+  --------------------------------------------------
+  article:
+
+  Name "":
+  [36m<article[39m
+    [33mclass[39m=[32m"card page-panel h-100"[39m
+  [36m/>[39m
+
+  --------------------------------------------------
+  strong:
+
+  Name "":
+  [36m<strong />[39m
+
+  --------------------------------------------------
+  term:
+
+  Name "":
+  [36m<dt />[39m
+
+  Name "":
+  [36m<dt />[39m
+
+  Name "":
+  [36m<dt />[39m
+
+  Name "":
+  [36m<dt />[39m
+
+  Name "":
+  [36m<dt />[39m
+
+  Name "":
+  [36m<dt />[39m
+
+  --------------------------------------------------
+  definition:
+
+  Name "":
+  [36m<dd />[39m
+
+  Name "":
+  [36m<dd />[39m
+
+  Name "":
+  [36m<dd />[39m
+
+  Name "":
+  [36m<dd />[39m
+
+  Name "":
+  [36m<dd />[39m
+
+  Name "":
+  [36m<dd />[39m
+
+  --------------------------------------------------
+
+Ignored nodes: comments, script, style
+[36m<body>[39m
+  [36m<div>[39m
+    [36m<section[39m
+      [33maria-label[39m=[32m"รายการลงทะเบียนของฉัน"[39m
+    [36m>[39m
+      [36m<div[39m
+        [33mclass[39m=[32m"page-heading"[39m
+      [36m>[39m
+        [36m<h1[39m
+          [33mclass[39m=[32m"page-title"[39m
+        [36m>[39m
+          [0mรายละเอียดการลงทะเบียน[0m
+        [36m</h1>[39m
+        [36m<button[39m
+          [33mclass[39m=[32m"btn btn-outline-success"[39m
+        [36m>[39m
+          [0mรีเฟรชรายการ[0m
+        [36m</button>[39m
+      [36m</div>[39m
+      [36m<p>[39m
+        [36m<a[39m
+          [33mclass[39m=[32m"link-success"[39m
+          [33mhref[39m=[32m"/my/registrations"[39m
+        [36m>[39m
+          [0mกลับรายการลงทะเบียนของฉัน[0m
+        [36m</a>[39m
+      [36m</p>[39m
+      [36m<div[39m
+        [33mclass[39m=[32m"row g-3"[39m
+      [36m>[39m
+        [36m<div[39m
+          [33mclass[39m=[32m"col-12"[39m
+        [36m>[39m
+          [36m<article[39m
+            [33mclass[39m=[32m"card page-panel h-100"[39m
+          [36m>[39m
+            [36m<span[39m
+              [33mclass[39m=[32m"event-status"[39m
+            [36m>[39m
+              [0mACTIVE[0m
+            [36m</span>[39m
+            [36m<h2[39m
+              [33mclass[39m=[32m"event-card-title mt-3"[39m
+            [36m>[39m
+              [0mLifecycle workshop[0m
+            [36m</h2>[39m
+            [36m<p[39m
+              [33mclass[39m=[32m"text-break"[39m
+            [36m>[39m
+              [0mเลขอ้างอิง: [0m
+              [36m<strong>[39m
+                [0mregistration-a[0m
+              [36m</strong>[39m
+            [36m</p>[39m
+            [36m<dl[39m
+              [33mclass[39m=[32m"event-details"[39m
+            [36m>[39m
+              [36m<dt>[39m
+                [0mสถานที่[0m
+              [36m</dt>[39m
+              [36m<dd>[39m
+                [0mTest room[0m
+              [36m</dd>[39m
+              [36m<dt>[39m
+                [0mเริ่มกิจกรรม[0m
+              [36m</dt>[39m
+              [36m<dd>[39m
+                [0m7 พ.ย. 2569 10:00:00[0m
+              [36m</dd>[39m
+              [36m<dt>[39m
+                [0mสิ้นสุดกิจกรรม[0m
+              [36m</dt>[39m
+              [36m<dd>[39m
+                [0m7 พ.ย. 2569 13:00:00[0m
+              [36m</dd>[39m
+              [36m<dt>[39m
+                [0mปิดรับลงทะเบียน[0m
+              [36m</dt>[39m
+              [36m<dd>[39m
+                [0m6 พ.ย. 2569 11:00:00[0m
+              [36m</dd>[39m
+              [36m<dt>[39m
+                [0mลงทะเบียนเมื่อ[0m
+              [36m</dt>[39m
+              [36m<dd>[39m
+                [0m6 พ.ย. 2569 08:00:00[0m
+              [36m</dd>[39m
+              [36m<dt>[39m
+                [0mสถานะกิจกรรม[0m
+              [36m</dt>[39m
+              [36m<dd>[39m
+                [0mPUBLISHED[0m
+              [36m</dd>[39m
+            [36m</dl>[39m
+            [36m<p[39m
+              [33mclass[39m=[32m"small text-secondary"[39m
+            [36m>[39m
+              [0mเวลาประเทศไทย (Asia/Bangkok)[0m
+            [36m</p>[39m
+            [36m<a[39m
+              [33mclass[39m=[32m"link-success"[39m
+              [33mhref[39m=[32m"/events/event-a"[39m
+            [36m>[39m
+              [0mดูรายละเอียดกิจกรรม[0m
+            [36m</a>[39m
+          [36m</article>[39m
+        [36m</div>[39m
+      [36m</div>[39m
+    [36m</section>[39m
+  [36m</div>[39m
+[36m</body>[39m
+ × client/src/features/registrations/RegistrationLifecycle.test.tsx > F-06 TEST-43 / initial UI RED slice > shows the cancellation timestamp and retains the original reference on own detail 9ms
+   → Unable to find an element with the text: ยกเลิกเมื่อ, which matches selector 'dt'. This could be because the text is broken up by multiple elements. In this case, you can provide a function for your text matcher to make your matcher more flexible.
+
+Ignored nodes: comments, script, style
+[36m<body>[39m
+  [36m<div>[39m
+    [36m<section[39m
+      [33maria-label[39m=[32m"รายการลงทะเบียนของฉัน"[39m
+    [36m>[39m
+      [36m<div[39m
+        [33mclass[39m=[32m"page-heading"[39m
+      [36m>[39m
+        [36m<h1[39m
+          [33mclass[39m=[32m"page-title"[39m
+        [36m>[39m
+          [0mรายละเอียดการลงทะเบียน[0m
+        [36m</h1>[39m
+        [36m<button[39m
+          [33mclass[39m=[32m"btn btn-outline-success"[39m
+        [36m>[39m
+          [0mรีเฟรชรายการ[0m
+        [36m</button>[39m
+      [36m</div>[39m
+      [36m<p>[39m
+        [36m<a[39m
+          [33mclass[39m=[32m"link-success"[39m
+          [33mhref[39m=[32m"/my/registrations"[39m
+        [36m>[39m
+          [0mกลับรายการลงทะเบียนของฉัน[0m
+        [36m</a>[39m
+      [36m</p>[39m
+      [36m<div[39m
+        [33mclass[39m=[32m"row g-3"[39m
+      [36m>[39m
+        [36m<div[39m
+          [33mclass[39m=[32m"col-12"[39m
+        [36m>[39m
+          [36m<article[39m
+            [33mclass[39m=[32m"card page-panel h-100"[39m
+          [36m>[39m
+            [36m<span[39m
+              [33mclass[39m=[32m"event-status"[39m
+            [36m>[39m
+              [0mCANCELLED[0m
+            [36m</span>[39m
+            [36m<h2[39m
+              [33mclass[39m=[32m"event-card-title mt-3"[39m
+            [36m>[39m
+              [0mLifecycle workshop[0m
+            [36m</h2>[39m
+            [36m<p[39m
+              [33mclass[39m=[32m"text-break"[39m
+            [36m>[39m
+              [0mเลขอ้างอิง: [0m
+              [36m<strong>[39m
+                [0mregistration-a[0m
+              [36m</strong>[39m
+            [36m</p>[39m
+            [36m<dl[39m
+              [33mclass[39m=[32m"event-details"[39m
+            [36m>[39m
+              [36m<dt>[39m
+                [0mสถานที่[0m
+              [36m</dt>[39m
+              [36m<dd>[39m
+                [0mTest room[0m
+              [36m</dd>[39m
+              [36m<dt>[39m
+                [0mเริ่มกิจกรรม[0m
+              [36m</dt>[39m
+              [36m<dd>[39m
+                [0m7 พ.ย. 2569 10:00:00[0m
+              [36m</dd>[39m
+              [36m<dt>[39m
+                [0mสิ้นสุดกิจกรรม[0m
+              [36m</dt>[39m
+              [36m<dd>[39m
+                [0m7 พ.ย. 2569 13:00:00[0m
+              [36m</dd>[39m
+              [36m<dt>[39m
+                [0mปิดรับลงทะเบียน[0m
+              [36m</dt>[39m
+              [36m<dd>[39m
+                [0m6 พ.ย. 2569 11:00:00[0m
+              [36m</dd>[39m
+              [36m<dt>[39m
+                [0mลงทะเบียนเมื่อ[0m
+              [36m</dt>[39m
+              [36m<dd>[39m
+                [0m6 พ.ย. 2569 08:00:00[0m
+              [36m</dd>[39m
+              [36m<dt>[39m
+                [0mสถานะกิจกรรม[0m
+              [36m</dt>[39m
+              [36m<dd>[39m
+                [0mPUBLISHED[0m
+              [36m</dd>[39m
+            [36m</dl>[39m
+            [36m<p[39m
+              [33mclass[39m=[32m"small text-secondary"[39m
+            [36m>[39m
+              [0mเวลาประเทศไทย (Asia/Bangkok)[0m
+            [36m</p>[39m
+            [36m<a[39m
+              [33mclass[39m=[32m"link-success"[39m
+              [33mhref[39m=[32m"/events/event-a"[39m
+            [36m>[39m
+              [0mดูรายละเอียดกิจกรรม[0m
+            [36m</a>[39m
+          [36m</article>[39m
+        [36m</div>[39m
+      [36m</div>[39m
+    [36m</section>[39m
+  [36m</div>[39m
+[36m</body>[39m
+ × client/src/features/registrations/RegistrationLifecycle.test.tsx > F-06 TEST-43 / initial UI RED slice > looks up own registrations by event.id and re-registers using the existing endpoint 1005ms
+   → Unable to find role="button" and name "ลงทะเบียนใหม่"
+
+Ignored nodes: comments, script, style
+[36m<body>[39m
+  [36m<div>[39m
+    [36m<section[39m
+      [33maria-busy[39m=[32m"false"[39m
+      [33maria-label[39m=[32m"ลงทะเบียนกิจกรรม"[39m
+    [36m>[39m
+      [36m<p>[39m
+        [0mที่นั่งว่าง [0m
+        [0m1[0m
+        [0m ที่ (ยืนยันเมื่อบันทึกสำเร็จ)[0m
+      [36m</p>[39m
+      [36m<button[39m
+        [33mclass[39m=[32m"btn btn-primary"[39m
+        [33mtype[39m=[32m"button"[39m
+      [36m>[39m
+        [0mลงทะเบียน[0m
+      [36m</button>[39m
+    [36m</section>[39m
+  [36m</div>[39m
+[36m</body>[39m
+
+Ignored nodes: comments, script, style
+[36m<body>[39m
+  [36m<div>[39m
+    [36m<section[39m
+      [33maria-busy[39m=[32m"false"[39m
+      [33maria-label[39m=[32m"ลงทะเบียนกิจกรรม"[39m
+    [36m>[39m
+      [36m<p>[39m
+        [0mที่นั่งว่าง [0m
+        [0m1[0m
+        [0m ที่ (ยืนยันเมื่อบันทึกสำเร็จ)[0m
+      [36m</p>[39m
+      [36m<button[39m
+        [33mclass[39m=[32m"btn btn-primary"[39m
+        [33mtype[39m=[32m"button"[39m
+      [36m>[39m
+        [0mลงทะเบียน[0m
+      [36m</button>[39m
+    [36m</section>[39m
+  [36m</div>[39m
+[36m</body>[39m
+ × client/src/features/registrations/RegistrationLifecycle.test.tsx > F-06 TEST-43 / initial UI RED slice > explains a cancelled registration on a full event instead of offering re-registration 1004ms
+   → Unable to find an element with the text: คุณยกเลิกการลงทะเบียนแล้ว ขณะนี้กิจกรรมเต็ม. This could be because the text is broken up by multiple elements. In this case, you can provide a function for your text matcher to make your matcher more flexible.
+
+Ignored nodes: comments, script, style
+[36m<body>[39m
+  [36m<div>[39m
+    [36m<section[39m
+      [33maria-busy[39m=[32m"false"[39m
+      [33maria-label[39m=[32m"ลงทะเบียนกิจกรรม"[39m
+    [36m>[39m
+      [36m<p>[39m
+        [0mกิจกรรมนี้ไม่เปิดรับลงทะเบียน หรือไม่มีที่นั่งว่าง[0m
+      [36m</p>[39m
+      [36m<button[39m
+        [33mclass[39m=[32m"btn btn-primary"[39m
+        [33mdisabled[39m=[32m""[39m
+        [33mtype[39m=[32m"button"[39m
+      [36m>[39m
+        [0mลงทะเบียน[0m
+      [36m</button>[39m
+    [36m</section>[39m
+  [36m</div>[39m
+[36m</body>[39m
+
+Ignored nodes: comments, script, style
+[36m<body>[39m
+  [36m<div>[39m
+    [36m<section[39m
+      [33maria-busy[39m=[32m"false"[39m
+      [33maria-label[39m=[32m"ลงทะเบียนกิจกรรม"[39m
+    [36m>[39m
+      [36m<p>[39m
+        [0mกิจกรรมนี้ไม่เปิดรับลงทะเบียน หรือไม่มีที่นั่งว่าง[0m
+      [36m</p>[39m
+      [36m<button[39m
+        [33mclass[39m=[32m"btn btn-primary"[39m
+        [33mdisabled[39m=[32m""[39m
+        [33mtype[39m=[32m"button"[39m
+      [36m>[39m
+        [0mลงทะเบียน[0m
+      [36m</button>[39m
+    [36m</section>[39m
+  [36m</div>[39m
+[36m</body>[39m
+ × client/src/features/registrations/RegistrationLifecycle.test.tsx > F-06 TEST-43 / initial UI RED slice > does not treat a failed own-registration lookup as permission to register 1004ms
+   → Unable to find role="button" and name "ลองใหม่"
+
+Ignored nodes: comments, script, style
+[36m<body>[39m
+  [36m<div>[39m
+    [36m<section[39m
+      [33maria-busy[39m=[32m"false"[39m
+      [33maria-label[39m=[32m"ลงทะเบียนกิจกรรม"[39m
+    [36m>[39m
+      [36m<p>[39m
+        [0mที่นั่งว่าง [0m
+        [0m1[0m
+        [0m ที่ (ยืนยันเมื่อบันทึกสำเร็จ)[0m
+      [36m</p>[39m
+      [36m<button[39m
+        [33mclass[39m=[32m"btn btn-primary"[39m
+        [33mtype[39m=[32m"button"[39m
+      [36m>[39m
+        [0mลงทะเบียน[0m
+      [36m</button>[39m
+    [36m</section>[39m
+  [36m</div>[39m
+[36m</body>[39m
+
+Ignored nodes: comments, script, style
+[36m<body>[39m
+  [36m<div>[39m
+    [36m<section[39m
+      [33maria-busy[39m=[32m"false"[39m
+      [33maria-label[39m=[32m"ลงทะเบียนกิจกรรม"[39m
+    [36m>[39m
+      [36m<p>[39m
+        [0mที่นั่งว่าง [0m
+        [0m1[0m
+        [0m ที่ (ยืนยันเมื่อบันทึกสำเร็จ)[0m
+      [36m</p>[39m
+      [36m<button[39m
+        [33mclass[39m=[32m"btn btn-primary"[39m
+        [33mtype[39m=[32m"button"[39m
+      [36m>[39m
+        [0mลงทะเบียน[0m
+      [36m</button>[39m
+    [36m</section>[39m
+  [36m</div>[39m
+[36m</body>[39m
+ × client/src/features/registrations/RegistrationLifecycle.test.tsx > F-06 TEST-43 / initial UI RED slice > closes a published owner event only after confirmation and displays CLOSED 82ms
+   → Unable to find an accessible element with the role "button" and name "ปิดรับกิจกรรม"
+
+Here are the accessible roles:
+
+  region:
+
+  Name "จัดการกิจกรรม":
+  [36m<section[39m
+    [33maria-label[39m=[32m"จัดการกิจกรรม"[39m
+    [33mclass[39m=[32m"event-detail-page"[39m
+  [36m/>[39m
+
+  --------------------------------------------------
+  article:
+
+  Name "":
+  [36m<article[39m
+    [33mclass[39m=[32m"card page-panel event-detail"[39m
+  [36m/>[39m
+
+  --------------------------------------------------
+  heading:
+
+  Name "Lifecycle workshop":
+  [36m<h1[39m
+    [33mclass[39m=[32m"page-title"[39m
+  [36m/>[39m
+
+  --------------------------------------------------
+  paragraph:
+
+  Name "":
+  [36m<p[39m
+    [33mclass[39m=[32m"event-description"[39m
+  [36m/>[39m
+
+  Name "":
+  [36m<p[39m
+    [33mclass[39m=[32m"small text-secondary"[39m
+  [36m/>[39m
+
+  Name "":
+  [36m<p />[39m
+
+  Name "":
+  [36m<p />[39m
+
+  --------------------------------------------------
+  term:
+
+  Name "":
+  [36m<dt />[39m
+
+  Name "":
+  [36m<dt />[39m
+
+  Name "":
+  [36m<dt />[39m
+
+  Name "":
+  [36m<dt />[39m
+
+  --------------------------------------------------
+  definition:
+
+  Name "":
+  [36m<dd />[39m
+
+  Name "":
+  [36m<dd[39m
+    [33mdata-testid[39m=[32m"starts-at"[39m
+  [36m/>[39m
+
+  Name "":
+  [36m<dd />[39m
+
+  Name "":
+  [36m<dd />[39m
+
+  --------------------------------------------------
+  link:
+
+  Name "ดูรายชื่อผู้ลงทะเบียน":
+  [36m<a[39m
+    [33mclass[39m=[32m"btn btn-outline-success"[39m
+    [33mhref[39m=[32m"/organizer/events/event-a/registrations"[39m
+  [36m/>[39m
+
+  Name "ดูหน้ากิจกรรมทั่วไป":
+  [36m<a[39m
+    [33mclass[39m=[32m"btn btn-outline-success"[39m
+    [33mhref[39m=[32m"/events/event-a"[39m
+  [36m/>[39m
+
+  --------------------------------------------------
+  button:
+
+  Name "รีเฟรชที่นั่ง":
+  [36m<button[39m
+    [33mclass[39m=[32m"btn btn-outline-secondary"[39m
+  [36m/>[39m
+
+  --------------------------------------------------
+
+Ignored nodes: comments, script, style
+[36m<body>[39m
+  [36m<div>[39m
+    [36m<section[39m
+      [33maria-label[39m=[32m"จัดการกิจกรรม"[39m
+      [33mclass[39m=[32m"event-detail-page"[39m
+    [36m>[39m
+      [36m<article[39m
+        [33mclass[39m=[32m"card page-panel event-detail"[39m
+      [36m>[39m
+        [36m<span[39m
+          [33mclass[39m=[32m"event-status mb-3"[39m
+          [33mdata-status[39m=[32m"PUBLISHED"[39m
+        [36m>[39m
+          [0mPUBLISHED[0m
+        [36m</span>[39m
+        [36m<h1[39m
+          [33mclass[39m=[32m"page-title"[39m
+        [36m>[39m
+          [0mLifecycle workshop[0m
+        [36m</h1>[39m
+        [36m<p[39m
+          [33mclass[39m=[32m"event-description"[39m
+        [36m>[39m
+          [0mSynthetic component fixture[0m
+        [36m</p>[39m
+        [36m<dl[39m
+          [33mclass[39m=[32m"event-details"[39m
+        [36m>[39m
+          [36m<dt>[39m
+            [0mสถานที่[0m
+          [36m</dt>[39m
+          [36m<dd>[39m
+            [0mTest room[0m
+          [36m</dd>[39m
+          [36m<dt>[39m
+            [0mเริ่มกิจกรรม[0m
+          [36m</dt>[39m
+          [36m<dd[39m
+            [33mdata-testid[39m=[32m"starts-at"[39m
+          [36m>[39m
+            [0m7 พ.ย. 2569 10:00:00[0m
+          [36m</dd>[39m
+          [36m<dt>[39m
+            [0mสิ้นสุดกิจกรรม[0m
+          [36m</dt>[39m
+          [36m<dd>[39m
+            [0m7 พ.ย. 2569 13:00:00[0m
+          [36m</dd>[39m
+          [36m<dt>[39m
+            [0mปิดรับลงทะเบียน[0m
+          [36m</dt>[39m
+          [36m<dd>[39m
+            [0m6 พ.ย. 2569 11:00:00[0m
+          [36m</dd>[39m
+        [36m</dl>[39m
+        [36m<p[39m
+          [33mclass[39m=[32m"small text-secondary"[39m
+        [36m>[39m
+          [0mเวลาประเทศไทย (Asia/Bangkok) · ปิดรับเมื่อถึงกำหนดตามเวลาเซิร์ฟเวอร์[0m
+        [36m</p>[39m
+        [36m<p>[39m
+          [0mว่าง [0m
+          [0m1[0m
+          [0m / [0m
+          [0m2[0m
+          [0m ที่นั่ง[0m
+        [36m</p>[39m
+        [36m<p>[39m
+          [0mลงทะเบียน ACTIVE [0m
+          [0m1[0m
+          [0m คน[0m
+        [36m</p>[39m
+        [36m<div[39m
+          [33mclass[39m=[32m"event-actions"[39m
+        [36m>[39m
+          [36m<a[39m
+            [33mclass[39m=[32m"btn btn-outline-success"[39m
+            [33mhref[39m=[32m"/organizer/events/event-a/registrations"[39m
+          [36m>[39m
+            [0mดูรายชื่อผู้ลงทะเบียน[0m
+          [36m</a>[39m
+          [36m<button[39m
+            [33mclass[39m=[32m"btn btn-outline-secondary"[39m
+          [36m>[39m
+            [0mรีเฟรชที่นั่ง[0m
+          [36m</button>[39m
+          [36m<a[39m
+            [33mclass[39m=[32m"btn btn-outline-success"[39m
+            [33mhref[39m=[32m"/events/event-a"[39m
+          [36m>[39m
+            [0mดูหน้ากิจกรรมทั่วไป[0m
+          [36m</a>[39m
+        [36m</div>[39m
+      [36m</article>[39m
+    [36m</section>[39m
+  [36m</div>[39m
+[36m</body>[39m
+ ✓ client/src/features/registrations/RegistrationLifecycle.test.tsx > F-06 TEST-43 / initial UI RED slice > does not offer close for an owner event in DRAFT 40ms
+ ✓ client/src/features/registrations/RegistrationLifecycle.test.tsx > F-06 TEST-43 / initial UI RED slice > does not offer close for an owner event in CLOSED 31ms
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 9 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  client/src/features/registrations/RegistrationLifecycle.test.tsx > F-06 TEST-43 / initial UI RED slice > uses the first-registration label in own records without changing its timestamp
+TestingLibraryElementError: Unable to find an element with the text: ลงทะเบียนครั้งแรกเมื่อ, which matches selector 'dt'. This could be because the text is broken up by multiple elements. In this case, you can provide a function for your text matcher to make your matcher more flexible.
+
+Ignored nodes: comments, script, style
+<body>
+  <div>
+    <section
+      aria-label="รายการลงทะเบียนของฉัน"
+    >
+      <div
+        class="page-heading"
+      >
+        <h1
+          class="page-title"
+        >
+          รายการลงทะเบียนของฉัน
+        </h1>
+        <button
+          class="btn btn-outline-success"
+        >
+          รีเฟรชรายการ
+        </button>
+      </div>
+      <div
+        class="row g-3"
+      >
+        <div
+          class="col-md-6"
+        >
+          <article
+            class="card page-panel h-100"
+          >
+            <span
+              class="event-status"
+            >
+              ACTIVE
+            </span>
+            <h2
+              class="event-card-title mt-3"
+            >
+              <a
+                class="link-success"
+                href="/my/registrations/registration-a"
+              >
+                Lifecycle workshop
+              </a>
+            </h2>
+            <p
+              class="text-break"
+            >
+              เลขอ้างอิง: 
+              <strong>
+                registration-a
+              </strong>
+            </p>
+            <dl
+              class="event-details"
+            >
+              <dt>
+                สถานที่
+              </dt>
+              <dd>
+                Test room
+              </dd>
+              <dt>
+                เริ่มกิจกรรม
+              </dt>
+              <dd>
+                7 พ.ย. 2569 10:00:00
+              </dd>
+              <dt>
+                สิ้นสุดกิจกรรม
+              </dt>
+              <dd>
+                7 พ.ย. 2569 13:00:00
+              </dd>
+              <dt>
+                ปิดรับลงทะเบียน
+              </dt>
+              <dd>
+                6 พ.ย. 2569 11:00:00
+              </dd>
+              <dt>
+                ลงทะเบียนเมื่อ
+              </dt>
+              <dd>
+                6 พ.ย. 2569 08:00:00
+              </dd>
+              <dt>
+                สถานะกิจกรรม
+              </dt>
+              <dd>
+                PUBLISHED
+              </dd>
+            </dl>
+            <p
+              class="small text-secondary"
+            >
+              เวลาประเทศไทย (Asia/Bangkok)
+            </p>
+            <a
+              class="link-success"
+              href="/events/event-a"
+            >
+              ดูรายละเอียดกิจกรรม
+            </a>
+          </article>
+        </div>
+      </div>
+    </section>
+  </div>
+</body>
+ ❯ Object.getElementError node_modules/@testing-library/dom/dist/config.js:37:19
+ ❯ node_modules/@testing-library/dom/dist/query-helpers.js:76:38
+ ❯ node_modules/@testing-library/dom/dist/query-helpers.js:52:17
+ ❯ node_modules/@testing-library/dom/dist/query-helpers.js:95:19
+ ❯ client/src/features/registrations/RegistrationLifecycle.test.tsx:44:26
+     42|     render(<MyRegistrations identity={participant} onAuthRequired={vi.…
+     43|     await screen.findByRole('link', { name: event.title });
+     44|     const label = screen.getByText('ลงทะเบียนครั้งแรกเมื่อ', { selecto…
+       |                          ^
+     45|     expect(label.nextElementSibling?.textContent).toBe(bangkokTime(act…
+     46|     expect(screen.queryByText('ลงทะเบียนเมื่อ', { selector: 'dt' })).t…
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/9]⎯
+
+ FAIL  client/src/features/registrations/RegistrationLifecycle.test.tsx > F-06 TEST-43 / initial UI RED slice > uses the same first-registration label in the organizer roster
+TestingLibraryElementError: Unable to find an accessible element with the role "columnheader" and name "ลงทะเบียนครั้งแรกเมื่อ"
+
+Here are the accessible roles:
+
+  region:
+
+  Name "รายชื่อผู้ลงทะเบียน":
+  <section
+    aria-label="รายชื่อผู้ลงทะเบียน"
+  />
+
+  --------------------------------------------------
+  heading:
+
+  Name "รายชื่อผู้ลงทะเบียน":
+  <h1
+    class="page-title"
+  />
+
+  --------------------------------------------------
+  button:
+
+  Name "รีเฟรชรายชื่อ":
+  <button
+    class="btn btn-outline-success"
+  />
+
+  --------------------------------------------------
+  paragraph:
+
+  Name "":
+  <p />
+
+  Name "":
+  <p />
+
+  --------------------------------------------------
+  link:
+
+  Name "กลับรายละเอียดกิจกรรม":
+  <a
+    class="link-success"
+    href="/organizer/events/event-a"
+  />
+
+  --------------------------------------------------
+  strong:
+
+  Name "":
+  <strong />
+
+  --------------------------------------------------
+  table:
+
+  Name "เวลาประเทศไทย (Asia/Bangkok) · เรียงตามเวลาลงทะเบียนจากเก่าไปใหม่":
+  <table
+    class="table align-middle"
+  />
+
+  --------------------------------------------------
+  caption:
+
+  Name "เวลาประเทศไทย (Asia/Bangkok) · เรียงตามเวลาลงทะเบียนจากเก่าไปใหม่":
+  <caption />
+
+  --------------------------------------------------
+  rowgroup:
+
+  Name "":
+  <thead />
+
+  Name "":
+  <tbody />
+
+  --------------------------------------------------
+  row:
+
+  Name "เลขอ้างอิง ชื่อผู้เข้าร่วม สถานะ ลงทะเบียนเมื่อ":
+  <tr />
+
+  Name "registration-a Participant A ACTIVE 6 พ.ย. 2569 08:00:00":
+  <tr />
+
+  --------------------------------------------------
+  columnheader:
+
+  Name "เลขอ้างอิง":
+  <th
+    scope="col"
+  />
+
+  Name "ชื่อผู้เข้าร่วม":
+  <th
+    scope="col"
+  />
+
+  Name "สถานะ":
+  <th
+    scope="col"
+  />
+
+  Name "ลงทะเบียนเมื่อ":
+  <th
+    scope="col"
+  />
+
+  --------------------------------------------------
+  cell:
+
+  Name "registration-a":
+  <td
+    class="text-break"
+  />
+
+  Name "Participant A":
+  <td />
+
+  Name "ACTIVE":
+  <td />
+
+  Name "6 พ.ย. 2569 08:00:00":
+  <td />
+
+  --------------------------------------------------
+
+Ignored nodes: comments, script, style
+<body>
+  <div>
+    <section
+      aria-label="รายชื่อผู้ลงทะเบียน"
+    >
+      <div
+        class="page-heading"
+      >
+        <h1
+          class="page-title"
+        >
+          รายชื่อผู้ลงทะเบียน
+        </h1>
+        <button
+          class="btn btn-outline-success"
+        >
+          รีเฟรชรายชื่อ
+        </button>
+      </div>
+      <p>
+        <a
+          class="link-success"
+          href="/organizer/events/event-a"
+        >
+          กลับรายละเอียดกิจกรรม
+        </a>
+      </p>
+      <div
+        class="card page-panel"
+      >
+        <p>
+          ลงทะเบียน ACTIVE 
+          <strong>
+            1
+          </strong>
+           / 
+          2
+           คน
+        </p>
+        <div
+          class="table-responsive"
+        >
+          <table
+            class="table align-middle"
+          >
+            <caption>
+              เวลาประเทศไทย (Asia/Bangkok) · เรียงตามเวลาลงทะเบียนจากเก่าไปใหม่
+            </caption>
+            <thead>
+              <tr>
+                <th
+                  scope="col"
+                >
+                  เลขอ้างอิง
+                </th>
+                <th
+                  scope="col"
+                >
+                  ชื่อผู้เข้าร่วม
+                </th>
+                <th
+                  scope="col"
+                >
+                  สถานะ
+                </th>
+                <th
+                  scope="col"
+                >
+                  ลงทะเบียนเมื่อ
+                </th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td
+                  class="text-break"
+                >
+                  registration-a
+                </td>
+                <td>
+                  Participant A
+                </td>
+                <td>
+                  ACTIVE
+                </td>
+                <td>
+                  6 พ.ย. 2569 08:00:00
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </section>
+  </div>
+</body>
+ ❯ Object.getElementError node_modules/@testing-library/dom/dist/config.js:37:19
+ ❯ node_modules/@testing-library/dom/dist/query-helpers.js:76:38
+ ❯ node_modules/@testing-library/dom/dist/query-helpers.js:52:17
+ ❯ node_modules/@testing-library/dom/dist/query-helpers.js:95:19
+ ❯ client/src/features/registrations/RegistrationLifecycle.test.tsx:55:19
+     53|     render(<OrganizerRoster identity={organizer} eventId={event.id} on…
+     54|     await screen.findByRole('cell', { name: participant.display_name }…
+     55|     expect(screen.getByRole('columnheader', { name: 'ลงทะเบียนครั้งแรก…
+       |                   ^
+     56|     expect(screen.getByRole('cell', { name: bangkokTime(active.registe…
+     57|   });
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[2/9]⎯
+
+ FAIL  client/src/features/registrations/RegistrationLifecycle.test.tsx > F-06 TEST-43 / initial UI RED slice > cancel asks for confirmation (accepted=false) and never sends a duplicate mutation
+ FAIL  client/src/features/registrations/RegistrationLifecycle.test.tsx > F-06 TEST-43 / initial UI RED slice > cancel asks for confirmation (accepted=true) and never sends a duplicate mutation
+TestingLibraryElementError: Unable to find an accessible element with the role "button" and name "ยกเลิกการลงทะเบียน"
+
+Here are the accessible roles:
+
+  region:
+
+  Name "รายการลงทะเบียนของฉัน":
+  <section
+    aria-label="รายการลงทะเบียนของฉัน"
+  />
+
+  --------------------------------------------------
+  heading:
+
+  Name "รายละเอียดการลงทะเบียน":
+  <h1
+    class="page-title"
+  />
+
+  Name "Lifecycle workshop":
+  <h2
+    class="event-card-title mt-3"
+  />
+
+  --------------------------------------------------
+  button:
+
+  Name "รีเฟรชรายการ":
+  <button
+    class="btn btn-outline-success"
+  />
+
+  --------------------------------------------------
+  paragraph:
+
+  Name "":
+  <p />
+
+  Name "":
+  <p
+    class="text-break"
+  />
+
+  Name "":
+  <p
+    class="small text-secondary"
+  />
+
+  --------------------------------------------------
+  link:
+
+  Name "กลับรายการลงทะเบียนของฉัน":
+  <a
+    class="link-success"
+    href="/my/registrations"
+  />
+
+  Name "ดูรายละเอียดกิจกรรม":
+  <a
+    class="link-success"
+    href="/events/event-a"
+  />
+
+  --------------------------------------------------
+  article:
+
+  Name "":
+  <article
+    class="card page-panel h-100"
+  />
+
+  --------------------------------------------------
+  strong:
+
+  Name "":
+  <strong />
+
+  --------------------------------------------------
+  term:
+
+  Name "":
+  <dt />
+
+  Name "":
+  <dt />
+
+  Name "":
+  <dt />
+
+  Name "":
+  <dt />
+
+  Name "":
+  <dt />
+
+  Name "":
+  <dt />
+
+  --------------------------------------------------
+  definition:
+
+  Name "":
+  <dd />
+
+  Name "":
+  <dd />
+
+  Name "":
+  <dd />
+
+  Name "":
+  <dd />
+
+  Name "":
+  <dd />
+
+  Name "":
+  <dd />
+
+  --------------------------------------------------
+
+Ignored nodes: comments, script, style
+<body>
+  <div>
+    <section
+      aria-label="รายการลงทะเบียนของฉัน"
+    >
+      <div
+        class="page-heading"
+      >
+        <h1
+          class="page-title"
+        >
+          รายละเอียดการลงทะเบียน
+        </h1>
+        <button
+          class="btn btn-outline-success"
+        >
+          รีเฟรชรายการ
+        </button>
+      </div>
+      <p>
+        <a
+          class="link-success"
+          href="/my/registrations"
+        >
+          กลับรายการลงทะเบียนของฉัน
+        </a>
+      </p>
+      <div
+        class="row g-3"
+      >
+        <div
+          class="col-12"
+        >
+          <article
+            class="card page-panel h-100"
+          >
+            <span
+              class="event-status"
+            >
+              ACTIVE
+            </span>
+            <h2
+              class="event-card-title mt-3"
+            >
+              Lifecycle workshop
+            </h2>
+            <p
+              class="text-break"
+            >
+              เลขอ้างอิง: 
+              <strong>
+                registration-a
+              </strong>
+            </p>
+            <dl
+              class="event-details"
+            >
+              <dt>
+                สถานที่
+              </dt>
+              <dd>
+                Test room
+              </dd>
+              <dt>
+                เริ่มกิจกรรม
+              </dt>
+              <dd>
+                7 พ.ย. 2569 10:00:00
+              </dd>
+              <dt>
+                สิ้นสุดกิจกรรม
+              </dt>
+              <dd>
+                7 พ.ย. 2569 13:00:00
+              </dd>
+              <dt>
+                ปิดรับลงทะเบียน
+              </dt>
+              <dd>
+                6 พ.ย. 2569 11:00:00
+              </dd>
+              <dt>
+                ลงทะเบียนเมื่อ
+              </dt>
+              <dd>
+                6 พ.ย. 2569 08:00:00
+              </dd>
+              <dt>
+                สถานะกิจกรรม
+              </dt>
+              <dd>
+                PUBLISHED
+              </dd>
+            </dl>
+            <p
+              class="small text-secondary"
+            >
+              เวลาประเทศไทย (Asia/Bangkok)
+            </p>
+            <a
+              class="link-success"
+              href="/events/event-a"
+            >
+              ดูรายละเอียดกิจกรรม
+            </a>
+          </article>
+        </div>
+      </div>
+    </section>
+  </div>
+</body>
+ ❯ Object.getElementError node_modules/@testing-library/dom/dist/config.js:37:19
+ ❯ node_modules/@testing-library/dom/dist/query-helpers.js:76:38
+ ❯ node_modules/@testing-library/dom/dist/query-helpers.js:52:17
+ ❯ node_modules/@testing-library/dom/dist/query-helpers.js:95:19
+ ❯ client/src/features/registrations/RegistrationLifecycle.test.tsx:74:27
+     72|     render(<MyRegistrations id={active.id} identity={participant} onAu…
+     73|     await screen.findByRole('heading', { name: event.title });
+     74|     const button = screen.getByRole('button', { name: 'ยกเลิกการลงทะเบ…
+       |                           ^
+     75|     fireEvent.click(button);
+     76|     if (accepted) {
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[3/9]⎯
+
+ FAIL  client/src/features/registrations/RegistrationLifecycle.test.tsx > F-06 TEST-43 / initial UI RED slice > shows the cancellation timestamp and retains the original reference on own detail
+TestingLibraryElementError: Unable to find an element with the text: ยกเลิกเมื่อ, which matches selector 'dt'. This could be because the text is broken up by multiple elements. In this case, you can provide a function for your text matcher to make your matcher more flexible.
+
+Ignored nodes: comments, script, style
+<body>
+  <div>
+    <section
+      aria-label="รายการลงทะเบียนของฉัน"
+    >
+      <div
+        class="page-heading"
+      >
+        <h1
+          class="page-title"
+        >
+          รายละเอียดการลงทะเบียน
+        </h1>
+        <button
+          class="btn btn-outline-success"
+        >
+          รีเฟรชรายการ
+        </button>
+      </div>
+      <p>
+        <a
+          class="link-success"
+          href="/my/registrations"
+        >
+          กลับรายการลงทะเบียนของฉัน
+        </a>
+      </p>
+      <div
+        class="row g-3"
+      >
+        <div
+          class="col-12"
+        >
+          <article
+            class="card page-panel h-100"
+          >
+            <span
+              class="event-status"
+            >
+              CANCELLED
+            </span>
+            <h2
+              class="event-card-title mt-3"
+            >
+              Lifecycle workshop
+            </h2>
+            <p
+              class="text-break"
+            >
+              เลขอ้างอิง: 
+              <strong>
+                registration-a
+              </strong>
+            </p>
+            <dl
+              class="event-details"
+            >
+              <dt>
+                สถานที่
+              </dt>
+              <dd>
+                Test room
+              </dd>
+              <dt>
+                เริ่มกิจกรรม
+              </dt>
+              <dd>
+                7 พ.ย. 2569 10:00:00
+              </dd>
+              <dt>
+                สิ้นสุดกิจกรรม
+              </dt>
+              <dd>
+                7 พ.ย. 2569 13:00:00
+              </dd>
+              <dt>
+                ปิดรับลงทะเบียน
+              </dt>
+              <dd>
+                6 พ.ย. 2569 11:00:00
+              </dd>
+              <dt>
+                ลงทะเบียนเมื่อ
+              </dt>
+              <dd>
+                6 พ.ย. 2569 08:00:00
+              </dd>
+              <dt>
+                สถานะกิจกรรม
+              </dt>
+              <dd>
+                PUBLISHED
+              </dd>
+            </dl>
+            <p
+              class="small text-secondary"
+            >
+              เวลาประเทศไทย (Asia/Bangkok)
+            </p>
+            <a
+              class="link-success"
+              href="/events/event-a"
+            >
+              ดูรายละเอียดกิจกรรม
+            </a>
+          </article>
+        </div>
+      </div>
+    </section>
+  </div>
+</body>
+ ❯ Object.getElementError node_modules/@testing-library/dom/dist/config.js:37:19
+ ❯ node_modules/@testing-library/dom/dist/query-helpers.js:76:38
+ ❯ node_modules/@testing-library/dom/dist/query-helpers.js:52:17
+ ❯ node_modules/@testing-library/dom/dist/query-helpers.js:95:19
+ ❯ client/src/features/registrations/RegistrationLifecycle.test.tsx:99:26
+     97|     render(<MyRegistrations id={active.id} identity={participant} onAu…
+     98|     await screen.findByText('CANCELLED');
+     99|     const label = screen.getByText('ยกเลิกเมื่อ', { selector: 'dt' });
+       |                          ^
+    100|     expect(label.nextElementSibling?.textContent).toBe(bangkokTime(can…
+    101|     expect(screen.getByText(active.id)).toBeTruthy();
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[4/9]⎯
+
+ FAIL  client/src/features/registrations/RegistrationLifecycle.test.tsx > F-06 TEST-43 / initial UI RED slice > looks up own registrations by event.id and re-registers using the existing endpoint
+TestingLibraryElementError: Unable to find role="button" and name "ลงทะเบียนใหม่"
+
+Ignored nodes: comments, script, style
+<body>
+  <div>
+    <section
+      aria-busy="false"
+      aria-label="ลงทะเบียนกิจกรรม"
+    >
+      <p>
+        ที่นั่งว่าง 
+        1
+         ที่ (ยืนยันเมื่อบันทึกสำเร็จ)
+      </p>
+      <button
+        class="btn btn-primary"
+        type="button"
+      >
+        ลงทะเบียน
+      </button>
+    </section>
+  </div>
+</body>
+
+Ignored nodes: comments, script, style
+<body>
+  <div>
+    <section
+      aria-busy="false"
+      aria-label="ลงทะเบียนกิจกรรม"
+    >
+      <p>
+        ที่นั่งว่าง 
+        1
+         ที่ (ยืนยันเมื่อบันทึกสำเร็จ)
+      </p>
+      <button
+        class="btn btn-primary"
+        type="button"
+      >
+        ลงทะเบียน
+      </button>
+    </section>
+  </div>
+</body>
+ ❯ waitForWrapper node_modules/@testing-library/dom/dist/wait-for.js:163:27
+ ❯ node_modules/@testing-library/dom/dist/query-helpers.js:86:33
+ ❯ client/src/features/registrations/RegistrationLifecycle.test.tsx:118:34
+    116|     vi.stubGlobal('fetch', fetch);
+    117|     render(<RegistrationAction {...options}/>);
+    118|     fireEvent.click(await screen.findByRole('button', { name: 'ลงทะเบี…
+       |                                  ^
+    119|     await screen.findByText(active.id);
+    120|     expect(fetch).toHaveBeenCalledWith('/api/my/registrations', expect…
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[5/9]⎯
+
+ FAIL  client/src/features/registrations/RegistrationLifecycle.test.tsx > F-06 TEST-43 / initial UI RED slice > explains a cancelled registration on a full event instead of offering re-registration
+TestingLibraryElementError: Unable to find an element with the text: คุณยกเลิกการลงทะเบียนแล้ว ขณะนี้กิจกรรมเต็ม. This could be because the text is broken up by multiple elements. In this case, you can provide a function for your text matcher to make your matcher more flexible.
+
+Ignored nodes: comments, script, style
+<body>
+  <div>
+    <section
+      aria-busy="false"
+      aria-label="ลงทะเบียนกิจกรรม"
+    >
+      <p>
+        กิจกรรมนี้ไม่เปิดรับลงทะเบียน หรือไม่มีที่นั่งว่าง
+      </p>
+      <button
+        class="btn btn-primary"
+        disabled=""
+        type="button"
+      >
+        ลงทะเบียน
+      </button>
+    </section>
+  </div>
+</body>
+
+Ignored nodes: comments, script, style
+<body>
+  <div>
+    <section
+      aria-busy="false"
+      aria-label="ลงทะเบียนกิจกรรม"
+    >
+      <p>
+        กิจกรรมนี้ไม่เปิดรับลงทะเบียน หรือไม่มีที่นั่งว่าง
+      </p>
+      <button
+        class="btn btn-primary"
+        disabled=""
+        type="button"
+      >
+        ลงทะเบียน
+      </button>
+    </section>
+  </div>
+</body>
+ ❯ waitForWrapper node_modules/@testing-library/dom/dist/wait-for.js:163:27
+ ❯ node_modules/@testing-library/dom/dist/query-helpers.js:86:33
+ ❯ client/src/features/registrations/RegistrationLifecycle.test.tsx:130:25
+    128|     const options = actionProps();
+    129|     render(<RegistrationAction {...options} event={{ ...event, availab…
+    130|     expect(await screen.findByText('คุณยกเลิกการลงทะเบียนแล้ว ขณะนี้กิ…
+       |                         ^
+    131|     expect(screen.queryByRole('button', { name: 'ลงทะเบียนใหม่' })).to…
+    132|   });
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[6/9]⎯
+
+ FAIL  client/src/features/registrations/RegistrationLifecycle.test.tsx > F-06 TEST-43 / initial UI RED slice > does not treat a failed own-registration lookup as permission to register
+TestingLibraryElementError: Unable to find role="button" and name "ลองใหม่"
+
+Ignored nodes: comments, script, style
+<body>
+  <div>
+    <section
+      aria-busy="false"
+      aria-label="ลงทะเบียนกิจกรรม"
+    >
+      <p>
+        ที่นั่งว่าง 
+        1
+         ที่ (ยืนยันเมื่อบันทึกสำเร็จ)
+      </p>
+      <button
+        class="btn btn-primary"
+        type="button"
+      >
+        ลงทะเบียน
+      </button>
+    </section>
+  </div>
+</body>
+
+Ignored nodes: comments, script, style
+<body>
+  <div>
+    <section
+      aria-busy="false"
+      aria-label="ลงทะเบียนกิจกรรม"
+    >
+      <p>
+        ที่นั่งว่าง 
+        1
+         ที่ (ยืนยันเมื่อบันทึกสำเร็จ)
+      </p>
+      <button
+        class="btn btn-primary"
+        type="button"
+      >
+        ลงทะเบียน
+      </button>
+    </section>
+  </div>
+</body>
+ ❯ waitForWrapper node_modules/@testing-library/dom/dist/wait-for.js:163:27
+ ❯ node_modules/@testing-library/dom/dist/query-helpers.js:86:33
+ ❯ client/src/features/registrations/RegistrationLifecycle.test.tsx:138:25
+    136|     vi.stubGlobal('fetch', fetch);
+    137|     render(<RegistrationAction {...actionProps()}/>);
+    138|     expect(await screen.findByRole('button', { name: 'ลองใหม่' })).toB…
+       |                         ^
+    139|     const registerButton = screen.queryByRole('button', { name: 'ลงทะเ…
+    140|     expect(registerButton === null || registerButton.disabled).toBe(tr…
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[7/9]⎯
+
+ FAIL  client/src/features/registrations/RegistrationLifecycle.test.tsx > F-06 TEST-43 / initial UI RED slice > closes a published owner event only after confirmation and displays CLOSED
+TestingLibraryElementError: Unable to find an accessible element with the role "button" and name "ปิดรับกิจกรรม"
+
+Here are the accessible roles:
+
+  region:
+
+  Name "จัดการกิจกรรม":
+  <section
+    aria-label="จัดการกิจกรรม"
+    class="event-detail-page"
+  />
+
+  --------------------------------------------------
+  article:
+
+  Name "":
+  <article
+    class="card page-panel event-detail"
+  />
+
+  --------------------------------------------------
+  heading:
+
+  Name "Lifecycle workshop":
+  <h1
+    class="page-title"
+  />
+
+  --------------------------------------------------
+  paragraph:
+
+  Name "":
+  <p
+    class="event-description"
+  />
+
+  Name "":
+  <p
+    class="small text-secondary"
+  />
+
+  Name "":
+  <p />
+
+  Name "":
+  <p />
+
+  --------------------------------------------------
+  term:
+
+  Name "":
+  <dt />
+
+  Name "":
+  <dt />
+
+  Name "":
+  <dt />
+
+  Name "":
+  <dt />
+
+  --------------------------------------------------
+  definition:
+
+  Name "":
+  <dd />
+
+  Name "":
+  <dd
+    data-testid="starts-at"
+  />
+
+  Name "":
+  <dd />
+
+  Name "":
+  <dd />
+
+  --------------------------------------------------
+  link:
+
+  Name "ดูรายชื่อผู้ลงทะเบียน":
+  <a
+    class="btn btn-outline-success"
+    href="/organizer/events/event-a/registrations"
+  />
+
+  Name "ดูหน้ากิจกรรมทั่วไป":
+  <a
+    class="btn btn-outline-success"
+    href="/events/event-a"
+  />
+
+  --------------------------------------------------
+  button:
+
+  Name "รีเฟรชที่นั่ง":
+  <button
+    class="btn btn-outline-secondary"
+  />
+
+  --------------------------------------------------
+
+Ignored nodes: comments, script, style
+<body>
+  <div>
+    <section
+      aria-label="จัดการกิจกรรม"
+      class="event-detail-page"
+    >
+      <article
+        class="card page-panel event-detail"
+      >
+        <span
+          class="event-status mb-3"
+          data-status="PUBLISHED"
+        >
+          PUBLISHED
+        </span>
+        <h1
+          class="page-title"
+        >
+          Lifecycle workshop
+        </h1>
+        <p
+          class="event-description"
+        >
+          Synthetic component fixture
+        </p>
+        <dl
+          class="event-details"
+        >
+          <dt>
+            สถานที่
+          </dt>
+          <dd>
+            Test room
+          </dd>
+          <dt>
+            เริ่มกิจกรรม
+          </dt>
+          <dd
+            data-testid="starts-at"
+          >
+            7 พ.ย. 2569 10:00:00
+          </dd>
+          <dt>
+            สิ้นสุดกิจกรรม
+          </dt>
+          <dd>
+            7 พ.ย. 2569 13:00:00
+          </dd>
+          <dt>
+            ปิดรับลงทะเบียน
+          </dt>
+          <dd>
+            6 พ.ย. 2569 11:00:00
+          </dd>
+        </dl>
+        <p
+          class="small text-secondary"
+        >
+          เวลาประเทศไทย (Asia/Bangkok) · ปิดรับเมื่อถึงกำหนดตามเวลาเซิร์ฟเวอร์
+        </p>
+        <p>
+          ว่าง 
+          1
+           / 
+          2
+           ที่นั่ง
+        </p>
+        <p>
+          ลงทะเบียน ACTIVE 
+          1
+           คน
+        </p>
+        <div
+          class="event-actions"
+        >
+          <a
+            class="btn btn-outline-success"
+            href="/organizer/events/event-a/registrations"
+          >
+            ดูรายชื่อผู้ลงทะเบียน
+          </a>
+          <button
+            class="btn btn-outline-secondary"
+          >
+            รีเฟรชที่นั่ง
+          </button>
+          <a
+            class="btn btn-outline-success"
+            href="/events/event-a"
+          >
+            ดูหน้ากิจกรรมทั่วไป
+          </a>
+        </div>
+      </article>
+    </section>
+  </div>
+</body>
+ ❯ Object.getElementError node_modules/@testing-library/dom/dist/config.js:37:19
+ ❯ node_modules/@testing-library/dom/dist/query-helpers.js:76:38
+ ❯ node_modules/@testing-library/dom/dist/query-helpers.js:52:17
+ ❯ node_modules/@testing-library/dom/dist/query-helpers.js:95:19
+ ❯ client/src/features/registrations/RegistrationLifecycle.test.tsx:161:28
+    159|       onAuthRequired={vi.fn()} onNavigate={vi.fn()}/>);
+    160|     await screen.findByRole('heading', { name: event.title });
+    161|     fireEvent.click(screen.getByRole('button', { name: 'ปิดรับกิจกรรม'…
+       |                            ^
+    162|     expect(confirm).toHaveBeenCalledWith(expect.stringContaining('เปิด…
+    163|     await screen.findByText('CLOSED');
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[8/9]⎯
+
+
+ Test Files  1 failed (1)
+      Tests  9 failed | 2 passed (11)
+   Start at  02:08:30
+   Duration  6.14s (tests 62%, environment 28%, import 7%, transform 3%)
+

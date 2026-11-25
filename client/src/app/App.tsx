@@ -53,6 +53,7 @@ export function App() {
             /^\/organizer\/?$/.test(current) ||
             /^\/my\/registrations(?:\/[^/]+)?\/?$/.test(current) ||
             /^\/organizer\/events\/[^/]+\/registrations\/?$/.test(current) ||
+            /^\/organizer\/events\/[^/]+\/edit\/?$/.test(current) ||
             /^\/(?:organizer\/)?events(?:\/[^/]+)?\/?$/.test(current)
           )
             setPath(current);

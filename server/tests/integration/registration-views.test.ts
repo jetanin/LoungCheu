@@ -44,6 +44,7 @@ beforeAll(async () => {
 afterAll(async () => {
   if (runtime) await runtime.close();
   try {
+    await db.registrationHistory.deleteMany({ where: { registration: { eventId: { in: events } } } });
     await db.registration.deleteMany({ where: { eventId: { in: events } } });
     await db.event.deleteMany({ where: { id: { in: events } } });
     await db.user.deleteMany({ where: { id: { in: users } } });
@@ -55,7 +56,7 @@ it('TEST-22: persists own list/detail with exact schemas, scope and timestamp/id
   const list = (await agent.get('/api/my/registrations').expect(200)).body.data;
   expect(list.map((record: { id: string }) => record.id)).toEqual(references.slice(0, 2));
   for (const record of list) {
-    expect(Object.keys(record).sort()).toEqual(['event', 'id', 'registered_at', 'status']);
+    expect(Object.keys(record).sort()).toEqual(['cancelled_at', 'event', 'id', 'registered_at', 'status']);
     expect(Object.keys(record.event).sort()).toEqual(['ends_at', 'id', 'location', 'registration_closes_at', 'starts_at', 'status', 'title']);
     expect(record.registered_at).toBe(time.toISOString());
     expect((await agent.get(`/api/my/registrations/${record.id}`).expect(200)).body.data).toEqual(record);

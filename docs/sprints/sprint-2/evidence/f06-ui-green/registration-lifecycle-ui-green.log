@@ -1,0 +1,24 @@
+
+> loungcheu@0.1.0 test
+> vitest run client/src/features/registrations/RegistrationLifecycle.test.tsx --reporter=verbose
+
+
+ RUN  v5.1.0 C:/Work/2569/CPE334/GroupWork/LoungCheu
+
+ ✓ client/src/features/registrations/RegistrationLifecycle.test.tsx > F-06 TEST-43 / initial UI RED slice > uses the first-registration label in own records without changing its timestamp 144ms
+ ✓ client/src/features/registrations/RegistrationLifecycle.test.tsx > F-06 TEST-43 / initial UI RED slice > uses the same first-registration label in the organizer roster 32ms
+ ✓ client/src/features/registrations/RegistrationLifecycle.test.tsx > F-06 TEST-43 / initial UI RED slice > cancel asks for confirmation (accepted=false) and never sends a duplicate mutation 29ms
+ ✓ client/src/features/registrations/RegistrationLifecycle.test.tsx > F-06 TEST-43 / initial UI RED slice > cancel asks for confirmation (accepted=true) and never sends a duplicate mutation 29ms
+ ✓ client/src/features/registrations/RegistrationLifecycle.test.tsx > F-06 TEST-43 / initial UI RED slice > shows the cancellation timestamp and retains the original reference on own detail 10ms
+ ✓ client/src/features/registrations/RegistrationLifecycle.test.tsx > F-06 TEST-43 / initial UI RED slice > looks up own registrations by event.id and re-registers using the existing endpoint 14ms
+ ✓ client/src/features/registrations/RegistrationLifecycle.test.tsx > F-06 TEST-43 / initial UI RED slice > explains a cancelled registration on a full event instead of offering re-registration 4ms
+ ✓ client/src/features/registrations/RegistrationLifecycle.test.tsx > F-06 TEST-43 / initial UI RED slice > does not treat a failed own-registration lookup as permission to register 14ms
+ ✓ client/src/features/registrations/RegistrationLifecycle.test.tsx > F-06 TEST-43 / initial UI RED slice > closes a published owner event only after confirmation and displays CLOSED 23ms
+ ✓ client/src/features/registrations/RegistrationLifecycle.test.tsx > F-06 TEST-43 / initial UI RED slice > does not offer close for an owner event in DRAFT 12ms
+ ✓ client/src/features/registrations/RegistrationLifecycle.test.tsx > F-06 TEST-43 / initial UI RED slice > does not offer close for an owner event in CLOSED 10ms
+
+ Test Files  1 passed (1)
+      Tests  11 passed (11)
+   Start at  02:16:23
+   Duration  2.19s (environment 60%, import 17%, tests 16%, transform 6%)
+
