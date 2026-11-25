@@ -74,6 +74,8 @@ Test `LAB6-CX-01` ไม่ถูกแก้ระหว่าง RED กับ
 
 ส่งให้ TH-005_P5: version ที่แก้แล้ว + ขั้นตอน reproduce ใน §2 (ส่งคำขอลงทะเบียนซ้ำผ่าน API โดยตรง) และขอให้ re-run UAT-02 (เคสที่เกี่ยวกับ duplicate) บน revision ใหม่
 
+เอกสารที่ส่งให้ทีมคู่: [retest-controlled-exercise.md](retest-controlled-exercise.md) (console script ยิง API ซ้ำ 1 ครั้ง + พร้อมกัน 2 ครั้ง, ตรวจใน UI, re-run UAT-02)
+
 | Tester | Version / revision | ผลจริง | หลักฐาน | ผลตัดสิน |
 |---|---|---|---|---|
 | _รอ_ | _รอ_ | _รอ_ | _รอ_ | _รอ_ |
