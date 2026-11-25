@@ -1,0 +1,14 @@
+GREEN: same test LAB6-CX-01 (unchanged since RED commit fe31120) run with the fix staged on top of fe31120
+command: npx vitest run server/tests/integration/registration.test.ts -t LAB6-CX-01
+database: local PostgreSQL loungcheu_test (unique index restored)
+date: 2026-11-26T00:11:43+07:00
+---
+
+ RUN  v5.1.0 C:/DEV/University/Kmutt/Year3/Term1/CPE334/Final/LoungCheu-lab6
+
+
+ Test Files  1 passed (1)
+      Tests  1 passed | 17 skipped (18)
+   Start at  00:11:40
+   Duration  2.63s (tests 69%, import 23%, transform 7%)
+

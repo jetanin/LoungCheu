@@ -1,0 +1,18 @@
+CI RED: GitHub Actions run 45661984995 (workflow test-and-docker) on draft PR #65
+url: https://github.com/jetanin/LoungCheu/actions/runs/45661984995
+head: fe311208dc1ca7bfe47a860c9f27504618daa52b (RED test commit; contains the controlled defect 97268f4)
+conclusion: failure
+---
+ Test Files  2 failed | 14 passed (16)
+      Tests  5 failed | 164 passed (169)
+
+ FAIL  server/tests/integration/events.test.ts > F-02/F-03 create, publish, register and recreate app preserve reference and consistent counts
+AssertionError: expected { error: { code: 'EVENT_FULL', …(2) } } to deeply equal { error: { …(3) } }
+ FAIL  server/tests/integration/registration.test.ts > F-03 real PostgreSQL / API (TEST-15–21) > rejects duplicate with unchanged record at capacity 1 (TEST-16)
+AssertionError: expected 'EVENT_FULL' to be 'ALREADY_REGISTERED' // Object.is equality
+ FAIL  server/tests/integration/registration.test.ts > F-03 real PostgreSQL / API (TEST-15–21) > rejects duplicate with unchanged record at capacity 2 (TEST-16)
+AssertionError: expected 201 to be 409 // Object.is equality
+ FAIL  server/tests/integration/registration.test.ts > F-03 real PostgreSQL / API (TEST-15–21) > rejects a repeated API registration with one ACTIVE and unchanged seats (LAB6-CX-01, AC-13/BR-04)
+AssertionError: expected 201 to be 409 // Object.is equality
+ FAIL  server/tests/integration/registration.test.ts > F-03 real PostgreSQL / API (TEST-15–21) > inserts only one concurrent registration for the same participant (TEST-21)
+AssertionError: expected [ 201, 201 ] to deeply equal [ 201, 409 ]
