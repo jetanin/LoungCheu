@@ -144,6 +144,24 @@ describe('F-03 real PostgreSQL / API (TEST-15–21)', () => {
     expect(records[0].id).toBe(first.body.data.id);
     expect(records[0].registeredAt).toEqual(t0);
   });
+  // Lab 6 controlled exercise LAB6-CX-01 (#64): a repeated API register must not add an ACTIVE row or consume a seat.
+  it('rejects a repeated API registration with one ACTIVE and unchanged seats (LAB6-CX-01, AC-13/BR-04)', async () => {
+    const event = await fixture(3);
+    const seats = async () => (await app(a).get(`/api/events/${event.id}`).expect(200)).body.data as { active_count: number; available_seats: number };
+    const first = await post(app(a), event.id).send({});
+    expect(first.status).toBe(201);
+    const before = await seats();
+    expect(before).toMatchObject({ active_count: 1, available_seats: 2 });
+    now = new Date(t0.getTime() + 1);
+    const repeated = await post(app(a), event.id).send({});
+    expect(repeated.status).toBe(409);
+    expect(repeated.body.error.code).toBe('ALREADY_REGISTERED');
+    const active = await db.registration.findMany({ where: { eventId: event.id, participantId: participantA, status: 'ACTIVE' } });
+    expect(active).toHaveLength(1);
+    expect(active[0].id).toBe(first.body.data.id);
+    expect(active[0].registeredAt).toEqual(t0);
+    expect(await seats()).toMatchObject({ active_count: before.active_count, available_seats: before.available_seats });
+  });
   it('rejects full event without inserting a loser (TEST-17)', async () => {
     const event = await fixture(1);
     await post(app(a, participantB), event.id).send({});
