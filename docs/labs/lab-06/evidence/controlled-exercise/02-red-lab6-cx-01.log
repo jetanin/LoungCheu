@@ -1,0 +1,32 @@
+RED: new test LAB6-CX-01 run on top of defect commit 6fbd0d0 (test file uncommitted at run time; committed next as the RED test commit)
+command: npx vitest run server/tests/integration/registration.test.ts -t LAB6-CX-01
+database: local PostgreSQL loungcheu_test
+date: 2026-11-25T23:51:16+07:00
+---
+
+ RUN  v5.1.0 C:/DEV/University/Kmutt/Year3/Term1/CPE334/Final/LoungCheu-lab6
+
+ ❯ server/tests/integration/registration.test.ts (18 tests | 1 failed | 17 skipped) 1311ms
+   ❯ F-03 real PostgreSQL / API (TEST-15–21) (18)
+     × rejects a repeated API registration with one ACTIVE and unchanged seats (LAB6-CX-01, AC-13/BR-04) 91ms
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 1 ⎯⎯⎯⎯⎯⎯⎯
+ FAIL  server/tests/integration/registration.test.ts > F-03 real PostgreSQL / API (TEST-15–21) > rejects a repeated API registration with one ACTIVE and unchanged seats (LAB6-CX-01, AC-13/BR-04)
+AssertionError: expected 201 to be 409 // Object.is equality
+- Expected
++ Received
+- 409
++ 201
+ ❯ server/tests/integration/registration.test.ts:156:29
+    154|     now = new Date(t0.getTime() + 1);
+    155|     const repeated = await post(app(a), event.id).send({});
+    156|     expect(repeated.status).toBe(409);
+       |                             ^
+    157|     expect(repeated.body.error.code).toBe('ALREADY_REGISTERED');
+    158|     const active = await db.registration.findMany({ where: { eventId: …
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/1]⎯
+
+ Test Files  1 failed (1)
+      Tests  1 failed | 17 skipped (18)
+   Start at  23:51:14
+   Duration  2.14s (tests 69%, import 24%, transform 7%)
+
