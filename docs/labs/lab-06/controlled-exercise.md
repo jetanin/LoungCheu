@@ -40,7 +40,7 @@ Issue #64 | Product Team: TH-001_P3 LoungCheu | UAT Team: TH-005_P5 ApprovalFlow
 | Root cause | ระบบกันซ้ำสองชั้นถูกเอาออกทั้งคู่: (1) `registrations/service.ts` ไม่ตรวจ registration เดิมก่อน insert; (2) migration `202611250001_lab6_exercise_drop_registration_unique` ลบ unique index `(event_id, participant_id)` ที่เป็น guard ชั้น DB |
 | Fix plan | RED test ใหม่ระดับ API ที่ตรวจ 409, ACTIVE = 1 และ `active_count`/`available_seats` ไม่เปลี่ยน → คืนการตรวจใน service และเอา migration ที่ลบ unique index ออก (migration นี้ไม่เคยรันบน production) → regression เต็ม |
 | Owner / Reviewer | i3artuf (fix) / jetanin (review) |
-| Fix status | RED แล้ว (`LAB6-CX-01` fail บน commit ที่มี defect) — GREEN, review, release, deploy รอดำเนินการ |
+| Fix status | RED ✓ (local + CI run 45661984995 แดง) → GREEN ✓ `37d5be4` (LAB6-CX-01 ผ่าน, Vitest 169/169) — review, release, deploy รอดำเนินการ |
 | Disposition | Fix ใน exercise นี้ (Critical → ต้องแก้และให้ทีม UAT retest ก่อนปิด); ไม่กระทบผลตัดสิน Accepted ของ `v1.0.1-uat` เพราะ defect ไม่เคยอยู่ใน release ที่ทดสอบ |
 | แจ้งทีมคู่ | _รอ_ — แจ้งผ่านกลุ่ม IG (ช่องทาง handoff ที่ตกลงไว้) พร้อม version ที่แก้แล้วและขั้นตอน reproduce; บันทึกผลตอบกลับใน §5 |
 | Retest | TH-005_P5 retest เคสลงทะเบียนซ้ำผ่าน API บน revision ใหม่หลัง deploy |
@@ -52,10 +52,22 @@ Issue #64 | Product Team: TH-001_P3 LoungCheu | UAT Team: TH-005_P5 ApprovalFlow
 | Accepted baseline | `v1.0.1-uat` / `0b2cc80` | `scccd8b05-00009-vvq` | Accepted (EV-D-01) |
 | Docs-only release หลัง UAT | `71e9ba5` (#62) | (deploy docs เท่านั้น ไม่เปลี่ยนแอป) | — |
 | Defect commit | `97268f4` | ไม่ deploy | branch + CI เท่านั้น |
-| RED test commit | _รอ_ | ไม่ deploy | |
-| GREEN fix commit | _รอ_ | ไม่ deploy | |
+| RED test commit | `fe31120` | ไม่ deploy | CI [45661984995](https://github.com/jetanin/LoungCheu/actions/runs/45661984995) **failure**: 5 failed / 164 passed (LAB6-CX-01, TEST-16 ×2, TEST-21, events F-02/F-03) |
+| GREEN fix commit | `37d5be4` | ไม่ deploy | local: LAB6-CX-01 PASS, Vitest 169/169; CI _รอ_ |
 | Fixed release on main | _รอ_ | _รอ_ | |
 | UAT retest | — | _รอ_ | |
+
+## 4.1 RED / GREEN evidence
+
+| ID | ขั้น | Commit | Command | ผล |
+|---|---|---|---|---|
+| CX-E01 | Repro defect | `97268f4` | `npx vitest run server/tests/integration/registration.test.ts` | 3 failed / 14 passed — [01-repro-defect.log](evidence/controlled-exercise/01-repro-defect.log) |
+| CX-E02 | RED (local) | `97268f4` + test ใหม่ (= `fe31120`) | `npx vitest run server/tests/integration/registration.test.ts -t LAB6-CX-01` | 1 failed: `expected 201 to be 409` — [02-red-lab6-cx-01.log](evidence/controlled-exercise/02-red-lab6-cx-01.log) |
+| CX-E03 | RED (CI) | `fe31120` | GitHub Actions `test-and-docker` run 45661984995 | failure, 5 failed / 164 passed — [02b-ci-red-run-45661984995.log](evidence/controlled-exercise/02b-ci-red-run-45661984995.log) |
+| CX-E04 | GREEN (local) | `fe31120` + fix (= `37d5be4`) | `npx vitest run server/tests/integration/registration.test.ts -t LAB6-CX-01` | 1 passed — [03-green-lab6-cx-01.log](evidence/controlled-exercise/03-green-lab6-cx-01.log) |
+| CX-E05 | Regression (local) | `37d5be4` | `npx vitest run` | 16 files, 169/169 passed — [04-regression-vitest.log](evidence/controlled-exercise/04-regression-vitest.log) |
+
+Test `LAB6-CX-01` ไม่ถูกแก้ระหว่าง RED กับ GREEN (เทียบได้ด้วย `git diff fe31120 37d5be4 -- server/tests`)
 
 ## 5. Independent retest (ทีม UAT)
 
