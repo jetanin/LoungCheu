@@ -2,7 +2,9 @@
 
 **F-06 reconciliation — 24 พ.ย. 2026:** implementation/local verification บน `feature/47-f06` ถึง user-supplied source `ba89488079a2c884735a18642dbd7487b6872559`; ดู [Sprint 2 completion](sprints/sprint-2/README.md). ผล Sprint 1 ด้านล่างเป็น historical evidence; F-06 มี actual process-restart แล้ว แต่ CI/review/release/independent UAT และ TEST-44(c) ยังไม่ถือว่าผ่าน
 
-**F-07 / staging update — 25 พ.ย. 2026:** F-06 (PR #59 `24ebf07`), F-07 (PR #57 `582a60d`) และ cross-feature TEST-44(c)/47/52 (PR #60 `128c35c`) review และ merge เข้า sprint-2-staging แล้ว CI `test-and-docker` ผ่านทุก PR; Sprint 2 release บน main ยัง pending. ข้อความ 24 พ.ย. ด้านบนคงไว้เป็นประวัติ
+**Sprint 2 release — 26 พ.ย. 2026:** F-06/F-07 release บน main เป็น `v2.0.0-sprint-2` (`c0faf24`, release PR #67 approved โดย i3artuf, merge 26 พ.ย. 00:45 Asia/Bangkok). CI run [45666007554](https://github.com/jetanin/LoungCheu/actions/runs/45666007554) บน release head `0643806` (tree เดียวกับ `c0faf24`): Vitest 25 files 264/264, Playwright 39/39, 0 failed/skipped. Deploy run 45668146212 → revision `scccd8b05-00011-fvb`, `/api/ready` version = `c0faf24`. คอลัมน์ Accepted release ของ AC-28–AC-40 อ้าง release นี้; ไม่ใช่ independent UAT ของ Sprint 2 (ยังไม่มี). Main ปัจจุบัน `v2.0.1-lab6` (`6f49d32`) ไม่เปลี่ยนโค้ดแอป
+
+**F-07 / staging update — 25 พ.ย. 2026 (ประวัติ):** F-06 (PR #59 `24ebf07`), F-07 (PR #57 `582a60d`) และ cross-feature TEST-44(c)/47/52 (PR #60 `128c35c`) review และ merge เข้า sprint-2-staging แล้ว CI `test-and-docker` ผ่านทุก PR; Sprint 2 release บน main ยัง pending. ข้อความ 24 พ.ย. ด้านบนคงไว้เป็นประวัติ
 
 **Current evidence reconciliation — 14 พ.ย. 2026:** PR #7/#10 ได้ teammate review โดย i3artuf และ merge เข้า sprint-1-staging แล้ว ตาม snapshot 12 พ.ย.; PR #10 reviewed head `0bd3468`, merge `97a5b91` (10 พ.ย. 16:26:11 Asia/Bangkok). ผล 159 Vitest / 37 Chromium / typecheck / build / compiled smoke 3 PASS เป็นผลรัน 8 พ.ย. ของ source ที่ commit เป็น `3313288`; รอบแก้เอกสารนี้ไม่ได้รันทดสอบแอปใหม่. OS-process restart, independent clean reproduction/UAT และ reviewed main release ยังขาดหลักฐาน; GAP-02 ยัง OPEN และ Product DoD ยังไม่ครบ. [Review/merge evidence](deliverable-1/evidence/review-merge-20261112/README.md). Baseline FR/BR/NFR/AC ไม่เปลี่ยน; F-06–09 อยู่ Sprint 2/3
 
@@ -105,16 +107,16 @@ Historical F-01–03 execution: parents 04106ff + ada659b ตาม [combined ve
 
 ## 5. Sprint 2 F-06 AC/NFR → executed verification — 24 พฤศจิกายน 2026
 
-รายละเอียด source/ไฟล์/ผลแต่ละรอบอยู่ใน [completion](sprints/sprint-2/README.md); SHAs เป็นข้อมูลจากผู้ใช้ และ accepted release ยัง pending ทุกแถว
+รายละเอียด source/ไฟล์/ผลแต่ละรอบอยู่ใน [completion](sprints/sprint-2/README.md); SHAs เป็นข้อมูลจากผู้ใช้ และ accepted release ยัง pending ทุกแถว → **26 พ.ย.:** release แล้วทุกแถวเป็น `v2.0.0-sprint-2` (`c0faf24`) (CI 264/264 + 39/39)
 
 | AC | Tests | Implemented / executed result | Accepted release |
 |---|---|---|---|
-| AC-28 | TEST-37,40,43 | cancel/คืนที่นั่ง/own timestamps: API/DB/UI/Chromium local PASS | Pending |
-| AC-29 | TEST-38,40,42,43 | reactivate reference/first time เดิม, history และ last-seat/duplicate races local PASS | Pending |
-| AC-30 | TEST-39,40,43 | close ก่อน/ที่/หลัง deadline, preserve registrations/history, CLOSED UI local PASS | Pending |
-| AC-31 | TEST-40,42 | precedence/input/boundaries และ clock หลัง lock local PASS | Pending |
-| AC-32 | TEST-41,43 | access/CSRF/Origin/error envelope; confirmation/busy/retry/409/401/stale responses local PASS | Pending |
-| AC-33 | TEST-42,44 | races/migration/fresh seed/atomic rollback และ TEST-44(c) cancel×capacity edit local PASS ([cross-feature evidence](sprints/sprint-2/evidence/f07-cross-feature/README.md)); review/CI pending → **25 พ.ย.:** PR #60 review แล้ว CI ผ่าน merge `128c35c` | Pending |
+| AC-28 | TEST-37,40,43 | cancel/คืนที่นั่ง/own timestamps: API/DB/UI/Chromium local PASS | `v2.0.0-sprint-2` (`c0faf24`) |
+| AC-29 | TEST-38,40,42,43 | reactivate reference/first time เดิม, history และ last-seat/duplicate races local PASS | `v2.0.0-sprint-2` (`c0faf24`) |
+| AC-30 | TEST-39,40,43 | close ก่อน/ที่/หลัง deadline, preserve registrations/history, CLOSED UI local PASS | `v2.0.0-sprint-2` (`c0faf24`) |
+| AC-31 | TEST-40,42 | precedence/input/boundaries และ clock หลัง lock local PASS | `v2.0.0-sprint-2` (`c0faf24`) |
+| AC-32 | TEST-41,43 | access/CSRF/Origin/error envelope; confirmation/busy/retry/409/401/stale responses local PASS | `v2.0.0-sprint-2` (`c0faf24`) |
+| AC-33 | TEST-42,44 | races/migration/fresh seed/atomic rollback และ TEST-44(c) cancel×capacity edit local PASS ([cross-feature evidence](sprints/sprint-2/evidence/f07-cross-feature/README.md)); review/CI pending → **25 พ.ย.:** PR #60 review แล้ว CI ผ่าน merge `128c35c` | `v2.0.0-sprint-2` (`c0faf24`) |
 
 | NFR / linked tests | F-06 actual verification | Limits |
 |---|---|---|
@@ -132,13 +134,13 @@ F-07 (#48) implement ใน PR #57 (head `9eb9afb`, merge `582a60d` เข้า
 
 | AC | Tests | Implemented / executed result | Accepted release |
 |---|---|---|---|
-| AC-34 | TEST-45 | DRAFT แก้ได้ทุก field, อ่านกลับตรง, owner/status/created_at คงเดิม; CI PASS | Pending (Sprint 2 release) |
-| AC-35 | TEST-46 | PUBLISHED แก้ title/description/location/capacity ได้; field เวลา 409 FIELD_NOT_EDITABLE ข้อมูลไม่เปลี่ยน; CI PASS | Pending (Sprint 2 release) |
-| AC-36 | TEST-47 | CLOSED (ปิดผ่าน F-06 จริง) 409 EVENT_NOT_EDITABLE ข้อมูลไม่เปลี่ยน; CI PASS | Pending (Sprint 2 release) |
-| AC-37 | TEST-48 | EventPatch ผิดรูปแบบ/system/unknown field และ DRAFT ผิดลำดับเวลา = 400 ข้อมูลไม่เปลี่ยน (unit + API/DB); CI PASS | Pending (Sprint 2 release) |
-| AC-38 | TEST-49 | capacity = ACTIVE ได้, ACTIVE−1 = 409 CAPACITY_BELOW_ACTIVE, เพิ่ม capacity แล้วลงทะเบียนต่อได้; CI PASS | Pending (Sprint 2 release) |
-| AC-39 | TEST-50 | ลด capacity × ลงทะเบียนที่นั่งสุดท้าย 20 รอบ คนละ connection: ACTIVE ≤ capacity เสมอ; CI PASS | Pending (Sprint 2 release) |
-| AC-40 | TEST-51, TEST-52 | API access 401/403/404/CSRF 403; UI ฟอร์มเติมค่าเดิม/เวลา disabled เมื่อ PUBLISHED/ไม่มีปุ่มเมื่อ CLOSED/error ภาษาไทย/reload เห็นค่าใหม่ (component + Chromium); CI PASS | Pending (Sprint 2 release) |
+| AC-34 | TEST-45 | DRAFT แก้ได้ทุก field, อ่านกลับตรง, owner/status/created_at คงเดิม; CI PASS | `v2.0.0-sprint-2` (`c0faf24`) |
+| AC-35 | TEST-46 | PUBLISHED แก้ title/description/location/capacity ได้; field เวลา 409 FIELD_NOT_EDITABLE ข้อมูลไม่เปลี่ยน; CI PASS | `v2.0.0-sprint-2` (`c0faf24`) |
+| AC-36 | TEST-47 | CLOSED (ปิดผ่าน F-06 จริง) 409 EVENT_NOT_EDITABLE ข้อมูลไม่เปลี่ยน; CI PASS | `v2.0.0-sprint-2` (`c0faf24`) |
+| AC-37 | TEST-48 | EventPatch ผิดรูปแบบ/system/unknown field และ DRAFT ผิดลำดับเวลา = 400 ข้อมูลไม่เปลี่ยน (unit + API/DB); CI PASS | `v2.0.0-sprint-2` (`c0faf24`) |
+| AC-38 | TEST-49 | capacity = ACTIVE ได้, ACTIVE−1 = 409 CAPACITY_BELOW_ACTIVE, เพิ่ม capacity แล้วลงทะเบียนต่อได้; CI PASS | `v2.0.0-sprint-2` (`c0faf24`) |
+| AC-39 | TEST-50 | ลด capacity × ลงทะเบียนที่นั่งสุดท้าย 20 รอบ คนละ connection: ACTIVE ≤ capacity เสมอ; CI PASS | `v2.0.0-sprint-2` (`c0faf24`) |
+| AC-40 | TEST-51, TEST-52 | API access 401/403/404/CSRF 403; UI ฟอร์มเติมค่าเดิม/เวลา disabled เมื่อ PUBLISHED/ไม่มีปุ่มเมื่อ CLOSED/error ภาษาไทย/reload เห็นค่าใหม่ (component + Chromium); CI PASS | `v2.0.0-sprint-2` (`c0faf24`) |
 
 | NFR / linked tests | F-07 actual verification | Limits |
 |---|---|---|
