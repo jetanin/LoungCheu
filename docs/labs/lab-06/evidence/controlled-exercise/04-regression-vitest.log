@@ -1,0 +1,17 @@
+REGRESSION: full Vitest suite with the fix staged on top of fe31120
+command: npx vitest run
+database: local PostgreSQL loungcheu_test
+date: 2026-11-26T00:12:16+07:00
+---
+
+ RUN  v5.1.0 C:/DEV/University/Kmutt/Year3/Term1/CPE334/Final/LoungCheu-lab6
+
+
+ Test Files  16 passed (16)
+      Tests  169 passed (169)
+   Start at  00:11:45
+   Duration  31.30s (tests 64%, environment 19%, import 15%, transform 2%, worker 1%)
+
+    Isolate  16 workers spawned · ~527ms startup each (spawn + environment, per file)
+             at least ~7.91s faster with isolate: false — reuses workers across files instead of one per file
+
