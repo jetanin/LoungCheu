@@ -27,8 +27,8 @@ AC-25 และ AC-27 ของ Sprint 1 ยังเป็น PARTIAL ตาม
 
 | Feature / defect | สถานะปัจจุบัน (AC ที่ได้ + tested commit) | Remaining action (AC / verification / fix ที่ขาด) | Dependency | Owner; วันที่เสร็จ |
 |---|---|---|---|---|
-| **F-08 Check-in และ own attendance** (#50) | planned: contract AC-41–AC-46 และ STS TEST-53–TEST-59 อยู่ใน PR #71 → `sprint-3-staging`; ยังไม่มี code และยังไม่มี tested commit | ① Implement กฎอย่างน้อย 1 ข้อพร้อม TDD RED→GREEN ให้ทันอยู่ใน D2 candidate (D2 §2) เช่น AC-43 (เช็กชื่อได้เฉพาะ ACTIVE, ห้ามเช็กซ้ำ) ② ทำ AC-41–AC-46 ที่เหลือให้ครบ รัน TEST-53–TEST-59 ③ PR เข้า `sprint-3-staging` พร้อม review + CI | PR #71 merge | Jetanin (review: Paphangkorn); ① 28 พ.ย. ② 30 พ.ย. |
-| **F-09 Attendance summary** (ยังไม่มี issue) | planned: contract AC-47–AC-50 และ STS TEST-60–TEST-64 อยู่ใน PR #71; ยังไม่มี issue, code หรือ tested commit | สร้าง issue → implement AC-47–AC-50 ด้วย TDD → รัน TEST-60–TEST-64 รวม cross-feature F-08×F-09 (TEST-62) และ F-06×F-09 (TEST-60) → PR เข้า `sprint-3-staging` | PR #71 merge; checked-in count ต้องมี F-08 ก่อน (TEST-62) | Paphangkorn (review: Jetanin); 30 พ.ย. |
+| **F-08 Check-in และ own attendance** (#50) | planned: contract AC-41–AC-46 และ STS TEST-53–TEST-59 อยู่ใน PR #71 → `sprint-3-staging`; ยังไม่มี code และยังไม่มี tested commit | ① Migration `checked_in_at`/`checked_in_by_id` + CHECK ตาม contract ขึ้น `sprint-3-staging` ก่อน (F-09 ใช้คอลัมน์นี้) ② Implement กฎอย่างน้อย 1 ข้อพร้อม TDD RED→GREEN ให้ทันอยู่ใน D2 candidate (D2 §2) เช่น AC-43 (เช็กชื่อได้เฉพาะ ACTIVE, ห้ามเช็กซ้ำ) ③ ทำ AC-41–AC-46 ที่เหลือให้ครบ รัน TEST-53–TEST-59 ④ PR เข้า `sprint-3-staging` พร้อม review + CI | PR #71 merge | Jetanin (review: Paphangkorn); ① 27 พ.ย. ② 28 พ.ย. ③④ 30 พ.ย. |
+| **F-09 Attendance summary** (#74, draft PR #75) | in progress: rate (TEST-61 unit) และ access ของ summary API (TEST-63) RED `60cbc8e` → GREEN `062ed8d` ในเครื่อง; AC-47–AC-49 ยังไม่ผ่านเพราะยังไม่มีคอลัมน์ `checked_in_at` | รัน TEST-60, TEST-61 (API), TEST-62 หลัง migration ของ F-08 → UI summary TEST-64 (component + Chromium) → อัปเดต System SDS/traceability FR-15, BR-13 → review + CI → merge เข้า `sprint-3-staging` ให้อยู่ใน D2 candidate | Migration ของ F-08 (ข้อ ①); PR #71 merge | Paphangkorn (review: Jetanin); 28 พ.ย. |
 | **Sprint 3 release** | ยังไม่มี | Release PR `sprint-3-staging` → main, CI, deploy, smoke check `/api/ready`, tag `v3.0.0-sprint-3` | F-08 และ F-09 merge เข้า staging | Jetanin เปิด PR / Paphangkorn review; 30 พ.ย. |
 | **LAB6-CX-01** retest (#64, #44) | แก้แล้ว: RED `fe31120` → GREEN `37d5be4`, release `v2.0.1-lab6`; ส่งคำขอ retest ให้ TH-005_P5 แล้ว 26 พ.ย. 02:38 | รับผล retest B1–B5, C1–C3, UAT-02 → บันทึกใน [controlled-exercise.md](../labs/lab-06/controlled-exercise.md) §5 → ปิด #64/#44 | ทีม TH-005_P5 retest | Paphangkorn (บันทึก), Jetanin (#44); 28 พ.ย. |
 
@@ -52,10 +52,10 @@ AC-25 และ AC-27 ของ Sprint 1 ยังเป็น PARTIAL ตาม
 
 | วันที่ | งาน | Owner |
 |---|---|---|
-| 27 พ.ย. | merge PR #71 (contract S3), #72 (Part D) และ PR นี้; สร้าง issue F-09; F-08 RED | Jetanin, Paphangkorn |
-| 28 พ.ย. | F-08 กฎแรก GREEN + PR เข้า `sprint-3-staging`; บันทึกผล retest LAB6-CX-01; release candidate ของ D2 บน main + deploy + tag | Jetanin, Paphangkorn |
+| 27 พ.ย. | merge PR #71 (contract S3), #72 (Part D) และ PR นี้; F-08 migration ขึ้น `sprint-3-staging`; F-08 RED; F-09 UI (TEST-64) | Jetanin, Paphangkorn |
+| 28 พ.ย. | F-08 กฎแรก GREEN; F-09 ครบ AC-47–AC-50 merge เข้า staging; บันทึกผล retest LAB6-CX-01; release candidate ของ D2 บน main + deploy + tag | Jetanin, Paphangkorn |
 | 29 พ.ย. | ส่ง Lab 6 PDF (#45) และ D2 PDF (#51) ภายใน 23:59 | Jetanin (#45), Paphangkorn (#51) |
-| 30 พ.ย. | F-08 ครบ AC-41–46, F-09 ครบ AC-47–50 → Sprint 3 release `v3.0.0-sprint-3` + deploy; NFR-02 และ redeploy persistence check | Jetanin, Paphangkorn |
+| 30 พ.ย. | F-08 ครบ AC-41–46 → Sprint 3 release `v3.0.0-sprint-3` + deploy; NFR-02 และ redeploy persistence check | Jetanin, Paphangkorn |
 | 1–11 ธ.ค. | ช่วงสอบ — ไม่ทำงาน implement; แก้แค่ defect ร้ายแรงถ้ามี | — |
 | 12 ธ.ค. | Clean reproduction (TEST-35, Paphangkorn), browser/device matrix, UAT re-test (ถ้ามี), audit traceability ขั้นสุดท้าย, อัดวิดีโอ | Jetanin, Paphangkorn |
 | 13 ธ.ค. | Final release บน main + deploy + tag, ส่งงาน | Jetanin, Paphangkorn |
