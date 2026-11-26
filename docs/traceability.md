@@ -36,9 +36,9 @@ Historical F-01–03 execution: parents 04106ff + ada659b ตาม [combined ve
 | FR-10 | F-06 | 2 | AC-30–32: owner close และคง registrations/history | TEST-39–43 | Local API/DB/UI/browser PASS; events service.close + lifecycle tests; [F-06 completion](sprints/sprint-2/README.md); **26 พ.ย.:** TEST-37–52 ที่เกี่ยวข้อง PASS ใน CI ของ release `v2.0.0-sprint-2` (`c0faf24`; run 45666007554 และ deploy run 45668146212) |
 | FR-11 | F-07 | 2 | AC-34–40 (V2-03): owner edit ตาม status; capacity ไม่ต่ำกว่า active แม้มี concurrent registration | TEST-45–52 | event-edit.test.ts + event-patch.test.ts + EventEdit.test.tsx + event-edit.spec.ts; reviewed/merged sprint-2-staging, CI PASS (PR #57 `582a60d`, PR #60 `128c35c`); [F-07 completion](sprints/sprint-2/README.md#f-07-completion-record); **26 พ.ย.:** TEST-37–52 ที่เกี่ยวข้อง PASS ใน CI ของ release `v2.0.0-sprint-2` (`c0faf24`; run 45666007554 และ deploy run 45668146212) |
 | FR-12 | F-06 | 2 | AC-29,31,33: reactivate reference/first time เดิมและ history | TEST-38,40,42–44 | Local PASS สำหรับ reactivate/races/44(a,b) และ TEST-44(c) ([cross-feature evidence](sprints/sprint-2/evidence/f07-cross-feature/README.md)); [F-06 completion](sprints/sprint-2/README.md); **26 พ.ย.:** TEST-37–52 ที่เกี่ยวข้อง PASS ใน CI ของ release `v2.0.0-sprint-2` (`c0faf24`; run 45666007554 และ deploy run 45668146212) |
-| FR-13 | F-08 | 3 | V3-01; AC-41–44, AC-46: owner check-in ACTIVE ในช่วงกิจกรรม; reject invalid/duplicate/cross-owner | TEST-53–58, TEST-65–66 (STS v0.2) | PLANNED: contract/STS merge แล้ว (PR #71); ยังไม่ implement ยังไม่รัน — ดู §7 |
-| FR-14 | F-08 | 3 | V3-02; AC-45, AC-46: own attendance status ผ่านหน้า F-04 | TEST-57, TEST-59, TEST-66 | PLANNED: ยังไม่ implement ยังไม่รัน — ดู §7 |
-| FR-15 | F-09 | 3 | V3-03; AC-47–50: totals ของสถานะปัจจุบัน/rate ตรง DB รวม reactivate และ 0 denominator; owner scope | TEST-60–64 | IN PROGRESS: TEST-61 (unit) และ TEST-63 PASS บน branch `feature/74-sprint-3-f09-summary` (`062ed8d`; CI ของ draft PR #75); TEST-60, TEST-61 (API), TEST-62, TEST-64 ยังไม่รัน — ดู §7 |
+| FR-13 | F-08 | 3 | V3-01: owner check-in ACTIVE ในช่วงกิจกรรม; reject invalid/duplicate/cross-owner | กำหนด detailed STS ก่อน F-08 coding | — |
+| FR-14 | F-08 | 3 | V3-02: own attendance status ผ่านหน้า F-04 | กำหนด detailed STS ก่อน F-08 coding | — |
+| FR-15 | F-09 | 3 | V3-03; AC-47–50: totals ของสถานะปัจจุบัน/rate ตรง DB รวม reactivate และ 0 denominator; owner scope | TEST-60–64 | PASS (branch): TEST-60(a)(b), TEST-61 unit+API, TEST-62, TEST-63, TEST-64 (component 8 + Chromium 1) บน `feature/74-sprint-3-f09-summary` `71a37da` (draft PR #75; CI [run 45875931355](https://github.com/jetanin/LoungCheu/actions/runs/45875931355) SUCCESS); ยังไม่ merge เข้า staging. TEST-62 และ E2E ยังเขียน check-in ลง DB ตรง จนกว่า F-08 check-in (PR #79) เข้า staging — ดู §7 |
 
 ## 2. Business rules
 
@@ -55,8 +55,8 @@ Historical F-01–03 execution: parents 04106ff + ada659b ตาม [combined ve
 | BR-09 | F-02,F-06 | 1/2 | AC-08; V2-02: close ซ้ำ/เปิดกลับไม่ได้ | TEST-09,10 และ S2 close tests | F-02 PASS; F-06 TEST-39/40 close/transitions local PASS; **26 พ.ย.:** TEST-37–52 ที่เกี่ยวข้อง PASS ใน CI ของ release `v2.0.0-sprint-2` (`c0faf24`; run 45666007554 และ deploy run 45668146212) |
 | BR-10 | F-03,F-06,F-07 | 1/2 | AC-17; V2-01–04: interleaved transactions | TEST-20,21 และ S2 capacity/cancel/close races | F-03 PASS; F-06 TEST-42 real PostgreSQL observed-lock races local PASS; F-07 TEST-50 capacity ลด × ลงทะเบียนที่นั่งสุดท้าย 20 รอบ (separate connections) PASS ใน CI PR #57/#60; **26 พ.ย.:** TEST-37–52 ที่เกี่ยวข้อง PASS ใน CI ของ release `v2.0.0-sprint-2` (`c0faf24`; run 45666007554 และ deploy run 45668146212) |
 | BR-11 | F-02,F-06,F-07 | 1/2 | AC-10; V2-03: immutable owner/published times | TEST-13 และ S2 edit restrictions | F-02 session owner/spoof rejection PASS; F-07 TEST-46/47 (PUBLISHED เวลาแก้ไม่ได้ 409 FIELD_NOT_EDITABLE, CLOSED 409 EVENT_NOT_EDITABLE) และ TEST-48 system field 400 PASS ใน CI PR #57/#60; **26 พ.ย.:** TEST-37–52 ที่เกี่ยวข้อง PASS ใน CI ของ release `v2.0.0-sprint-2` (`c0faf24`; run 45666007554 และ deploy run 45668146212) |
-| BR-12 | F-08 | 3 | V3-01; AC-42, AC-43, AC-46: time bounds, ACTIVE-only, CLOSED และ duplicate=409 ALREADY_CHECKED_IN โดยข้อมูลเดิมไม่เปลี่ยน | TEST-54, TEST-55, TEST-58 | PLANNED: ยังไม่ implement ยังไม่รัน |
-| BR-13 | F-09 | 3 | V3-03; AC-47–49: current-status counts หลัง reactivate, cancelled exclusion, zero count และ rounding; history ไม่ใช่ตัวนับ summary | TEST-60–62 | IN PROGRESS: rounding (TEST-61 unit) PASS บน branch `062ed8d`; การนับจาก DB (TEST-60, TEST-62) ยังไม่รันเพราะรอคอลัมน์ `checked_in_at` จาก F-08 migration |
+| BR-12 | F-08 | 3 | V3-01: time bounds, ACTIVE-only, CLOSED และ duplicate=409 ALREADY_CHECKED_IN โดยข้อมูลเดิมไม่เปลี่ยน | กำหนดใน S3 STS | — |
+| BR-13 | F-09 | 3 | V3-03; AC-47–49: current-status counts หลัง reactivate, cancelled exclusion, zero count และ rounding; history ไม่ใช่ตัวนับ summary | TEST-60–62 | PASS (branch `71a37da`): TEST-60(b) reactivate → cancel → reactivate ผ่าน API จริง นับได้ 3/0 → 2/1 → 3/0 จาก `registrations` ไม่ใช่ history; TEST-61 rounding (1/32 → "3.13"); TEST-62 DRAFT ได้ศูนย์ทั้งหมด. CANCELLED ที่มี checked_in_at สร้างไม่ได้เพราะ CHECK ของ F-08 migration ([f09-api](sprints/sprint-3/evidence/f09-api/README.md)) |
 | BR-14 | SYS-DATA,F-02,F-03,F-06,F-07,F-08 | 1/2/3 | AC-07,11,15; V2-01,03; V3-01: UTC millisecond, input precision และ clock หลัง event lock | TEST-08,18,36 และ future time-boundary tests | F-02 minute/second ISO offsets/precision/UTC/Bangkok + F-02/F-03 clock-after-lock/deadline equality PASS; F-06 TEST-40/42 clock/UTC boundaries local PASS; F-07 TEST-45/48 UTC `.SSSZ` readback และเศษวินาทีเกิน 3 หลัก = 400 PASS ใน CI PR #57/#60; S3 outside this result; **26 พ.ย.:** TEST-37–52 ที่เกี่ยวข้อง PASS ใน CI ของ release `v2.0.0-sprint-2` (`c0faf24`; run 45666007554 และ deploy run 45668146212) |
 
 ## 3. Non-functional requirements
@@ -168,31 +168,35 @@ FR/BR/NFR allocation คง baseline เดิม; automated results159/37/typec
 
 ## 7. Sprint 3 AC → planned/actual verification — 27 พฤศจิกายน 2026
 
-Contract/STS v0.2: [contracts](sprints/sprint-3/contracts.md), [STS](sprints/sprint-3/sts.md) — merge เข้า `sprint-3-staging` แล้วใน PR #71 (26 พ.ย. 2026). ยังไม่มี Sprint 3 release บน main จึงยังไม่มีแถวไหนเป็น Accepted
+Contract/STS: [contracts](sprints/sprint-3/contracts.md), [STS](sprints/sprint-3/sts.md) — merge เข้า `sprint-3-staging` แล้วใน PR #71 (26 พ.ย. 2026). ยังไม่มี Sprint 3 release บน main จึงยังไม่มีแถวไหนเป็น Accepted
 
-คำที่ใช้: **PLANNED** = มี AC/test design แต่ยังไม่มีโค้ดและยังไม่รัน; **IN PROGRESS** = มีโค้ดบางส่วนบน feature branch ยังไม่ merge เข้า staging; **PASS (branch)** = test รันแล้วผ่านบน commit ที่ระบุ แต่ commit นั้นยังไม่อยู่ใน staging/main. Test ที่ยังไม่รันเขียนว่า NOT EXECUTED ไม่นับเป็นผ่าน
+คำที่ใช้: **PLANNED** = มี AC/test design แต่ยังไม่มีโค้ดและยังไม่รัน; **PASS (branch)** = test รันแล้วผ่านบน commit ที่ระบุ แต่ commit นั้นยังไม่อยู่ใน staging/main; **PASS (staging)** = ผ่านและ merge เข้า `sprint-3-staging` แล้ว. Test ที่ยังไม่รันเขียนว่า NOT EXECUTED ไม่นับเป็นผ่าน
 
-F-09 branch `feature/74-sprint-3-f09-summary`: RED `60cbc8e` → GREEN `062ed8d` ([TDD evidence](sprints/sprint-3/evidence/f09-red/README.md)); CI `test-and-docker` ของ draft PR #75 บน head `a43b03e` (= `062ed8d` + evidence docs) [run 45694192618](https://github.com/jetanin/LoungCheu/actions/runs/45694192618) SUCCESS: Vitest 27 files 273/273, Playwright 39/39, 0 failed/skipped
+F-08 storage: migration `202611270001_registration_attendance` และ TEST-65 merge เข้า staging แล้วใน PR #78 (`a8ff503`; GREEN `61d1a05`, CI [run 45873633625](https://github.com/jetanin/LoungCheu/actions/runs/45873633625) SUCCESS) — [หลักฐาน](sprints/sprint-3/evidence/f08-migration-green/README.md)
+
+F-08 check-in/own attendance: branch `feature/50-f08-check-in` (PR #79) — RED/GREEN ตาม [TDD trace](https://github.com/jetanin/LoungCheu/blob/feature/50-f08-check-in/docs/sprints/sprint-3/evidence/f08-ui-green/README.md), verified implementation `30135da`; CI ของ PR head `5ec10ec` [run 45885725531](https://github.com/jetanin/LoungCheu/actions/runs/45885725531) SUCCESS. ลิงก์หลักฐานชี้ไปที่ branch จนกว่า PR #79 จะ merge
+
+F-09: branch `feature/74-sprint-3-f09-summary` (draft PR #75) — rate/access RED `60cbc8e` → GREEN `062ed8d` ([f09-red](sprints/sprint-3/evidence/f09-red/README.md)); UI RED `172be7d` → GREEN `b685766` ([f09-ui](sprints/sprint-3/evidence/f09-ui/README.md)); counts/E2E `ba47cc8`, `71a37da` ([f09-api](sprints/sprint-3/evidence/f09-api/README.md)). CI ของ head `71a37da` [run 45875931355](https://github.com/jetanin/LoungCheu/actions/runs/45875931355) SUCCESS. TEST-60/61 API/62 ผ่านตั้งแต่รันครั้งแรก (query เขียนไว้ใน `062ed8d`) จึงไม่มี RED; มี mutation check แทน
 
 | AC | Feature | Planned tests | Implemented | Actual file/test | Result | Version |
 |---|---|---|---|---|---|---|
-| AC-41 | F-08 | TEST-53, TEST-66 | No | — | NOT EXECUTED | — |
-| AC-42 | F-08 | TEST-54 | No | — | NOT EXECUTED | — |
-| AC-43 | F-08 | TEST-55 | No | — | NOT EXECUTED | — |
-| AC-44 | F-08 | TEST-56, TEST-57 | No | — | NOT EXECUTED | — |
-| AC-45 | F-08 | TEST-57, TEST-59, TEST-66 | No | — | NOT EXECUTED | — |
-| AC-46 | F-08 | TEST-58, TEST-59 | No | — | NOT EXECUTED | — |
-| AC-47 | F-09 | TEST-60 | Partial: summary query (COUNT ACTIVE/CANCELLED/checked-in ใน REPEATABLE READ) อยู่บน branch แต่ต้องใช้คอลัมน์ `checked_in_at` ที่ยังไม่มี | — | NOT EXECUTED (รอ F-08 migration) | branch `062ed8d` |
-| AC-48 | F-09 | TEST-61 (unit + API) | Partial: `attendanceRate` (integer half-up) | `server/tests/unit/attendance-rate.test.ts` 7 cases รวม 1/32→"3.13", 0/0→"0.00" | Unit PASS (branch); API ส่วน ERATE3 NOT EXECUTED | branch `062ed8d`; CI run 45694192618 |
-| AC-49 | F-09 | TEST-62 | Partial: endpoint อ่านใหม่ทุกครั้ง ไม่มี cache | — | NOT EXECUTED (รอ F-08 migration) | branch `062ed8d` |
-| AC-50 | F-09 | TEST-63, TEST-64 | Partial: API access (auth → role → path → owner scope 404) ทำแล้ว; UI ยังไม่ทำ | `server/tests/integration/attendance-summary.test.ts` (TEST-63: 401/403/404/404/400 และ error ไม่มียอด) | API PASS (branch); UI TEST-64 NOT EXECUTED | branch `062ed8d`; CI run 45694192618 |
+| AC-41 | F-08 | TEST-53, TEST-65, TEST-66 | Yes: storage อยู่ใน staging (PR #78); check-in API อยู่บน PR #79 | `attendance-own.test.ts`, `attendance-migration.test.ts`, `attendance-restart.test.ts` | TEST-65 8/8 PASS (staging `a8ff503`); TEST-53 3/3 และ TEST-66 1/1 (compiled process restart) PASS (branch) | branch `30135da` (PR #79 head `5ec10ec`; CI run 45885725531) |
+| AC-42 | F-08 | TEST-54 | Yes (PR #79) | `attendance-boundaries.test.ts`: starts−1 ms/ends+1 ms ปฏิเสธ, ขอบพอดีผ่าน, CLOSED และ schedule ที่แก้ใหม่ | 9/9 PASS (branch) | branch `30135da` (PR #79 head `5ec10ec`; CI run 45885725531) |
+| AC-43 | F-08 | TEST-55 | Yes (PR #79) | `attendance-check-in.test.ts`: CANCELLED → REGISTRATION_NOT_ACTIVE, ซ้ำ → ALREADY_CHECKED_IN, ข้อมูลไม่เปลี่ยน | 3/3 PASS (branch) | branch `30135da` (PR #79 head `5ec10ec`; CI run 45885725531) |
+| AC-44 | F-08 | TEST-56, TEST-57 | Yes (PR #79) | `attendance-access.test.ts`, `attendance-router.test.ts`: auth/role/CSRF/owner/input | 25 API + 5 router unit PASS (branch) | branch `30135da` (PR #79 head `5ec10ec`; CI run 45885725531) |
+| AC-45 | F-08 | TEST-57, TEST-59, TEST-66 | Yes (PR #79) | `attendance-own.test.ts`, `AttendanceViews.test.tsx`, `tests/e2e/attendance.spec.ts`: own list/detail หลัง reload/re-login, อ่านของคนอื่นไม่ได้ | TEST-57, TEST-59 (21 component + Chromium 1), TEST-66 PASS (branch) | branch `30135da` (PR #79 head `5ec10ec`; CI run 45885725531) |
+| AC-46 | F-08 | TEST-58, TEST-59 | Yes (PR #79) | `attendance-concurrency.test.ts`: 20 races สอง runtime/สอง clock, ผู้ชนะ A/B อย่างละ 10, รอ lock เลย ends → CHECK_IN_NOT_OPEN; UI busy/single-send | 21/21 PASS + TEST-59 PASS (branch) | branch `30135da` (PR #79 head `5ec10ec`; CI run 45885725531) |
+| AC-47 | F-09 | TEST-60 | Yes: `COUNT(*) FILTER` ACTIVE/CANCELLED/checked-in จาก `registrations` ใน REPEATABLE READ | `attendance-summary.test.ts` TEST-60(a) ESUM3 2/1/1/"50.00"; TEST-60(b) reactivate/cancel/reactivate 3/0 → 2/1 → 3/0 | PASS (branch) | branch `71a37da` (PR #75; CI run 45875931355) |
+| AC-48 | F-09 | TEST-61 (unit + API) | Yes: `attendanceRate` (integer half-up) | `attendance-rate.test.ts` 7 cases รวม 1/32 → "3.13", 0/0 → "0.00"; API ERATE3 32 คนเช็กชื่อ 1 → "3.13" | PASS (branch) | branch `71a37da` (PR #75; CI run 45875931355) |
+| AC-49 | F-09 | TEST-62 | Yes: endpoint อ่านใหม่ทุกครั้ง ไม่มี cache | `attendance-summary.test.ts` TEST-62: check-in แล้วอ่านใหม่ 0 → 1, "0.00" → "50.00"; EDRAFT3 ศูนย์ทั้งหมด | PASS (branch); ขั้น check-in เขียน DB ตรง ต้องรันใหม่ด้วย check-in API จริงหลัง PR #79 merge | branch `71a37da` (PR #75; CI run 45875931355) |
+| AC-50 | F-09 | TEST-63, TEST-64 | Yes: API access + หน้า `/organizer/events/{id}/summary` | TEST-63 401/403/404/404/400 ไม่มียอดใน error; `AttendanceSummary.test.tsx` 8 cases; `tests/e2e/attendance-summary.spec.ts` owner เปิด ดูสรุปผล ค่าตรง API, รีเฟรชหลัง check-in, Participant 403 | PASS (branch); E2E ขั้น check-in เขียน DB ตรง ต้องรันใหม่ด้วย UI จริงหลัง PR #79 merge | branch `71a37da` (PR #75; CI run 45875931355) |
 
 | NFR | Sprint 3 scope | Planned tests | Actual result |
 |---|---|---|---|
-| NFR-01 | check-in/own attendance และ summary อ่าน/เขียนได้เฉพาะสิทธิ์ที่ถูกต้อง | TEST-57, TEST-63 | TEST-63 PASS (branch `062ed8d`); TEST-57 NOT EXECUTED |
-| NFR-03 | checked_in_at คงอยู่หลัง reload/re-login และ backend restart บน DB เดิม | TEST-59, TEST-66 | NOT EXECUTED |
-| NFR-04 | เช็กชื่อคนเดียวกันพร้อมกันสำเร็จครั้งเดียว | TEST-58 | NOT EXECUTED |
-| NFR-05 | migration S2→S3 คงข้อมูลเดิม, fresh migrate→seed, constraint ของคอลัมน์ใหม่ | TEST-65 | NOT EXECUTED |
-| NFR-06 | error code/message และ UI states ของ F-08/F-09 | TEST-55, TEST-57, TEST-63, TEST-64 | TEST-63 error envelope PASS (branch); ที่เหลือ NOT EXECUTED |
+| NFR-01 | check-in/own attendance และ summary อ่าน/เขียนได้เฉพาะสิทธิ์ที่ถูกต้อง | TEST-57, TEST-63 | TEST-57 PASS (branch PR #79 `30135da`); TEST-63 PASS (branch PR #75 `71a37da`) |
+| NFR-03 | checked_in_at คงอยู่หลัง reload/re-login และ backend restart บน DB เดิม | TEST-59, TEST-66 | PASS (branch PR #79 `30135da`): TEST-66 compiled server สอง PID, TEST-59 browser reload/fresh login; release Sprint 3 ยังไม่ได้ตรวจ |
+| NFR-04 | เช็กชื่อคนเดียวกันพร้อมกันสำเร็จครั้งเดียว | TEST-58 | PASS (branch PR #79 `30135da`): 20 races + clock-after-lock |
+| NFR-05 | migration S2→S3 คงข้อมูลเดิม, fresh migrate→seed, constraint ของคอลัมน์ใหม่ | TEST-65 | 8/8 PASS (staging): PR #78 `a8ff503`, CI run 45873633625 |
+| NFR-06 | error code/message และ UI states ของ F-08/F-09 | TEST-55, TEST-57, TEST-63, TEST-64 | TEST-55/57 PASS (branch PR #79); TEST-63/64 PASS (branch PR #75) |
 
 แผนและ owner ของงานที่เหลืออยู่ใน [remaining-work](deliverable-2/remaining-work.md)
