@@ -100,4 +100,4 @@ Release PR #67 merged F-06/F-07 into `main` as `c0faf24`, tagged `v2.0.0-sprint-
 
 ## Persistence evidence correction — 27 November 2026
 
-Review of PR #73: the remaining-work GAP-02 row and traceability NFR-03/AC-25 said redeploy persistence had not been checked. Lab 5 Issue #20 (22 November 2026) already showed the original event and ACTIVE registration surviving a Cloud Run application restart and a redeploy (`scccd8b05-00005-5xj` → `scccd8b05-00006-68j`). The rows now cite that result. The Sprint 3 check is a repeat for the new release. GAP-02 is not declared closed from this evidence alone, and TEST-35 clean reproduction stays NOT EXECUTED.
+The remaining-work GAP-02 row and traceability NFR-03/AC-25 said redeploy persistence had not been checked. Lab 5 Issue #20 (22 November 2026) already showed the original event and ACTIVE registration surviving a Cloud Run application restart and a redeploy (`scccd8b05-00005-5xj` → `scccd8b05-00006-68j`). The rows now cite that result. The Sprint 3 check is a repeat for the new release. GAP-02 is not declared closed from this evidence alone, and TEST-35 clean reproduction stays NOT EXECUTED.
