@@ -40,7 +40,7 @@ Issue #64 | Product Team: TH-001_P3 LoungCheu | UAT Team: TH-005_P5 ApprovalFlow
 | Root cause | ระบบกันซ้ำสองชั้นถูกเอาออกทั้งคู่: (1) `registrations/service.ts` ไม่ตรวจ registration เดิมก่อน insert; (2) migration `202611250001_lab6_exercise_drop_registration_unique` ลบ unique index `(event_id, participant_id)` ที่เป็น guard ชั้น DB |
 | Fix plan | RED test ใหม่ระดับ API ที่ตรวจ 409, ACTIVE = 1 และ `active_count`/`available_seats` ไม่เปลี่ยน → คืนการตรวจใน service และเอา migration ที่ลบ unique index ออก (migration นี้ไม่เคยรันบน production) → regression เต็ม |
 | Owner / Reviewer | i3artuf (fix) / jetanin (review) |
-| Fix status | RED ✓ (local + CI run 45661984995 แดง) → GREEN ✓ `37d5be4` (LAB6-CX-01 ผ่าน, Vitest 169/169) — review, release, deploy รอดำเนินการ |
+| Fix status | RED ✓ (local + CI run 45661984995 แดง) → GREEN ✓ `37d5be4` (LAB6-CX-01 ผ่าน, Vitest 169/169); teammate review และ merge ผ่าน PR #65/#69/#70; release [PR #68](https://github.com/jetanin/LoungCheu/pull/68) บน `main` ที่ `6f49d32`, tag `v2.0.1-lab6`, deploy/smoke SUCCESS ([run 45685620954](https://github.com/jetanin/LoungCheu/actions/runs/45685620954)); ยังรอ independent retest จากทีมคู่ |
 | Disposition | Fix ใน exercise นี้ (Critical → ต้องแก้และให้ทีม UAT retest ก่อนปิด); ไม่กระทบผลตัดสิน Accepted ของ `v1.0.1-uat` เพราะ defect ไม่เคยอยู่ใน release ที่ทดสอบ |
 | แจ้งทีมคู่ | _รอ_ — แจ้งผ่านกลุ่ม IG (ช่องทาง handoff ที่ตกลงไว้) พร้อม version ที่แก้แล้วและขั้นตอน reproduce; บันทึกผลตอบกลับใน §5 |
 | Retest | TH-005_P5 retest เคสลงทะเบียนซ้ำผ่าน API บน revision ใหม่หลัง deploy |
@@ -54,7 +54,7 @@ Issue #64 | Product Team: TH-001_P3 LoungCheu | UAT Team: TH-005_P5 ApprovalFlow
 | Defect commit | `97268f4` | ไม่ deploy | branch + CI เท่านั้น |
 | RED test commit | `fe31120` | ไม่ deploy | CI [45661984995](https://github.com/jetanin/LoungCheu/actions/runs/45661984995) **failure**: 5 failed / 164 passed (LAB6-CX-01, TEST-16 ×2, TEST-21, events F-02/F-03) |
 | GREEN fix commit | `37d5be4` | ไม่ deploy | local: LAB6-CX-01 PASS, Vitest 169/169; CI [45662403825](https://github.com/jetanin/LoungCheu/actions/runs/45662403825) บน `d812ce2` (= `37d5be4` + docs) **success**: Vitest 169/169, Playwright 37/37 |
-| Fixed release on main | _รอ_ | _รอ_ | |
+| Fixed release on main | [`v2.0.1-lab6`](https://github.com/jetanin/LoungCheu/releases/tag/v2.0.1-lab6) / `6f49d327e8e709fc716b9eeb60591ea4fd692fc9` ([PR #68](https://github.com/jetanin/LoungCheu/pull/68)) | `scccd8b05-00012-msg` | [Deploy run 45685620954](https://github.com/jetanin/LoungCheu/actions/runs/45685620954) SUCCESS; readiness ที่ผู้ใช้แคป 26 พ.ย. 2026 11:04:31 Asia/Bangkok: HTTP 200, ready, db connected, version ตรง release SHA; [หลักฐาน](evidence/controlled-exercise/README.md) |
 | UAT retest | — | _รอ_ | |
 
 ## 4.1 RED / GREEN evidence
@@ -67,6 +67,9 @@ Issue #64 | Product Team: TH-001_P3 LoungCheu | UAT Team: TH-005_P5 ApprovalFlow
 | CX-E04 | GREEN (local) | `fe31120` + fix (= `37d5be4`) | `npx vitest run server/tests/integration/registration.test.ts -t LAB6-CX-01` | 1 passed — [03-green-lab6-cx-01.log](evidence/controlled-exercise/03-green-lab6-cx-01.log) |
 | CX-E06 | GREEN + regression (CI) | `d812ce2` | GitHub Actions `test-and-docker` run 45662403825 | success — Vitest 16 files 169/169, Playwright 37 passed, Docker build ✓ |
 | CX-E05 | Regression (local) | `37d5be4` | `npx vitest run` | 16 files, 169/169 passed — [04-regression-vitest.log](evidence/controlled-exercise/04-regression-vitest.log) |
+| CX-E07 | Fixed deploy + smoke | `6f49d32` | Deploy demo run 45685620954 | SUCCESS, revision `scccd8b05-00012-msg`; ภาพ Summary ระบุ Vitest 265/265 และ read-only smoke ผ่าน — [05-fixed-deploy-summary.png](evidence/controlled-exercise/05-fixed-deploy-summary.png) |
+| CX-E08 | Public readiness (ผู้ใช้รันและแคป) | `6f49d32` | `curl.exe -i https://scccd8b05-4d7hbszvwq-as.a.run.app/api/ready` | HTTP 200, ready, db connected, version ตรง SHA เต็ม; 26 พ.ย. 2026 11:04:31 Asia/Bangkok — [06-fixed-readiness.png](evidence/controlled-exercise/06-fixed-readiness.png) |
+| CX-E09 | Release tag | `v2.0.1-lab6` → `6f49d32` | ผู้ใช้ `git fetch origin`; ตรวจ annotated tag ผ่าน GitHub API | Tag มีบน origin และชี้ fixed release SHA ตรง readiness — [07-fixed-release-tag.png](evidence/controlled-exercise/07-fixed-release-tag.png) |
 
 Test `LAB6-CX-01` ไม่ถูกแก้ระหว่าง RED กับ GREEN (เทียบได้ด้วย `git diff fe31120 37d5be4 -- server/tests`)
 
