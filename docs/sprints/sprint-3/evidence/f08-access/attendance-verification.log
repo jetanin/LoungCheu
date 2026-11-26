@@ -1,0 +1,65 @@
+Baseline: f4a1c5536ad3574b283d9b50405dd622eec84370
+Source: baseline + uncommitted verification tests
+Node: v22.23.2
+Started UTC: 2026-11-26T19:05:02.402Z
+Command: node node_modules/vitest/vitest.mjs run server/tests/unit/attendance-router.test.ts server/tests/integration/attendance-access.test.ts server/tests/integration/attendance-boundaries.test.ts server/tests/integration/attendance-check-in.test.ts server/tests/integration/attendance-own.test.ts --reporter=verbose
+Target: Docker 55433 / loungcheu_test only
+Exit: 0
+
+
+ RUN  v5.1.0 C:/Work/2569/CPE334/GroupWork/LoungCheu
+
+ ✓ server/tests/integration/attendance-boundaries.test.ts > F-08 TEST-54 / AC-42 boundaries and real F-06/F-07 workflows > TEST-54(a: starts minus 1 ms) 312ms
+ ✓ server/tests/integration/attendance-boundaries.test.ts > F-08 TEST-54 / AC-42 boundaries and real F-06/F-07 workflows > TEST-54(b: starts exactly) 163ms
+ ✓ server/tests/integration/attendance-boundaries.test.ts > F-08 TEST-54 / AC-42 boundaries and real F-06/F-07 workflows > TEST-54(c: ends exactly) 143ms
+ ✓ server/tests/integration/attendance-boundaries.test.ts > F-08 TEST-54 / AC-42 boundaries and real F-06/F-07 workflows > TEST-54(d: ends plus 1 ms) 124ms
+ ✓ server/tests/integration/attendance-boundaries.test.ts > F-08 TEST-54 / AC-42 boundaries and real F-06/F-07 workflows > TEST-54(e): actual close API preserves the ability to check in during a CLOSED event 244ms
+ ✓ server/tests/integration/attendance-boundaries.test.ts > F-08 TEST-54 / AC-42 boundaries and real F-06/F-07 workflows > TEST-54(f): real create -> PATCH -> publish -> register uses inside old window, before edited start 319ms
+ ✓ server/tests/integration/attendance-boundaries.test.ts > F-08 TEST-54 / AC-42 boundaries and real F-06/F-07 workflows > TEST-54(f): real create -> PATCH -> publish -> register uses edited start exactly 344ms
+ ✓ server/tests/integration/attendance-boundaries.test.ts > F-08 TEST-54 / AC-42 boundaries and real F-06/F-07 workflows > TEST-54(f): real create -> PATCH -> publish -> register uses edited end exactly, after old end 317ms
+ ✓ server/tests/integration/attendance-boundaries.test.ts > F-08 TEST-54 / AC-42 boundaries and real F-06/F-07 workflows > TEST-54(f): real create -> PATCH -> publish -> register uses edited end plus 1 ms 309ms
+ ✓ server/tests/integration/attendance-access.test.ts > F-08 TEST-56 / AC-44 input > TEST-56: rejects malformed eventId without mutation 75ms
+ ✓ server/tests/integration/attendance-access.test.ts > F-08 TEST-56 / AC-44 input > TEST-56: rejects malformed registrationId without mutation 33ms
+ ✓ server/tests/integration/attendance-access.test.ts > F-08 TEST-56 / AC-44 input > TEST-56: rejects null body without mutation 32ms
+ ✓ server/tests/integration/attendance-access.test.ts > F-08 TEST-56 / AC-44 input > TEST-56: rejects array body without mutation 33ms
+ ✓ server/tests/integration/attendance-access.test.ts > F-08 TEST-56 / AC-44 input > TEST-56: rejects string body without mutation 31ms
+ ✓ server/tests/integration/attendance-access.test.ts > F-08 TEST-56 / AC-44 input > TEST-56: rejects forged timestamp body without mutation 26ms
+ ✓ server/tests/integration/attendance-access.test.ts > F-08 TEST-56 / AC-44 input > TEST-56: rejects forged status body without mutation 26ms
+ ✓ server/tests/integration/attendance-access.test.ts > F-08 TEST-56 / AC-44 input > TEST-56: rejects oversize body without mutation 27ms
+ ✓ server/tests/integration/attendance-access.test.ts > F-08 TEST-56 / AC-44 input > TEST-56: rejects malformed JSON body without mutation 26ms
+ ✓ server/tests/integration/attendance-access.test.ts > F-08 TEST-56 / AC-44 input > TEST-56: rejects wrong content type body without mutation 21ms
+ ✓ server/tests/integration/attendance-access.test.ts > F-08 TEST-56 / AC-44 input > TEST-56: accepts omitted body and uses session owner/server clock 43ms
+ ✓ server/tests/integration/attendance-access.test.ts > F-08 TEST-56 / AC-44 input > TEST-56: accepts {} body and uses session owner/server clock 29ms
+ ✓ server/tests/integration/attendance-access.test.ts > F-08 TEST-57 / AC-44, AC-45 access and privacy > TEST-57: anonymous cannot check in 19ms
+ ✓ server/tests/integration/attendance-access.test.ts > F-08 TEST-57 / AC-44, AC-45 access and privacy > TEST-57: participant pa cannot check in even with valid CSRF 22ms
+ ✓ server/tests/integration/attendance-access.test.ts > F-08 TEST-57 / AC-44, AC-45 access and privacy > TEST-57: participant pb cannot check in even with valid CSRF 24ms
+ ✓ server/tests/integration/attendance-access.test.ts > F-08 TEST-57 / AC-44, AC-45 access and privacy > TEST-57: another organizer cannot check in the owner event 29ms
+ ✓ server/tests/integration/attendance-access.test.ts > F-08 TEST-57 / AC-44, AC-45 access and privacy > TEST-57: owner cannot use a registration from a different event 29ms
+ ✓ server/tests/integration/attendance-access.test.ts > F-08 TEST-57 / AC-44, AC-45 access and privacy > TEST-57: nonexistent event is masked 26ms
+ ✓ server/tests/integration/attendance-access.test.ts > F-08 TEST-57 / AC-44, AC-45 access and privacy > TEST-57: nonexistent registration is masked 30ms
+ ✓ server/tests/integration/attendance-access.test.ts > F-08 TEST-57 / AC-44, AC-45 access and privacy > TEST-57: rejects missing CSRF 23ms
+ ✓ server/tests/integration/attendance-access.test.ts > F-08 TEST-57 / AC-44, AC-45 access and privacy > TEST-57: rejects incorrect CSRF 25ms
+ ✓ server/tests/integration/attendance-access.test.ts > F-08 TEST-57 / AC-44, AC-45 access and privacy > TEST-57: rejects foreign-origin CSRF 22ms
+ ✓ server/tests/integration/attendance-access.test.ts > F-08 TEST-57 / AC-44, AC-45 access and privacy > TEST-57: another participant cannot read checked-in own detail or discover it in own list 54ms
+ ✓ server/tests/integration/attendance-access.test.ts > F-08 TEST-57 / AC-44, AC-45 access and privacy > TEST-57: pa cannot read checked-in owner roster 26ms
+ ✓ server/tests/integration/attendance-access.test.ts > F-08 TEST-57 / AC-44, AC-45 access and privacy > TEST-57: ob cannot read checked-in owner roster 30ms
+ ✓ server/tests/integration/attendance-own.test.ts > F-08 own attendance / TEST-53 / MyRegistrationS3 > TEST-53: real check-in commits one timestamp shared by roster and own list/detail without lifecycle changes 203ms
+ ✓ server/tests/integration/attendance-own.test.ts > F-08 own attendance / TEST-53 / MyRegistrationS3 > MyRegistrationS3: unchecked record (cancelled=false) has required null checked_in_at in both reads 116ms
+ ✓ server/tests/integration/attendance-own.test.ts > F-08 own attendance / TEST-53 / MyRegistrationS3 > MyRegistrationS3: unchecked record (cancelled=true) has required null checked_in_at in both reads 99ms
+ ✓ server/tests/integration/attendance-check-in.test.ts > F-08 check-in rule / TEST-55 / AC-43 > TEST-55(a): refuses CANCELLED during the event without changing data or history 128ms
+ ✓ server/tests/integration/attendance-check-in.test.ts > F-08 check-in rule / TEST-55 / AC-43 > TEST-55(b): first check-in at T1 succeeds; repeat at T2 keeps T1, actor, count and history 104ms
+ ✓ server/tests/integration/attendance-check-in.test.ts > F-08 check-in rule / TEST-55 / AC-43 > TEST-55(c): outside the time window takes precedence over CANCELLED and preserves every field 52ms
+ ✓ server/tests/unit/attendance-router.test.ts > TEST-56/57: attendance router validation and middleware precedence > rejects anonymous before parsing malformed input or calling the service 37ms
+ ✓ server/tests/unit/attendance-router.test.ts > TEST-56/57: attendance router validation and middleware precedence > rejects participant before parsing malformed input or calling the service 6ms
+ ✓ server/tests/unit/attendance-router.test.ts > TEST-56/57: attendance router validation and middleware precedence > rejects bad-csrf before parsing malformed input or calling the service 6ms
+ ✓ server/tests/unit/attendance-router.test.ts > TEST-56/57: attendance router validation and middleware precedence > TEST-56: rejects body attempts to provide an organizer before service execution 14ms
+ ✓ server/tests/unit/attendance-router.test.ts > TEST-56/57: attendance router validation and middleware precedence > TEST-56: forwards only validated path IDs and the session owner to the service 8ms
+
+ Test Files  5 passed (5)
+      Tests  45 passed (45)
+   Start at  02:05:02
+   Duration  7.63s (tests 76%, import 22%, transform 1%)
+
+    Isolate  5 workers spawned · ~131ms startup each (spawn + environment, per file)
+             at least ~523ms faster with isolate: false — reuses workers across files instead of one per file
+

@@ -1,0 +1,9 @@
+{
+  "baseline": "f4a1c5536ad3574b283d9b50405dd622eec84370",
+  "productionSourceUnchangedDuringRun": true,
+  "tests": {
+    "server/tests/unit/attendance-router.test.ts": "49a76352d2c6c80d5da719044a1780e34df35e040f84799f9a42bf7a5427760d",
+    "server/tests/integration/attendance-access.test.ts": "f4ea671bcb1a792b5f4546b457964e84196774458171776fb629a815cc1d6549"
+  },
+  "port": 55433
+}

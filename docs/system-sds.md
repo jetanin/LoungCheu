@@ -117,6 +117,8 @@ F-08 own attendance API update — 27 พ.ย. 2026 (#50): `modules/registration
 
 F-08 time-boundary verification — 27 พ.ย. 2026 (#50): [TEST-54 / AC-42](sprints/sprint-3/evidence/f08-boundaries/README.md) local PASS 9/9 บน production code เดิม: starts−1 ms/ends+1 ms ปฏิเสธและข้อมูลไม่เปลี่ยน; starts/ends พอดีเช็กชื่อได้; actual close API → CLOSED ยังเช็กชื่อในช่วงงานได้; actual create DRAFT → PATCH → publish → register ใช้ starts/ends ที่แก้ใหม่. ขั้นนี้เพิ่ม verification tests เท่านั้น ไม่มี RED ใหม่หรือ production changes; access matrix, concurrency, UI และ restart ยังต้องตรวจ
 
+F-08 input/access verification — 27 พ.ย. 2026 (#50): [TEST-56/57](sprints/sprint-3/evidence/f08-access/README.md) local PASS 25 API/DB + 5 router unit cases. Auth/role/CSRF ปฏิเสธก่อน parse/service; malformed UUID/body/forged fields/oversize ถูกปฏิเสธ 400; ไม่มี body และ `{}` ใช้ server clock/session owner. Anonymous/Participant/foreign organizer/foreign registration/CSRF ตอบตาม contract; foreign own attendance/roster ไม่เปิดเผยชื่อ ID หรือเวลา. ทุก API rejection คง Event/Registration/history ทุก field. ไม่แก้ production code; ส่วนที่เหลือคือ concurrency/lock-wait, attendance UI และ compiled-process restart
+
 ### Atomic registration
 
 1. ตรวจ active session/role และ lock Event ด้วย parameterized `SELECT ... FOR UPDATE` ใน Prisma interactive transaction
