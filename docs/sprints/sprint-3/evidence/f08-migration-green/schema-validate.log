@@ -1,0 +1,13 @@
+RED commit supplied by Jetanin: ba4cb6e0ff369e5a573fe97240214832f24b534d
+Source: RED commit + uncommitted GREEN changes
+Started UTC: 2026-11-26T18:00:45.864Z
+Node: v22.23.2
+Command: node node_modules/prisma/build/index.js validate --config server/prisma.config.ts
+Target: Docker localhost:55433 only; no 5432 access
+Exit: 0
+
+The schema at server\prisma\schema.prisma is valid 🚀
+
+Loaded Prisma config from server\prisma.config.ts.
+
+Prisma schema loaded from server\prisma\schema.prisma.

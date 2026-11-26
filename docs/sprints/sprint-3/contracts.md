@@ -11,7 +11,7 @@ Test design แยกอยู่ใน [sts.md](sts.md)
 | Feature | Issue | สถานะ | หมายเหตุ |
 |---|---|---|---|
 | F-08 Check-in และ own attendance status | #50 | planned | M1 implement หลัง contract นี้ merge; เป็น workflow ขั้นต่ำของ Sprint 3 ที่ต้อง implement และ test ใน D2 (D2 §2) |
-| F-09 Attendance summary | ยังไม่มี implementation issue | planned | กำหนด owner/วันที่ใน remaining-work list ของ D2 (#51) |
+| F-09 Attendance summary | #74 | in progress | Issue #74 สร้าง 26 พ.ย.; owner M2 (i3artuf) ให้ทันอยู่ใน D2 candidate; ใช้คอลัมน์ checked_in_at จาก migration ของ F-08 |
 
 ใช้สถานะ planned → in progress → implemented → tested → accepted ตามหลักฐานจริงเท่านั้น contract/STS ไม่ใช่ผล PASS
 
@@ -19,7 +19,7 @@ Test design แยกอยู่ใน [sts.md](sts.md)
 
 | Feature | AC | Tests | ผู้เขียน contract | Reviewer |
 |---|---|---|---|---|
-| F-08 Check-in และ own attendance | AC-41–AC-46 | TEST-53–TEST-59 | M2 (i3artuf) | M1 |
+| F-08 Check-in และ own attendance | AC-41–AC-46 | TEST-53–TEST-59, TEST-65–TEST-66 | M2 (i3artuf) | M1 |
 | F-09 Attendance summary | AC-47–AC-50 | TEST-60–TEST-64 | M2 (i3artuf) | M1 |
 
 เลขที่จองแต่ไม่ได้ใช้ให้เขียนว่า "unused" ไม่เลื่อนเลขของอีก feature
@@ -42,16 +42,17 @@ F-08 ใช้ `EVENT_NOT_FOUND` และ `REGISTRATION_NOT_FOUND` เดิม
 
 ## F-08 — Check-in และ own attendance status
 
-**Links:** FR-13, FR-14; BR-06, BR-07, BR-09, BR-12, BR-14; NFR-01, NFR-03, NFR-04, NFR-06; V3-01, V3-02; dependency: F-04, F-05, F-06 (CLOSED/CANCELLED), F-07 (เวลาเริ่ม/สิ้นสุด)
+**Links:** FR-13, FR-14; BR-06, BR-07, BR-09, BR-12, BR-14; NFR-01, NFR-03, NFR-04, NFR-05, NFR-06; V3-01, V3-02; dependency: F-04, F-05, F-06 (CLOSED/CANCELLED), F-07 (เวลาเริ่ม/สิ้นสุด)
 
 **NFR → planned verification** (ยังไม่ใช่ผลรันทดสอบ):
 
 | NFR | ขอบเขตใน F-08 | Planned tests |
 |---|---|---|
 | NFR-01 | Access matrix ของ check-in และ own attendance: auth/role/ownership/CSRF ไม่เปิดเผยข้อมูลข้ามผู้ใช้ | TEST-57 |
-| NFR-03 | checked_in_at/checked_in_by_id อ่านกลับได้หลัง reload และ re-login | TEST-59 |
+| NFR-03 | checked_in_at/checked_in_by_id อ่านกลับได้หลัง reload และ re-login (TEST-59) และหลังหยุดแล้วเริ่ม backend process ใหม่บน DB เดิม (TEST-66) ตาม SRS NFR-03 "หลัง restart แอป" | TEST-59, TEST-66 |
 | NFR-04 | เช็กชื่อคนเดียวกันพร้อมกันสำเร็จครั้งเดียว ข้อมูลไม่ถูกเขียนทับ | TEST-58 |
 | NFR-06 | Error code/message ภาษาไทยตาม contract และไม่เปิดเผยข้อมูลภายใน | TEST-55, TEST-57 |
+| NFR-05 | Migration S2→S3 คงข้อมูลเดิม, fresh migrate→seed และ seed ซ้ำ, constraint ของสองคอลัมน์ใหม่ | TEST-65 |
 
 ### Workflow / UI
 
@@ -157,10 +158,10 @@ CANCELLED ──check-in──▶ 409 REGISTRATION_NOT_ACTIVE
 
 DoD F-08 (ครบทุกข้อจึงถือว่าเสร็จ):
 
-1. AC-41–AC-46 ผ่านด้วย test ที่รันจริงตาม TEST-53–59 บันทึกคำสั่ง, commit, passed/failed/skipped
+1. AC-41–AC-46 ผ่านด้วย test ที่รันจริงตาม TEST-53–59 และ TEST-65–66 บันทึกคำสั่ง, commit, passed/failed/skipped
 2. มี meaningful RED ก่อน implementation และ GREEN ของ test เดียวกันพร้อม SHA
 3. Regression ของ Sprint 1–2 ผ่าน; ปรับ expected schema เฉพาะ field ที่เพิ่ม (checked_in_at, checked_in_count) โดยไม่ลด assertion เดิม
-4. migration ผ่านบน test DB และ fresh DB → migrate → seed; อัปเดต System SDS (schema/API/error table/UI) และ traceability (FR-13–14, BR-09/12 เพิ่ม F-08, NFR-04 เพิ่ม TEST-58) ใน PR เดียวกันหรือ #51
+4. migration ผ่านบน test DB และ fresh DB → migrate → seed ตาม TEST-65; อัปเดต System SDS (schema/API/error table/UI) และ traceability (FR-13–14, BR-09/12 เพิ่ม F-08, NFR-04 เพิ่ม TEST-58) ใน PR เดียวกันหรือ #51
 5. Trace: #50 → `feature/50-…` จาก `sprint-3-staging` → PR ที่ teammate review + CI ผ่าน → staging → release
 6. ผ่าน [Product DoD](../sprint-1/README.md) ข้อที่เกี่ยวข้อง
 
@@ -253,3 +254,4 @@ DoD F-09 (ครบทุกข้อจึงถือว่าเสร็จ)
 | Version | วันที่ | การเปลี่ยนแปลง | เหตุผล | ผู้เขียน |
 |---|---|---|---|---|
 | 0.1 | 24 พ.ย. 2026 | ฉบับแรก: ส่วนร่วม, การจองเลข ID, F-08 (AC-41–46) และ F-09 (AC-47–50) | ทำ #49 ก่อนเริ่ม implementation #50 | M2 |
+| 0.2 | 26 พ.ย. 2026 | F-08: เพิ่ม TEST-65 (migration/constraints, NFR-05) และ TEST-66 (backend restart, NFR-03) ใน Links, NFR table, ID table และ DoD ข้อ 1/4; F-09 สถานะ → #74 in progress. AC-41–50 และ F-09 design ไม่เปลี่ยน | Review PR #71 โดย jetanin: NFR-03 ต้องพิสูจน์หลัง restart ไม่ใช่แค่ reload; DoD อ้าง migration แต่ไม่มี test design; ตาราง F-09 ไม่ตรงกับ #74. แก้ก่อน merge และก่อนเริ่ม implementation #50 | M2 |

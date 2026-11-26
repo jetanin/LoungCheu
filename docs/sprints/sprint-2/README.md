@@ -1,11 +1,20 @@
 # Sprint 2 — F-06 implementation and completion record
 
+**Sprint 2 release — 26 November 2026 (Asia/Bangkok):** F-06 and F-07 are released on `main` as tag `v2.0.0-sprint-2` (`c0faf24`).
+- Release PR #67 (`sprint-2-staging` → `main`): authored by jetanin, approved by i3artuf, merged 26 Nov 00:45 with a merge commit.
+- CI `test-and-docker` [run 45666007554](https://github.com/jetanin/LoungCheu/actions/runs/45666007554) on release head `0643806` (same tree as `c0faf24`): Vitest 25 files, 264/264 passed; Playwright 39/39 passed; 0 failed, 0 skipped.
+- Deploy run 45668146212 on `c0faf24`: its test job passed again (Vitest 264/264, Playwright 39/39). It then built the image and ran migrate job `scccd8b05-migrate` with that image, which includes migration `202611240001_registration_lifecycle`. The smoke test passed and the run deployed Cloud Run revision `scccd8b05-00011-fvb`. `/api/ready` returned `ready`, `db: connected`, version `c0faf24`.
+- The UAT Team was told before the deploy (Lab 6 evidence EV-0-05). No independent UAT of Sprint 2 has run yet.
+- The later `v2.0.1-lab6` (`6f49d32`) adds only Lab 6 exercise tests and docs. The Sprint 2 release stays identifiable as `v2.0.0-sprint-2` (`c0faf24`).
+
+The dated text below is kept as history. The "Accepted release" columns now point to this release.
+
 Updated 24 November 2026 (Asia/Bangkok). Issue **#47**, branch
 `feature/47-f06`, based on `sprint-2-staging` as supplied by the user.
 Contract design Issue #46 is closed according to the user. This record covers
 F-06 only; F-07/#48 is owned by the teammate and is not accepted by this record.
 
-**Status: implemented and locally verified; not Done or an accepted release.**
+**Status (24 Nov record, superseded by the release block at the top): implemented and locally verified; not Done or an accepted release.**
 Integration update: the user started `git merge origin/sprint-2-staging` into
 `feature/47-f06` after the F-07 review. Conflict resolution and combined runs
 are recorded in [staging merge evidence](evidence/f06-staging-merge/README.md).
@@ -28,12 +37,12 @@ Implementation file paths are repository-relative.
 
 | AC | Implementation / source | Executed verification | Local result / remaining acceptance | Accepted release |
 |---|---|---|---|---|
-| AC-28 | registrations/cancellation.ts + cancellation-router.ts; queries.ts; RegistrationViews.tsx; API GREEN `0321258`, UI GREEN `5b12163` | TEST-37/40/43: lifecycle API, hardening, UI and real browser cancel/returned-seat flow | PASS: full before cancel, seat available after, same ref/first time, cancellation history/time; review/release pending | Pending |
-| AC-29 | registrations/service.ts + router.ts; RegistrationAction.tsx; API/UI GREEN above | TEST-38/40/42/43: two cycles, fresh201/reactivate200, capacity/duplicate, same-record DB/UI/history | PASS; browser A→B returned-seat use then A reactivation; review/release pending | Pending |
-| AC-30 | events/service.ts `close` + appended router block; EventPage.tsx/LifecycleMutation.tsx | TEST-39/40/43 and close races: before/at/after deadline, invalid transitions, preservation, CLOSED UI | PASS for F-06; close→PATCH executed in teammate TEST-47/52 using the real close ([cross-feature evidence](evidence/f07-cross-feature/README.md)) | Pending |
-| AC-31 | Event→Registration locks; clock after Event lock; EmptyInput/auth pipeline | TEST-40/42: −1/0/+1 ms, precedence/input/spoof/parser budgets and deadline-crossing lock wait | PASS; real PostgreSQL lock queue tests, not timing-only assertions | Pending |
-| AC-32 | cancellation/events/registration routes; LifecycleMutation, RegistrationViews, RegistrationAction | TEST-41/43: role/ownership/CSRF/Origin/errors; confirmation, busy, 409, access rejection, uncertainty, stale reads, reload/re-login | PASS locally; independent UAT not established | Pending |
-| AC-33 | lifecycle SQL migration, schema.prisma, seed.ts/demo-data.ts; atomic history writes | TEST-42; TEST-44(a/b); process-restart readback | PASS locally: races/backfill/fresh seed/rollback; TEST-44(c) cancel×capacity edit PASS in `event-edit.test.ts` ([cross-feature evidence](evidence/f07-cross-feature/README.md)); review/CI/release pending | Pending |
+| AC-28 | registrations/cancellation.ts + cancellation-router.ts; queries.ts; RegistrationViews.tsx; API GREEN `0321258`, UI GREEN `5b12163` | TEST-37/40/43: lifecycle API, hardening, UI and real browser cancel/returned-seat flow | PASS: full before cancel, seat available after, same ref/first time, cancellation history/time; reviewed (PR #59), released (PR #67) | `v2.0.0-sprint-2` (`c0faf24`) |
+| AC-29 | registrations/service.ts + router.ts; RegistrationAction.tsx; API/UI GREEN above | TEST-38/40/42/43: two cycles, fresh201/reactivate200, capacity/duplicate, same-record DB/UI/history | PASS; browser A→B returned-seat use then A reactivation; reviewed (PR #59), released (PR #67) | `v2.0.0-sprint-2` (`c0faf24`) |
+| AC-30 | events/service.ts `close` + appended router block; EventPage.tsx/LifecycleMutation.tsx | TEST-39/40/43 and close races: before/at/after deadline, invalid transitions, preservation, CLOSED UI | PASS for F-06; close→PATCH executed in teammate TEST-47/52 using the real close ([cross-feature evidence](evidence/f07-cross-feature/README.md)) | `v2.0.0-sprint-2` (`c0faf24`) |
+| AC-31 | Event→Registration locks; clock after Event lock; EmptyInput/auth pipeline | TEST-40/42: −1/0/+1 ms, precedence/input/spoof/parser budgets and deadline-crossing lock wait | PASS; real PostgreSQL lock queue tests, not timing-only assertions | `v2.0.0-sprint-2` (`c0faf24`) |
+| AC-32 | cancellation/events/registration routes; LifecycleMutation, RegistrationViews, RegistrationAction | TEST-41/43: role/ownership/CSRF/Origin/errors; confirmation, busy, 409, access rejection, uncertainty, stale reads, reload/re-login | PASS locally; independent UAT not established | `v2.0.0-sprint-2` (`c0faf24`) |
+| AC-33 | lifecycle SQL migration, schema.prisma, seed.ts/demo-data.ts; atomic history writes | TEST-42; TEST-44(a/b); process-restart readback | PASS locally: races/backfill/fresh seed/rollback; TEST-44(c) cancel×capacity edit PASS in `event-edit.test.ts` ([cross-feature evidence](evidence/f07-cross-feature/README.md)); reviewed with CI PASS (PR #60), released (PR #67) | `v2.0.0-sprint-2` (`c0faf24`) |
 
 Server modules above are under `server/src/modules/`; UI files under
 `client/src/features/registrations/` or `features/events/`; migration under
@@ -116,12 +125,12 @@ unverified locally. [Final local regression logs](evidence/f06-final/README.md).
 | Intermittent browser timeout | One full run timed out on B's disabled register action. Three targeted repetitions and the final full 38-test run passed without application changes; root cause not established, retained for review in final evidence |
 | PR, labels `documentation` where appropriate / `sprint-2`, assignee, CI `test-and-docker`, substantive teammate review | Not verified/completed by this local step; use actual #47 implementation PR metadata |
 | Kanban Specified → Started → PR Review → Done | User/team manages; no board change or Done claim made here |
-| Merge | User started merge of origin/sprint-2-staging; conflicts resolved and combined verification recorded separately. Merge commit still user-managed; no force push. F-06 PR review/merge into staging remains pending |
+| Merge | User started merge of origin/sprint-2-staging; conflicts resolved and combined verification recorded separately. Merge commit still user-managed; no force push. F-06 PR review/merge into staging remains pending. **Update 26 Nov:** PR #59 reviewed and merged (`24ebf07`), then released in PR #67 |
 | TEST-44(c) | Done locally on `test/47-sprint-2-cross-feature` (agreed with M1; written by M2); PASS, see [cross-feature evidence](evidence/f07-cross-feature/README.md). PR review/CI pending before AC-33/Sprint 2 DoD can be claimed. **Update 25 Nov 2026:** PR #60 reviewed (jetanin), CI SUCCESS, merged `128c35c` |
 | TEST-47 | Done locally on `test/47-sprint-2-cross-feature`: TEST-47 (API) and TEST-52 (UI) close through actual F-06 before PATCH/edit; PASS, see [cross-feature evidence](evidence/f07-cross-feature/README.md). PR review/CI pending. **Update 25 Nov 2026:** PR #60 reviewed (jetanin), CI SUCCESS, merged `128c35c` |
 | NFR-03 broader acceptance | Actual backend process restart proven; deployment/redeploy and independent clean reproduction not established by this run |
 | Independent UAT / #44 partner findings | No new acceptance claimed; team triage deadline 25 November 2026 20:00 Asia/Bangkok per user |
-| Release | Reviewed Sprint 2 main release, deployment/version verification and actual tag (example `v2.0.0-sprint-2`) pending; example is not an existing release |
+| Release | **Done 26 Nov 2026:** release PR #67 → `v2.0.0-sprint-2` (`c0faf24`), CI run 45666007554, deploy run 45668146212, revision `scccd8b05-00011-fvb`, `/api/ready` = `c0faf24` (was pending in the 24 Nov record) |
 
 ## F-07 completion record
 
@@ -130,17 +139,17 @@ record above is unchanged. [Contract](contracts.md) AC-34–40,
 [test design](sts.md) TEST-45–52 (STS v0.8).
 
 **Status: implemented, reviewed, merged into `sprint-2-staging` with CI
-passing; not yet released to `main` or accepted.**
+passing; released to `main` as `v2.0.0-sprint-2` (`c0faf24`) on 26 Nov 2026 (PR #67).**
 
 | AC | Implementation / source | Executed verification | Result | Accepted release |
 |---|---|---|---|---|
-| AC-34 | `server/src/modules/events/service.ts` (update), `router.ts` (PATCH), `input.ts` (EventPatch) | TEST-45: DRAFT patch of all 7 fields, own GET readback | PASS | Pending (Sprint 2 release) |
-| AC-35 | same; PUBLISHED editable-field check | TEST-46 (a)–(f): content/capacity edits, time fields → 409 FIELD_NOT_EDITABLE, data unchanged | PASS | Pending |
-| AC-36 | same; CLOSED → EVENT_NOT_EDITABLE | TEST-47: event closed by the real F-06 close endpoint, then PATCH → 409, data unchanged | PASS | Pending |
-| AC-37 | `input.ts` strict EventPatch parser | TEST-48 unit (`event-patch.test.ts`) + API/DB: empty/type/null/length/capacity/time format/system and unknown fields, DRAFT order → 400 | PASS | Pending |
-| AC-38 | `service.ts` capacity check after Event lock | TEST-49: capacity = ACTIVE OK, ACTIVE−1 → 409 CAPACITY_BELOW_ACTIVE, raise capacity then new registration OK | PASS | Pending |
-| AC-39 | Event row lock shared with registration | TEST-50: capacity decrease × last-seat registration, separate connections, lock wait observed in `pg_stat_activity`, 20 rounds; ACTIVE ≤ capacity every round | PASS | Pending |
-| AC-40 | `router.ts` auth/role/CSRF pipeline; `client/src/features/events/EventForm.tsx`, `EventPage.tsx`, `model.ts`, `lib/api.ts`, `app/App.tsx` | TEST-51 API access matrix; TEST-52 component (`EventEdit.test.tsx`) + Chromium (`tests/e2e/event-edit.spec.ts`) | PASS | Pending |
+| AC-34 | `server/src/modules/events/service.ts` (update), `router.ts` (PATCH), `input.ts` (EventPatch) | TEST-45: DRAFT patch of all 7 fields, own GET readback | PASS | `v2.0.0-sprint-2` (`c0faf24`) |
+| AC-35 | same; PUBLISHED editable-field check | TEST-46 (a)–(f): content/capacity edits, time fields → 409 FIELD_NOT_EDITABLE, data unchanged | PASS | `v2.0.0-sprint-2` (`c0faf24`) |
+| AC-36 | same; CLOSED → EVENT_NOT_EDITABLE | TEST-47: event closed by the real F-06 close endpoint, then PATCH → 409, data unchanged | PASS | `v2.0.0-sprint-2` (`c0faf24`) |
+| AC-37 | `input.ts` strict EventPatch parser | TEST-48 unit (`event-patch.test.ts`) + API/DB: empty/type/null/length/capacity/time format/system and unknown fields, DRAFT order → 400 | PASS | `v2.0.0-sprint-2` (`c0faf24`) |
+| AC-38 | `service.ts` capacity check after Event lock | TEST-49: capacity = ACTIVE OK, ACTIVE−1 → 409 CAPACITY_BELOW_ACTIVE, raise capacity then new registration OK | PASS | `v2.0.0-sprint-2` (`c0faf24`) |
+| AC-39 | Event row lock shared with registration | TEST-50: capacity decrease × last-seat registration, separate connections, lock wait observed in `pg_stat_activity`, 20 rounds; ACTIVE ≤ capacity every round | PASS | `v2.0.0-sprint-2` (`c0faf24`) |
+| AC-40 | `router.ts` auth/role/CSRF pipeline; `client/src/features/events/EventForm.tsx`, `EventPage.tsx`, `model.ts`, `lib/api.ts`, `app/App.tsx` | TEST-51 API access matrix; TEST-52 component (`EventEdit.test.tsx`) + Chromium (`tests/e2e/event-edit.spec.ts`) | PASS | `v2.0.0-sprint-2` (`c0faf24`) |
 
 | Step | Commit / evidence |
 |---|---|
@@ -150,7 +159,7 @@ passing; not yet released to `main` or accepted.**
 | Review fix (form refresh, save 404) | `7c79d95` test → `9eb9afb` fix |
 | PR #57 → `sprint-2-staging` | head `9eb9afb`, approved by jetanin, CI `test-and-docker` SUCCESS ([run 45347142610](https://github.com/jetanin/LoungCheu/actions/runs/45347142610)), merged `582a60d` on 24 Nov 2026 |
 | PR #60 cross-feature (TEST-47/52 via F-06 close, TEST-44(c)) | head `2e6ddc2`, approved by jetanin, CI SUCCESS ([run 45380720656](https://github.com/jetanin/LoungCheu/actions/runs/45380720656): Vitest 264/264, Playwright 39/39), merged `128c35c`; local logs in [cross-feature evidence](evidence/f07-cross-feature/README.md) |
-| Sprint 2 release to `main`, deploy, tag | Pending |
+| Sprint 2 release to `main`, deploy, tag | Release PR #67 merged `c0faf24` (26 Nov 2026), CI [run 45666007554](https://github.com/jetanin/LoungCheu/actions/runs/45666007554) Vitest 264/264 + Playwright 39/39, deploy run 45668146212 → `scccd8b05-00011-fvb`, tag `v2.0.0-sprint-2` |
 
 F-07 test counts in CI (from the job logs; 0 failed / 0 skipped in both runs):
 

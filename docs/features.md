@@ -1,6 +1,8 @@
 # Part B — Feature Inventory
 
-**สถานะปัจจุบัน — 25 พ.ย. 2026:** F-01–05 release บน main (`v1.0.0-sprint-1`, แล้ว `v1.0.1-uat`/`0b2cc80`) และผ่าน independent UAT ของทีม TH-005_P5 (7/7 PASS, Accepted 25 พ.ย.). F-06/F-07 merge เข้า `sprint-2-staging` แล้ว CI ผ่าน ยังไม่ release บน main. F-08/F-09 มี contract/STS ร่างใน Issue #49 ยังไม่ implement. ดูตาราง "สถานะ" ท้ายไฟล์; ข้อความลงวันที่ด้านล่างเป็นประวัติ
+**สถานะปัจจุบัน — 26 พ.ย. 2026:** F-06/F-07 release บน main เป็น `v2.0.0-sprint-2` (`c0faf24`, release PR #67 merge 26 พ.ย. 00:45 Asia/Bangkok; CI run 45666007554 Vitest 264/264, Playwright 39/39; deploy run 45668146212 → revision `scccd8b05-00011-fvb`, `/api/ready` version = `c0faf24`). Main ปัจจุบัน `v2.0.1-lab6` (`6f49d32`) เพิ่มเพียง test/เอกสารของ Lab 6 controlled exercise ไม่เปลี่ยนโค้ดแอป. F-08/F-09 contract/STS อยู่ใน PR #71 → `sprint-3-staging` ยังไม่ implement
+
+**สถานะ — 25 พ.ย. 2026 (ประวัติ):** F-01–05 release บน main (`v1.0.0-sprint-1`, แล้ว `v1.0.1-uat`/`0b2cc80`) และผ่าน independent UAT ของทีม TH-005_P5 (7/7 PASS, Accepted 25 พ.ย.). F-06/F-07 merge เข้า `sprint-2-staging` แล้ว CI ผ่าน ยังไม่ release บน main. F-08/F-09 มี contract/STS ร่างใน Issue #49 ยังไม่ implement. ดูตาราง "สถานะ" ท้ายไฟล์; ข้อความลงวันที่ด้านล่างเป็นประวัติ
 
 **สถานะหลักฐาน — 14 พ.ย. 2026:** PR #7/#10 ได้ teammate review โดย i3artuf และ merge เข้า sprint-1-staging แล้ว ตาม snapshot 12 พ.ย.; PR #10 reviewed head `0bd3468`, merge `97a5b91` (10 พ.ย. 16:26:11 Asia/Bangkok). ผล 159 Vitest / 37 Chromium / typecheck / build / compiled smoke 3 PASS เป็นผลรัน 8 พ.ย. ของ source ที่ commit เป็น `3313288`; รอบแก้เอกสารนี้ไม่ได้รันทดสอบแอปใหม่. OS-process restart, independent clean reproduction/UAT และ reviewed main release ยังขาดหลักฐาน; GAP-02 ยัง OPEN และ Product DoD ยังไม่ครบ. [Review/merge evidence](deliverable-1/evidence/review-merge-20261112/README.md). Baseline FR/BR/NFR/AC ไม่เปลี่ยน; F-06–09 อยู่ Sprint 2/3
 
@@ -39,10 +41,10 @@ Registration integration update: F-01–05 implemented; PR #7/#10 approved/merge
 | Feature | Planned | In progress | Implemented | Tested | Accepted |
 |---|---|---|---|---|---|
 | F-01–F-05 | ✓ | — | ✓ | ✓ CI + browser | ✓ release `v1.0.1-uat`; UAT Accepted 25 พ.ย. 2026 |
-| F-06 | ✓ | — | ✓ PR #59 | ✓ CI PR #59/#60 | Pending (Sprint 2 release) |
-| F-07 | ✓ | — | ✓ PR #57 | ✓ CI PR #57/#60 | Pending (Sprint 2 release) |
-| F-08 | ✓ contract ร่าง #49 | — | — | — | — |
-| F-09 | ✓ contract ร่าง #49 | — | — | — | — |
+| F-06 | ✓ | — | ✓ PR #59 | ✓ CI PR #59/#60/#67 | ✓ release `v2.0.0-sprint-2` (`c0faf24`, PR #67) |
+| F-07 | ✓ | — | ✓ PR #57 | ✓ CI PR #57/#60/#67 | ✓ release `v2.0.0-sprint-2` (`c0faf24`, PR #67) |
+| F-08 | ✓ contract #49 (PR #71) | — | — | — | — |
+| F-09 | ✓ contract #49 (PR #71) | — | — | — | — |
 
 หมายเหตุ 25 พ.ย. 2026: เพิ่ม BR-05 ให้ F-07 ตามที่ [Sprint 2 contract](sprints/sprint-2/contracts.md) และ traceability ระบุไว้แล้ว (ลด capacity พร้อมการลงทะเบียนต้องไม่ทำให้ ACTIVE เกิน capacity) ไม่ใช่ข้อกำหนดใหม่
 

@@ -54,7 +54,8 @@ it('TEST-44(a): real S1→S2 migrate preserves legacy data, backfills REGISTERED
         VALUES($1,$2,$3,'REGISTERED',NOW())`, [randomUUID(), f.reference, randomUUID()])).rejects.toMatchObject({ code: '23503' });
       await requireLifecycleMigrations(url);
       expect((await client.query('SELECT * FROM registration_history ORDER BY id')).rows).toEqual(histories);
-      expect((await client.query('SELECT COUNT(*)::int AS n FROM _prisma_migrations WHERE finished_at IS NOT NULL')).rows).toEqual([{ n: 3 }]);
+      // The current migration chain also includes the additive S3 attendance migration.
+      expect((await client.query('SELECT COUNT(*)::int AS n FROM _prisma_migrations WHERE finished_at IS NOT NULL')).rows).toEqual([{ n: 4 }]);
     } finally { await client.end(); }
   });
 }, 120_000);
@@ -89,7 +90,7 @@ it('TEST-44(a): fresh migrate→actual seed entry point creates history and repe
     try {
       const first = await seed(); expect(first.code, first.stderr).toBe(0);
       const before = await data();
-      expect(before.events).toHaveLength(6); expect(before.records).toHaveLength(4); expect(before.history).toHaveLength(4);
+      expect(before.events).toHaveLength(7); expect(before.records).toHaveLength(6); expect(before.history).toHaveLength(6);
       for (const record of before.records) {
         expect(record.cancelledAt).toBeNull();
         const history = before.history.filter(row => row.registrationId === record.id);
@@ -116,9 +117,9 @@ it('TEST-44(a): concurrent actual seed processes on a fresh database create one 
     try {
       const commands = await Promise.all([0, 1].map(() => runNode(['--import', 'tsx', 'server/prisma/seed.ts'], url, { DEMO_SEED_PASSWORD: password })));
       for (const command of commands) expect(command.code, command.stderr).toBe(0);
-      expect(await db.event.count()).toBe(6);
+      expect(await db.event.count()).toBe(7);
       const records = await db.registration.findMany(), history = await db.registrationHistory.findMany();
-      expect(records).toHaveLength(4); expect(history).toHaveLength(4);
+      expect(records).toHaveLength(6); expect(history).toHaveLength(6);
       for (const record of records) {
         const entries = history.filter(row => row.registrationId === record.id);
         expect(entries).toHaveLength(1);
@@ -189,8 +190,8 @@ it('TEST-44(a/b): demo-data history failure rolls back newly seeded events and r
       expect(await db.event.count()).toBe(0); expect(await db.registration.count()).toBe(0); expect(await db.registrationHistory.count()).toBe(0);
       expect(await db.user.findMany({ orderBy: { id: 'asc' } })).toEqual(users);
       await client.query('DROP TRIGGER f06_fail_history ON registration_history');
-      expect(await seedDemoEvents(db)).toEqual({ createdEvents: 6, createdRegistrations: 4, skippedEvents: 0 });
-      expect(await db.registrationHistory.count()).toBe(4);
+      expect(await seedDemoEvents(db)).toEqual({ createdEvents: 7, createdRegistrations: 6, skippedEvents: 0 });
+      expect(await db.registrationHistory.count()).toBe(6);
     } finally { await db.$disconnect(); await client.end(); }
   });
 }, 120_000);

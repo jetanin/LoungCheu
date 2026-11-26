@@ -129,7 +129,7 @@ npm run dev
 
 เปิด **http://127.0.0.1:5173/login** (ใช้ hostname นี้ให้ตรง APP_ORIGIN) API port 3000; Vite proxy `/api` ไป backend บัญชีสังเคราะห์: `participant.a`, `participant.b`, `participant.c`, `organizer.a`, `organizer.b`, `inactive.x` โดยบัญชีสุดท้าย Login ไม่ได้ Password ของบัญชีที่สร้างใหม่ใช้ค่าที่ส่งเข้า seed ผ่าน private handoff; seed ซ้ำรักษาบัญชีเดิมแม้ค่า password สำหรับ seed เปลี่ยน ห้ามใส่ demo password/session secret ใน Git หรือ PDF
 
-`npm run db:seed` เพิ่มกิจกรรม `[DEMO]` 6 รายการและ registration ตัวอย่าง 4 รายการด้วย: เปิดรับ React Workshop, เต็ม, เลย deadline, DRAFT, CLOSED และกิจกรรมของ organizer.b เวลาเป็นวันข้างหน้าจากวัน seed ครั้งแรกตาม Asia/Bangkok รันซ้ำข้าม Event เดิม ไม่ทับกิจกรรม/ที่นั่ง/เลขอ้างอิงที่ลองใช้งานแล้ว รายละเอียดและผลจริงอยู่ใน [demo seed](docs/events/demo-seed.md)
+`npm run db:seed` เพิ่มกิจกรรม `[DEMO]` 7 รายการและ registration ตัวอย่าง 6 รายการ: เปิดรับ React Workshop, เต็ม, เลย deadline, DRAFT, CLOSED, กิจกรรมของ organizer.b และกิจกรรมเช็กชื่อของ F-08 ที่มี ACTIVE 2 คน เช็กชื่อแล้ว 1 คน กิจกรรมเช็กชื่อมี closes=starts=00:00 Asia/Bangkok ของวัน seed และ ends อีก 7 วัน; เลยจากนั้นอยู่นอกช่วงเช็กชื่อตามกฎ ไม่เลื่อนวันที่เดิมเมื่อ seed ซ้ำ รันซ้ำข้าม Event เดิม ไม่ทับกิจกรรม/ที่นั่ง/เลขอ้างอิง/การเช็กชื่อที่ลองใช้งานแล้ว รายละเอียด S1 อยู่ใน [demo seed](docs/events/demo-seed.md); ผล migration/seed F-08 ดู [TEST-65](docs/sprints/sprint-3/evidence/f08-migration-green/README.md) ขั้นนี้เพิ่มเฉพาะ storage/seed; endpoint และ UI เช็กชื่อยังเป็นงานถัดไป
 
 ลอง Login `participant.a` → กิจกรรมทั้งหมด → `[DEMO] React Workshop เริ่มสร้างเว็บด้วยกัน` เพื่อลงทะเบียน หรือ Login `organizer.a` → กิจกรรมของฉัน เพื่อ preview/publish DRAFT ได้ Seed รอบนี้เพิ่มข้อมูลในฐานแอปตามคำขอผู้ใช้ และตรวจว่ากิจกรรมเดิมยังคงอยู่
 
