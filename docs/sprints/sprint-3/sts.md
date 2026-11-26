@@ -1,10 +1,10 @@
 # Sprint 3 — Software Test Specification (F-08, F-09)
 
-เอกสาร LC-S3-STS | v0.2 (planned design) | 26 พฤศจิกายน 2026
+เอกสาร LC-S3-STS | v0.3 (test design + local F-08 results) | 27 พฤศจิกายน 2026
 
 Contract: [contracts.md](contracts.md) ทุก test ต้องเขียนและ commit ให้ **fail ก่อน** implementation (RED) แล้วจึง implement ให้ผ่าน (GREEN) เก็บ SHA ทั้งสองจังหวะ
 
-สถานะ: **planned; ยังไม่ implement และยังไม่มีผลรันทดสอบ F-08/F-09**
+สถานะ: **F-08 implemented และ tested (local)** ตาม [หลักฐานและ TDD trace](evidence/f08-ui-green/README.md); ยังไม่ใช่ผล CI/teammate acceptance/release. ผล F-09 ไม่อยู่ใน implementation #50 นี้
 
 ## 1. Environment และ fixtures
 
@@ -54,6 +54,23 @@ Registration ทุก record มี REGISTERED history ตาม F-06 CANCELLED
 
 ทุก PR เข้า `sprint-3-staging` ต้องรัน automated tests เดิมทั้งหมดของ Sprint 1–2 ผ่าน CI `test-and-docker` และรายงาน passed/failed/skipped ตามจริงใน PR; tests ที่อ้าง RosterEntry/MyRegistration ปรับ expected schema เฉพาะ field ที่เพิ่มโดยไม่ลด assertion เดิม
 
+## 5. Local F-08 results — 27 พฤศจิกายน 2026
+
+ผู้รับผิดชอบ: เจตนินทร์ นายโท (M1). UI RED commit `54deba90eb510cf0626066367464f2ecc1bfc6bb` → verified implementation GREEN commit `30135da345076c82947b5493cd39262783d73b11` (ใช้ SHA นี้ใน D2). ผลทดสอบรันก่อน commit GREEN ข้างต้น โดยใช้ RED commit ร่วมกับ implementation ใน working tree. API/UI tests ใช้ Docker:55433; component ใช้ mock API; browser/restart ใช้ real backend/DB ตามหลักฐานแต่ละชุด
+
+| Tests | Actual local result | Evidence |
+|---|---|---|
+| TEST-53 + MyRegistrationS3 | 3/3 PASS | [own API](evidence/f08-own-green/README.md) |
+| TEST-54 | 9/9 PASS | [boundaries](evidence/f08-boundaries/README.md) |
+| TEST-55 | 3/3 PASS | [check-in rule](evidence/f08-check-in-green/README.md) |
+| TEST-56/57 | 25 API + 5 router unit PASS | [access/input](evidence/f08-access/README.md) |
+| TEST-58 | 20 races + 1 clock-after-lock PASS | [concurrency](evidence/f08-concurrency/README.md) |
+| TEST-59 | 21 component + 1 real Chromium journey PASS | [UI GREEN](evidence/f08-ui-green/README.md) |
+| TEST-65 | 8/8 PASS | [migration/seed/constraints](evidence/f08-migration-green/README.md) |
+| TEST-66 | 1/1 PASS, actual compiled process restart | [persistence](evidence/f08-restart/README.md) |
+
+Final regression: Vitest 34 files, 361/361 PASS; Chromium 40/40 PASS; typecheck/build และ compiled smoke 4/4 PASS ([logs](evidence/f08-ui-green/README.md)). เวลา TEST-66 และ Chromium เป็น fixture window รอบ real server clock เพื่อใช้ process จริง; domain boundary/race ใช้ controlled clocks ตาม design. Additional verification บน behavior ที่มีอยู่ผ่านตั้งแต่รันครั้งแรกและไม่ได้อ้าง RED ใหม่; separate RED/GREEN ของ implementation slices อยู่ใน TDD trace. ผล local ไม่ปิด #50 หรือแทน CI/review/merge/deploy
+
 ## Revision history
 
 ใช้กฎเดียวกับ [contracts.md](contracts.md#revision-history)
@@ -62,3 +79,4 @@ Registration ทุก record มี REGISTERED history ตาม F-06 CANCELLED
 |---|---|---|---|---|
 | 0.1 | 24 พ.ย. 2026 | fixtures, F-08 TEST-53–59 และ F-09 TEST-60–64 | ฉบับแรกก่อน implementation #50 | M2 |
 | 0.2 | 26 พ.ย. 2026 | TEST-55(b) ใช้ T1 แล้ว T2 ก่อนส่งซ้ำ; TEST-58(a) สอง runtime คนละ clock; เพิ่ม TEST-65 (migration/constraints) และ TEST-66 (backend restart) | Review PR #71 โดย jetanin: clock เดียวกันจับการเขียนทับ timestamp ไม่ได้; migration และ NFR-03 หลัง restart ไม่มี test design. แก้ก่อนเริ่ม implementation #50 | M2 |
+| 0.3 | 27 พ.ย. 2026 | เพิ่ม local F-08 result/evidence map และอัปเดตสถานะ; เก็บ expected cases/design เดิม | #50 มี implementation และผลรันจริงแล้ว; ไม่ใช่ F-09/CI/release acceptance | M1 |

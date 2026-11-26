@@ -1,0 +1,8 @@
+Baseline supplied by Jetanin Naitho: 5206254a9b14c6a818d734655a331623ef25c686
+Source: baseline + uncommitted own-attendance test
+Node: v22.23.2
+Started UTC: 2026-11-26T18:40:16.147Z
+Command: node node_modules/typescript/bin/tsc --noEmit -p server/tsconfig.json
+Target: Docker 55433 / loungcheu_test (process-only override)
+Exit: 0
+

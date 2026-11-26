@@ -1,0 +1,20 @@
+RED commit: 54deba90eb510cf0626066367464f2ecc1bfc6bb
+Source: RED commit + uncommitted GREEN changes
+Node: v22.23.2
+Started UTC: 2026-11-26T19:32:10.055Z
+Command: node node_modules/vitest/vitest.mjs run
+Target: Docker 55433 / loungcheu_test only
+Exit: 0
+
+
+ RUN  v5.1.0 C:/Work/2569/CPE334/GroupWork/LoungCheu
+
+
+ Test Files  34 passed (34)
+      Tests  361 passed (361)
+   Start at  02:32:10
+   Duration  104.98s (tests 86%, environment 7%, import 7%)
+
+    Isolate  34 workers spawned · ~344ms startup each (spawn + environment, per file)
+             at least ~11.34s faster with isolate: false — reuses workers across files instead of one per file
+

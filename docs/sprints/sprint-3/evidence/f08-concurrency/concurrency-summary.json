@@ -1,0 +1,16 @@
+{
+  "rounds": 20,
+  "winsA": 10,
+  "winsB": 10,
+  "allPairs200And409": true,
+  "allDistinctWriters": true,
+  "allCountsOne": true,
+  "lockClock": {
+    "writerPid": 16899,
+    "queuedAt": "2026-11-06T06:00:00.000Z",
+    "releasedAt": "2026-11-06T07:00:00.001Z",
+    "status": 409,
+    "code": "CHECK_IN_NOT_OPEN",
+    "unchanged": true
+  }
+}
