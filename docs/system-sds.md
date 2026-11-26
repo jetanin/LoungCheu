@@ -121,6 +121,8 @@ F-08 input/access verification — 27 พ.ย. 2026 (#50): [TEST-56/57](sprints/
 
 F-08 concurrency verification — 27 พ.ย. 2026 (#50): [TEST-58](sprints/sprint-3/evidence/f08-concurrency/README.md) local PASS 21/21: สอง runtime/Prisma connections ใช้ T1/T2 ต่างกัน มี PostgreSQL Event lock barrier และตรวจ actual waits ด้วย pg_stat_activity/pg_blocking_pids. 20 รอบสลับคิวแรก A/B ชนะอย่างละ 10; ทุกรอบได้ 200 หนึ่งและ 409 ALREADY_CHECKED_IN หนึ่ง, timestamp/actor ของผู้ชนะไม่ถูกเขียนทับ, Event/history คงเดิมและ roster count=1. คำขอที่รอ lock จน ends+1 ms ได้ 409 CHECK_IN_NOT_OPEN และข้อมูลไม่เปลี่ยน. ไม่แก้ production code; attendance UI และ compiled-process restart ยังเป็นงานถัดไป
 
+F-08 restart verification — 27 พ.ย. 2026 (#50): [TEST-66 / NFR-03](sprints/sprint-3/evidence/f08-restart/README.md) local PASS บน actual compiled `server/dist/server.js`: migrate ฐานชั่วคราว → compile → OA/PA login → check-in → หยุด process และยืนยัน readiness ใช้ไม่ได้ → เปิด process PID ใหม่บน DB/port เดิม → OA/PA login ใหม่. DB timestamp/actor, Event, registrations/history และ roster/own detail/list ตรงเดิมทั้งหมด. ใช้ real server clock กับ fixture window รอบเวลาปัจจุบัน ไม่เพิ่ม clock override หรือ endpoint ทดสอบ; cleanup ฐานชั่วคราวยืนยันแล้ว. ขั้นนี้ไม่แก้ production code; TEST-59 attendance UI ยังเป็นงานถัดไป
+
 ### Atomic registration
 
 1. ตรวจ active session/role และ lock Event ด้วย parameterized `SELECT ... FOR UPDATE` ใน Prisma interactive transaction
