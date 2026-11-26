@@ -12,13 +12,13 @@
 
 ## Source and evidence limits
 
-Jetanin supplied four original JPEG attachments and relayed the tester's result
-message in this chat. [12-partner-retest-report.txt](12-partner-retest-report.txt)
-transcribes that supplied message, identified by Jetanin as **EV-D-03** (retest
-result chat). It is a text record of the relayed report, not an original IG
-screenshot or a new test executed by the document editor. The requested console
-and C1–C3 screenshots have since been supplied and are included here as images
-08–11.
+[12-partner-retest-report.txt](12-partner-retest-report.txt) transcribes
+Nantakorn's result message posted directly in the IG group **CPE334_Lab**
+(**EV-D-03**, original result-chat screenshot). Nantakorn also sent the console
+and C1–C3 screenshots in the same group on 26 November 2026 at 20:48
+Asia/Bangkok (**EV-D-04**, message carrying the screenshots). Those four original
+JPEGs are retained here as images 08–11. The text transcription and the original
+chat screenshots are distinct evidence items.
 
 Images 08–11 were copied without resizing, cropping or alteration. Their
 SHA-256 values and original attachment filenames are in
@@ -53,7 +53,8 @@ by this documentation update. The older `[UAT-02-NP] Capacity check` card visibl
 in image 09 is not treated as screenshot proof of the newly reported UAT-02
 retest.
 
-The report and B/C screenshots are ready for teammate review. If the submission
-requires screenshots for each UAT-02 step or the original IG decision, attach
-those separately; they are not included or implied by the four supplied images.
-PR review/CI and the Issue #64/#44 closure checklist remain separate actions.
+The report and B/C screenshots are ready for teammate review. UAT-02 is supported
+by Nantakorn's result message (EV-D-03); the four images 08–11 support B/C and do
+not depict every UAT-02 step. Cite EV-D-03 for the result and acceptance decision
+and EV-D-04 for delivery of images 08–11 in the Lab 6/D2 evidence index. PR
+review/CI and the Issue #64/#44 closure checklist remain separate actions.
