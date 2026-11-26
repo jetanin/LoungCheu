@@ -38,6 +38,8 @@ F-06 ใช้ `REGISTRATION_CLOSED` เดิมเมื่อ cancel/reactiva
 
 สถานะ: **implemented; local verification recorded; ยังไม่ถือว่า Done/accepted release** งานออกแบบ #46 ปิดแล้วตามข้อมูลผู้ใช้; implementation #47 บน `feature/47-f06` ผูก source ล่าสุดที่ผู้ใช้ระบุ `ba89488079a2c884735a18642dbd7487b6872559` ดู [completion/หลักฐานและข้อจำกัด](README.md) ซึ่งแยกผลแต่ละ commit ออกจาก CI/review/merge/release ที่ยัง pending; TEST-44(c) และ TEST-47/52 แบบใช้ close จริงรันแล้วใน PR integration `test/47-sprint-2-cross-feature` ([ผล](evidence/f07-cross-feature/README.md))
 
+อัปเดตสถานะ 26 พ.ย. 2026 (ไม่เปลี่ยน contract/AC): F-06 (PR #59/#60) และ F-07 (PR #57/#60) release บน main เป็น `v2.0.0-sprint-2` (`c0faf24`) ผ่าน release PR #67, CI run 45666007554 (Vitest 264/264, Playwright 39/39), deploy revision `scccd8b05-00011-fvb`; ดู [completion](README.md). ยังไม่มี independent UAT ของ Sprint 2
+
 **NFR → verification design** (อ้างอิง [SRS](../../srs.md); ผลรันจริงอยู่ใน [completion](README.md); NFR-03 มี actual backend process restart เพิ่มจาก reload/re-login):
 
 | NFR | ขอบเขตใน F-06 | Planned tests |
