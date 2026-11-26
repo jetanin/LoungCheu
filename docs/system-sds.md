@@ -115,6 +115,8 @@ F-08 check-in rule update — 27 พ.ย. 2026 (#50): `modules/attendance/router
 
 F-08 own attendance API update — 27 พ.ย. 2026 (#50): `modules/registrations/queries.ts` ขยาย ownSelect และ serializer ให้ GET `/api/my/registrations` และ `/api/my/registrations/:id` คืน required `checked_in_at` เป็น UTC ISO timestamp หรือ null (MyRegistrationS3). ไม่เลือกหรือคืน checked_in_by_id; ยังคง participant scope, ordering และ field เดิม. Cancellation response ที่ใช้ serializer เดียวกันมีฟิลด์นี้ด้วย. [TEST-53 และ MyRegistrationS3 RED/GREEN](sprints/sprint-3/evidence/f08-own-green/README.md) ตรวจ public check-in → roster → own list/detail บน DB จริง รวม ACTIVE ที่ยังไม่เช็กชื่อและ CANCELLED ที่ต้องคืน null; ไม่ใช่ผล TEST-59 UI หรือ TEST-66 restart
 
+F-08 time-boundary verification — 27 พ.ย. 2026 (#50): [TEST-54 / AC-42](sprints/sprint-3/evidence/f08-boundaries/README.md) local PASS 9/9 บน production code เดิม: starts−1 ms/ends+1 ms ปฏิเสธและข้อมูลไม่เปลี่ยน; starts/ends พอดีเช็กชื่อได้; actual close API → CLOSED ยังเช็กชื่อในช่วงงานได้; actual create DRAFT → PATCH → publish → register ใช้ starts/ends ที่แก้ใหม่. ขั้นนี้เพิ่ม verification tests เท่านั้น ไม่มี RED ใหม่หรือ production changes; access matrix, concurrency, UI และ restart ยังต้องตรวจ
+
 ### Atomic registration
 
 1. ตรวจ active session/role และ lock Event ด้วย parameterized `SELECT ... FOR UPDATE` ใน Prisma interactive transaction
