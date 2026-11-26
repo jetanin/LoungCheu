@@ -1,0 +1,14 @@
+{
+  "baseline": "d61e1768b3a35c9e00ce61758ed5f4e768ea31aa",
+  "productionSourceUnchangedDuringRun": true,
+  "tests": {
+    "client/src/features/registrations/AttendanceViews.test.tsx": "9080461e448f6f5c182e893e49a111590ded1ef7ec80990789490bbb7cbc6b35",
+    "tests/e2e/attendance.spec.ts": "84775a2d328650891d6d428cfe3289d8bbd65b9ba9cb17c9e4d74c7b30404809"
+  },
+  "port": 55433,
+  "browserPorts": {
+    "api": 3011,
+    "web": 5183
+  },
+  "screenshotCopied": false
+}
