@@ -119,6 +119,8 @@ F-08 time-boundary verification — 27 พ.ย. 2026 (#50): [TEST-54 / AC-42](sp
 
 F-08 input/access verification — 27 พ.ย. 2026 (#50): [TEST-56/57](sprints/sprint-3/evidence/f08-access/README.md) local PASS 25 API/DB + 5 router unit cases. Auth/role/CSRF ปฏิเสธก่อน parse/service; malformed UUID/body/forged fields/oversize ถูกปฏิเสธ 400; ไม่มี body และ `{}` ใช้ server clock/session owner. Anonymous/Participant/foreign organizer/foreign registration/CSRF ตอบตาม contract; foreign own attendance/roster ไม่เปิดเผยชื่อ ID หรือเวลา. ทุก API rejection คง Event/Registration/history ทุก field. ไม่แก้ production code; ส่วนที่เหลือคือ concurrency/lock-wait, attendance UI และ compiled-process restart
 
+F-08 concurrency verification — 27 พ.ย. 2026 (#50): [TEST-58](sprints/sprint-3/evidence/f08-concurrency/README.md) local PASS 21/21: สอง runtime/Prisma connections ใช้ T1/T2 ต่างกัน มี PostgreSQL Event lock barrier และตรวจ actual waits ด้วย pg_stat_activity/pg_blocking_pids. 20 รอบสลับคิวแรก A/B ชนะอย่างละ 10; ทุกรอบได้ 200 หนึ่งและ 409 ALREADY_CHECKED_IN หนึ่ง, timestamp/actor ของผู้ชนะไม่ถูกเขียนทับ, Event/history คงเดิมและ roster count=1. คำขอที่รอ lock จน ends+1 ms ได้ 409 CHECK_IN_NOT_OPEN และข้อมูลไม่เปลี่ยน. ไม่แก้ production code; attendance UI และ compiled-process restart ยังเป็นงานถัดไป
+
 ### Atomic registration
 
 1. ตรวจ active session/role และ lock Event ด้วย parameterized `SELECT ... FOR UPDATE` ใน Prisma interactive transaction
