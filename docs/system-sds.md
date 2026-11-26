@@ -108,6 +108,7 @@ EventStatus มี DRAFT/PUBLISHED/CLOSED; RegistrationStatus มี ACTIVE/CANC
 | GET | /api/my/registrations; /api/my/registrations/:id; /api/organizer/events/:id/registrations | modules/registrations/read-router.ts |
 | POST | /api/my/registrations/:id/cancel | modules/registrations/cancellation-router.ts (F-06) |
 | POST | /api/organizer/events/:id/close | modules/events/router.ts (F-06 appended block) |
+| GET | /api/organizer/events/:id/summary (F-09, branch `feature/74-sprint-3-f09-summary`; ยังไม่ merge) | modules/attendance/summary-router.ts + summary.ts + rate.ts |
 
 Module paths ในตารางอยู่ใต้ `server/src/`; routers mount ที่ `/api`. F-06 own record มี id/status/registered_at/cancelled_at/event; create/reactivate ใช้ POST register เดิม (201/200 ตามลำดับ) พร้อม required cancelled_at=null ในผลสำเร็จ; roster fields คงเดิม ไม่มี history endpoint. F-07 edit implement แล้วจาก #48/PR #57 และรวมใน working tree นี้ตาม [Sprint 2 contracts](sprints/sprint-2/contracts.md); F-08/09 check-in/summary ยัง planned
 
@@ -134,7 +135,8 @@ Concurrency tests ใช้ separate connections/transactions และ barrier 
 | /organizer/events/{id} | เจ้าของ preview/publish/roster/count | 1 |
 | /organizer/events/{id}/edit | เจ้าของแก้กิจกรรม (F-07): DRAFT ทุก field, PUBLISHED เฉพาะ title/description/location/capacity (ช่องเวลา disabled), CLOSED ไม่มีฟอร์ม; ส่งเฉพาะ field ที่เปลี่ยน | 2 |
 | หน้าเดิมเพิ่ม Cancel/Close/Edit (F-06/F-07 implemented) | ตาม role/ownership/deadline; edit อยู่ก่อน close ใน action row เดิม | 2 |
-| Roster เพิ่ม Check-in; own record เพิ่ม attendance; หน้า summary | ตาม permission matrix | 3 |
+| /organizer/events/{id}/summary (F-09, branch #75) | เจ้าของดู ACTIVE/CANCELLED/เช็กชื่อแล้ว/อัตราเข้าร่วม และ "ข้อมูล ณ" (Asia/Bangkok); ปุ่มรีเฟรชสรุป ไม่ auto-refresh; ลิงก์ **ดูสรุปผล** จาก owner detail | 3 |
+| Roster เพิ่ม Check-in; own record เพิ่ม attendance (F-08) | ตาม permission matrix | 3 |
 
 Loading ปิดปุ่มซ้ำ; empty มีทางเลือกดู/สร้างกิจกรรม; field errors อยู่ใต้ input; conflicts อธิบายเหตุผลและ refresh availability; network errors retry ได้; expired session กลับ Login และล้าง private state; 403/404 ไม่เปิดเผยข้อมูลนอกสิทธิ์ เวลา UI แสดง Asia/Bangkok
 
@@ -271,3 +273,13 @@ UI เพิ่ม cancel confirmation ใน own detail และ close confirm
 F-07 integration fixture เพิ่ม REGISTERED history ใน nested create เดียวกับ Registration; cleanup ลบเฉพาะ suite-owned history → Registration → Event ใน transaction เดียวก่อนปิด connections เพื่อรองรับ Restrict FK ของ F-06 โดยไม่เปลี่ยน assertions ของ TEST-45–51. [ผลทดสอบหลังรวม](sprints/sprint-2/evidence/f06-staging-merge/README.md) แยกจาก historical F-06-only runs. TEST-44(c) ยังเป็น PR แยกหลังทั้งสอง feature เข้า staging; TEST-47/52 เปลี่ยนจาก CLOSED fixture เป็น actual close ในขั้น integration ตามข้อตกลง ไม่ถือว่าผ่านเพียงเพราะ local merge นี้
 
 **อัปเดต 25 พ.ย. 2026:** TEST-44(c) และ TEST-47/52 แบบปิดผ่าน F-06 จริงทำใน PR #60 (review โดย jetanin, CI ผ่าน, merge `128c35c`) ไม่มีการเปลี่ยน application code; ดู [cross-feature evidence](sprints/sprint-2/evidence/f07-cross-feature/README.md) และ [F-07 completion](sprints/sprint-2/README.md#f-07-completion-record)
+
+## 13. F-09 attendance summary — 27 พฤศจิกายน 2026
+
+งานบน branch `feature/74-sprint-3-f09-summary` (draft PR #75) ยังไม่ merge เข้า staging; อ้าง [Sprint 3 contract F-09](sprints/sprint-3/contracts.md) โดยไม่เปลี่ยน design
+
+- **API:** `GET /api/organizer/events/:id/summary` ลำดับ authenticate → requireRole(ORGANIZER) → ตรวจ path UUID → owner filter บน Event (ไม่พบหรือไม่ใช่เจ้าของ = 404 EVENT_NOT_FOUND) แล้วจึง aggregate ใน transaction REPEATABLE READ เดียว: `COUNT(*) FILTER` ของ ACTIVE, CANCELLED และ ACTIVE ที่ `checked_in_at IS NOT NULL` จาก `registrations` (ไม่ใช้ `registration_history`); `generated_at` มาจาก server clock
+- **Rate:** `attendanceRate(checked, active)` ใน `modules/attendance/rate.ts` คำนวณด้วยจำนวนเต็มแบบ half-up และคืน string 2 ตำแหน่ง; active=0 คืน `"0.00"`
+- **Data:** ไม่มี schema ใหม่ ใช้คอลัมน์ `checked_in_at` จาก migration F-08 `202611270001_registration_attendance` (PR #78); CHECK ของ F-08 ทำให้ CANCELLED ไม่มี `checked_in_at` อยู่แล้ว
+- **UI:** `client/src/features/attendance/AttendanceSummary.tsx` อ่านครั้งเดียวเมื่อเปิดหน้าและเมื่อกดรีเฟรชสรุป ไม่ refresh ตาม focus; ระหว่างโหลดแสดงข้อความแทนตัวเลข; 401 กลับ login; 403/404 ล้างค่าแล้วแสดงข้อความ; Participant ไม่ส่ง request
+- **หลักฐาน:** [step 1 rate/access](sprints/sprint-3/evidence/f09-red/README.md), [step 2 UI](sprints/sprint-3/evidence/f09-ui/README.md), [step 3 API counts + E2E](sprints/sprint-3/evidence/f09-api/README.md)
