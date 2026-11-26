@@ -23,6 +23,8 @@ Baseline v0.5 ได้ teammate review และ merge ผ่าน PR #5 แ�
 | DEC-15 | sprint-1-staging เป็น integration branch; feature PRs กลับ staging ก่อน release PR เข้า main; ชื่อ branch ยืนยันแล้ว | รวมงานและให้เพื่อนตรวจทุก PR; baseline integration ตาม sprint plan |
 | DEC-16 | Summary นับสถานะปัจจุบัน; lifecycle history นับเหตุการณ์แยก | Reactivate ลด CANCELLED และเพิ่ม ACTIVE; ไม่สะสมจำนวนครั้ง cancel ใน summary |
 | DEC-17 | UUID และ named schemas; validation/error code/precedence ตาม System SDS และ feature contracts | ให้ UI/API/tests ใช้ contract เดียวกัน; ownership ยังตรวจบน backend |
+| DEC-18 | (S3, 24 พ.ย. 2026) อัตราเข้าร่วมปัดครึ่งขึ้น (half-up) 2 ตำแหน่ง คำนวณด้วยจำนวนเต็มและคืนเป็น string เช่น `"3.13"` | BR-13 ระบุแค่ "ปัด 2 ตำแหน่ง"; float/banker's rounding ให้ผลต่างกันที่ค่า .xx5 จึงกำหนดให้ test ได้ ([Sprint 3 contracts](sprints/sprint-3/contracts.md)) |
+| DEC-19 | (S3, 24 พ.ย. 2026) Check-in ไม่มีการยกเลิก และไม่ append RegistrationHistory; ใช้ checked_in_at/checked_in_by_id เป็นหลักฐาน | ไม่มี FR ให้ยกเลิกการเช็กชื่อ; history เก็บ lifecycle ของสถานะตาม BR-13/DEC-16 |
 
 ## คำถามและสถานะ
 
