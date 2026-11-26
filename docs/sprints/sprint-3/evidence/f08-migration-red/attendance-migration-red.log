@@ -1,0 +1,190 @@
+Baseline: a5bf4bac0c17ede5cb2e4c4d1bac243fc473b74c + uncommitted TEST-65
+Started UTC: 2026-11-26T17:54:32.287Z
+Node: v22.23.2
+Command: node node_modules/vitest/vitest.mjs run server/tests/integration/attendance-migration.test.ts --reporter=verbose
+Target: disposable databases on approved Docker localhost:55433; admin loungcheu_test
+Exit: 1
+
+
+ RUN  v5.1.0 C:/Work/2569/CPE334/GroupWork/LoungCheu
+
+ × server/tests/integration/attendance-migration.test.ts > TEST-65(a): S2→S3 migration preserves records/history and initializes attendance to null; deploy is repeatable 27126ms
+   → TEST-65: the real S3 migration must add the nullable attendance columns: expected [] to deeply equal [ { …(4) }, { …(4) } ]
+ × server/tests/integration/attendance-migration.test.ts > TEST-65(b): fresh migrate→real seed creates attendance demo; repeated/concurrent seed preserves edited check-in and history 4306ms
+   → TEST-65: actual seed must create one attendance demo scenario: expected [] to have a length of 1 but got +0
+ × server/tests/integration/attendance-migration.test.ts > TEST-65(b): two actual seed processes on a fresh migrated DB create one attendance scenario and one REGISTERED history per record 2200ms
+   → TEST-65: actual seed must create one attendance demo scenario: expected [] to have a length of 1 but got +0
+ × server/tests/integration/attendance-migration.test.ts > TEST-65(c): CHECK/FK rejects INSERT and UPDATE with timestamp without actor and preserves data 1501ms
+   → TEST-65: the real S3 migration must add the nullable attendance columns: expected [] to deeply equal [ { …(4) }, { …(4) } ]
+ × server/tests/integration/attendance-migration.test.ts > TEST-65(c): CHECK/FK rejects INSERT and UPDATE with actor without timestamp and preserves data 1420ms
+   → TEST-65: the real S3 migration must add the nullable attendance columns: expected [] to deeply equal [ { …(4) }, { …(4) } ]
+ × server/tests/integration/attendance-migration.test.ts > TEST-65(c): CHECK/FK rejects INSERT and UPDATE with CANCELLED with attendance and preserves data 1411ms
+   → TEST-65: the real S3 migration must add the nullable attendance columns: expected [] to deeply equal [ { …(4) }, { …(4) } ]
+ × server/tests/integration/attendance-migration.test.ts > TEST-65(c): CHECK/FK rejects INSERT and UPDATE with nonexistent actor and preserves data 1419ms
+   → TEST-65: the real S3 migration must add the nullable attendance columns: expected [] to deeply equal [ { …(4) }, { …(4) } ]
+ × server/tests/integration/attendance-migration.test.ts > TEST-65(c): valid nullable/pair values persist with millisecond precision and checked-in actor FK is Restrict 1411ms
+   → TEST-65: the real S3 migration must add the nullable attendance columns: expected [] to deeply equal [ { …(4) }, { …(4) } ]
+
+ Test Files  1 failed (1)
+      Tests  8 failed (8)
+   Start at  00:54:36
+   Duration  41.86s (tests 100%)
+
+
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 8 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  server/tests/integration/attendance-migration.test.ts > TEST-65(a): S2→S3 migration preserves records/history and initializes attendance to null; deploy is repeatable
+AssertionError: TEST-65: the real S3 migration must add the nullable attendance columns: expected [] to deeply equal [ { …(4) }, { …(4) } ]
+
+- Expected
++ Received
+
+- [
+-   {
+-     "column_name": "checked_in_at",
+-     "data_type": "timestamp with time zone",
+-     "datetime_precision": 3,
+-     "is_nullable": "YES",
+-   },
+-   {
+-     "column_name": "checked_in_by_id",
+-     "data_type": "uuid",
+-     "datetime_precision": null,
+-     "is_nullable": "YES",
+-   },
+- ]
++ []
+
+ ❯ attendanceColumns server/tests/integration/attendance-migration.test.ts:70:91
+     68|     FROM information_schema.columns WHERE table_schema='public' AND ta…
+     69|     AND column_name IN ('checked_in_at','checked_in_by_id') ORDER BY c…
+     70|   expect(rows, 'TEST-65: the real S3 migration must add the nullable a…
+       |                                                                                           ^
+     71|     { column_name: 'checked_in_at', data_type: 'timestamp with time zo…
+     72|     { column_name: 'checked_in_by_id', data_type: 'uuid', datetime_pre…
+ ❯ server/tests/integration/attendance-migration.test.ts:110:7
+ ❯ withLifecycleDatabase server/tests/helpers/lifecycle-environment.ts:34:12
+ ❯ server/tests/integration/attendance-migration.test.ts:100:3
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/8]⎯
+
+ FAIL  server/tests/integration/attendance-migration.test.ts > TEST-65(b): fresh migrate→real seed creates attendance demo; repeated/concurrent seed preserves edited check-in and history
+AssertionError: TEST-65: actual seed must create one attendance demo scenario: expected [] to have a length of 1 but got +0
+
+- Expected
++ Received
+
+- 1
++ 0
+
+ ❯ checkDemo server/tests/integration/attendance-migration.test.ts:136:87
+    134|     AND status='PUBLISHED' AND registration_closes_at=starts_at
+    135|     AND ends_at=starts_at + INTERVAL '7 days'`)).rows;
+    136|   expect(candidates, 'TEST-65: actual seed must create one attendance …
+       |                                                                                       ^
+    137|   const event = candidates[0];
+    138|   const midnight = (ms: number) => {
+ ❯ server/tests/integration/attendance-migration.test.ts:173:23
+ ❯ withLifecycleDatabase server/tests/helpers/lifecycle-environment.ts:34:12
+ ❯ server/tests/integration/attendance-migration.test.ts:166:3
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[2/8]⎯
+
+ FAIL  server/tests/integration/attendance-migration.test.ts > TEST-65(b): two actual seed processes on a fresh migrated DB create one attendance scenario and one REGISTERED history per record
+AssertionError: TEST-65: actual seed must create one attendance demo scenario: expected [] to have a length of 1 but got +0
+
+- Expected
++ Received
+
+- 1
++ 0
+
+ ❯ checkDemo server/tests/integration/attendance-migration.test.ts:136:87
+    134|     AND status='PUBLISHED' AND registration_closes_at=starts_at
+    135|     AND ends_at=starts_at + INTERVAL '7 days'`)).rows;
+    136|   expect(candidates, 'TEST-65: actual seed must create one attendance …
+       |                                                                                       ^
+    137|   const event = candidates[0];
+    138|   const midnight = (ms: number) => {
+ ❯ server/tests/integration/attendance-migration.test.ts:196:7
+ ❯ withLifecycleDatabase server/tests/helpers/lifecycle-environment.ts:34:12
+ ❯ server/tests/integration/attendance-migration.test.ts:188:3
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[3/8]⎯
+
+ FAIL  server/tests/integration/attendance-migration.test.ts > TEST-65(c): CHECK/FK rejects INSERT and UPDATE with timestamp without actor and preserves data
+ FAIL  server/tests/integration/attendance-migration.test.ts > TEST-65(c): CHECK/FK rejects INSERT and UPDATE with actor without timestamp and preserves data
+ FAIL  server/tests/integration/attendance-migration.test.ts > TEST-65(c): CHECK/FK rejects INSERT and UPDATE with CANCELLED with attendance and preserves data
+ FAIL  server/tests/integration/attendance-migration.test.ts > TEST-65(c): CHECK/FK rejects INSERT and UPDATE with nonexistent actor and preserves data
+AssertionError: TEST-65: the real S3 migration must add the nullable attendance columns: expected [] to deeply equal [ { …(4) }, { …(4) } ]
+
+- Expected
++ Received
+
+- [
+-   {
+-     "column_name": "checked_in_at",
+-     "data_type": "timestamp with time zone",
+-     "datetime_precision": 3,
+-     "is_nullable": "YES",
+-   },
+-   {
+-     "column_name": "checked_in_by_id",
+-     "data_type": "uuid",
+-     "datetime_precision": null,
+-     "is_nullable": "YES",
+-   },
+- ]
++ []
+
+ ❯ attendanceColumns server/tests/integration/attendance-migration.test.ts:70:91
+     68|     FROM information_schema.columns WHERE table_schema='public' AND ta…
+     69|     AND column_name IN ('checked_in_at','checked_in_by_id') ORDER BY c…
+     70|   expect(rows, 'TEST-65: the real S3 migration must add the nullable a…
+       |                                                                                           ^
+     71|     { column_name: 'checked_in_at', data_type: 'timestamp with time zo…
+     72|     { column_name: 'checked_in_by_id', data_type: 'uuid', datetime_pre…
+ ❯ server/tests/integration/attendance-migration.test.ts:93:7
+ ❯ withLifecycleDatabase server/tests/helpers/lifecycle-environment.ts:34:12
+ ❯ migratedFixture server/tests/integration/attendance-migration.test.ts:86:3
+ ❯ server/tests/integration/attendance-migration.test.ts:209:3
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[4/8]⎯
+
+ FAIL  server/tests/integration/attendance-migration.test.ts > TEST-65(c): valid nullable/pair values persist with millisecond precision and checked-in actor FK is Restrict
+AssertionError: TEST-65: the real S3 migration must add the nullable attendance columns: expected [] to deeply equal [ { …(4) }, { …(4) } ]
+
+- Expected
++ Received
+
+- [
+-   {
+-     "column_name": "checked_in_at",
+-     "data_type": "timestamp with time zone",
+-     "datetime_precision": 3,
+-     "is_nullable": "YES",
+-   },
+-   {
+-     "column_name": "checked_in_by_id",
+-     "data_type": "uuid",
+-     "datetime_precision": null,
+-     "is_nullable": "YES",
+-   },
+- ]
++ []
+
+ ❯ attendanceColumns server/tests/integration/attendance-migration.test.ts:70:91
+     68|     FROM information_schema.columns WHERE table_schema='public' AND ta…
+     69|     AND column_name IN ('checked_in_at','checked_in_by_id') ORDER BY c…
+     70|   expect(rows, 'TEST-65: the real S3 migration must add the nullable a…
+       |                                                                                           ^
+     71|     { column_name: 'checked_in_at', data_type: 'timestamp with time zo…
+     72|     { column_name: 'checked_in_by_id', data_type: 'uuid', datetime_pre…
+ ❯ server/tests/integration/attendance-migration.test.ts:93:7
+ ❯ withLifecycleDatabase server/tests/helpers/lifecycle-environment.ts:34:12
+ ❯ migratedFixture server/tests/integration/attendance-migration.test.ts:86:3
+ ❯ server/tests/integration/attendance-migration.test.ts:228:3
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[5/8]⎯
+
