@@ -56,7 +56,7 @@ Registration ทุก record มี REGISTERED history ตาม F-06 CANCELLED
 
 ## 5. Local F-08 results — 27 พฤศจิกายน 2026
 
-ผู้รับผิดชอบ: เจตนินทร์ นายโท (M1). UI RED commit `54deba90eb510cf0626066367464f2ecc1bfc6bb` → verified implementation GREEN commit `30135da345076c82947b5493cd39262783d73b11` (ใช้ SHA นี้ใน D2). Logs บันทึก RED + working-tree implementation ตามสภาพตอนรัน ก่อนนักศึกษา commit เป็น GREEN SHA นี้. API/UI tests ใช้ Docker:55433; component ใช้ mock API; browser/restart ใช้ real backend/DB ตามหลักฐานแต่ละชุด
+ผู้รับผิดชอบ: เจตนินทร์ นายโท (M1). UI RED commit `54deba90eb510cf0626066367464f2ecc1bfc6bb` → verified implementation GREEN commit `30135da345076c82947b5493cd39262783d73b11` (ใช้ SHA นี้ใน D2). ผลทดสอบรันก่อน commit GREEN ข้างต้น โดยใช้ RED commit ร่วมกับ implementation ใน working tree. API/UI tests ใช้ Docker:55433; component ใช้ mock API; browser/restart ใช้ real backend/DB ตามหลักฐานแต่ละชุด
 
 | Tests | Actual local result | Evidence |
 |---|---|---|

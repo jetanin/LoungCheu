@@ -17,6 +17,8 @@
 
 Component failures are missing attendance labels, column or action in existing public components, not missing imports or new prop types. The two passing cases verify that CANCELLED own list/detail omit attendance; this behavior already holds because the baseline renders no attendance section.
 
+`component-red.log` is a condensed record of the original execution: command/time/exit code, all 21 case outcomes, representative assertion errors and final totals are retained; repeated DOM dumps and stack traces are omitted. It is not a rerun. The [full original log in the RED commit](https://github.com/jetanin/LoungCheu/blob/54deba90eb510cf0626066367464f2ecc1bfc6bb/docs/sprints/sprint-3/evidence/f08-ui-red/component-red.log) remains available, and the condensed header records its SHA-256.
+
 The component definitions cover checked/unchecked own list/detail, CANCELLED suppression, roster counts and column, confirmation containing the participant name, cancel-without-POST, busy/single-send, time-window hints, cancelled/previously-checked rows, three Thai 409 messages with roster refresh, 401/403/404 privacy clearing, and explicit reconciliation after an uncertain POST abort. They use mocked API responses; the timeout case simulates a sent request rejecting with AbortError and does not claim an elapsed real timeout. Responses are copied to avoid shared-object mutation in mocks.
 
 Assertions after the initial missing UI element have not run yet. In particular, these RED results do not establish that confirmation, busy, denial, reconciliation or browser re-login behavior currently works; those require GREEN.
