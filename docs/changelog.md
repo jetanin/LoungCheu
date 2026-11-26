@@ -97,3 +97,7 @@ Contract/STS v0.6 reconcile F-06 implementation and execution without changing A
 ## Sprint 2 release status — 26 November 2026
 
 Release PR #67 merged F-06/F-07 into `main` as `c0faf24`, tagged `v2.0.0-sprint-2`. CI run 45666007554 passed (Vitest 264/264, Playwright 39/39), and deploy run 45668146212 produced revision `scccd8b05-00011-fvb`. Updated the release status in SRS §10, the feature inventory, the System SDS header, traceability (AC-28–AC-40 Accepted release column, and the release version in the result of FR-09–FR-12 and the BR rows covered by F-06/F-07, per D2 §3.4 "result and version"), the Sprint 2 completion record and the contract/STS status lines. No FR/BR/NFR, AC or TEST changed. Earlier dated status text is kept as history. Later, `v2.0.1-lab6` (`6f49d32`) added only Lab 6 controlled-exercise tests and docs (Issue #64). F-08/F-09 contracts are in PR #71 to `sprint-3-staging` and are not implemented yet. (Issue #51)
+
+## Sprint 3 traceability — 27 November 2026
+
+Added traceability §7: AC-41–AC-50 rows with planned tests, implementation state, actual test file, result and version, plus a Sprint 3 NFR table. FR-13–15 and BR-12–13 rows now point to the Sprint 3 AC and TEST IDs (contract/STS v0.2, PR #71) instead of "STS to be defined". F-08 is PLANNED (no code, no run). F-09 is IN PROGRESS: TEST-61 unit and TEST-63 pass on branch commit `062ed8d` (CI run 45694192618 on draft PR #75); TEST-60, TEST-61 API, TEST-62 and TEST-64 are NOT EXECUTED.

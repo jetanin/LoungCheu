@@ -36,9 +36,9 @@ Historical F-01–03 execution: parents 04106ff + ada659b ตาม [combined ve
 | FR-10 | F-06 | 2 | AC-30–32: owner close และคง registrations/history | TEST-39–43 | Local API/DB/UI/browser PASS; events service.close + lifecycle tests; [F-06 completion](sprints/sprint-2/README.md); **26 พ.ย.:** TEST-37–52 ที่เกี่ยวข้อง PASS ใน CI ของ release `v2.0.0-sprint-2` (`c0faf24`; run 45666007554 และ deploy run 45668146212) |
 | FR-11 | F-07 | 2 | AC-34–40 (V2-03): owner edit ตาม status; capacity ไม่ต่ำกว่า active แม้มี concurrent registration | TEST-45–52 | event-edit.test.ts + event-patch.test.ts + EventEdit.test.tsx + event-edit.spec.ts; reviewed/merged sprint-2-staging, CI PASS (PR #57 `582a60d`, PR #60 `128c35c`); [F-07 completion](sprints/sprint-2/README.md#f-07-completion-record); **26 พ.ย.:** TEST-37–52 ที่เกี่ยวข้อง PASS ใน CI ของ release `v2.0.0-sprint-2` (`c0faf24`; run 45666007554 และ deploy run 45668146212) |
 | FR-12 | F-06 | 2 | AC-29,31,33: reactivate reference/first time เดิมและ history | TEST-38,40,42–44 | Local PASS สำหรับ reactivate/races/44(a,b) และ TEST-44(c) ([cross-feature evidence](sprints/sprint-2/evidence/f07-cross-feature/README.md)); [F-06 completion](sprints/sprint-2/README.md); **26 พ.ย.:** TEST-37–52 ที่เกี่ยวข้อง PASS ใน CI ของ release `v2.0.0-sprint-2` (`c0faf24`; run 45666007554 และ deploy run 45668146212) |
-| FR-13 | F-08 | 3 | V3-01: owner check-in ACTIVE ในช่วงกิจกรรม; reject invalid/duplicate/cross-owner | กำหนด detailed STS ก่อน F-08 coding | — |
-| FR-14 | F-08 | 3 | V3-02: own attendance status ผ่านหน้า F-04 | กำหนด detailed STS ก่อน F-08 coding | — |
-| FR-15 | F-09 | 3 | V3-03: totals ของสถานะปัจจุบัน/rate ตรง DB รวม reactivate และ 0 denominator; owner scope | กำหนด detailed STS ก่อน F-09 coding | — |
+| FR-13 | F-08 | 3 | V3-01; AC-41–44, AC-46: owner check-in ACTIVE ในช่วงกิจกรรม; reject invalid/duplicate/cross-owner | TEST-53–58, TEST-65–66 (STS v0.2) | PLANNED: contract/STS merge แล้ว (PR #71); ยังไม่ implement ยังไม่รัน — ดู §7 |
+| FR-14 | F-08 | 3 | V3-02; AC-45, AC-46: own attendance status ผ่านหน้า F-04 | TEST-57, TEST-59, TEST-66 | PLANNED: ยังไม่ implement ยังไม่รัน — ดู §7 |
+| FR-15 | F-09 | 3 | V3-03; AC-47–50: totals ของสถานะปัจจุบัน/rate ตรง DB รวม reactivate และ 0 denominator; owner scope | TEST-60–64 | IN PROGRESS: TEST-61 (unit) และ TEST-63 PASS บน branch `feature/74-sprint-3-f09-summary` (`062ed8d`; CI ของ draft PR #75); TEST-60, TEST-61 (API), TEST-62, TEST-64 ยังไม่รัน — ดู §7 |
 
 ## 2. Business rules
 
@@ -55,8 +55,8 @@ Historical F-01–03 execution: parents 04106ff + ada659b ตาม [combined ve
 | BR-09 | F-02,F-06 | 1/2 | AC-08; V2-02: close ซ้ำ/เปิดกลับไม่ได้ | TEST-09,10 และ S2 close tests | F-02 PASS; F-06 TEST-39/40 close/transitions local PASS; **26 พ.ย.:** TEST-37–52 ที่เกี่ยวข้อง PASS ใน CI ของ release `v2.0.0-sprint-2` (`c0faf24`; run 45666007554 และ deploy run 45668146212) |
 | BR-10 | F-03,F-06,F-07 | 1/2 | AC-17; V2-01–04: interleaved transactions | TEST-20,21 และ S2 capacity/cancel/close races | F-03 PASS; F-06 TEST-42 real PostgreSQL observed-lock races local PASS; F-07 TEST-50 capacity ลด × ลงทะเบียนที่นั่งสุดท้าย 20 รอบ (separate connections) PASS ใน CI PR #57/#60; **26 พ.ย.:** TEST-37–52 ที่เกี่ยวข้อง PASS ใน CI ของ release `v2.0.0-sprint-2` (`c0faf24`; run 45666007554 และ deploy run 45668146212) |
 | BR-11 | F-02,F-06,F-07 | 1/2 | AC-10; V2-03: immutable owner/published times | TEST-13 และ S2 edit restrictions | F-02 session owner/spoof rejection PASS; F-07 TEST-46/47 (PUBLISHED เวลาแก้ไม่ได้ 409 FIELD_NOT_EDITABLE, CLOSED 409 EVENT_NOT_EDITABLE) และ TEST-48 system field 400 PASS ใน CI PR #57/#60; **26 พ.ย.:** TEST-37–52 ที่เกี่ยวข้อง PASS ใน CI ของ release `v2.0.0-sprint-2` (`c0faf24`; run 45666007554 และ deploy run 45668146212) |
-| BR-12 | F-08 | 3 | V3-01: time bounds, ACTIVE-only, CLOSED และ duplicate=409 ALREADY_CHECKED_IN โดยข้อมูลเดิมไม่เปลี่ยน | กำหนดใน S3 STS | — |
-| BR-13 | F-09 | 3 | V3-03: current-status counts หลัง reactivate, cancelled exclusion, zero count และ rounding; history ไม่ใช่ตัวนับ summary | กำหนดใน S3 STS | — |
+| BR-12 | F-08 | 3 | V3-01; AC-42, AC-43, AC-46: time bounds, ACTIVE-only, CLOSED และ duplicate=409 ALREADY_CHECKED_IN โดยข้อมูลเดิมไม่เปลี่ยน | TEST-54, TEST-55, TEST-58 | PLANNED: ยังไม่ implement ยังไม่รัน |
+| BR-13 | F-09 | 3 | V3-03; AC-47–49: current-status counts หลัง reactivate, cancelled exclusion, zero count และ rounding; history ไม่ใช่ตัวนับ summary | TEST-60–62 | IN PROGRESS: rounding (TEST-61 unit) PASS บน branch `062ed8d`; การนับจาก DB (TEST-60, TEST-62) ยังไม่รันเพราะรอคอลัมน์ `checked_in_at` จาก F-08 migration |
 | BR-14 | SYS-DATA,F-02,F-03,F-06,F-07,F-08 | 1/2/3 | AC-07,11,15; V2-01,03; V3-01: UTC millisecond, input precision และ clock หลัง event lock | TEST-08,18,36 และ future time-boundary tests | F-02 minute/second ISO offsets/precision/UTC/Bangkok + F-02/F-03 clock-after-lock/deadline equality PASS; F-06 TEST-40/42 clock/UTC boundaries local PASS; F-07 TEST-45/48 UTC `.SSSZ` readback และเศษวินาทีเกิน 3 หลัก = 400 PASS ใน CI PR #57/#60; S3 outside this result; **26 พ.ย.:** TEST-37–52 ที่เกี่ยวข้อง PASS ใน CI ของ release `v2.0.0-sprint-2` (`c0faf24`; run 45666007554 และ deploy run 45668146212) |
 
 ## 3. Non-functional requirements
@@ -152,3 +152,34 @@ F-07 (#48) implement ใน PR #57 (head `9eb9afb`, merge `582a60d` เข้า
 24 พ.ย. 2026 staging integration: ผู้ใช้เริ่ม merge origin/sprint-2-staging เข้า feature/47-f06 และรวม F-07 implementation แล้วใน working tree; ดู [ผลรัน F-06/F-07 หลังแก้ conflict](sprints/sprint-2/evidence/f06-staging-merge/README.md). ผลนี้แยกจาก F-06-only/เก่า และไม่ปิด TEST-44(c), independent acceptance หรือ release gates อัตโนมัติ; ผู้ใช้ยังต้อง commit merge และทำ PR workflow
 
 FR/BR/NFR allocation คง baseline เดิม; automated results159/37/typecheck/build/smoke3 อ้าง recorded source3313288 ตาม [verification](registration/views-verification.md). PR #7/#10 approved/merged staging แล้วตาม snapshot12พ.ย. ผลนี้ไม่ใช่ release-linked rerun. OS-process restart, independent clean reproduction/UAT, final board และ reviewed main release acceptance ยัง pending; GAP-02 OPEN และ Product DoD ยังไม่ครบ
+
+## 7. Sprint 3 AC → planned/actual verification — 27 พฤศจิกายน 2026
+
+Contract/STS v0.2: [contracts](sprints/sprint-3/contracts.md), [STS](sprints/sprint-3/sts.md) — merge เข้า `sprint-3-staging` แล้วใน PR #71 (26 พ.ย. 2026). ยังไม่มี Sprint 3 release บน main จึงยังไม่มีแถวไหนเป็น Accepted
+
+คำที่ใช้: **PLANNED** = มี AC/test design แต่ยังไม่มีโค้ดและยังไม่รัน; **IN PROGRESS** = มีโค้ดบางส่วนบน feature branch ยังไม่ merge เข้า staging; **PASS (branch)** = test รันแล้วผ่านบน commit ที่ระบุ แต่ commit นั้นยังไม่อยู่ใน staging/main. Test ที่ยังไม่รันเขียนว่า NOT EXECUTED ไม่นับเป็นผ่าน
+
+F-09 branch `feature/74-sprint-3-f09-summary`: RED `60cbc8e` → GREEN `062ed8d` ([TDD evidence](sprints/sprint-3/evidence/f09-red/README.md)); CI `test-and-docker` ของ draft PR #75 บน head `a43b03e` (= `062ed8d` + evidence docs) [run 45694192618](https://github.com/jetanin/LoungCheu/actions/runs/45694192618) SUCCESS: Vitest 27 files 273/273, Playwright 39/39, 0 failed/skipped
+
+| AC | Feature | Planned tests | Implemented | Actual file/test | Result | Version |
+|---|---|---|---|---|---|---|
+| AC-41 | F-08 | TEST-53, TEST-66 | No | — | NOT EXECUTED | — |
+| AC-42 | F-08 | TEST-54 | No | — | NOT EXECUTED | — |
+| AC-43 | F-08 | TEST-55 | No | — | NOT EXECUTED | — |
+| AC-44 | F-08 | TEST-56, TEST-57 | No | — | NOT EXECUTED | — |
+| AC-45 | F-08 | TEST-57, TEST-59, TEST-66 | No | — | NOT EXECUTED | — |
+| AC-46 | F-08 | TEST-58, TEST-59 | No | — | NOT EXECUTED | — |
+| AC-47 | F-09 | TEST-60 | Partial: summary query (COUNT ACTIVE/CANCELLED/checked-in ใน REPEATABLE READ) อยู่บน branch แต่ต้องใช้คอลัมน์ `checked_in_at` ที่ยังไม่มี | — | NOT EXECUTED (รอ F-08 migration) | branch `062ed8d` |
+| AC-48 | F-09 | TEST-61 (unit + API) | Partial: `attendanceRate` (integer half-up) | `server/tests/unit/attendance-rate.test.ts` 7 cases รวม 1/32→"3.13", 0/0→"0.00" | Unit PASS (branch); API ส่วน ERATE3 NOT EXECUTED | branch `062ed8d`; CI run 45694192618 |
+| AC-49 | F-09 | TEST-62 | Partial: endpoint อ่านใหม่ทุกครั้ง ไม่มี cache | — | NOT EXECUTED (รอ F-08 migration) | branch `062ed8d` |
+| AC-50 | F-09 | TEST-63, TEST-64 | Partial: API access (auth → role → path → owner scope 404) ทำแล้ว; UI ยังไม่ทำ | `server/tests/integration/attendance-summary.test.ts` (TEST-63: 401/403/404/404/400 และ error ไม่มียอด) | API PASS (branch); UI TEST-64 NOT EXECUTED | branch `062ed8d`; CI run 45694192618 |
+
+| NFR | Sprint 3 scope | Planned tests | Actual result |
+|---|---|---|---|
+| NFR-01 | check-in/own attendance และ summary อ่าน/เขียนได้เฉพาะสิทธิ์ที่ถูกต้อง | TEST-57, TEST-63 | TEST-63 PASS (branch `062ed8d`); TEST-57 NOT EXECUTED |
+| NFR-03 | checked_in_at คงอยู่หลัง reload/re-login และ backend restart บน DB เดิม | TEST-59, TEST-66 | NOT EXECUTED |
+| NFR-04 | เช็กชื่อคนเดียวกันพร้อมกันสำเร็จครั้งเดียว | TEST-58 | NOT EXECUTED |
+| NFR-05 | migration S2→S3 คงข้อมูลเดิม, fresh migrate→seed, constraint ของคอลัมน์ใหม่ | TEST-65 | NOT EXECUTED |
+| NFR-06 | error code/message และ UI states ของ F-08/F-09 | TEST-55, TEST-57, TEST-63, TEST-64 | TEST-63 error envelope PASS (branch); ที่เหลือ NOT EXECUTED |
+
+แผนและ owner ของงานที่เหลืออยู่ใน [remaining-work](deliverable-2/remaining-work.md)
