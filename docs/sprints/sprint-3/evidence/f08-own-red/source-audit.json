@@ -1,0 +1,7 @@
+{
+  "baseline": "5206254a9b14c6a818d734655a331623ef25c686",
+  "productionSourceUnchangedDuringRun": true,
+  "testFileSha256": "e8d050f2559a44466ded1a54a7ce9275e2ce2ace52612d0309e9614a5e0be8fe",
+  "testDatabase": "loungcheu_test",
+  "port": 55433
+}

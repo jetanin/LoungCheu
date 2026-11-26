@@ -1,0 +1,32 @@
+Baseline: 081b6eb2e18eb3fc962d0beafb1a584989b80751
+Source: baseline + uncommitted verification tests
+Node: v22.23.2
+Started UTC: 2026-11-26T18:59:28.061Z
+Command: node node_modules/vitest/vitest.mjs run server/tests/integration/attendance-boundaries.test.ts server/tests/integration/attendance-check-in.test.ts server/tests/integration/attendance-own.test.ts --reporter=verbose
+Target: Docker 55433 / loungcheu_test only
+Exit: 0
+
+
+ RUN  v5.1.0 C:/Work/2569/CPE334/GroupWork/LoungCheu
+
+ ✓ server/tests/integration/attendance-boundaries.test.ts > F-08 TEST-54 / AC-42 boundaries and real F-06/F-07 workflows > TEST-54(a: starts minus 1 ms) 222ms
+ ✓ server/tests/integration/attendance-boundaries.test.ts > F-08 TEST-54 / AC-42 boundaries and real F-06/F-07 workflows > TEST-54(b: starts exactly) 117ms
+ ✓ server/tests/integration/attendance-boundaries.test.ts > F-08 TEST-54 / AC-42 boundaries and real F-06/F-07 workflows > TEST-54(c: ends exactly) 111ms
+ ✓ server/tests/integration/attendance-boundaries.test.ts > F-08 TEST-54 / AC-42 boundaries and real F-06/F-07 workflows > TEST-54(d: ends plus 1 ms) 97ms
+ ✓ server/tests/integration/attendance-boundaries.test.ts > F-08 TEST-54 / AC-42 boundaries and real F-06/F-07 workflows > TEST-54(e): actual close API preserves the ability to check in during a CLOSED event 174ms
+ ✓ server/tests/integration/attendance-boundaries.test.ts > F-08 TEST-54 / AC-42 boundaries and real F-06/F-07 workflows > TEST-54(f): real create -> PATCH -> publish -> register uses inside old window, before edited start 276ms
+ ✓ server/tests/integration/attendance-boundaries.test.ts > F-08 TEST-54 / AC-42 boundaries and real F-06/F-07 workflows > TEST-54(f): real create -> PATCH -> publish -> register uses edited start exactly 268ms
+ ✓ server/tests/integration/attendance-boundaries.test.ts > F-08 TEST-54 / AC-42 boundaries and real F-06/F-07 workflows > TEST-54(f): real create -> PATCH -> publish -> register uses edited end exactly, after old end 263ms
+ ✓ server/tests/integration/attendance-boundaries.test.ts > F-08 TEST-54 / AC-42 boundaries and real F-06/F-07 workflows > TEST-54(f): real create -> PATCH -> publish -> register uses edited end plus 1 ms 271ms
+ ✓ server/tests/integration/attendance-own.test.ts > F-08 own attendance / TEST-53 / MyRegistrationS3 > TEST-53: real check-in commits one timestamp shared by roster and own list/detail without lifecycle changes 197ms
+ ✓ server/tests/integration/attendance-own.test.ts > F-08 own attendance / TEST-53 / MyRegistrationS3 > MyRegistrationS3: unchecked record (cancelled=false) has required null checked_in_at in both reads 99ms
+ ✓ server/tests/integration/attendance-own.test.ts > F-08 own attendance / TEST-53 / MyRegistrationS3 > MyRegistrationS3: unchecked record (cancelled=true) has required null checked_in_at in both reads 108ms
+ ✓ server/tests/integration/attendance-check-in.test.ts > F-08 check-in rule / TEST-55 / AC-43 > TEST-55(a): refuses CANCELLED during the event without changing data or history 119ms
+ ✓ server/tests/integration/attendance-check-in.test.ts > F-08 check-in rule / TEST-55 / AC-43 > TEST-55(b): first check-in at T1 succeeds; repeat at T2 keeps T1, actor, count and history 90ms
+ ✓ server/tests/integration/attendance-check-in.test.ts > F-08 check-in rule / TEST-55 / AC-43 > TEST-55(c): outside the time window takes precedence over CANCELLED and preserves every field 47ms
+
+ Test Files  3 passed (3)
+      Tests  15 passed (15)
+   Start at  01:59:28
+   Duration  4.59s (tests 78%, import 20%, transform 2%)
+

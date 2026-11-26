@@ -1,0 +1,38 @@
+RED commit: 54deba90eb510cf0626066367464f2ecc1bfc6bb
+Source: RED commit + uncommitted GREEN changes
+Node: v22.23.2
+Started UTC: 2026-11-26T19:29:47.487Z
+Command: node node_modules/vitest/vitest.mjs run client/src/features/registrations/AttendanceViews.test.tsx --reporter=verbose
+Target: Docker 55433 / loungcheu_test only
+Exit: 0
+
+
+ RUN  v5.1.0 C:/Work/2569/CPE334/GroupWork/LoungCheu
+
+ ✓ client/src/features/registrations/AttendanceViews.test.tsx > F-08 TEST-59 own attendance display > renders checked-in time in own list without organizer identity 54ms
+ ✓ client/src/features/registrations/AttendanceViews.test.tsx > F-08 TEST-59 own attendance display > renders checked-in time in own detail without organizer identity 11ms
+ ✓ client/src/features/registrations/AttendanceViews.test.tsx > F-08 TEST-59 own attendance display > renders required not-yet-checked status in own list 21ms
+ ✓ client/src/features/registrations/AttendanceViews.test.tsx > F-08 TEST-59 own attendance display > renders required not-yet-checked status in own detail 15ms
+ ✓ client/src/features/registrations/AttendanceViews.test.tsx > F-08 TEST-59 own attendance display > omits attendance for CANCELLED in own list 17ms
+ ✓ client/src/features/registrations/AttendanceViews.test.tsx > F-08 TEST-59 own attendance display > omits attendance for CANCELLED in own detail 14ms
+ ✓ client/src/features/registrations/AttendanceViews.test.tsx > F-08 TEST-59 organizer attendance actions > renders attendance column and authoritative checked-in/ACTIVE counts 138ms
+ ✓ client/src/features/registrations/AttendanceViews.test.tsx > F-08 TEST-59 organizer attendance actions > confirms the participant name before mutation (accepted=false) 28ms
+ ✓ client/src/features/registrations/AttendanceViews.test.tsx > F-08 TEST-59 organizer attendance actions > confirms the participant name before mutation (accepted=true) 66ms
+ ✓ client/src/features/registrations/AttendanceViews.test.tsx > F-08 TEST-59 organizer attendance actions > disables the pending row and sends one request even after a second click 48ms
+ ✓ client/src/features/registrations/AttendanceViews.test.tsx > F-08 TEST-59 organizer attendance actions > does not offer check-in outside the window (1793941199999) 31ms
+ ✓ client/src/features/registrations/AttendanceViews.test.tsx > F-08 TEST-59 organizer attendance actions > does not offer check-in outside the window (1793948400001) 18ms
+ ✓ client/src/features/registrations/AttendanceViews.test.tsx > F-08 TEST-59 organizer attendance actions > shows a dash for CANCELLED and no action 46ms
+ ✓ client/src/features/registrations/AttendanceViews.test.tsx > F-08 TEST-59 organizer attendance actions > shows a previously checked-in row without another action 12ms
+ ✓ client/src/features/registrations/AttendanceViews.test.tsx > F-08 TEST-59 organizer attendance actions > shows CHECK_IN_NOT_OPEN in Thai and reloads authoritative roster 45ms
+ ✓ client/src/features/registrations/AttendanceViews.test.tsx > F-08 TEST-59 organizer attendance actions > shows REGISTRATION_NOT_ACTIVE in Thai and reloads authoritative roster 47ms
+ ✓ client/src/features/registrations/AttendanceViews.test.tsx > F-08 TEST-59 organizer attendance actions > shows ALREADY_CHECKED_IN in Thai and reloads authoritative roster 32ms
+ ✓ client/src/features/registrations/AttendanceViews.test.tsx > F-08 TEST-59 organizer attendance actions > clears private roster when mutation is denied with 401 30ms
+ ✓ client/src/features/registrations/AttendanceViews.test.tsx > F-08 TEST-59 organizer attendance actions > clears private roster when mutation is denied with 403 31ms
+ ✓ client/src/features/registrations/AttendanceViews.test.tsx > F-08 TEST-59 organizer attendance actions > clears private roster when mutation is denied with 404 47ms
+ ✓ client/src/features/registrations/AttendanceViews.test.tsx > F-08 TEST-59 organizer attendance actions > never retries an uncertain POST timeout automatically and reconciles via explicit roster reload 47ms
+
+ Test Files  1 passed (1)
+      Tests  21 passed (21)
+   Start at  02:29:47
+   Duration  2.14s (environment 43%, tests 40%, import 12%, transform 4%)
+

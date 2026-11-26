@@ -1,0 +1,168 @@
+Baseline: 609e2d0e779271970e1669eebc85281ec71cf5d9
+Source: baseline + uncommitted restart verification test
+Node: v22.23.2
+Started UTC: 2026-11-26T19:13:23.826Z
+Command: node node_modules/vitest/vitest.mjs run server/tests/integration/attendance-restart.test.ts server/tests/integration/attendance-concurrency.test.ts server/tests/unit/attendance-router.test.ts server/tests/integration/attendance-access.test.ts server/tests/integration/attendance-boundaries.test.ts server/tests/integration/attendance-check-in.test.ts server/tests/integration/attendance-own.test.ts --reporter=verbose
+Target: Docker 55433 only; test-owned disposable DB for process restart
+Exit: 0
+
+
+ RUN  v5.1.0 C:/Work/2569/CPE334/GroupWork/LoungCheu
+
+stdout | server/tests/integration/attendance-restart.test.ts > TEST-66 / NFR-03: check-in timestamp, actor and read models survive actual compiled server process restart
+F08_RESTART {"event":"built","entrypoint":"server/dist/server.js","exit":0}
+
+stdout | server/tests/integration/attendance-restart.test.ts > TEST-66 / NFR-03: check-in timestamp, actor and read models survive actual compiled server process restart
+F08_RESTART {"event":"ready","pid":42336,"port":64474,"version":"f08-restart-a4fe8620-96f3-4c01-9bf6-71e8e019f49b-1"}
+
+stdout | server/tests/integration/attendance-restart.test.ts > TEST-66 / NFR-03: check-in timestamp, actor and read models survive actual compiled server process restart
+F08_RESTART {"event":"stopped","pid":42336}
+
+stdout | server/tests/integration/attendance-restart.test.ts > TEST-66 / NFR-03: check-in timestamp, actor and read models survive actual compiled server process restart
+F08_RESTART {"event":"ready","pid":38556,"port":64474,"version":"f08-restart-a4fe8620-96f3-4c01-9bf6-71e8e019f49b-2"}
+
+stdout | server/tests/integration/attendance-restart.test.ts > TEST-66 / NFR-03: check-in timestamp, actor and read models survive actual compiled server process restart
+F08_RESTART {"event":"verified","databaseName":"loungcheu_test_f06_166cfb327e4c4c81993c26f798ecb540","pids":[42336,38556],"distinctProcesses":2,"stoppedAndRestarted":1,"timestamp":"2026-11-26T19:13:28.566Z","actorPreserved":true,"eventAndHistoryUnchanged":true,"activeCount":2,"checkedInCount":1,"registrationRows":3,"historyRows":4,"freshOwnerAndParticipantLogins":true}
+
+stdout | server/tests/integration/attendance-restart.test.ts > TEST-66 / NFR-03: check-in timestamp, actor and read models survive actual compiled server process restart
+F08_RESTART {"event":"stopped","pid":38556}
+
+ ✓ server/tests/integration/attendance-restart.test.ts > TEST-66 / NFR-03: check-in timestamp, actor and read models survive actual compiled server process restart 4789ms
+stdout | server/tests/integration/attendance-concurrency.test.ts > F-08 TEST-58 / AC-46 real PostgreSQL concurrency > TEST-58(a): round 1 keeps the winning runtime timestamp across concurrent requests
+F08_RACE {"round":1,"first":"A","winner":"A","statuses":[200,409],"timestamp":"2026-11-06T06:00:00.000Z","count":1,"distinctWriterPids":[17869,17871]}
+
+ ✓ server/tests/integration/attendance-concurrency.test.ts > F-08 TEST-58 / AC-46 real PostgreSQL concurrency > TEST-58(a): round 1 keeps the winning runtime timestamp across concurrent requests 176ms
+stdout | server/tests/integration/attendance-concurrency.test.ts > F-08 TEST-58 / AC-46 real PostgreSQL concurrency > TEST-58(a): round 2 keeps the winning runtime timestamp across concurrent requests
+F08_RACE {"round":2,"first":"B","winner":"B","statuses":[409,200],"timestamp":"2026-11-06T06:05:00.000Z","count":1,"distinctWriterPids":[17871,17869]}
+
+stdout | server/tests/integration/attendance-concurrency.test.ts > F-08 TEST-58 / AC-46 real PostgreSQL concurrency > TEST-58(a): round 3 keeps the winning runtime timestamp across concurrent requests
+F08_RACE {"round":3,"first":"A","winner":"A","statuses":[200,409],"timestamp":"2026-11-06T06:00:00.000Z","count":1,"distinctWriterPids":[17869,17871]}
+
+ ✓ server/tests/integration/attendance-concurrency.test.ts > F-08 TEST-58 / AC-46 real PostgreSQL concurrency > TEST-58(a): round 2 keeps the winning runtime timestamp across concurrent requests 96ms
+ ✓ server/tests/integration/attendance-concurrency.test.ts > F-08 TEST-58 / AC-46 real PostgreSQL concurrency > TEST-58(a): round 3 keeps the winning runtime timestamp across concurrent requests 82ms
+stdout | server/tests/integration/attendance-concurrency.test.ts > F-08 TEST-58 / AC-46 real PostgreSQL concurrency > TEST-58(a): round 4 keeps the winning runtime timestamp across concurrent requests
+F08_RACE {"round":4,"first":"B","winner":"B","statuses":[409,200],"timestamp":"2026-11-06T06:05:00.000Z","count":1,"distinctWriterPids":[17871,17869]}
+
+stdout | server/tests/integration/attendance-concurrency.test.ts > F-08 TEST-58 / AC-46 real PostgreSQL concurrency > TEST-58(a): round 5 keeps the winning runtime timestamp across concurrent requests
+F08_RACE {"round":5,"first":"A","winner":"A","statuses":[200,409],"timestamp":"2026-11-06T06:00:00.000Z","count":1,"distinctWriterPids":[17869,17871]}
+
+ ✓ server/tests/integration/attendance-concurrency.test.ts > F-08 TEST-58 / AC-46 real PostgreSQL concurrency > TEST-58(a): round 4 keeps the winning runtime timestamp across concurrent requests 94ms
+ ✓ server/tests/integration/attendance-concurrency.test.ts > F-08 TEST-58 / AC-46 real PostgreSQL concurrency > TEST-58(a): round 5 keeps the winning runtime timestamp across concurrent requests 94ms
+stdout | server/tests/integration/attendance-concurrency.test.ts > F-08 TEST-58 / AC-46 real PostgreSQL concurrency > TEST-58(a): round 6 keeps the winning runtime timestamp across concurrent requests
+F08_RACE {"round":6,"first":"B","winner":"B","statuses":[409,200],"timestamp":"2026-11-06T06:05:00.000Z","count":1,"distinctWriterPids":[17871,17869]}
+
+stdout | server/tests/integration/attendance-concurrency.test.ts > F-08 TEST-58 / AC-46 real PostgreSQL concurrency > TEST-58(a): round 7 keeps the winning runtime timestamp across concurrent requests
+F08_RACE {"round":7,"first":"A","winner":"A","statuses":[200,409],"timestamp":"2026-11-06T06:00:00.000Z","count":1,"distinctWriterPids":[17869,17871]}
+
+ ✓ server/tests/integration/attendance-concurrency.test.ts > F-08 TEST-58 / AC-46 real PostgreSQL concurrency > TEST-58(a): round 6 keeps the winning runtime timestamp across concurrent requests 115ms
+stdout | server/tests/integration/attendance-concurrency.test.ts > F-08 TEST-58 / AC-46 real PostgreSQL concurrency > TEST-58(a): round 8 keeps the winning runtime timestamp across concurrent requests
+F08_RACE {"round":8,"first":"B","winner":"B","statuses":[409,200],"timestamp":"2026-11-06T06:05:00.000Z","count":1,"distinctWriterPids":[17871,17869]}
+
+ ✓ server/tests/integration/attendance-concurrency.test.ts > F-08 TEST-58 / AC-46 real PostgreSQL concurrency > TEST-58(a): round 7 keeps the winning runtime timestamp across concurrent requests 89ms
+ ✓ server/tests/integration/attendance-concurrency.test.ts > F-08 TEST-58 / AC-46 real PostgreSQL concurrency > TEST-58(a): round 8 keeps the winning runtime timestamp across concurrent requests 102ms
+stdout | server/tests/integration/attendance-concurrency.test.ts > F-08 TEST-58 / AC-46 real PostgreSQL concurrency > TEST-58(a): round 9 keeps the winning runtime timestamp across concurrent requests
+F08_RACE {"round":9,"first":"A","winner":"A","statuses":[200,409],"timestamp":"2026-11-06T06:00:00.000Z","count":1,"distinctWriterPids":[17869,17871]}
+
+stdout | server/tests/integration/attendance-concurrency.test.ts > F-08 TEST-58 / AC-46 real PostgreSQL concurrency > TEST-58(a): round 10 keeps the winning runtime timestamp across concurrent requests
+F08_RACE {"round":10,"first":"B","winner":"B","statuses":[409,200],"timestamp":"2026-11-06T06:05:00.000Z","count":1,"distinctWriterPids":[17871,17869]}
+
+ ✓ server/tests/integration/attendance-concurrency.test.ts > F-08 TEST-58 / AC-46 real PostgreSQL concurrency > TEST-58(a): round 9 keeps the winning runtime timestamp across concurrent requests 112ms
+stdout | server/tests/integration/attendance-concurrency.test.ts > F-08 TEST-58 / AC-46 real PostgreSQL concurrency > TEST-58(a): round 11 keeps the winning runtime timestamp across concurrent requests
+F08_RACE {"round":11,"first":"A","winner":"A","statuses":[200,409],"timestamp":"2026-11-06T06:00:00.000Z","count":1,"distinctWriterPids":[17869,17871]}
+
+ ✓ server/tests/integration/attendance-concurrency.test.ts > F-08 TEST-58 / AC-46 real PostgreSQL concurrency > TEST-58(a): round 10 keeps the winning runtime timestamp across concurrent requests 92ms
+stdout | server/tests/integration/attendance-concurrency.test.ts > F-08 TEST-58 / AC-46 real PostgreSQL concurrency > TEST-58(a): round 12 keeps the winning runtime timestamp across concurrent requests
+F08_RACE {"round":12,"first":"B","winner":"B","statuses":[409,200],"timestamp":"2026-11-06T06:05:00.000Z","count":1,"distinctWriterPids":[17871,17869]}
+
+ ✓ server/tests/integration/attendance-concurrency.test.ts > F-08 TEST-58 / AC-46 real PostgreSQL concurrency > TEST-58(a): round 11 keeps the winning runtime timestamp across concurrent requests 109ms
+ ✓ server/tests/integration/attendance-concurrency.test.ts > F-08 TEST-58 / AC-46 real PostgreSQL concurrency > TEST-58(a): round 12 keeps the winning runtime timestamp across concurrent requests 85ms
+stdout | server/tests/integration/attendance-concurrency.test.ts > F-08 TEST-58 / AC-46 real PostgreSQL concurrency > TEST-58(a): round 13 keeps the winning runtime timestamp across concurrent requests
+F08_RACE {"round":13,"first":"A","winner":"A","statuses":[200,409],"timestamp":"2026-11-06T06:00:00.000Z","count":1,"distinctWriterPids":[17869,17871]}
+
+stdout | server/tests/integration/attendance-concurrency.test.ts > F-08 TEST-58 / AC-46 real PostgreSQL concurrency > TEST-58(a): round 14 keeps the winning runtime timestamp across concurrent requests
+F08_RACE {"round":14,"first":"B","winner":"B","statuses":[409,200],"timestamp":"2026-11-06T06:05:00.000Z","count":1,"distinctWriterPids":[17871,17869]}
+
+ ✓ server/tests/integration/attendance-concurrency.test.ts > F-08 TEST-58 / AC-46 real PostgreSQL concurrency > TEST-58(a): round 13 keeps the winning runtime timestamp across concurrent requests 78ms
+stdout | server/tests/integration/attendance-concurrency.test.ts > F-08 TEST-58 / AC-46 real PostgreSQL concurrency > TEST-58(a): round 15 keeps the winning runtime timestamp across concurrent requests
+F08_RACE {"round":15,"first":"A","winner":"A","statuses":[200,409],"timestamp":"2026-11-06T06:00:00.000Z","count":1,"distinctWriterPids":[17869,17871]}
+
+ ✓ server/tests/integration/attendance-concurrency.test.ts > F-08 TEST-58 / AC-46 real PostgreSQL concurrency > TEST-58(a): round 14 keeps the winning runtime timestamp across concurrent requests 97ms
+ ✓ server/tests/integration/attendance-concurrency.test.ts > F-08 TEST-58 / AC-46 real PostgreSQL concurrency > TEST-58(a): round 15 keeps the winning runtime timestamp across concurrent requests 81ms
+stdout | server/tests/integration/attendance-concurrency.test.ts > F-08 TEST-58 / AC-46 real PostgreSQL concurrency > TEST-58(a): round 16 keeps the winning runtime timestamp across concurrent requests
+F08_RACE {"round":16,"first":"B","winner":"B","statuses":[409,200],"timestamp":"2026-11-06T06:05:00.000Z","count":1,"distinctWriterPids":[17871,17869]}
+
+stdout | server/tests/integration/attendance-concurrency.test.ts > F-08 TEST-58 / AC-46 real PostgreSQL concurrency > TEST-58(a): round 17 keeps the winning runtime timestamp across concurrent requests
+F08_RACE {"round":17,"first":"A","winner":"A","statuses":[200,409],"timestamp":"2026-11-06T06:00:00.000Z","count":1,"distinctWriterPids":[17869,17871]}
+
+ ✓ server/tests/integration/attendance-concurrency.test.ts > F-08 TEST-58 / AC-46 real PostgreSQL concurrency > TEST-58(a): round 16 keeps the winning runtime timestamp across concurrent requests 82ms
+stdout | server/tests/integration/attendance-concurrency.test.ts > F-08 TEST-58 / AC-46 real PostgreSQL concurrency > TEST-58(a): round 18 keeps the winning runtime timestamp across concurrent requests
+F08_RACE {"round":18,"first":"B","winner":"B","statuses":[409,200],"timestamp":"2026-11-06T06:05:00.000Z","count":1,"distinctWriterPids":[17871,17869]}
+
+ ✓ server/tests/integration/attendance-concurrency.test.ts > F-08 TEST-58 / AC-46 real PostgreSQL concurrency > TEST-58(a): round 17 keeps the winning runtime timestamp across concurrent requests 86ms
+ ✓ server/tests/integration/attendance-concurrency.test.ts > F-08 TEST-58 / AC-46 real PostgreSQL concurrency > TEST-58(a): round 18 keeps the winning runtime timestamp across concurrent requests 92ms
+stdout | server/tests/integration/attendance-concurrency.test.ts > F-08 TEST-58 / AC-46 real PostgreSQL concurrency > TEST-58(a): round 19 keeps the winning runtime timestamp across concurrent requests
+F08_RACE {"round":19,"first":"A","winner":"A","statuses":[200,409],"timestamp":"2026-11-06T06:00:00.000Z","count":1,"distinctWriterPids":[17869,17871]}
+
+ ✓ server/tests/integration/attendance-concurrency.test.ts > F-08 TEST-58 / AC-46 real PostgreSQL concurrency > TEST-58(a): round 19 keeps the winning runtime timestamp across concurrent requests 82ms
+stdout | server/tests/integration/attendance-concurrency.test.ts > F-08 TEST-58 / AC-46 real PostgreSQL concurrency > TEST-58(a): round 20 keeps the winning runtime timestamp across concurrent requests
+F08_RACE {"round":20,"first":"B","winner":"B","statuses":[409,200],"timestamp":"2026-11-06T06:05:00.000Z","count":1,"distinctWriterPids":[17871,17869]}
+
+stdout | server/tests/integration/attendance-concurrency.test.ts > F-08 TEST-58 / AC-46 real PostgreSQL concurrency > TEST-58(b): request waiting on Event lock rereads clock and rejects after ends+1 ms
+F08_LOCK_CLOCK {"writerPid":17869,"queuedAt":"2026-11-06T06:00:00.000Z","releasedAt":"2026-11-06T07:00:00.001Z","status":409,"code":"CHECK_IN_NOT_OPEN","unchanged":true}
+
+ ✓ server/tests/integration/attendance-concurrency.test.ts > F-08 TEST-58 / AC-46 real PostgreSQL concurrency > TEST-58(a): round 20 keeps the winning runtime timestamp across concurrent requests 102ms
+ ✓ server/tests/integration/attendance-concurrency.test.ts > F-08 TEST-58 / AC-46 real PostgreSQL concurrency > TEST-58(b): request waiting on Event lock rereads clock and rejects after ends+1 ms 60ms
+ ✓ server/tests/integration/attendance-boundaries.test.ts > F-08 TEST-54 / AC-42 boundaries and real F-06/F-07 workflows > TEST-54(a: starts minus 1 ms) 221ms
+ ✓ server/tests/integration/attendance-boundaries.test.ts > F-08 TEST-54 / AC-42 boundaries and real F-06/F-07 workflows > TEST-54(b: starts exactly) 130ms
+ ✓ server/tests/integration/attendance-boundaries.test.ts > F-08 TEST-54 / AC-42 boundaries and real F-06/F-07 workflows > TEST-54(c: ends exactly) 131ms
+ ✓ server/tests/integration/attendance-boundaries.test.ts > F-08 TEST-54 / AC-42 boundaries and real F-06/F-07 workflows > TEST-54(d: ends plus 1 ms) 119ms
+ ✓ server/tests/integration/attendance-boundaries.test.ts > F-08 TEST-54 / AC-42 boundaries and real F-06/F-07 workflows > TEST-54(e): actual close API preserves the ability to check in during a CLOSED event 182ms
+ ✓ server/tests/integration/attendance-boundaries.test.ts > F-08 TEST-54 / AC-42 boundaries and real F-06/F-07 workflows > TEST-54(f): real create -> PATCH -> publish -> register uses inside old window, before edited start 267ms
+ ✓ server/tests/integration/attendance-boundaries.test.ts > F-08 TEST-54 / AC-42 boundaries and real F-06/F-07 workflows > TEST-54(f): real create -> PATCH -> publish -> register uses edited start exactly 268ms
+ ✓ server/tests/integration/attendance-boundaries.test.ts > F-08 TEST-54 / AC-42 boundaries and real F-06/F-07 workflows > TEST-54(f): real create -> PATCH -> publish -> register uses edited end exactly, after old end 277ms
+ ✓ server/tests/integration/attendance-boundaries.test.ts > F-08 TEST-54 / AC-42 boundaries and real F-06/F-07 workflows > TEST-54(f): real create -> PATCH -> publish -> register uses edited end plus 1 ms 283ms
+ ✓ server/tests/integration/attendance-access.test.ts > F-08 TEST-56 / AC-44 input > TEST-56: rejects malformed eventId without mutation 90ms
+ ✓ server/tests/integration/attendance-access.test.ts > F-08 TEST-56 / AC-44 input > TEST-56: rejects malformed registrationId without mutation 45ms
+ ✓ server/tests/integration/attendance-access.test.ts > F-08 TEST-56 / AC-44 input > TEST-56: rejects null body without mutation 34ms
+ ✓ server/tests/integration/attendance-access.test.ts > F-08 TEST-56 / AC-44 input > TEST-56: rejects array body without mutation 28ms
+ ✓ server/tests/integration/attendance-access.test.ts > F-08 TEST-56 / AC-44 input > TEST-56: rejects string body without mutation 24ms
+ ✓ server/tests/integration/attendance-access.test.ts > F-08 TEST-56 / AC-44 input > TEST-56: rejects forged timestamp body without mutation 24ms
+ ✓ server/tests/integration/attendance-access.test.ts > F-08 TEST-56 / AC-44 input > TEST-56: rejects forged status body without mutation 26ms
+ ✓ server/tests/integration/attendance-access.test.ts > F-08 TEST-56 / AC-44 input > TEST-56: rejects oversize body without mutation 21ms
+ ✓ server/tests/integration/attendance-access.test.ts > F-08 TEST-56 / AC-44 input > TEST-56: rejects malformed JSON body without mutation 24ms
+ ✓ server/tests/integration/attendance-access.test.ts > F-08 TEST-56 / AC-44 input > TEST-56: rejects wrong content type body without mutation 33ms
+ ✓ server/tests/integration/attendance-access.test.ts > F-08 TEST-56 / AC-44 input > TEST-56: accepts omitted body and uses session owner/server clock 43ms
+ ✓ server/tests/integration/attendance-access.test.ts > F-08 TEST-56 / AC-44 input > TEST-56: accepts {} body and uses session owner/server clock 30ms
+ ✓ server/tests/integration/attendance-access.test.ts > F-08 TEST-57 / AC-44, AC-45 access and privacy > TEST-57: anonymous cannot check in 23ms
+ ✓ server/tests/integration/attendance-access.test.ts > F-08 TEST-57 / AC-44, AC-45 access and privacy > TEST-57: participant pa cannot check in even with valid CSRF 25ms
+ ✓ server/tests/integration/attendance-access.test.ts > F-08 TEST-57 / AC-44, AC-45 access and privacy > TEST-57: participant pb cannot check in even with valid CSRF 23ms
+ ✓ server/tests/integration/attendance-access.test.ts > F-08 TEST-57 / AC-44, AC-45 access and privacy > TEST-57: another organizer cannot check in the owner event 29ms
+ ✓ server/tests/integration/attendance-access.test.ts > F-08 TEST-57 / AC-44, AC-45 access and privacy > TEST-57: owner cannot use a registration from a different event 35ms
+ ✓ server/tests/integration/attendance-access.test.ts > F-08 TEST-57 / AC-44, AC-45 access and privacy > TEST-57: nonexistent event is masked 29ms
+ ✓ server/tests/integration/attendance-access.test.ts > F-08 TEST-57 / AC-44, AC-45 access and privacy > TEST-57: nonexistent registration is masked 30ms
+ ✓ server/tests/integration/attendance-access.test.ts > F-08 TEST-57 / AC-44, AC-45 access and privacy > TEST-57: rejects missing CSRF 25ms
+ ✓ server/tests/integration/attendance-access.test.ts > F-08 TEST-57 / AC-44, AC-45 access and privacy > TEST-57: rejects incorrect CSRF 28ms
+ ✓ server/tests/integration/attendance-access.test.ts > F-08 TEST-57 / AC-44, AC-45 access and privacy > TEST-57: rejects foreign-origin CSRF 27ms
+ ✓ server/tests/integration/attendance-access.test.ts > F-08 TEST-57 / AC-44, AC-45 access and privacy > TEST-57: another participant cannot read checked-in own detail or discover it in own list 48ms
+ ✓ server/tests/integration/attendance-access.test.ts > F-08 TEST-57 / AC-44, AC-45 access and privacy > TEST-57: pa cannot read checked-in owner roster 27ms
+ ✓ server/tests/integration/attendance-access.test.ts > F-08 TEST-57 / AC-44, AC-45 access and privacy > TEST-57: ob cannot read checked-in owner roster 30ms
+ ✓ server/tests/integration/attendance-own.test.ts > F-08 own attendance / TEST-53 / MyRegistrationS3 > TEST-53: real check-in commits one timestamp shared by roster and own list/detail without lifecycle changes 200ms
+ ✓ server/tests/integration/attendance-own.test.ts > F-08 own attendance / TEST-53 / MyRegistrationS3 > MyRegistrationS3: unchecked record (cancelled=false) has required null checked_in_at in both reads 109ms
+ ✓ server/tests/integration/attendance-own.test.ts > F-08 own attendance / TEST-53 / MyRegistrationS3 > MyRegistrationS3: unchecked record (cancelled=true) has required null checked_in_at in both reads 100ms
+ ✓ server/tests/integration/attendance-check-in.test.ts > F-08 check-in rule / TEST-55 / AC-43 > TEST-55(a): refuses CANCELLED during the event without changing data or history 149ms
+ ✓ server/tests/integration/attendance-check-in.test.ts > F-08 check-in rule / TEST-55 / AC-43 > TEST-55(b): first check-in at T1 succeeds; repeat at T2 keeps T1, actor, count and history 98ms
+ ✓ server/tests/integration/attendance-check-in.test.ts > F-08 check-in rule / TEST-55 / AC-43 > TEST-55(c): outside the time window takes precedence over CANCELLED and preserves every field 57ms
+ ✓ server/tests/unit/attendance-router.test.ts > TEST-56/57: attendance router validation and middleware precedence > rejects anonymous before parsing malformed input or calling the service 39ms
+ ✓ server/tests/unit/attendance-router.test.ts > TEST-56/57: attendance router validation and middleware precedence > rejects participant before parsing malformed input or calling the service 7ms
+ ✓ server/tests/unit/attendance-router.test.ts > TEST-56/57: attendance router validation and middleware precedence > rejects bad-csrf before parsing malformed input or calling the service 5ms
+ ✓ server/tests/unit/attendance-router.test.ts > TEST-56/57: attendance router validation and middleware precedence > TEST-56: rejects body attempts to provide an organizer before service execution 17ms
+ ✓ server/tests/unit/attendance-router.test.ts > TEST-56/57: attendance router validation and middleware precedence > TEST-56: forwards only validated path IDs and the session owner to the service 7ms
+
+ Test Files  7 passed (7)
+      Tests  67 passed (67)
+   Start at  02:13:24
+   Duration  14.81s (tests 87%, import 12%, transform 1%)
+
+    Isolate  7 workers spawned · ~127ms startup each (spawn + environment, per file)
+             at least ~762ms faster with isolate: false — reuses workers across files instead of one per file
+

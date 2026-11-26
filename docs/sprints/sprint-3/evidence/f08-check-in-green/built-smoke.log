@@ -1,0 +1,9 @@
+RED commit: cca5f331e8123f83dd743b90960d530a5b725855
+Source: RED commit + uncommitted GREEN implementation
+Node: v22.23.2
+Started UTC: 2026-11-26T18:34:15.810Z
+Command: node scripts/smoke-built.mjs
+Target: Docker 55433 / loungcheu_test only
+Exit: 0
+
+Built production app smoke: SPA /login, database health/version, readiness, unknown API JSON 404: 4 passed.

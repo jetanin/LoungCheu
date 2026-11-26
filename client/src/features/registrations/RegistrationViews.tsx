@@ -2,17 +2,18 @@ import { useCallback, useEffect, useRef, useState } from 'react';
 import { api, ApiError, type Identity } from '../../lib/api';
 import { bangkokTime } from '../events/model';
 import { LifecycleMutation } from './LifecycleMutation';
+import { AttendanceAction } from './AttendanceAction';
 
 export interface MyRegistration {
-  id: string; status: 'ACTIVE' | 'CANCELLED'; registered_at: string; cancelled_at: string | null;
+  id: string; status: 'ACTIVE' | 'CANCELLED'; registered_at: string; cancelled_at: string | null; checked_in_at: string | null;
   event: { id: string; title: string; location: string; starts_at: string; ends_at: string; registration_closes_at: string; status: 'DRAFT' | 'PUBLISHED' | 'CLOSED' };
 }
 export interface Roster {
-  event_id: string; capacity: number; active_count: number;
-  registrations: { id: string; participant: { display_name: string }; status: 'ACTIVE' | 'CANCELLED'; registered_at: string }[];
+  event_id: string; capacity: number; active_count: number; checked_in_count: number;
+  registrations: { id: string; participant: { display_name: string }; status: 'ACTIVE' | 'CANCELLED'; registered_at: string; checked_in_at: string | null }[];
 }
 
-function usePrivateRead<T>(path: string, allowed: boolean, onAuthRequired: () => void) {
+function usePrivateRead<T>(path: string, allowed: boolean, onAuthRequired: () => void, read?: (signal: AbortSignal) => Promise<T>) {
   const [data, setData] = useState<T | null>(null), [loading, setLoading] = useState(allowed), [error, setError] = useState('');
   const generation = useRef(0), active = useRef<AbortController | null>(null);
   const refresh = useCallback(async (preserveData = false) => {
@@ -23,7 +24,7 @@ function usePrivateRead<T>(path: string, allowed: boolean, onAuthRequired: () =>
     if (!preserveData) setData(null);
     setLoading(true); setError('');
     try {
-      const result = await api<T>(path, { signal: controller.signal });
+      const result = read ? await read(controller.signal) : await api<T>(path, { signal: controller.signal });
       if (!controller.signal.aborted && version === generation.current) { setData(result); return true; }
       return false;
     } catch (failure) {
@@ -33,7 +34,7 @@ function usePrivateRead<T>(path: string, allowed: boolean, onAuthRequired: () =>
       else setError(failure instanceof ApiError ? failure.message : 'โหลดข้อมูลไม่สำเร็จ กรุณาลองใหม่');
       return false;
     } finally { if (!controller.signal.aborted && version === generation.current) setLoading(false); }
-  }, [path, allowed, onAuthRequired]);
+  }, [path, allowed, onAuthRequired, read]);
   useEffect(() => {
     void refresh();
     const focus = () => { void refresh(); };
@@ -43,7 +44,11 @@ function usePrivateRead<T>(path: string, allowed: boolean, onAuthRequired: () =>
   function replace(value: T | null, message = '') {
     generation.current++; active.current?.abort(); setData(value); setLoading(false); setError(message);
   }
-  return { data, loading, error, refresh, replace };
+  function update(change: (previous: T) => T) {
+    generation.current++; active.current?.abort();
+    setData(previous => previous === null ? null : change(previous)); setLoading(false); setError('');
+  }
+  return { data, loading, error, refresh, replace, update };
 }
 
 type Props = { identity: Identity; onAuthRequired: () => void };
@@ -74,6 +79,8 @@ function MyRegistrationsContent({ id, identity, onAuthRequired }: Props & { id?:
         <dt>ปิดรับลงทะเบียน</dt><dd>{bangkokTime(record.event.registration_closes_at)}</dd>
         <dt>ลงทะเบียนครั้งแรกเมื่อ</dt><dd>{bangkokTime(record.registered_at)}</dd>
         {record.status === 'CANCELLED' && record.cancelled_at && <><dt>ยกเลิกเมื่อ</dt><dd>{bangkokTime(record.cancelled_at)}</dd></>}
+        {record.status === 'ACTIVE' && <><dt>การเข้าร่วม</dt><dd>{record.checked_in_at
+          ? `เช็กชื่อแล้วเมื่อ ${bangkokTime(record.checked_in_at)}` : 'ยังไม่ได้เช็กชื่อ'}</dd></>}
         <dt>สถานะกิจกรรม</dt><dd>{record.event.status}</dd>
       </dl><p className="small text-secondary">เวลาประเทศไทย (Asia/Bangkok)</p>
       <a className="link-success" href={`/events/${record.event.id}`}>ดูรายละเอียดกิจกรรม</a>
@@ -94,7 +101,15 @@ export function OrganizerRoster({ eventId, ...props }: Props & { eventId: string
 }
 function OrganizerRosterContent({ eventId, identity, onAuthRequired }: Props & { eventId: string }) {
   const allowed = identity.role === 'ORGANIZER';
-  const { data, loading, error, refresh } = usePrivateRead<Roster>(`/organizer/events/${encodeURIComponent(eventId)}/registrations`, allowed, onAuthRequired);
+  const path = `/organizer/events/${encodeURIComponent(eventId)}`;
+  type View = Roster & { starts_at: string; ends_at: string };
+  const read = useCallback(async (signal: AbortSignal): Promise<View> => {
+    const [roster, event] = await Promise.all([api<Roster>(`${path}/registrations`, { signal }),
+      api<{ starts_at: string; ends_at: string }>(path, { signal })]);
+    if (!Number.isFinite(Date.parse(event.starts_at)) || !Number.isFinite(Date.parse(event.ends_at))) throw new Error('Invalid event schedule');
+    return { ...roster, starts_at: event.starts_at, ends_at: event.ends_at };
+  }, [path]);
+  const { data, loading, error, refresh, replace, update } = usePrivateRead<View>(`${path}/registrations`, allowed, onAuthRequired, read);
   if (!allowed) return <section className="card page-panel" role="alert"><h1 className="page-title">เฉพาะผู้จัดกิจกรรมเท่านั้นที่ดูรายชื่อได้</h1></section>;
   return <section aria-label="รายชื่อผู้ลงทะเบียน">
     <div className="page-heading"><h1 className="page-title">รายชื่อผู้ลงทะเบียน</h1><button className="btn btn-outline-success" disabled={loading} onClick={() => void refresh()}>รีเฟรชรายชื่อ</button></div>
@@ -102,10 +117,20 @@ function OrganizerRosterContent({ eventId, identity, onAuthRequired }: Props & {
     {loading && <p role="status">กำลังโหลดรายชื่อ…</p>}
     {error && <div className="alert alert-warning" role="alert">{error} <button className="btn btn-outline-secondary btn-sm" onClick={() => void refresh()}>ลองใหม่</button></div>}
     {data && <div className="card page-panel"><p>ลงทะเบียน ACTIVE <strong>{data.active_count}</strong> / {data.capacity} คน</p>
+      <p>เช็กชื่อแล้ว {data.checked_in_count} / ACTIVE {data.active_count} คน</p>
       {!data.registrations.length ? <p className="page-state">ยังไม่มีผู้ลงทะเบียน</p> : <div className="table-responsive"><table className="table align-middle">
         <caption>เวลาประเทศไทย (Asia/Bangkok) · เรียงตามเวลาลงทะเบียนจากเก่าไปใหม่</caption>
-        <thead><tr><th scope="col">เลขอ้างอิง</th><th scope="col">ชื่อผู้เข้าร่วม</th><th scope="col">สถานะ</th><th scope="col">ลงทะเบียนครั้งแรกเมื่อ</th></tr></thead>
-        <tbody>{data.registrations.map(record => <tr key={record.id}><td className="text-break">{record.id}</td><td>{record.participant.display_name}</td><td>{record.status}</td><td>{bangkokTime(record.registered_at)}</td></tr>)}</tbody>
+        <thead><tr><th scope="col">เลขอ้างอิง</th><th scope="col">ชื่อผู้เข้าร่วม</th><th scope="col">สถานะ</th><th scope="col">ลงทะเบียนครั้งแรกเมื่อ</th><th scope="col">การเข้าร่วม</th></tr></thead>
+        <tbody>{data.registrations.map(record => <tr key={record.id}><td className="text-break">{record.id}</td><td>{record.participant.display_name}</td><td>{record.status}</td><td>{bangkokTime(record.registered_at)}</td>
+          <td><AttendanceAction record={record} eventId={eventId} startsAt={data.starts_at} endsAt={data.ends_at}
+            onSuccess={entry => {
+              update(previous => {
+                const registrations = previous.registrations.map(value => value.id === entry.id ? entry : value);
+                return { ...previous, registrations, checked_in_count: registrations.filter(value => value.status === 'ACTIVE' && value.checked_in_at).length };
+              });
+              void refresh(true);
+            }} refresh={() => refresh(true)} onAuthRequired={() => { replace(null); onAuthRequired(); }}
+            onDenied={message => replace(null, message)}/></td></tr>)}</tbody>
       </table></div>}
     </div>}
   </section>;

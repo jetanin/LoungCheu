@@ -1,0 +1,7 @@
+{
+  "source": "test-results/attendance-TEST-59-real-ch-d1cec-ndance-survive-logout-login/test-failed-1.png",
+  "destination": "attendance-browser-red.png",
+  "sourceSha256": "61192179cdd51fce0593e98d3048f8ba2f304c1a2ea7043556e62425826d1d24",
+  "copiedSha256": "61192179cdd51fce0593e98d3048f8ba2f304c1a2ea7043556e62425826d1d24",
+  "reviewedSurface": "Organizer roster; no credentials visible"
+}

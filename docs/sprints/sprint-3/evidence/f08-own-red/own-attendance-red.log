@@ -1,0 +1,75 @@
+Baseline supplied by Jetanin Naitho: 5206254a9b14c6a818d734655a331623ef25c686
+Source: baseline + uncommitted own-attendance test
+Node: v22.23.2
+Started UTC: 2026-11-26T18:40:19.805Z
+Command: node node_modules/vitest/vitest.mjs run server/tests/integration/attendance-own.test.ts --reporter=verbose
+Target: Docker 55433 / loungcheu_test (process-only override)
+Exit: 1
+
+
+ RUN  v5.1.0 C:/Work/2569/CPE334/GroupWork/LoungCheu
+
+ × server/tests/integration/attendance-own.test.ts > F-08 own attendance / TEST-53 / MyRegistrationS3 > TEST-53: real check-in commits one timestamp shared by roster and own list/detail without lifecycle changes 195ms
+   → expected { detail: undefined, list: undefined } to deeply equal { …(2) }
+ × server/tests/integration/attendance-own.test.ts > F-08 own attendance / TEST-53 / MyRegistrationS3 > MyRegistrationS3: unchecked record (cancelled=false) has required null checked_in_at in both reads 105ms
+   → expected { detail: undefined, list: undefined } to deeply equal { detail: null, list: null }
+ × server/tests/integration/attendance-own.test.ts > F-08 own attendance / TEST-53 / MyRegistrationS3 > MyRegistrationS3: unchecked record (cancelled=true) has required null checked_in_at in both reads 94ms
+   → expected { detail: undefined, list: undefined } to deeply equal { detail: null, list: null }
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 3 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  server/tests/integration/attendance-own.test.ts > F-08 own attendance / TEST-53 / MyRegistrationS3 > TEST-53: real check-in commits one timestamp shared by roster and own list/detail without lifecycle changes
+AssertionError: expected { detail: undefined, list: undefined } to deeply equal { …(2) }
+
+- Expected
++ Received
+
+  {
+-   "detail": "2026-11-06T05:30:00.000Z",
+-   "list": "2026-11-06T05:30:00.000Z",
++   "detail": undefined,
++   "list": undefined,
+  }
+
+ ❯ ownReads server/tests/integration/attendance-own.test.ts:57:6
+     55|   expect(list[0].id).toBe(id);
+     56|   expect({ detail: detail.checked_in_at, list: list[0].checked_in_at })
+     57|     .toEqual({ detail: expected, list: expected });
+       |      ^
+     58|   expect(Object.keys(detail).sort()).toEqual(['cancelled_at', 'checked…
+     59|   expect(list[0]).toEqual(detail);
+ ❯ server/tests/integration/attendance-own.test.ts:103:17
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/3]⎯
+
+ FAIL  server/tests/integration/attendance-own.test.ts > F-08 own attendance / TEST-53 / MyRegistrationS3 > MyRegistrationS3: unchecked record (cancelled=false) has required null checked_in_at in both reads
+ FAIL  server/tests/integration/attendance-own.test.ts > F-08 own attendance / TEST-53 / MyRegistrationS3 > MyRegistrationS3: unchecked record (cancelled=true) has required null checked_in_at in both reads
+AssertionError: expected { detail: undefined, list: undefined } to deeply equal { detail: null, list: null }
+
+- Expected
++ Received
+
+  {
+-   "detail": null,
+-   "list": null,
++   "detail": undefined,
++   "list": undefined,
+  }
+
+ ❯ ownReads server/tests/integration/attendance-own.test.ts:57:6
+     55|   expect(list[0].id).toBe(id);
+     56|   expect({ detail: detail.checked_in_at, list: list[0].checked_in_at })
+     57|     .toEqual({ detail: expected, list: expected });
+       |      ^
+     58|   expect(Object.keys(detail).sort()).toEqual(['cancelled_at', 'checked…
+     59|   expect(list[0]).toEqual(detail);
+ ❯ server/tests/integration/attendance-own.test.ts:111:17
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[2/3]⎯
+
+
+ Test Files  1 failed (1)
+      Tests  3 failed (3)
+   Start at  01:40:20
+   Duration  1.18s (tests 65%, import 27%, transform 7%)
+

@@ -1,9 +1,6 @@
 import { invalidInput } from '../../shared/errors.js';
 
-export function eventId(value: unknown): string {
-  if (typeof value !== 'string' || !/^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i.test(value)) throw invalidInput();
-  return value;
-}
+export { uuidId as eventId } from '../../shared/input.js';
 export function emptyInput(body: unknown) {
   if (body !== undefined && (!body || typeof body !== 'object' || Array.isArray(body) || Object.keys(body).length)) throw invalidInput();
 }

@@ -1,0 +1,20 @@
+Baseline: d61e1768b3a35c9e00ce61758ed5f4e768ea31aa
+Source: baseline + uncommitted TEST-59 UI tests
+Node: v22.23.2
+Started UTC: 2026-11-26T19:24:40.490Z
+Command: node C:/Program Files/nodejs/node_modules/npm/bin/npm-cli.js run typecheck
+Target: Docker 55433 / loungcheu_test only
+Exit: 0
+
+
+> loungcheu@0.1.0 typecheck
+> npm run typecheck --workspaces && tsc --noEmit -p tsconfig.tools.json
+
+
+> @loungcheu/server@0.1.0 typecheck
+> tsc --noEmit
+
+
+> @loungcheu/client@0.1.0 typecheck
+> tsc --noEmit
+

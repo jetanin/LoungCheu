@@ -1,0 +1,23 @@
+RED commit: 4af205b2bd16bb1fcd49c33d7db5bd6ae26f35f4
+Source: RED commit + uncommitted GREEN implementation
+Node: v22.23.2
+Started UTC: 2026-11-26T18:42:58.044Z
+Command: node node_modules/vitest/vitest.mjs run server/tests/integration/attendance-own.test.ts server/tests/integration/attendance-check-in.test.ts --reporter=verbose
+Target: Docker 55433 / loungcheu_test only
+Exit: 0
+
+
+ RUN  v5.1.0 C:/Work/2569/CPE334/GroupWork/LoungCheu
+
+ ✓ server/tests/integration/attendance-own.test.ts > F-08 own attendance / TEST-53 / MyRegistrationS3 > TEST-53: real check-in commits one timestamp shared by roster and own list/detail without lifecycle changes 184ms
+ ✓ server/tests/integration/attendance-own.test.ts > F-08 own attendance / TEST-53 / MyRegistrationS3 > MyRegistrationS3: unchecked record (cancelled=false) has required null checked_in_at in both reads 98ms
+ ✓ server/tests/integration/attendance-own.test.ts > F-08 own attendance / TEST-53 / MyRegistrationS3 > MyRegistrationS3: unchecked record (cancelled=true) has required null checked_in_at in both reads 95ms
+ ✓ server/tests/integration/attendance-check-in.test.ts > F-08 check-in rule / TEST-55 / AC-43 > TEST-55(a): refuses CANCELLED during the event without changing data or history 122ms
+ ✓ server/tests/integration/attendance-check-in.test.ts > F-08 check-in rule / TEST-55 / AC-43 > TEST-55(b): first check-in at T1 succeeds; repeat at T2 keeps T1, actor, count and history 89ms
+ ✓ server/tests/integration/attendance-check-in.test.ts > F-08 check-in rule / TEST-55 / AC-43 > TEST-55(c): outside the time window takes precedence over CANCELLED and preserves every field 49ms
+
+ Test Files  2 passed (2)
+      Tests  6 passed (6)
+   Start at  01:42:58
+   Duration  2.14s (tests 66%, import 30%, transform 4%, worker 1%)
+

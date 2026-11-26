@@ -1,0 +1,55 @@
+Baseline: d61e1768b3a35c9e00ce61758ed5f4e768ea31aa
+Source: baseline + uncommitted TEST-59 UI tests
+Node: v22.23.2
+Started UTC: 2026-11-26T19:25:12.296Z
+Command: node node_modules/@playwright/test/cli.js test tests/e2e/attendance.spec.ts
+Target: Docker 55433 / loungcheu_test only
+Exit: 1
+
+[WebServer] (node:53024) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+[WebServer] (Use `node --trace-warnings ...` to show where the warning was created)
+[WebServer] (node:52948) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+[WebServer] (Use `node --trace-warnings ...` to show where the warning was created)
+
+Running 1 test using 1 worker
+
+(node:55668) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  x  1 tests\e2e\attendance.spec.ts:17:1 › TEST-59: real check-in confirmation/cancel, roster reload and own attendance survive logout/login (6.4s)
+
+
+  1) tests\e2e\attendance.spec.ts:17:1 › TEST-59: real check-in confirmation/cancel, roster reload and own attendance survive logout/login 
+
+    Error: expect(locator).toBeVisible() failed
+
+    Locator: getByRole('row').filter({ has: getByRole('cell', { name: 'b689856c-d5b5-4309-b1b5-6dc913d1a389', exact: true }) }).getByRole('button', { name: 'เช็กชื่อ', exact: true })
+    Expected: visible
+    Timeout: 5000ms
+    Error: element(s) not found
+
+    Call log:
+      - Expect "toBeVisible" getByRole('row').filter({ has: getByRole('cell', { name: 'b689856c-d5b5-4309-b1b5-6dc913d1a389', exact: true }) }).getByRole('button', { name: 'เช็กชื่อ', exact: true }) with timeout 5000ms
+      - waiting for getByRole('row').filter({ has: getByRole('cell', { name: 'b689856c-d5b5-4309-b1b5-6dc913d1a389', exact: true }) }).getByRole('button', { name: 'เช็กชื่อ', exact: true })
+
+
+      53 |     await expect(row.getByRole('cell', { name: pa.displayName, exact: true })).toBeVisible();
+      54 |     const action = row.getByRole('button', { name: 'เช็กชื่อ', exact: true });
+    > 55 |     await expect(action).toBeVisible(); // RED: baseline roster has no attendance action.
+         |                          ^
+      56 |
+      57 |     async function confirm(accept: boolean) {
+      58 |       let message = '';
+        at C:\Work\2569\CPE334\GroupWork\LoungCheu\tests\e2e\attendance.spec.ts:55:26
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    test-results\attendance-TEST-59-real-ch-d1cec-ndance-survive-logout-login\test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    attachment #2: screenshot (image/png) ──────────────────────────────────────────────────────────
+    test-results\attendance-TEST-59-real-ch-d1cec-ndance-survive-logout-login\test-failed-2.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: test-results\attendance-TEST-59-real-ch-d1cec-ndance-survive-logout-login\error-context.md
+
+  1 failed
+    tests\e2e\attendance.spec.ts:17:1 › TEST-59: real check-in confirmation/cancel, roster reload and own attendance survive logout/login 
