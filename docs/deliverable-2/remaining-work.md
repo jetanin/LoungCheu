@@ -1,8 +1,6 @@
 # Deliverable 2 — Remaining-work list และแผนให้เสร็จภายใน 13 ธ.ค. 2026
 
-Issue #51 | ทีม TH-001_P3 LoungCheu | Jetanin Naitho (`jetanin`, M1), Paphangkorn Luanseng (`i3artuf`, M2) | ร่าง 26 พ.ย. 2026 (Asia/Bangkok)
-
-> **สถานะเอกสาร: ร่าง** — owner และวันที่ในตารางเป็นข้อเสนอของ Paphangkorn ต้องให้ Jetanin ยืนยันใน review ของ PR นี้ก่อนนับเป็นแผนของทีม
+Issue #51 | ทีม TH-001_P3 LoungCheu | Jetanin Naitho (`jetanin`, M1), Paphangkorn Luanseng (`i3artuf`, M2) | อัปเดต 27 พ.ย. 2026 (Asia/Bangkok)
 
 ตามที่ D2 §2 และ §3.3 กำหนด รายการนี้ระบุ feature/AC และ defect ที่ยังเหลือ พร้อม owner, dependency, next action และวันที่เสร็จ ก่อนส่งงานสุดท้าย 13 ธ.ค. 2026
 
