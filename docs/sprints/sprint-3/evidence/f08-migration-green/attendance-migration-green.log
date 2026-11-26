@@ -1,0 +1,26 @@
+RED commit supplied by Jetanin: ba4cb6e0ff369e5a573fe97240214832f24b534d
+Source: RED commit + uncommitted GREEN changes
+Started UTC: 2026-11-26T18:01:01.026Z
+Node: v22.23.2
+Command: node node_modules/vitest/vitest.mjs run server/tests/integration/attendance-migration.test.ts --reporter=verbose
+Target: Docker localhost:55433 only; no 5432 access
+Exit: 0
+
+
+ RUN  v5.1.0 C:/Work/2569/CPE334/GroupWork/LoungCheu
+
+ ✓ server/tests/integration/attendance-migration.test.ts > TEST-65(a): S2→S3 migration preserves records/history and initializes attendance to null; deploy is repeatable 4460ms
+ ✓ server/tests/integration/attendance-migration.test.ts > TEST-65(b): fresh migrate→real seed creates attendance demo; repeated/concurrent seed preserves edited check-in and history 3445ms
+ ✓ server/tests/integration/attendance-migration.test.ts > TEST-65(b): two actual seed processes on a fresh migrated DB create one attendance scenario and one REGISTERED history per record 2393ms
+ ✓ server/tests/integration/attendance-migration.test.ts > TEST-65(c): CHECK/FK rejects INSERT and UPDATE with timestamp without actor and preserves data 1480ms
+ ✓ server/tests/integration/attendance-migration.test.ts > TEST-65(c): CHECK/FK rejects INSERT and UPDATE with actor without timestamp and preserves data 1516ms
+ ✓ server/tests/integration/attendance-migration.test.ts > TEST-65(c): CHECK/FK rejects INSERT and UPDATE with CANCELLED with attendance and preserves data 1541ms
+ ✓ server/tests/integration/attendance-migration.test.ts > TEST-65(c): CHECK/FK rejects INSERT and UPDATE with nonexistent actor and preserves data 1503ms
+ ✓ server/tests/integration/attendance-migration.test.ts > TEST-65(c): valid nullable/pair values persist with millisecond precision and checked-in actor FK is Restrict 1552ms
+
+ Test Files  1 passed (1)
+      Tests  8 passed (8)
+   Start at  01:01:01
+   Duration  18.11s (tests 100%)
+
+

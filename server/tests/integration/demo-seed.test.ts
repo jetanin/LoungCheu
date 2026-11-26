@@ -33,17 +33,21 @@ afterEach(async () => {
 });
 afterAll(async () => { if (runtime) await runtime.close(); await db.$disconnect(); });
 
-it('seeds six Bangkok scenarios with real availability, scoped browsing and a working registration', async () => {
-  expect(await seedDemoEvents(db, now)).toEqual({ createdEvents: 6, createdRegistrations: 4, skippedEvents: 0 });
+it('seeds seven Bangkok scenarios with real availability, scoped browsing and a working registration', async () => {
+  expect(await seedDemoEvents(db, now)).toEqual({ createdEvents: 7, createdRegistrations: 6, skippedEvents: 0 });
   const oa = await login('organizer.a'), ob = await login('organizer.b'), pa = await login('participant.a');
   const shared = (await pa.agent.get('/api/events').expect(200)).body.data.filter((e: { id: string }) => ids.includes(e.id as typeof ids[number]));
-  expect(shared).toHaveLength(5);
+  expect(shared).toHaveLength(6);
   expect(shared.find((e: { id: string }) => e.id === demoEventIds.open)).toMatchObject({ status: 'PUBLISHED', capacity: 3, active_count: 1, available_seats: 2, registration_open: true,
     starts_at: '2026-11-13T02:00:00.000Z', ends_at: '2026-11-13T05:00:00.000Z', registration_closes_at: '2026-11-12T11:00:00.000Z' });
   expect(shared.find((e: { id: string }) => e.id === demoEventIds.full)).toMatchObject({ active_count: 2, available_seats: 0, registration_open: false });
   expect(shared.find((e: { id: string }) => e.id === demoEventIds.expired)).toMatchObject({ status: 'PUBLISHED', registration_open: false });
   expect(shared.find((e: { id: string }) => e.id === demoEventIds.closed)).toMatchObject({ status: 'CLOSED', active_count: 1, registration_open: false });
   await pa.agent.get(`/api/events/${demoEventIds.draft}`).expect(404);
+  expect(shared.find((e: { id: string }) => e.id === demoEventIds.attendance)).toMatchObject({
+    status: 'PUBLISHED', active_count: 2, available_seats: 1, registration_open: false,
+    registration_closes_at: '2026-11-05T17:00:00.000Z', starts_at: '2026-11-05T17:00:00.000Z', ends_at: '2026-11-12T17:00:00.000Z',
+  });
   expect((await oa.agent.get(`/api/organizer/events/${demoEventIds.draft}`).expect(200)).body.data.status).toBe('DRAFT');
   await oa.agent.get(`/api/organizer/events/${demoEventIds.otherOwner}`).expect(404);
   expect((await ob.agent.get(`/api/organizer/events/${demoEventIds.otherOwner}`).expect(200)).body.data.organizer_id).toBe(ob.identity.id);
@@ -58,7 +62,7 @@ it('seeds six Bangkok scenarios with real availability, scoped browsing and a wo
 });
 
 it('rerunning preserves edited events, consumed seats, references and removed examples even a month later', async () => {
-  expect((await seedDemoEvents(db, now)).createdEvents).toBe(6);
+  expect((await seedDemoEvents(db, now)).createdEvents).toBe(7);
   const pa = await login('participant.a');
   await pa.agent.post(`/api/events/${demoEventIds.open}/registrations`).set('X-CSRF-Token', pa.token).send({}).expect(201);
   await db.event.update({ where: { id: demoEventIds.full }, data: { title: 'ผู้ใช้แก้ข้อมูลตัวอย่าง', capacity: 3 } });
@@ -67,7 +71,7 @@ it('rerunning preserves edited events, consumed seats, references and removed ex
   const snapshot = async () => ({ events: await db.event.findMany({ where: { id: { in: ids } }, orderBy: { id: 'asc' } }),
     registrations: await db.registration.findMany({ where: { eventId: { in: ids } }, orderBy: { id: 'asc' } }) });
   const before = await snapshot();
-  expect(await seedDemoEvents(db, new Date(now.getTime() + 30 * 86400000))).toEqual({ createdEvents: 0, createdRegistrations: 0, skippedEvents: 6 });
+  expect(await seedDemoEvents(db, new Date(now.getTime() + 30 * 86400000))).toEqual({ createdEvents: 0, createdRegistrations: 0, skippedEvents: 7 });
   expect(await snapshot()).toEqual(before);
 });
 
@@ -82,9 +86,9 @@ it('rejects incomplete demo accounts without adding partial event data', async (
 
 it('concurrent seed calls create each fixture once without duplicating or overfilling registrations', async () => {
   const results = await Promise.all([seedDemoEvents(db, now), seedDemoEvents(db, now)]);
-  expect(results.reduce((n, r) => n + r.createdEvents, 0)).toBe(6);
-  expect(results.reduce((n, r) => n + r.createdRegistrations, 0)).toBe(4);
-  expect(results.reduce((n, r) => n + r.skippedEvents, 0)).toBe(6);
-  expect(await db.event.count({ where: { id: { in: ids } } })).toBe(6);
-  expect(await db.registration.count({ where: { eventId: { in: ids } } })).toBe(4);
+  expect(results.reduce((n, r) => n + r.createdEvents, 0)).toBe(7);
+  expect(results.reduce((n, r) => n + r.createdRegistrations, 0)).toBe(6);
+  expect(results.reduce((n, r) => n + r.skippedEvents, 0)).toBe(7);
+  expect(await db.event.count({ where: { id: { in: ids } } })).toBe(7);
+  expect(await db.registration.count({ where: { eventId: { in: ids } } })).toBe(6);
 });

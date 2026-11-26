@@ -9,7 +9,7 @@ review, CI, independent reproduction or UAT.
 | Branch | `feature/50-f08-migration` |
 | Baseline SHA supplied by Jetanin Naitho | `a5bf4bac0c17ede5cb2e4c4d1bac243fc473b74c` |
 | Source tested | Baseline plus the new, not-yet-committed `attendance-migration.test.ts` |
-| RED commit | Pending: Jetanin commits the test and this evidence before GREEN implementation |
+| RED commit supplied by Jetanin Naitho | `ba4cb6e0ff369e5a573fe97240214832f24b534d`, committed before GREEN implementation |
 | Design | [Sprint 3 STS v0.2, TEST-65](../../sts.md), NFR-05 and F-08 DoD 4 |
 | Node | 22.23.2 |
 | Database | Existing approved PostgreSQL Docker test container, host `127.0.0.1:55433`; administrative DB `loungcheu_test`; random disposable child DBs per case |
@@ -62,10 +62,12 @@ The tests never create substitute attendance columns/constraints themselves.
 - TEST-66 process restart and AC-43 check-in behaviour are later work. No GREEN,
   migration PR, deployment, board update or Issue completion is claimed here.
 
-## Next step
+## Next step recorded at RED
 
 Commit this test and evidence as RED and record the actual commit SHA. Only
 then add the schema, SQL migration and attendance demo seed, rerun TEST-65,
 and run the affected Sprint 1–2 regression suite. Existing seed expectations
 will need to account for the additional demo while preserving their original
 scenario assertions; passing this focused suite alone is not full regression.
+
+Update 27 November 2026: Jetanin supplied RED commit `ba4cb6e0ff369e5a573fe97240214832f24b534d` before implementation. Subsequent local GREEN results are recorded separately in [F-08 migration GREEN evidence](../f08-migration-green/README.md).

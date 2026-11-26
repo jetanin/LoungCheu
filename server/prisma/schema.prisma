@@ -19,7 +19,8 @@ model User {
   role         Role
   isActive     Boolean @default(true) @map("is_active")
   events       Event[]
-  registrations Registration[]
+  registrations Registration[] @relation("RegistrationParticipant")
+  checkedInRegistrations Registration[] @relation("RegistrationCheckIn")
   registrationHistory RegistrationHistory[]
 
   @@map("users")
@@ -71,8 +72,11 @@ model Registration {
   status        RegistrationStatus @default(ACTIVE)
   registeredAt  DateTime           @map("registered_at") @db.Timestamptz(3)
   cancelledAt   DateTime?          @map("cancelled_at") @db.Timestamptz(3)
+  checkedInAt   DateTime?          @map("checked_in_at") @db.Timestamptz(3)
+  checkedInById String?            @map("checked_in_by_id") @db.Uuid
   event         Event              @relation(fields: [eventId], references: [id], onDelete: Restrict)
-  participant   User               @relation(fields: [participantId], references: [id], onDelete: Restrict)
+  participant   User               @relation("RegistrationParticipant", fields: [participantId], references: [id], onDelete: Restrict)
+  checkedInBy   User?              @relation("RegistrationCheckIn", fields: [checkedInById], references: [id], onDelete: Restrict)
   history       RegistrationHistory[]
 
   @@unique([eventId, participantId])
