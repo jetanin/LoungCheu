@@ -1,0 +1,48 @@
+Baseline: d61e1768b3a35c9e00ce61758ed5f4e768ea31aa
+Source: baseline + uncommitted TEST-59 UI tests
+Node: v22.23.2
+Started UTC: 2026-11-26T19:24:51.244Z
+Command: node node_modules/vitest/vitest.mjs run client/src/features/registrations/AttendanceViews.test.tsx --reporter=verbose
+Target: Docker 55433 / loungcheu_test only
+Exit: 1
+
+Condensed from the original RED run; not a new execution.
+Original log: 6764 lines; SHA-256 eb19af96659c4817901718fef95269978ba6ab6629bf870b01d6f456e56799b5
+Repeated DOM dumps and stack traces omitted; case outcomes and summary retained.
+Full original remains in RED commit 54deba90eb510cf0626066367464f2ecc1bfc6bb.
+
+ RUN  v5.1.0 C:/Work/2569/CPE334/GroupWork/LoungCheu
+
+ × client/src/features/registrations/AttendanceViews.test.tsx > F-08 TEST-59 own attendance display > renders checked-in time in own list without organizer identity 1034ms
+ × client/src/features/registrations/AttendanceViews.test.tsx > F-08 TEST-59 own attendance display > renders checked-in time in own detail without organizer identity 1014ms
+ × client/src/features/registrations/AttendanceViews.test.tsx > F-08 TEST-59 own attendance display > renders required not-yet-checked status in own list 1019ms
+ × client/src/features/registrations/AttendanceViews.test.tsx > F-08 TEST-59 own attendance display > renders required not-yet-checked status in own detail 1018ms
+ ✓ client/src/features/registrations/AttendanceViews.test.tsx > F-08 TEST-59 own attendance display > omits attendance for CANCELLED in own list 16ms
+ ✓ client/src/features/registrations/AttendanceViews.test.tsx > F-08 TEST-59 own attendance display > omits attendance for CANCELLED in own detail 14ms
+ × client/src/features/registrations/AttendanceViews.test.tsx > F-08 TEST-59 organizer attendance actions > renders attendance column and authoritative checked-in/ACTIVE counts 1004ms
+ × client/src/features/registrations/AttendanceViews.test.tsx > F-08 TEST-59 organizer attendance actions > confirms the participant name before mutation (accepted=false) 1006ms
+ × client/src/features/registrations/AttendanceViews.test.tsx > F-08 TEST-59 organizer attendance actions > confirms the participant name before mutation (accepted=true) 1015ms
+ × client/src/features/registrations/AttendanceViews.test.tsx > F-08 TEST-59 organizer attendance actions > disables the pending row and sends one request even after a second click 1005ms
+ × client/src/features/registrations/AttendanceViews.test.tsx > F-08 TEST-59 organizer attendance actions > does not offer check-in outside the window (1793941199999) 1008ms
+ × client/src/features/registrations/AttendanceViews.test.tsx > F-08 TEST-59 organizer attendance actions > does not offer check-in outside the window (1793948400001) 1004ms
+ × client/src/features/registrations/AttendanceViews.test.tsx > F-08 TEST-59 organizer attendance actions > shows a dash for CANCELLED and no action 1006ms
+ × client/src/features/registrations/AttendanceViews.test.tsx > F-08 TEST-59 organizer attendance actions > shows a previously checked-in row without another action 1016ms
+ × client/src/features/registrations/AttendanceViews.test.tsx > F-08 TEST-59 organizer attendance actions > shows CHECK_IN_NOT_OPEN in Thai and reloads authoritative roster 1004ms
+ × client/src/features/registrations/AttendanceViews.test.tsx > F-08 TEST-59 organizer attendance actions > shows REGISTRATION_NOT_ACTIVE in Thai and reloads authoritative roster 1017ms
+ × client/src/features/registrations/AttendanceViews.test.tsx > F-08 TEST-59 organizer attendance actions > shows ALREADY_CHECKED_IN in Thai and reloads authoritative roster 1013ms
+ × client/src/features/registrations/AttendanceViews.test.tsx > F-08 TEST-59 organizer attendance actions > clears private roster when mutation is denied with 401 1018ms
+ × client/src/features/registrations/AttendanceViews.test.tsx > F-08 TEST-59 organizer attendance actions > clears private roster when mutation is denied with 403 1006ms
+ × client/src/features/registrations/AttendanceViews.test.tsx > F-08 TEST-59 organizer attendance actions > clears private roster when mutation is denied with 404 1014ms
+ × client/src/features/registrations/AttendanceViews.test.tsx > F-08 TEST-59 organizer attendance actions > never retries an uncertain POST timeout automatically and reconciles via explicit roster reload 1015ms
+
+Representative assertion failures:
+TestingLibraryElementError: Unable to find an element with the text: /^เช็กชื่อแล้วเมื่อ /. This could be because the text is broken up by multiple elements. In this case, you can provide a function for your text matcher to make your matcher more flexible.
+TestingLibraryElementError: Unable to find an element with the text: ยังไม่ได้เช็กชื่อ. This could be because the text is broken up by multiple elements. In this case, you can provide a function for your text matcher to make your matcher more flexible.
+TestingLibraryElementError: Unable to find role="columnheader" and name "การเข้าร่วม"
+TestingLibraryElementError: Unable to find role="button" and name "เช็กชื่อ"
+TestingLibraryElementError: Unable to find an element with the text: เช็กชื่อแล้ว 6 พ.ย. 2569 13:00:00. This could be because the text is broken up by multiple elements. In this case, you can provide a function for your text matcher to make your matcher more flexible.
+
+ Test Files  1 failed (1)
+      Tests  19 failed | 2 passed (21)
+   Start at  02:24:51
+   Duration  20.55s (tests 94%, environment 4%, import 1%)

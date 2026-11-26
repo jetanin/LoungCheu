@@ -1,0 +1,8 @@
+Baseline: 609e2d0e779271970e1669eebc85281ec71cf5d9
+Source: baseline + uncommitted restart verification test
+Node: v22.23.2
+Started UTC: 2026-11-26T19:13:21.341Z
+Command: node node_modules/typescript/bin/tsc --noEmit -p server/tsconfig.json
+Target: Docker 55433 only; test-owned disposable DB for process restart
+Exit: 0
+

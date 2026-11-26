@@ -1,0 +1,20 @@
+Baseline supplied by Jetanin Naitho: 5206254a9b14c6a818d734655a331623ef25c686
+Source: baseline + uncommitted own-attendance test
+Node: v22.23.2
+Started UTC: 2026-11-26T18:40:18.309Z
+Command: node node_modules/vitest/vitest.mjs run server/tests/integration/attendance-check-in.test.ts --reporter=verbose
+Target: Docker 55433 / loungcheu_test (process-only override)
+Exit: 0
+
+
+ RUN  v5.1.0 C:/Work/2569/CPE334/GroupWork/LoungCheu
+
+ ✓ server/tests/integration/attendance-check-in.test.ts > F-08 check-in rule / TEST-55 / AC-43 > TEST-55(a): refuses CANCELLED during the event without changing data or history 130ms
+ ✓ server/tests/integration/attendance-check-in.test.ts > F-08 check-in rule / TEST-55 / AC-43 > TEST-55(b): first check-in at T1 succeeds; repeat at T2 keeps T1, actor, count and history 94ms
+ ✓ server/tests/integration/attendance-check-in.test.ts > F-08 check-in rule / TEST-55 / AC-43 > TEST-55(c): outside the time window takes precedence over CANCELLED and preserves every field 49ms
+
+ Test Files  1 passed (1)
+      Tests  3 passed (3)
+   Start at  01:40:18
+   Duration  1.04s (tests 62%, import 30%, transform 7%, worker 1%)
+

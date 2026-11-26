@@ -1,0 +1,46 @@
+{
+  "event": "verified",
+  "databaseName": "loungcheu_test_f06_166cfb327e4c4c81993c26f798ecb540",
+  "pids": [
+    42336,
+    38556
+  ],
+  "distinctProcesses": 2,
+  "stoppedAndRestarted": 1,
+  "timestamp": "2026-11-26T19:13:28.566Z",
+  "actorPreserved": true,
+  "eventAndHistoryUnchanged": true,
+  "activeCount": 2,
+  "checkedInCount": 1,
+  "registrationRows": 3,
+  "historyRows": 4,
+  "freshOwnerAndParticipantLogins": true,
+  "ownedDatabaseRemoved": true,
+  "processEvents": [
+    {
+      "event": "built",
+      "entrypoint": "server/dist/server.js",
+      "exit": 0
+    },
+    {
+      "event": "ready",
+      "pid": 42336,
+      "port": 64474,
+      "version": "f08-restart-a4fe8620-96f3-4c01-9bf6-71e8e019f49b-1"
+    },
+    {
+      "event": "stopped",
+      "pid": 42336
+    },
+    {
+      "event": "ready",
+      "pid": 38556,
+      "port": 64474,
+      "version": "f08-restart-a4fe8620-96f3-4c01-9bf6-71e8e019f49b-2"
+    },
+    {
+      "event": "stopped",
+      "pid": 38556
+    }
+  ]
+}

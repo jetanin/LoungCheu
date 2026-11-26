@@ -1,0 +1,34 @@
+Baseline: d61e1768b3a35c9e00ce61758ed5f4e768ea31aa
+Source: baseline + uncommitted TEST-59 UI tests
+Node: v22.23.2
+Started UTC: 2026-11-26T19:24:47.123Z
+Command: node node_modules/vitest/vitest.mjs run client/src/features/registrations/RegistrationViews.test.tsx server/tests/integration/attendance-own.test.ts server/tests/integration/attendance-check-in.test.ts --reporter=verbose
+Target: Docker 55433 / loungcheu_test only
+Exit: 0
+
+
+ RUN  v5.1.0 C:/Work/2569/CPE334/GroupWork/LoungCheu
+
+ ✓ server/tests/integration/attendance-own.test.ts > F-08 own attendance / TEST-53 / MyRegistrationS3 > TEST-53: real check-in commits one timestamp shared by roster and own list/detail without lifecycle changes 202ms
+ ✓ server/tests/integration/attendance-own.test.ts > F-08 own attendance / TEST-53 / MyRegistrationS3 > MyRegistrationS3: unchecked record (cancelled=false) has required null checked_in_at in both reads 95ms
+ ✓ server/tests/integration/attendance-own.test.ts > F-08 own attendance / TEST-53 / MyRegistrationS3 > MyRegistrationS3: unchecked record (cancelled=true) has required null checked_in_at in both reads 93ms
+ ✓ server/tests/integration/attendance-check-in.test.ts > F-08 check-in rule / TEST-55 / AC-43 > TEST-55(a): refuses CANCELLED during the event without changing data or history 113ms
+ ✓ server/tests/integration/attendance-check-in.test.ts > F-08 check-in rule / TEST-55 / AC-43 > TEST-55(b): first check-in at T1 succeeds; repeat at T2 keeps T1, actor, count and history 99ms
+ ✓ server/tests/integration/attendance-check-in.test.ts > F-08 check-in rule / TEST-55 / AC-43 > TEST-55(c): outside the time window takes precedence over CANCELLED and preserves every field 49ms
+ ✓ client/src/features/registrations/RegistrationViews.test.tsx > TEST-25: shows loading/empty and retries failure without stale records 183ms
+ ✓ client/src/features/registrations/RegistrationViews.test.tsx > TEST-22/24: links own list to detail and renders reference/Bangkok time 51ms
+ ✓ client/src/features/registrations/RegistrationViews.test.tsx > TEST-25: clears private records immediately on account changes and ignores late results 31ms
+ ✓ client/src/features/registrations/RegistrationViews.test.tsx > clears protected records when refreshed access is rejected with 401 17ms
+ ✓ client/src/features/registrations/RegistrationViews.test.tsx > clears protected records when refreshed access is rejected with 403 19ms
+ ✓ client/src/features/registrations/RegistrationViews.test.tsx > clears protected records when refreshed access is rejected with 404 14ms
+ ✓ client/src/features/registrations/RegistrationViews.test.tsx > TEST-28/29: roster empty state then reloads names, references and ACTIVE count 41ms
+ ✓ client/src/features/registrations/RegistrationViews.test.tsx > TEST-23/27: wrong-role views do not fetch protected data 9ms
+
+ Test Files  3 passed (3)
+      Tests  14 passed (14)
+   Start at  02:24:47
+   Duration  3.65s (tests 49%, environment 27%, import 22%, transform 2%, worker 1%)
+
+    Isolate  3 workers spawned · ~409ms startup each (spawn + environment, per file)
+             at least ~818ms faster with isolate: false — reuses workers across files instead of one per file
+

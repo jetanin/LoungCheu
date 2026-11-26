@@ -5,7 +5,7 @@ import { MyRegistrations, OrganizerRoster } from './RegistrationViews';
 
 const participant = { id: 'a', display_name: 'Alice', role: 'PARTICIPANT' as const };
 const organizer = { id: 'owner', display_name: 'Owner', role: 'ORGANIZER' as const };
-const record = { id: 'reference-a', status: 'ACTIVE', registered_at: '2026-11-07T03:00:00.000Z', event: {
+const record = { id: 'reference-a', status: 'ACTIVE', registered_at: '2026-11-07T03:00:00.000Z', cancelled_at: null, checked_in_at: null, event: {
   id: 'event', title: 'Private workshop', location: 'Campus', starts_at: '2026-11-08T03:00:00.000Z',
   ends_at: '2026-11-08T04:00:00.000Z', registration_closes_at: '2026-11-08T02:00:00.000Z', status: 'PUBLISHED',
 } };
@@ -58,9 +58,14 @@ it.each([401, 403, 404])('clears protected records when refreshed access is reje
   if (status !== 401) expect(screen.getByRole('alert').textContent).toContain('Access denied');
 });
 it('TEST-28/29: roster empty state then reloads names, references and ACTIVE count', async () => {
-  const base = { event_id: 'event', capacity: 3, active_count: 0, registrations: [] };
-  vi.stubGlobal('fetch', vi.fn().mockResolvedValueOnce(reply(base)).mockResolvedValueOnce(reply({ ...base, active_count: 1,
-    registrations: [{ id: 'registration', participant: { display_name: 'Alice' }, status: 'ACTIVE', registered_at: record.registered_at }] })));
+  const base = { event_id: 'event', capacity: 3, active_count: 0, checked_in_count: 0, registrations: [] };
+  let reads = 0;
+  vi.stubGlobal('fetch', vi.fn(async (path: string) => {
+    if (path === '/api/organizer/events/event') return reply(record.event);
+    if (path === '/api/organizer/events/event/registrations') return reply(++reads === 1 ? base : { ...base, active_count: 1,
+      registrations: [{ id: 'registration', participant: { display_name: 'Alice' }, status: 'ACTIVE', registered_at: record.registered_at, checked_in_at: null }] });
+    throw new Error(`Unexpected read: ${path}`);
+  }));
   render(<OrganizerRoster identity={organizer} eventId="event" onAuthRequired={vi.fn()}/>);
   await screen.findByText('ยังไม่มีผู้ลงทะเบียน');
   fireEvent.click(screen.getByRole('button', { name: 'รีเฟรชรายชื่อ' }));

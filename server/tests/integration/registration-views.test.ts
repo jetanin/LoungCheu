@@ -56,7 +56,8 @@ it('TEST-22: persists own list/detail with exact schemas, scope and timestamp/id
   const list = (await agent.get('/api/my/registrations').expect(200)).body.data;
   expect(list.map((record: { id: string }) => record.id)).toEqual(references.slice(0, 2));
   for (const record of list) {
-    expect(Object.keys(record).sort()).toEqual(['cancelled_at', 'event', 'id', 'registered_at', 'status']);
+    expect(Object.keys(record).sort()).toEqual(['cancelled_at', 'checked_in_at', 'event', 'id', 'registered_at', 'status']);
+    expect(record.checked_in_at).toBeNull();
     expect(Object.keys(record.event).sort()).toEqual(['ends_at', 'id', 'location', 'registration_closes_at', 'starts_at', 'status', 'title']);
     expect(record.registered_at).toBe(time.toISOString());
     expect((await agent.get(`/api/my/registrations/${record.id}`).expect(200)).body.data).toEqual(record);
@@ -88,20 +89,22 @@ it('TEST-26/28/29: owner-only roster is sorted, minimal, empty for DRAFT and fre
   const oa = await login(owner), pa = await login(emptyParticipant);
   const path = `/api/organizer/events/${events[0]}/registrations`;
   const initial = (await oa.agent.get(path).expect(200)).body.data;
-  expect(Object.keys(initial).sort()).toEqual(['active_count', 'capacity', 'event_id', 'registrations']);
+  expect(Object.keys(initial).sort()).toEqual(['active_count', 'capacity', 'checked_in_count', 'event_id', 'registrations']);
   expect(initial.active_count).toBe(1);
+  expect(initial.checked_in_count).toBe(0);
   expect(initial.registrations.map((row: { id: string }) => row.id)).toEqual([references[0], references[2]]);
   for (const row of initial.registrations) {
-    expect(Object.keys(row).sort()).toEqual(['id', 'participant', 'registered_at', 'status']);
+    expect(Object.keys(row).sort()).toEqual(['checked_in_at', 'id', 'participant', 'registered_at', 'status']);
+    expect(row.checked_in_at).toBeNull();
     expect(Object.keys(row.participant)).toEqual(['display_name']);
   }
   expect((await oa.agent.get(`/api/organizer/events/${events[1]}/registrations`).expect(200)).body.data)
-    .toEqual({ event_id: events[1], capacity: 3, active_count: 0, registrations: [] });
+    .toEqual({ event_id: events[1], capacity: 3, active_count: 0, checked_in_count: 0, registrations: [] });
   const registered = (await pa.agent.post(`/api/events/${events[0]}/registrations`).set('X-CSRF-Token', pa.token).send({}).expect(201)).body.data;
   const updated = (await oa.agent.get(path).expect(200)).body.data;
   expect(updated.active_count).toBe(await db.registration.count({ where: { eventId: events[0], status: 'ACTIVE' } }));
   expect(updated.active_count).toBe(2);
-  expect(updated.registrations.at(-1)).toEqual({ id: registered.id, participant: { display_name: 'Synthetic 4' }, status: 'ACTIVE', registered_at: registered.registered_at });
+  expect(updated.registrations.at(-1)).toEqual({ id: registered.id, participant: { display_name: 'Synthetic 4' }, status: 'ACTIVE', registered_at: registered.registered_at, checked_in_at: null });
   const list = (await pa.agent.get('/api/my/registrations').expect(200)).body.data;
   expect(list[0].id).toBe(registered.id);
 });
