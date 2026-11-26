@@ -2,12 +2,12 @@ import { Prisma, type PrismaClient } from '@prisma/client';
 import { ApiError } from '../../shared/errors.js';
 
 const summary = { id: true, title: true, location: true, startsAt: true, endsAt: true, registrationClosesAt: true, status: true } as const;
-const ownSelect = { id: true, status: true, registeredAt: true, cancelledAt: true, event: { select: summary } } as const;
+const ownSelect = { id: true, status: true, registeredAt: true, cancelledAt: true, checkedInAt: true, event: { select: summary } } as const;
 type OwnRecord = Prisma.RegistrationGetPayload<{ select: typeof ownSelect }>;
 export function serializeOwnRegistration(record: OwnRecord) {
   const event = record.event;
   return { id: record.id, status: record.status, registered_at: record.registeredAt.toISOString(),
-    cancelled_at: record.cancelledAt?.toISOString() ?? null, event: {
+    cancelled_at: record.cancelledAt?.toISOString() ?? null, checked_in_at: record.checkedInAt?.toISOString() ?? null, event: {
     id: event.id, title: event.title, location: event.location, starts_at: event.startsAt.toISOString(),
     ends_at: event.endsAt.toISOString(), registration_closes_at: event.registrationClosesAt.toISOString(), status: event.status,
   } };

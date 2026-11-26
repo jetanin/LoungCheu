@@ -4,7 +4,7 @@ import { createRegistrationQueries } from '../../src/modules/registrations/queri
 
 const date = new Date('2026-11-07T03:00:00.000Z');
 const event = { id: 'event', title: 'Workshop', location: 'Campus', startsAt: date, endsAt: date, registrationClosesAt: date, status: 'PUBLISHED' };
-const registration = { id: 'reference', status: 'ACTIVE', registeredAt: date, cancelledAt: null, event };
+const registration = { id: 'reference', status: 'ACTIVE', registeredAt: date, cancelledAt: null, checkedInAt: null, event };
 function fixture() {
   const tx = { registration: { findMany: vi.fn().mockResolvedValue([registration]), findFirst: vi.fn().mockResolvedValue(registration) },
     event: { findFirst: vi.fn().mockResolvedValue({ id: 'event', capacity: 3, registrations: [
@@ -17,7 +17,7 @@ function fixture() {
 describe('F-04/F-05 scoped reads', () => {
   it('scopes own list in the query and serializes only contract fields (TEST-22)', async () => {
     const { tx, service } = fixture();
-    expect(await service.list('participant')).toEqual([{ id: 'reference', status: 'ACTIVE', registered_at: date.toISOString(), cancelled_at: null, event: {
+    expect(await service.list('participant')).toEqual([{ id: 'reference', status: 'ACTIVE', registered_at: date.toISOString(), cancelled_at: null, checked_in_at: null, event: {
       id: 'event', title: 'Workshop', location: 'Campus', starts_at: date.toISOString(), ends_at: date.toISOString(), registration_closes_at: date.toISOString(), status: 'PUBLISHED',
     } }]);
     expect(tx.registration.findMany).toHaveBeenCalledWith(expect.objectContaining({ where: { participantId: 'participant' }, orderBy: [{ registeredAt: 'desc' }, { id: 'asc' }] }));
