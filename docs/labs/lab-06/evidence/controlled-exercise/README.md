@@ -1,8 +1,9 @@
 # Lab 6 controlled exercise — fixed release evidence
 
 Recorded 26 November 2026 (Asia/Bangkok). This record identifies the corrected
-deployment for independent retest. It does not record a retest result or a new
-acceptance decision from TH-005_P5.
+deployment and the subsequent independent retest. Nantakorn (TH-005_P5) reports
+PASS and confirms Sprint 1 remains Accepted on this revision. The evidence
+distinguishes results visible in screenshots from the relayed tester report.
 
 | Item | Verified value |
 |---|---|
@@ -24,6 +25,11 @@ acceptance decision from TH-005_P5.
 | CX-E07: deploy summary and read-only smoke | [05-fixed-deploy-summary.png](05-fixed-deploy-summary.png) |
 | CX-E08: public readiness | [06-fixed-readiness.png](06-fixed-readiness.png) |
 | CX-E09: fetched release tag | [07-fixed-release-tag.png](07-fixed-release-tag.png) |
+| CX-E10: retest C1 public event / seats | [08-retest-event-seats.jpg](08-retest-event-seats.jpg) |
+| CX-E11: retest C2 own registration | [09-retest-own-registration.jpg](09-retest-own-registration.jpg) |
+| CX-E12: retest C3 organizer roster | [10-retest-organizer-roster.jpg](10-retest-organizer-roster.jpg) |
+| CX-E13: retest B1–B5 API console | [11-retest-api-console.jpg](11-retest-api-console.jpg) |
+| EV-D-03 / CX-E14: tester's result message, relayed by Jetanin (text transcription) | [12-partner-retest-report.txt](12-partner-retest-report.txt) |
 
 The tag screenshot establishes that the tag was fetched from origin. Its target
 was checked separately through the GitHub API; it is not inferred from the
@@ -36,9 +42,18 @@ timestamp; screenshot filesystem timestamps are not treated as execution times.
   tag, full SHA, revision and deploy run.
 - [Defect report and version table](../../controlled-exercise.md) retain the
   historical RED/GREEN results and add this release as a separate checkpoint.
-- Sending the handoff in IG, the UAT team's actual results/screenshots and its
-  retest decision are still pending confirmation. Do not close #64/#44 from
-  deployment success alone.
+- Pre-deploy notification was sent in the IG group on 26 Nov 2026 at 00:34
+  Asia/Bangkok (EV-0-05). The independent retest request was sent on 26 Nov 2026
+  at 02:38 Asia/Bangkok (EV-D-02) for `v2.0.1-lab6` / `6f49d32`.
+- Nantakorn / TH-005_P5 ran the retest on 26 Nov 2026, 19:56–20:28
+  Asia/Bangkok. B1–B5 and C1–C3 pass in the supplied screenshots. Nantakorn's
+  relayed message also reports every UAT-02 step PASS and confirms Sprint 1
+  remains Accepted. See [retest results](retest-results.md) for actuals, source
+  attribution and evidence limits, and [image provenance](retest-image-map.csv).
+- No separate UAT-02 step screenshots or original IG decision screenshot were
+  supplied in this set. The text report is retained without presenting it as a
+  screenshot. Review the full Issue #64/#44 checklist before closing either
+  issue; no issue or board state is changed by this documentation update.
 - This Lab 6 release is separate from Sprint 2 release
   `v2.0.0-sprint-2` / `c0faf24`. Earlier Sprint 2 screenshots retain their
   original release identity.

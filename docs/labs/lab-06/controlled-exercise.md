@@ -40,10 +40,10 @@ Issue #64 | Product Team: TH-001_P3 LoungCheu | UAT Team: TH-005_P5 ApprovalFlow
 | Root cause | ระบบกันซ้ำสองชั้นถูกเอาออกทั้งคู่: (1) `registrations/service.ts` ไม่ตรวจ registration เดิมก่อน insert; (2) migration `202611250001_lab6_exercise_drop_registration_unique` ลบ unique index `(event_id, participant_id)` ที่เป็น guard ชั้น DB |
 | Fix plan | RED test ใหม่ระดับ API ที่ตรวจ 409, ACTIVE = 1 และ `active_count`/`available_seats` ไม่เปลี่ยน → คืนการตรวจใน service และเอา migration ที่ลบ unique index ออก (migration นี้ไม่เคยรันบน production) → regression เต็ม |
 | Owner / Reviewer | i3artuf (fix) / jetanin (review) |
-| Fix status | RED ✓ (local + CI run 45661984995 แดง) → GREEN ✓ `37d5be4` (LAB6-CX-01 ผ่าน, Vitest 169/169); teammate review และ merge ผ่าน PR #65/#69/#70; release [PR #68](https://github.com/jetanin/LoungCheu/pull/68) บน `main` ที่ `6f49d32`, tag `v2.0.1-lab6`, deploy/smoke SUCCESS ([run 45685620954](https://github.com/jetanin/LoungCheu/actions/runs/45685620954)); ยังรอ independent retest จากทีมคู่ |
+| Fix status | RED ✓ (local + CI run 45661984995 แดง) → GREEN ✓ `37d5be4` (LAB6-CX-01 ผ่าน, Vitest 169/169); teammate review และ merge ผ่าน PR #65/#69/#70; release [PR #68](https://github.com/jetanin/LoungCheu/pull/68) บน `main` ที่ `6f49d32`, tag `v2.0.1-lab6`, deploy/smoke SUCCESS ([run 45685620954](https://github.com/jetanin/LoungCheu/actions/runs/45685620954)); independent retest โดย Nantakorn (TH-005_P5) 26 พ.ย. 2026 19:56–20:28 Asia/Bangkok: PASS และยืนยัน Sprint 1 ยังคง Accepted; [ผลและที่มาของหลักฐาน](evidence/controlled-exercise/retest-results.md) |
 | Disposition | Fix ใน exercise นี้ (Critical → ต้องแก้และให้ทีม UAT retest ก่อนปิด); ไม่กระทบผลตัดสิน Accepted ของ `v1.0.1-uat` เพราะ defect ไม่เคยอยู่ใน release ที่ทดสอบ |
-| แจ้งทีมคู่ | _รอ_ — แจ้งผ่านกลุ่ม IG (ช่องทาง handoff ที่ตกลงไว้) พร้อม version ที่แก้แล้วและขั้นตอน reproduce; บันทึกผลตอบกลับใน §5 |
-| Retest | TH-005_P5 retest เคสลงทะเบียนซ้ำผ่าน API บน revision ใหม่หลัง deploy |
+| แจ้งทีมคู่ | แจ้งก่อน deploy ผ่านกลุ่ม IG วันที่ 26 พ.ย. 2026 00:34 Asia/Bangkok (EV-0-05); ส่งคำขอ independent retest แล้ววันที่ 26 พ.ย. 2026 02:38 Asia/Bangkok (EV-D-02) สำหรับ corrected release `v2.0.1-lab6` / `6f49d32`; ได้รับภาพ B/C และข้อความผลของ Nantakorn ที่อินทร์ถ่ายทอดแล้ว ดู §5 |
+| Retest | TH-005_P5: B1–B5, C1–C3 และ UAT-02 PASS ตามรายงาน Nantakorn; ภาพชุดนี้รองรับ B/C ส่วน UAT-02 และคำตัดสินยืนยันจากข้อความทีมคู่ ไม่ใช่ผลที่ผู้แก้เอกสารรันแทน |
 
 ## 4. Version table
 
@@ -55,7 +55,7 @@ Issue #64 | Product Team: TH-001_P3 LoungCheu | UAT Team: TH-005_P5 ApprovalFlow
 | RED test commit | `fe31120` | ไม่ deploy | CI [45661984995](https://github.com/jetanin/LoungCheu/actions/runs/45661984995) **failure**: 5 failed / 164 passed (LAB6-CX-01, TEST-16 ×2, TEST-21, events F-02/F-03) |
 | GREEN fix commit | `37d5be4` | ไม่ deploy | local: LAB6-CX-01 PASS, Vitest 169/169; CI [45662403825](https://github.com/jetanin/LoungCheu/actions/runs/45662403825) บน `d812ce2` (= `37d5be4` + docs) **success**: Vitest 169/169, Playwright 37/37 |
 | Fixed release on main | [`v2.0.1-lab6`](https://github.com/jetanin/LoungCheu/releases/tag/v2.0.1-lab6) / `6f49d327e8e709fc716b9eeb60591ea4fd692fc9` ([PR #68](https://github.com/jetanin/LoungCheu/pull/68)) | `scccd8b05-00012-msg` | [Deploy run 45685620954](https://github.com/jetanin/LoungCheu/actions/runs/45685620954) SUCCESS; readiness ที่ผู้ใช้แคป 26 พ.ย. 2026 11:04:31 Asia/Bangkok: HTTP 200, ready, db connected, version ตรง release SHA; [หลักฐาน](evidence/controlled-exercise/README.md) |
-| UAT retest | — | _รอ_ | |
+| UAT retest | `v2.0.1-lab6` / `6f49d327e8e709fc716b9eeb60591ea4fd692fc9` | `scccd8b05-00012-msg` | Nantakorn (TH-005_P5), 26 พ.ย. 2026 19:56–20:28 Asia/Bangkok: PASS; Sprint 1 ยังคง Accepted ตามข้อความทีมคู่; [ผล/หลักฐาน](evidence/controlled-exercise/retest-results.md) |
 
 ## 4.1 RED / GREEN evidence
 
@@ -81,6 +81,8 @@ Test `LAB6-CX-01` ไม่ถูกแก้ระหว่าง RED กับ
 
 | Tester | Version / revision | ผลจริง | หลักฐาน | ผลตัดสิน |
 |---|---|---|---|---|
-| _รอ_ | _รอ_ | _รอ_ | _รอ_ | _รอ_ |
+| Nantakorn / TH-005_P5; 26 พ.ย. 2026 19:56–20:28 Asia/Bangkok | `v2.0.1-lab6` / `6f49d327e8e709fc716b9eeb60591ea4fd692fc9`; `scccd8b05-00012-msg` | B1 version ตรง; B2 409 ALREADY_REGISTERED; B3 409 ทั้งคู่; B4 active 1/available 2 ก่อนและหลัง; B5=1; C1 ว่าง 2/3 ACTIVE 1; C2 กิจกรรมครั้งเดียว; C3 roster หนึ่งแถว ACTIVE 1/3; UAT-02 PASS ทุกขั้นตามข้อความทีมคู่ | [ผลละเอียดและภาพ 08–11](evidence/controlled-exercise/retest-results.md), [ข้อความผลที่อินทร์ถ่ายทอด](evidence/controlled-exercise/12-partner-retest-report.txt) | Retest PASS; Sprint 1 remains Accepted บน revision นี้ตามคำยืนยัน Nantakorn |
 
 ผลตัดสินต้องมาจากทีม UAT เท่านั้น (Lab 6 §3.4)
+
+หลักฐานคำตัดสิน: **EV-D-03** (retest result chat ตามที่ผู้ใช้ระบุ) — [ข้อความของ Nantakorn ที่อินทร์ถ่ายทอด](evidence/controlled-exercise/12-partner-retest-report.txt). ข้อความนี้ไม่ใช่ภาพแชตต้นฉบับ; ภาพ console และ C1–C3 ที่ได้รับภายหลังรวมไว้ใน [ผล retest](evidence/controlled-exercise/retest-results.md) แล้ว

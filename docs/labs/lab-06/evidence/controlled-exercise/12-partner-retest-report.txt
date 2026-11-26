@@ -1,0 +1,8 @@
+ผล retest LoungCheu v2.0.1-lab6 / 6f49d32 (revision scccd8b05-00012-msg)
+ผู้ทดสอบ: Nantakorn (TH-005_P5) · 26 พ.ย. 2026 19:56–20:28 น.
+
+B1 version ตรง · B2 409 ALREADY_REGISTERED · B3 409, 409 · B4 ที่นั่งก่อน/หลัง active 1 / available 2 เท่ากัน · B5 = 1 → PASS ทั้งหมด
+C1 ว่าง 2/3, ACTIVE 1 · C2 กิจกรรมขึ้นครั้งเดียว · C3 รายชื่อ ACTIVE 1/3 มีแถวเดียว (Participant A) → PASS
+UAT-02 ทดสอบซ้ำ ([UAT-02-RT-NP]) → PASS ทุกขั้น (ข้อสังเกต: ปุ่มลงทะเบียนเป็นสีเทาหลังลงทะเบียนแล้ว และตัวเลขที่นั่งอัปเดตทันที ซึ่งดีขึ้นจากรอบก่อน)
+ผลการ retest: PASS · Sprint 1 ของ LoungCheu ยังเป็น Accepted บน revision นี้ครับ
+กิจกรรมทดสอบที่ค้างอยู่: [RT-CX-NP] Duplicate retest, [UAT-02-RT-NP] Capacity check
