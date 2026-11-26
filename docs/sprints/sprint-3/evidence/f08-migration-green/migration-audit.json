@@ -1,0 +1,23 @@
+{
+  "testDatabase": "loungcheu_test",
+  "port": 55433,
+  "hadRecordsTable": false,
+  "oldRecordsPreserved": 0,
+  "constraints": [
+    {
+      "conname": "registrations_checked_in_active_check",
+      "contype": "c",
+      "confdeltype": " "
+    },
+    {
+      "conname": "registrations_checked_in_by_id_fkey",
+      "contype": "f",
+      "confdeltype": "r"
+    },
+    {
+      "conname": "registrations_checked_in_pair_check",
+      "contype": "c",
+      "confdeltype": " "
+    }
+  ]
+}

@@ -69,12 +69,14 @@ erDiagram
 | User | id, username, password_hash (salt/hash/parameters), display_name, role, is_active | username unique; role PARTICIPANT/ORGANIZER |
 | Event | id, organizer_id, title, description, location, starts_at, ends_at, registration_closes_at, capacity, status, created_at, updated_at | FK User; owner immutable; capacity 1–1000; ordered timestamps; DRAFT/PUBLISHED/CLOSED |
 | Registration | id, event_id, participant_id, status, registered_at, cancelled_at | FK Event/User; UNIQUE(event_id, participant_id); enum ACTIVE/CANCELLED; cancelled_at nullable; F-06 reuse record/first registered_at เมื่อ reactivate |
-| Registration extensions (S3 planned) | checked_in_at/checked_in_by_id | nullable จนเกิด action; checked_in_by_id FK User |
+| Registration attendance storage (F-08 migration; API/UI ยัง planned) | checked_in_at/checked_in_by_id | nullable timestamptz(3)/UUID; FK User แบบ Restrict; CHECK ให้เป็น null/มีค่าพร้อมกัน และมี check-in ได้เฉพาะ ACTIVE |
 | RegistrationHistory (F-06 implemented) | id, registration_id, actor_id, action, occurred_at | FK Registration/User Restrict; REGISTERED/CANCELLED/REACTIVATED; backfill initial REGISTERED ของ S1; index (registration_id, occurred_at, id) |
 
 IDs ใช้ UUID; timestamps ใช้ `timestamptz(3)` UTC ตาม BR-14 Fields ใน S1 required/non-null เพิ่ม S2/S3 fields/history ผ่าน versioned migrations ไม่มี hard delete และไม่มี history UI ใน baseline
 
 registered_at เป็นเวลาลงครั้งแรกที่ service ใส่จาก clock หลัง Event lock; S2 cancel ตั้ง cancelled_at และ append history, reactivate คง registered_at/ล้าง cancelled_at พร้อม REACTIVATED history; S3 checked_in_at/checked_in_by_id มีค่าพร้อมกันเมื่อเช็กชื่อและไม่เปลี่ยนเมื่อเช็กซ้ำ
+
+F-08 storage update — 27 พ.ย. 2026 (#50): migration `202611270001_registration_attendance` เพิ่มสองคอลัมน์แบบ nullable และ constraints ใน transaction เดียว ไม่มี backfill และไม่เปลี่ยน Registration/history เดิม Prisma ใช้ relation names `RegistrationParticipant` และ `RegistrationCheckIn` เพื่อแยก participant ออกจากผู้เช็กชื่อ Demo seed เพิ่มกิจกรรมเช็กชื่อหนึ่งรายการพร้อม ACTIVE 2 คน/เช็กชื่อแล้ว 1 คน โดยสร้าง REGISTERED history และข้าม Event ที่มีอยู่แล้วใน transaction/advisory lock เดิม [TEST-65 และหลักฐาน](sprints/sprint-3/evidence/f08-migration-green/README.md). ขั้นนี้ยังไม่เพิ่ม check-in endpoint, serializer fields, UI หรือผล TEST-66; ไม่ถือว่า AC-41–46 ผ่านครบ
 
 Prisma schema กำหนด relations/enums/unique; migrations เพิ่ม SQL checks สำหรับ capacity/time ordering ส่วน role relations, transitions และ ACTIVE count ตรวจใน service/transaction PostgreSQL session table เป็น infrastructure แยกจาก domain model
 
