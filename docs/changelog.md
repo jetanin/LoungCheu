@@ -97,3 +97,7 @@ Contract/STS v0.6 reconcile F-06 implementation and execution without changing A
 ## Sprint 2 release status — 26 November 2026
 
 Release PR #67 merged F-06/F-07 into `main` as `c0faf24`, tagged `v2.0.0-sprint-2`. CI run 45666007554 passed (Vitest 264/264, Playwright 39/39), and deploy run 45668146212 produced revision `scccd8b05-00011-fvb`. Updated the release status in SRS §10, the feature inventory, the System SDS header, traceability (AC-28–AC-40 Accepted release column, and the release version in the result of FR-09–FR-12 and the BR rows covered by F-06/F-07, per D2 §3.4 "result and version"), the Sprint 2 completion record and the contract/STS status lines. No FR/BR/NFR, AC or TEST changed. Earlier dated status text is kept as history. Later, `v2.0.1-lab6` (`6f49d32`) added only Lab 6 controlled-exercise tests and docs (Issue #64). F-08/F-09 contracts are in PR #71 to `sprint-3-staging` and are not implemented yet. (Issue #51)
+
+## Persistence evidence correction — 27 November 2026
+
+Review of PR #73: the remaining-work GAP-02 row and traceability NFR-03/AC-25 said redeploy persistence had not been checked. Lab 5 Issue #20 (22 November 2026) already showed the original event and ACTIVE registration surviving a Cloud Run application restart and a redeploy (`scccd8b05-00005-5xj` → `scccd8b05-00006-68j`). The rows now cite that result. The Sprint 3 check is a repeat for the new release. GAP-02 is not declared closed from this evidence alone, and TEST-35 clean reproduction stays NOT EXECUTED.
