@@ -4,9 +4,8 @@ import { createDatabaseClient } from '../../server/src/db/client.js';
 import { readTestDatabaseUrl } from '../../server/src/config/database-url.js';
 
 // F-09 TEST-64 / AC-50 (E2E part, Chromium, real server and DB).
-// The F-08 check-in endpoint and UI do not exist yet, so the "check in another participant" step
-// writes the same columns F-08 writes (checked_in_at, checked_in_by_id = owner). Replace that step
-// with the real check-in UI once F-08 lands.
+// The event is in progress (starts 1 h ago, ends in 1 h on the real server clock), so the owner
+// checks in another participant through the real F-08 roster UI (PR #79) in a second tab.
 async function login(page: Page, username: string) {
   await page.goto('/login');
   await page.getByLabel('ชื่อผู้ใช้').fill(username);
@@ -25,10 +24,10 @@ test('TEST-64: owner opens ดูสรุปผล, sees DB-matching values, re
   try {
     const user = async (username: string) => (await db.user.findUniqueOrThrow({ where: { username } })).id;
     const [oa, pa, pb, pc] = await Promise.all(['organizer.a', 'participant.a', 'participant.b', 'participant.c'].map(user));
-    const before = new Date(Date.now() - 60_000);
-    await db.event.create({ data: { id: eventId, organizerId: oa, title: `F09 summary E2E ${Date.now()}`, description: 'TEST-64 synthetic',
-      location: 'KMUTT', capacity: 5, status: 'PUBLISHED', registrationClosesAt: new Date('2099-01-01T02:00:00.000Z'),
-      startsAt: new Date('2099-01-01T03:00:00.000Z'), endsAt: new Date('2099-01-01T05:00:00.000Z'), createdAt: before, updatedAt: before } });
+    const now = Date.now(), before = new Date(now - 3 * 3_600_000);
+    await db.event.create({ data: { id: eventId, organizerId: oa, title: `F09 summary E2E ${now}`, description: 'TEST-64 synthetic',
+      location: 'KMUTT', capacity: 5, status: 'PUBLISHED', registrationClosesAt: new Date(now - 2 * 3_600_000),
+      startsAt: new Date(now - 3_600_000), endsAt: new Date(now + 3_600_000), createdAt: before, updatedAt: before } });
     for (const [participantId, status, checked] of [[pa, 'ACTIVE', true], [pb, 'ACTIVE', false], [pc, 'CANCELLED', false]] as const) {
       await db.registration.create({ data: { eventId, participantId, status, registeredAt: before,
         cancelledAt: status === 'CANCELLED' ? before : null, ...(checked ? { checkedInAt: before, checkedInById: oa } : {}),
@@ -51,8 +50,17 @@ test('TEST-64: owner opens ดูสรุปผล, sees DB-matching values, re
     const api = (await (await page.request.get(`/api/organizer/events/${eventId}/summary`)).json()).data;
     expect(api).toMatchObject({ active_count: 2, cancelled_count: 1, checked_in_count: 1, attendance_rate: '50.00' });
 
-    // Another participant is checked in (F-08 columns), then the owner refreshes the summary.
-    await db.registration.updateMany({ where: { eventId, participantId: pb }, data: { checkedInAt: new Date(), checkedInById: oa } });
+    // The owner checks in Participant B on the roster (real F-08 UI and API) in a second tab.
+    const roster = await page.context().newPage();
+    roster.setDefaultTimeout(10_000);
+    await roster.goto(`/organizer/events/${eventId}/registrations`);
+    const row = roster.getByRole('row').filter({ has: roster.getByRole('cell', { name: 'Participant B', exact: true }) });
+    roster.once('dialog', dialog => void dialog.accept());
+    await row.getByRole('button', { name: 'เช็กชื่อ', exact: true }).click();
+    await expect(row).toContainText('เช็กชื่อแล้ว');
+    const stored = await db.registration.findFirstOrThrow({ where: { eventId, participantId: pb } });
+    expect(stored.checkedInById).toBe(oa);
+    await roster.close();
     await expect(tile(page, 'เช็กชื่อแล้ว')).toHaveText('1'); // no auto-refresh
     await page.getByRole('button', { name: 'รีเฟรชสรุป', exact: true }).click();
     await expect(tile(page, 'เช็กชื่อแล้ว')).toHaveText('2');

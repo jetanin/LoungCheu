@@ -164,9 +164,11 @@ describe('F-09 re-read after a change and DRAFT zeros (TEST-62 / AC-49)', () => 
     const event = await fixture('ECHECK3');
     await at(t0 + 10_800_000);
     expect(await ok(event.id)).toMatchObject({ checked_in_count: 0, attendance_rate: '0.00', generated_at: new Date(clock).toISOString() });
-    // The F-08 check-in endpoint does not exist yet; store the check-in in the same columns F-08 writes (owner as checker).
-    await db.registration.updateMany({ where: { eventId: event.id, participantId: users.PA },
-      data: { checkedInAt: new Date(clock), checkedInById: users.OA } });
+    // Real F-08 check-in (PR #79) by the owner, inside starts_at..ends_at.
+    const pa = await db.registration.findFirstOrThrow({ where: { eventId: event.id, participantId: users.PA } });
+    const checkIn = await sessions.OA.agent.post(`/api/organizer/events/${event.id}/registrations/${pa.id}/check-in`)
+      .set('X-CSRF-Token', sessions.OA.token).send({}).expect(200);
+    expect(checkIn.body.data).toMatchObject({ id: pa.id, status: 'ACTIVE', checked_in_at: new Date(clock).toISOString() });
     await at(clock + 60_000);
     expect(await ok(event.id)).toMatchObject({ active_count: 2, checked_in_count: 1, attendance_rate: '50.00',
       generated_at: new Date(clock).toISOString() });

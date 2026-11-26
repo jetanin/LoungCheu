@@ -32,7 +32,7 @@ To show the tests can fail, the query was changed on purpose (ACTIVE counted as 
 
 ## Limits
 
-- **Check-in step is written to the DB.** The F-08 check-in endpoint and UI do not exist yet. TEST-62 and the TEST-64 E2E "check in another participant" step update `checked_in_at` / `checked_in_by_id` directly (the same columns F-08 writes, owner as checker). Re-run both with the real check-in once F-08 lands.
+- **Check-in step is written to the DB.** The F-08 check-in endpoint and UI do not exist yet. TEST-62 and the TEST-64 E2E "check in another participant" step update `checked_in_at` / `checked_in_by_id` directly (the same columns F-08 writes, owner as checker). Re-run both with the real check-in once F-08 lands. **Done in [step 4](../f09-integration/README.md)** after PR #79 merged.
 - **"CANCELLED not counted as checked-in" (AC-47)** cannot be set up in data: the F-08 CHECK `registrations_checked_in_active_check` rejects a CANCELLED row with `checked_in_at`. The query also filters `status = 'ACTIVE'`.
 - **Login refresh in tests.** Sessions last 2 h on the controlled clock. Tests that move the clock to t0+3h log in again first; without this the old session is expired and destroyed (first run got 401).
 - Local runs only; CI and teammate review are still to come.

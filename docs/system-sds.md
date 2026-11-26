@@ -296,4 +296,4 @@ F-07 integration fixture เพิ่ม REGISTERED history ใน nested create
 - **Rate:** `attendanceRate(checked, active)` ใน `modules/attendance/rate.ts` คำนวณด้วยจำนวนเต็มแบบ half-up และคืน string 2 ตำแหน่ง; active=0 คืน `"0.00"`
 - **Data:** ไม่มี schema ใหม่ ใช้คอลัมน์ `checked_in_at` จาก migration F-08 `202611270001_registration_attendance` (PR #78); CHECK ของ F-08 ทำให้ CANCELLED ไม่มี `checked_in_at` อยู่แล้ว
 - **UI:** `client/src/features/attendance/AttendanceSummary.tsx` อ่านครั้งเดียวเมื่อเปิดหน้าและเมื่อกดรีเฟรชสรุป ไม่ refresh ตาม focus; ระหว่างโหลดแสดงข้อความแทนตัวเลข; 401 กลับ login; 403/404 ล้างค่าแล้วแสดงข้อความ; Participant ไม่ส่ง request
-- **หลักฐาน:** [step 1 rate/access](sprints/sprint-3/evidence/f09-red/README.md), [step 2 UI](sprints/sprint-3/evidence/f09-ui/README.md), [step 3 API counts + E2E](sprints/sprint-3/evidence/f09-api/README.md)
+- **หลักฐาน:** [step 1 rate/access](sprints/sprint-3/evidence/f09-red/README.md), [step 2 UI](sprints/sprint-3/evidence/f09-ui/README.md), [step 3 API counts + E2E](sprints/sprint-3/evidence/f09-api/README.md), [step 4 integration กับ F-08 check-in จริง](sprints/sprint-3/evidence/f09-integration/README.md)
