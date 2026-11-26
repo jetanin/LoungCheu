@@ -1,6 +1,6 @@
 # Sprint 3 — Software Test Specification (F-08, F-09)
 
-เอกสาร LC-S3-STS | v0.1 (planned design) | 24 พฤศจิกายน 2026
+เอกสาร LC-S3-STS | v0.2 (planned design) | 26 พฤศจิกายน 2026
 
 Contract: [contracts.md](contracts.md) ทุก test ต้องเขียนและ commit ให้ **fail ก่อน** implementation (RED) แล้วจึง implement ให้ผ่าน (GREEN) เก็บ SHA ทั้งสองจังหวะ
 
@@ -26,17 +26,19 @@ Registration ทุก record มี REGISTERED history ตาม F-06 CANCELLED
 
 "ข้อมูลไม่เปลี่ยน" หมายถึงอ่านจาก connection ใหม่แล้ว Registration ทุก field (status, registered_at, cancelled_at, checked_in_at, checked_in_by_id), จำนวน history และ Event ทุก field รวม updated_at เท่าค่าก่อน request
 
-## 2. F-08 test cases (TEST-53–TEST-59)
+## 2. F-08 test cases (TEST-53–TEST-59, TEST-65–TEST-66)
 
 | Test ID / AC | ระดับ | Preconditions / input | Action | Expected result |
 |---|---|---|---|---|
 | TEST-53 / AC-41 | API/DB | OA, ECHECK3, clock=t0+2h30m | POST check-in ของ PA → GET roster → GET own detail ของ PA | 200 RosterEntryS3 checked_in_at=t0+2h30m; DB checked_in_by_id=OA; status/registered_at เดิม, Event.updated_at เดิม, history ไม่เพิ่ม; roster checked_in_count=1 และแถว PA มี checked_in_at; PA own detail เห็น checked_in_at เดียวกัน |
 | TEST-54 / AC-42 | API/DB | ECHECK3 fixture ใหม่ทุก case; ECLOSED3 | check-in PA ที่ clock = (a) starts−1 ms (b) starts (c) ends (d) ends+1 ms (e) ECLOSED3 ที่ t0+3h (f) DRAFT ที่แก้เวลาด้วย F-07 แล้ว publish เช็กชื่อตามเวลาใหม่ | (a)(d) 409 CHECK_IN_NOT_OPEN ข้อมูลไม่เปลี่ยน (b)(c)(e) 200 (f) ใช้ starts/ends ใหม่ ไม่ใช่ค่าก่อนแก้ |
-| TEST-55 / AC-43 | API/DB | ECHECK3, clock=t0+3h | (a) check-in PC (CANCELLED) (b) check-in PA สองครั้งต่อกัน (c) check-in PC ที่ clock=ends+1 ms | (a) 409 REGISTRATION_NOT_ACTIVE (b) ครั้งแรก 200 ครั้งที่สอง 409 ALREADY_CHECKED_IN และ checked_in_at/checked_in_by_id ยังเป็นของครั้งแรก (c) 409 CHECK_IN_NOT_OPEN (เวลาตรวจก่อนสถานะ); ทุก rejection ข้อมูลไม่เปลี่ยน |
+| TEST-55 / AC-43 | API/DB | ECHECK3; T1=t0+3h, T2=t0+3h5m (ยังอยู่ในช่วง starts–ends) | (a) check-in PC (CANCELLED) ที่ T1 (b) check-in PA ครั้งแรกที่ clock=T1 แล้วเลื่อน clock เป็น T2 ก่อนส่งครั้งที่สอง (c) check-in PC ที่ clock=ends+1 ms | (a) 409 REGISTRATION_NOT_ACTIVE (b) ครั้งแรก 200 checked_in_at=T1; ครั้งที่สอง 409 ALREADY_CHECKED_IN และ DB ยังเป็น checked_in_at=T1, checked_in_by_id=OA, Event.updated_at และ roster checked_in_count เดิม (ถ้าเขียนทับจะเห็น T2) (c) 409 CHECK_IN_NOT_OPEN (เวลาตรวจก่อนสถานะ); ทุก rejection ข้อมูลไม่เปลี่ยน |
 | TEST-56 / AC-44 | Unit + API/DB | OA, ECHECK3, clock=t0+3h | eventId หรือ registrationId=`not-a-uuid`; body `null`, `[]`, `"x"`, `{"checked_in_at":"…"}`, `{"status":"ACTIVE"}`, เกิน 1 KiB, JSON ผิดรูป; ไม่มี body และ `{}` | input ผิดทั้งหมด 400 INVALID_INPUT ข้อมูลไม่เปลี่ยน; ไม่มี body และ `{}` ได้ 200 |
 | TEST-57 / AC-44, AC-45 | API/DB | ECHECK3, EOTHER3; clock=t0+3h; body={} | check-in PA ของ ECHECK3 โดย anonymous, PA, PB, OB; OA ด้วย registrationId ของ EOTHER3; OA ด้วย eventId ไม่มีจริง; OA ไม่มี CSRF และ CSRF ผิด; GET own detail ของ PA โดย PB; GET roster โดย PA และ OB | 401 AUTH_REQUIRED; 403 ROLE_FORBIDDEN (PA เช็กชื่อตัวเองก็ 403); 403; 404 EVENT_NOT_FOUND; 404 REGISTRATION_NOT_FOUND; 404 EVENT_NOT_FOUND; 403 CSRF_FAILED ทั้งคู่; 404 REGISTRATION_NOT_FOUND; 403 และ 404; response ไม่เปิดเผยชื่อ/เวลาของผู้อื่น; ข้อมูลไม่เปลี่ยนทุกกรณี |
-| TEST-58 / AC-46 | API/DB concurrency | ECHECK3 fixture ใหม่ทุกรอบ, clock=t0+3h; separate connections + Event lock barrier | (a) OA ส่ง check-in PA สองคำขอพร้อมกัน สลับลำดับได้ lock ทำ ≥20 รอบ (b) ถือ Event lock ไว้แล้วเลื่อน clock ไป ends+1 ms ก่อนปล่อยคำขอ check-in | (a) ทุกรอบ 200 หนึ่ง + 409 ALREADY_CHECKED_IN หนึ่ง; checked_in_at เป็นของผู้ชนะ; ไม่มี deadlock/500 (b) 409 CHECK_IN_NOT_OPEN ข้อมูลไม่เปลี่ยน |
+| TEST-58 / AC-46 | API/DB concurrency | ECHECK3 fixture ใหม่ทุกรอบ; separate connections + Event lock barrier; (a) runtime A ใช้ clock T1=t0+3h, runtime B ใช้ clock T2=t0+3h5m; (b) clock=t0+3h | (a) OA ส่ง check-in PA สองคำขอพร้อมกัน สลับลำดับได้ lock ทำ ≥20 รอบ (b) ถือ Event lock ไว้แล้วเลื่อน clock ไป ends+1 ms ก่อนปล่อยคำขอ check-in | (a) ทุกรอบ 200 หนึ่ง + 409 ALREADY_CHECKED_IN หนึ่ง; checked_in_at เท่ากับ clock ของ runtime ที่ได้ 200 (T1 หรือ T2) และไม่ถูกแทนด้วย clock ของฝั่งที่ได้ 409; ไม่มี deadlock/500 (b) 409 CHECK_IN_NOT_OPEN ข้อมูลไม่เปลี่ยน |
 | TEST-59 / AC-45, AC-46 | Component + E2E (Chromium) | Component: mock API; E2E: server/DB จริงพร้อมกิจกรรมที่อยู่ในช่วงเช็กชื่อ OA/PA context แยก | OA เปิด roster → กดเช็กชื่อ → ยกเลิก dialog → กดใหม่แล้วยืนยัน → reload; PA เปิด own list และ own detail → logout/login → เปิดอีกครั้ง; component: busy, 409 แต่ละ code, 401, 403/404, network timeout, นอกช่วงเวลา, CANCELLED | ยกเลิก dialog ไม่ส่ง POST; ยืนยันแล้วแถวเป็น "เช็กชื่อแล้ว {เวลา}" ยอดเพิ่มและคงอยู่หลัง reload; PA เห็น "เช็กชื่อแล้วเมื่อ …" หลัง re-login; ระหว่างส่งปุ่ม disabled และส่งครั้งเดียว; 409 แสดงข้อความภาษาไทยตามตารางแล้วโหลด roster ใหม่; 401 ล้างข้อมูลไปหน้า login; 403/404 ล้าง roster; timeout ไม่ retry เอง; นอกช่วงเวลาและ CANCELLED ไม่มีปุ่ม |
+| TEST-65 / NFR-05, DoD 4 | Migration integration (disposable DB แยก: Docker:55433 หรือ PostgreSQL service ของ CI แบบเดียวกับ TEST-44) | (a) DB ที่ migrate ถึง S2 (`202611240001`) มี ACTIVE/CANCELLED พร้อม history, cancelled_at, registered_at (b) DB ว่าง (c) DB หลัง S3 migration | (a) apply migration S3 (b) migrate → seed → seed ซ้ำ และ seed พร้อมกัน 2 process (c) INSERT/UPDATE ที่มีเฉพาะ checked_in_at หรือเฉพาะ checked_in_by_id; ตั้ง checked_in บน CANCELLED; checked_in_by_id ที่ไม่มี user | (a) ทุก field และจำนวน history เดิมไม่เปลี่ยน, สองคอลัมน์ใหม่เป็น null ทุก record (b) มีกิจกรรม `[DEMO]` เช็กชื่อตาม contract (ACTIVE 2 เช็กชื่อแล้ว 1); seed ซ้ำ/พร้อมกันไม่สร้างซ้ำและไม่ทับค่าเช็กชื่อ (c) ถูก CHECK หรือ FK ปฏิเสธทุกกรณี ข้อมูลเดิมไม่เปลี่ยน |
+| TEST-66 / NFR-03, AC-41, AC-45 | Process restart integration (compiled backend จริงบน DB เดิม แบบเดียวกับ TEST-43) | ECHECK3, clock=t0+3h; OA และ PA login | OA check-in PA → หยุด backend process → เริ่ม process ใหม่ (PID ใหม่) บน DB เดิม → OA login ใหม่แล้ว GET roster; PA login ใหม่แล้ว GET own detail | checked_in_at และ checked_in_by_id ใน DB เท่าก่อนหยุด; roster checked_in_count=1 และแถว PA มี checked_in_at เดิม; PA own detail เห็น checked_in_at เดิม; PID ก่อน/หลังต่างกัน |
 
 ## 3. F-09 test cases (TEST-60–TEST-64)
 
@@ -59,3 +61,4 @@ Registration ทุก record มี REGISTERED history ตาม F-06 CANCELLED
 | Version | วันที่ | การเปลี่ยนแปลง | เหตุผล | ผู้เขียน |
 |---|---|---|---|---|
 | 0.1 | 24 พ.ย. 2026 | fixtures, F-08 TEST-53–59 และ F-09 TEST-60–64 | ฉบับแรกก่อน implementation #50 | M2 |
+| 0.2 | 26 พ.ย. 2026 | TEST-55(b) ใช้ T1 แล้ว T2 ก่อนส่งซ้ำ; TEST-58(a) สอง runtime คนละ clock; เพิ่ม TEST-65 (migration/constraints) และ TEST-66 (backend restart) | Review PR #71 โดย jetanin: clock เดียวกันจับการเขียนทับ timestamp ไม่ได้; migration และ NFR-03 หลัง restart ไม่มี test design. แก้ก่อนเริ่ม implementation #50 | M2 |
