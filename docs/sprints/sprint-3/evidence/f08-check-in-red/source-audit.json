@@ -1,0 +1,9 @@
+{
+  "baseline": "a8ff503dc4d316a6f36c90ccda2a437919d83339",
+  "productionSourceUnchanged": true,
+  "testFileSha256": "af8f8a4774c7af4448ef757bdf85cc3295aa292a5cffc0f1629393e3aad8e831",
+  "migrationBaselineExit": 0,
+  "redExit": 1,
+  "testDatabase": "loungcheu_test",
+  "port": 55433
+}
