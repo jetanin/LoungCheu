@@ -19,7 +19,7 @@ Issue #51 | ทีม TH-001_P3 LoungCheu | Jetanin Naitho (`jetanin`, M1), Paph
 | F-01–F-05 (Sprint 1) | AC-01–AC-27 | accepted; UAT โดย TH-005_P5 7/7 PASS, **Accepted** 25 พ.ย. 2026 | `v1.0.1-uat` (`0b2cc80`) |
 | F-06 Cancel / re-register / close (Sprint 2) | AC-28–AC-33 | accepted (reviewed release บน main); ยังไม่มี independent UAT | `v2.0.0-sprint-2` (`c0faf24`), CI run 45666007554 |
 | F-07 Edit event (Sprint 2) | AC-34–AC-40 | accepted (reviewed release บน main); ยังไม่มี independent UAT | `v2.0.0-sprint-2` (`c0faf24`), CI run 45666007554 |
-| Lab 6 controlled exercise LAB6-CX-01 (#64) | AC-13, AC-17, BR-04 | แก้แล้วและ release แล้ว รอผล retest จากทีม UAT | `v2.0.1-lab6` (`6f49d32`), revision `scccd8b05-00012-msg` |
+| Lab 6 controlled exercise LAB6-CX-01 (#64) | AC-13, AC-17, BR-04 | แก้แล้ว release แล้ว และ independent retest **PASS** โดย Nantakorn (TH-005_P5) 26 พ.ย. 2026 19:56–20:28: B1–B5, C1–C3, UAT-02 ผ่าน, Sprint 1 ยังเป็น Accepted (บันทึกใน PR #76) | `v2.0.1-lab6` (`6f49d32`), revision `scccd8b05-00012-msg` |
 
 AC-25 และ AC-27 ของ Sprint 1 ยังเป็น PARTIAL ตาม [traceability](../traceability.md) ดูข้อ 4
 
@@ -27,10 +27,10 @@ AC-25 และ AC-27 ของ Sprint 1 ยังเป็น PARTIAL ตาม
 
 | Feature / defect | สถานะปัจจุบัน (AC ที่ได้ + tested commit) | Remaining action (AC / verification / fix ที่ขาด) | Dependency | Owner; วันที่เสร็จ |
 |---|---|---|---|---|
-| **F-08 Check-in และ own attendance** (#50) | planned: contract AC-41–AC-46 และ STS TEST-53–TEST-59 และ TEST-65–TEST-66 (STS v0.2) อยู่ใน PR #71 → `sprint-3-staging`; ยังไม่มี code และยังไม่มี tested commit | ① Migration `checked_in_at`/`checked_in_by_id` + CHECK ตาม contract ขึ้น `sprint-3-staging` ก่อน (F-09 ใช้คอลัมน์นี้) ② Implement กฎอย่างน้อย 1 ข้อพร้อม TDD RED→GREEN ให้ทันอยู่ใน D2 candidate (D2 §2) เช่น AC-43 (เช็กชื่อได้เฉพาะ ACTIVE, ห้ามเช็กซ้ำ) ③ ทำ AC-41–AC-46 ที่เหลือให้ครบ รัน TEST-53–TEST-59 และ TEST-65–TEST-66 (STS v0.2) ④ PR เข้า `sprint-3-staging` พร้อม review + CI | PR #71 merge | Jetanin (review: Paphangkorn); ① 27 พ.ย. ② 28 พ.ย. ③④ 30 พ.ย. |
-| **F-09 Attendance summary** (#74, draft PR #75) | in progress: rate (TEST-61 unit) และ access ของ summary API (TEST-63) RED `60cbc8e` → GREEN `062ed8d` ในเครื่อง; AC-47–AC-49 ยังไม่ผ่านเพราะยังไม่มีคอลัมน์ `checked_in_at` | รัน TEST-60, TEST-61 (API), TEST-62 หลัง migration ของ F-08 → UI summary TEST-64 (component + Chromium) → อัปเดต System SDS/traceability FR-15, BR-13 → review + CI → merge เข้า `sprint-3-staging` ให้อยู่ใน D2 candidate | Migration ของ F-08 (ข้อ ①); PR #71 merge | Paphangkorn (review: Jetanin); 28 พ.ย. |
+| **F-08 Check-in และ own attendance** (#50) | planned: contract AC-41–AC-46 และ STS TEST-53–TEST-59 และ TEST-65–TEST-66 (STS v0.2) merge เข้า `sprint-3-staging` แล้ว (PR #71, 26 พ.ย.); ยังไม่มี code และยังไม่มี tested commit | ① Migration `checked_in_at`/`checked_in_by_id` + CHECK ตาม contract ขึ้น `sprint-3-staging` ก่อน (F-09 ใช้คอลัมน์นี้) ② Implement กฎอย่างน้อย 1 ข้อพร้อม TDD RED→GREEN ให้ทันอยู่ใน D2 candidate (D2 §2) เช่น AC-43 (เช็กชื่อได้เฉพาะ ACTIVE, ห้ามเช็กซ้ำ) ③ ทำ AC-41–AC-46 ที่เหลือให้ครบ รัน TEST-53–TEST-59 และ TEST-65–TEST-66 (STS v0.2) ④ PR เข้า `sprint-3-staging` พร้อม review + CI | — | Jetanin (review: Paphangkorn); ① 27 พ.ย. ② 28 พ.ย. ③④ 30 พ.ย. |
+| **F-09 Attendance summary** (#74, draft PR #75) | in progress: rate (TEST-61 unit) และ access ของ summary API (TEST-63) RED `60cbc8e` → GREEN `062ed8d` ในเครื่อง; AC-47–AC-49 ยังไม่ผ่านเพราะยังไม่มีคอลัมน์ `checked_in_at` | รัน TEST-60, TEST-61 (API), TEST-62 หลัง migration ของ F-08 → UI summary TEST-64 (component + Chromium) → อัปเดต System SDS/traceability FR-15, BR-13 → review + CI → merge เข้า `sprint-3-staging` ให้อยู่ใน D2 candidate | Migration ของ F-08 (ข้อ ①) | Paphangkorn (review: Jetanin); 28 พ.ย. |
 | **Sprint 3 release** | ยังไม่มี | Release PR `sprint-3-staging` → main, CI, deploy, smoke check `/api/ready`, tag `v3.0.0-sprint-3` | F-08 และ F-09 merge เข้า staging | Jetanin เปิด PR / Paphangkorn review; 30 พ.ย. |
-| **LAB6-CX-01** retest (#64, #44) | แก้แล้ว: RED `fe31120` → GREEN `37d5be4`, release `v2.0.1-lab6`; ส่งคำขอ retest ให้ TH-005_P5 แล้ว 26 พ.ย. 02:38 | รับผล retest B1–B5, C1–C3, UAT-02 → บันทึกใน [controlled-exercise.md](../labs/lab-06/controlled-exercise.md) §5 → ปิด #64/#44 | ทีม TH-005_P5 retest | Paphangkorn (บันทึก), Jetanin (#44); 28 พ.ย. |
+| **LAB6-CX-01** retest (#64, #44) | แก้แล้ว: RED `fe31120` → GREEN `37d5be4`, release `v2.0.1-lab6`; retest PASS 26 พ.ย. 19:56–20:28 (Nantakorn) | merge PR #76 ที่บันทึกผลใน [controlled-exercise.md](../labs/lab-06/controlled-exercise.md) §5 → ปิด #64/#44 | review PR #76 | Jetanin (PR #76), Paphangkorn (review); 27 พ.ย. |
 
 ตอนนี้ไม่มี defect จริงที่ยังเปิดอยู่: UAT ของ Sprint 1 ไม่พบ finding (EV-D-01) ส่วน LAB6-CX-01 เป็น defect ที่ TA กำหนดให้ทำเป็นแบบฝึกหัด และแก้แล้ว
 
@@ -52,8 +52,8 @@ AC-25 และ AC-27 ของ Sprint 1 ยังเป็น PARTIAL ตาม
 
 | วันที่ | งาน | Owner |
 |---|---|---|
-| 27 พ.ย. | merge PR #71 (contract S3), #72 (Part D) และ PR นี้; F-08 migration ขึ้น `sprint-3-staging`; F-08 RED; F-09 UI (TEST-64) | Jetanin, Paphangkorn |
-| 28 พ.ย. | F-08 กฎแรก GREEN; F-09 ครบ AC-47–AC-50 merge เข้า staging; บันทึกผล retest LAB6-CX-01; release candidate ของ D2 บน main + deploy + tag | Jetanin, Paphangkorn |
+| 27 พ.ย. | merge PR นี้ และ PR #76 (ผล retest LAB6-CX-01) แล้วปิด #64/#44 (PR #71 และ #72 merge แล้ว 26 พ.ย.); F-08 migration ขึ้น `sprint-3-staging`; F-08 RED; F-09 UI (TEST-64) | Jetanin, Paphangkorn |
+| 28 พ.ย. | F-08 กฎแรก GREEN; F-09 ครบ AC-47–AC-50 merge เข้า staging; release candidate ของ D2 บน main + deploy + tag | Jetanin, Paphangkorn |
 | 29 พ.ย. | ส่ง Lab 6 PDF (#45) และ D2 PDF (#51) ภายใน 23:59 | Jetanin (#45), Paphangkorn (#51) |
 | 30 พ.ย. | F-08 ครบ AC-41–46 → Sprint 3 release `v3.0.0-sprint-3` + deploy; NFR-02 และ redeploy persistence check | Jetanin, Paphangkorn |
 | 1–11 ธ.ค. | ช่วงสอบ — ไม่ทำงาน implement; แก้แค่ defect ร้ายแรงถ้ามี | — |
