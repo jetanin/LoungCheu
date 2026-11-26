@@ -117,17 +117,17 @@ Out of scope: self-registration, reset password, email verification, หลา�
 
 รายละเอียดที่ทีมเลือกเอง เช่น session อายุ 2 ชั่วโมง capacity สูงสุด และกติกายกเลิก/check-in อยู่ใน [Decisions](decisions.md) การเปลี่ยนกฎต้องปรับ AC/STS/traceability และบันทึกเหตุผลใน [Changelog](changelog.md)
 
-## 10. สถานะเทียบผลิตภัณฑ์ปัจจุบัน — 25 พฤศจิกายน 2026
+## 10. สถานะเทียบผลิตภัณฑ์ปัจจุบัน — 26 พฤศจิกายน 2026
 
 ข้อความ FR/BR/NFR ด้านบนยังเป็น baseline v0.5 ที่ teammate อนุมัติ ไม่มีการเปลี่ยนข้อกำหนดที่อนุมัติแล้วหลังจากนั้น ส่วนนี้บอกเพียงว่าแต่ละ FR อยู่ขั้นไหนของผลิตภัณฑ์จริง หลักฐานรายละเอียดอยู่ใน [traceability](traceability.md)
 
-| FR | Feature | สถานะ ณ 25 พ.ย. 2026 |
+| FR | Feature | สถานะ ณ 26 พ.ย. 2026 |
 |---|---|---|
 | FR-01–FR-08 | F-01–F-05 | Implemented และ tested; release บน main tag `v1.0.0-sprint-1` แล้วแก้ CI ใน `v1.0.1-uat` (`0b2cc80`); independent UAT โดยทีม TH-005_P5 ผ่าน 7/7 เคส ผลตัดสิน **Accepted** 25 พ.ย. 2026 |
-| FR-09, FR-10, FR-12 | F-06 | Implemented, tested, teammate-reviewed และ merge เข้า `sprint-2-staging` (PR #59, #60) CI ผ่าน; ยังไม่ release บน main |
-| FR-11 | F-07 | Implemented, tested, teammate-reviewed และ merge เข้า `sprint-2-staging` (PR #57, #60) CI ผ่าน; ยังไม่ release บน main |
-| FR-13, FR-14 | F-08 | Planned: contract/AC/STS ร่างแล้ว (Issue #49) ยังไม่ merge; ยังไม่ implement |
-| FR-15 | F-09 | Planned: contract/AC/STS ร่างแล้ว (Issue #49) ยังไม่ merge; ยังไม่ implement |
+| FR-09, FR-10, FR-12 | F-06 | Implemented, tested, teammate-reviewed และ merge เข้า `sprint-2-staging` (PR #59, #60) CI ผ่าน; release บน main เป็น release `v2.0.0-sprint-2` (`c0faf24`, PR #67) deploy revision `scccd8b05-00011-fvb` |
+| FR-11 | F-07 | Implemented, tested, teammate-reviewed และ merge เข้า `sprint-2-staging` (PR #57, #60) CI ผ่าน; release บน main เป็น release `v2.0.0-sprint-2` (`c0faf24`, PR #67) deploy revision `scccd8b05-00011-fvb` |
+| FR-13, FR-14 | F-08 | Planned: contract/AC/STS (Issue #49) อยู่ใน PR #71 → `sprint-3-staging` รอ review; ยังไม่ implement |
+| FR-15 | F-09 | Planned: contract/AC/STS (Issue #49) อยู่ใน PR #71 → `sprint-3-staging` รอ review; ยังไม่ implement |
 
 ประเด็นที่ยังเปิดอยู่ (ยังไม่แก้ข้อความ baseline):
 
