@@ -2,7 +2,7 @@
 
 - Student: Jetanin Naitho (เจตนินทร์ นายโท).
 - UI RED commit: `54deba90eb510cf0626066367464f2ecc1bfc6bb`.
-- Source verified: UI RED commit plus uncommitted GREEN implementation/updated legacy fixtures. Record the subsequent GREEN commit SHA in D2; this working tree is not represented as an already committed SHA.
+- Verified implementation GREEN commit: `30135da345076c82947b5493cd39262783d73b11`. The execution logs describe RED plus uncommitted GREEN changes because verification ran before this commit; the student subsequently committed that verified implementation. Later documentation-only updates record this SHA without claiming a new implementation test run.
 - Execution: 27 November 2026, Asia/Bangkok; exact UTC start times, commands and exit codes are retained in each log.
 - Runtime: Node v22.23.2; PostgreSQL on Docker `127.0.0.1:55433`, database `loungcheu_test`. Test-owned databases for migration/restart use the same approved instance. Process-only overrides; the preserved port-5432 database was not used. Browser API/web ports are 3011/5183.
 
@@ -57,7 +57,7 @@ Component tests simulate an uncertain sent POST rejecting with AbortError; this 
 | Storage/migration | `ba4cb6e0ff369e5a573fe97240214832f24b534d` | `61d1a05812e78e09a70f2ff8b1644046b4b7749e` |
 | Check-in rule API | `cca5f331e8123f83dd743b90960d530a5b725855` | `5206254a9b14c6a818d734655a331623ef25c686` |
 | Own attendance API | `4af205b2bd16bb1fcd49c33d7db5bd6ae26f35f4` | `081b6eb2e18eb3fc962d0beafb1a584989b80751` |
-| Attendance UI | `54deba90eb510cf0626066367464f2ecc1bfc6bb` | Pending: this verified working tree |
+| Attendance UI | `54deba90eb510cf0626066367464f2ecc1bfc6bb` | `30135da345076c82947b5493cd39262783d73b11` |
 
 Additional boundary/access/concurrency/restart tests passed on existing implementation; their records explicitly do not invent a new RED. An initial client regression attempt found two outdated mocked roster reads; the fixtures were updated for the required event detail read and attendance schema before the retained passing client run.
 
