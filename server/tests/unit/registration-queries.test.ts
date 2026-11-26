@@ -8,8 +8,8 @@ const registration = { id: 'reference', status: 'ACTIVE', registeredAt: date, ca
 function fixture() {
   const tx = { registration: { findMany: vi.fn().mockResolvedValue([registration]), findFirst: vi.fn().mockResolvedValue(registration) },
     event: { findFirst: vi.fn().mockResolvedValue({ id: 'event', capacity: 3, registrations: [
-      { id: 'a', status: 'ACTIVE', registeredAt: date, participant: { displayName: 'Alice' } },
-      { id: 'b', status: 'CANCELLED', registeredAt: date, participant: { displayName: 'Bob' } },
+      { id: 'a', status: 'ACTIVE', registeredAt: date, checkedInAt: null, participant: { displayName: 'Alice' } },
+      { id: 'b', status: 'CANCELLED', registeredAt: date, checkedInAt: null, participant: { displayName: 'Bob' } },
     ] }) } };
   const db = { ...tx, $transaction: vi.fn(async (work: (connection: typeof tx) => unknown) => work(tx)) };
   return { tx, service: createRegistrationQueries(db as unknown as PrismaClient) };
@@ -29,9 +29,9 @@ describe('F-04/F-05 scoped reads', () => {
   });
   it('scopes roster by event owner and returns minimal participants with ACTIVE count (TEST-26)', async () => {
     const { tx, service } = fixture();
-    expect(await service.roster('event', 'owner')).toEqual({ event_id: 'event', capacity: 3, active_count: 1, registrations: [
-      { id: 'a', participant: { display_name: 'Alice' }, status: 'ACTIVE', registered_at: date.toISOString() },
-      { id: 'b', participant: { display_name: 'Bob' }, status: 'CANCELLED', registered_at: date.toISOString() },
+    expect(await service.roster('event', 'owner')).toEqual({ event_id: 'event', capacity: 3, active_count: 1, checked_in_count: 0, registrations: [
+      { id: 'a', participant: { display_name: 'Alice' }, status: 'ACTIVE', registered_at: date.toISOString(), checked_in_at: null },
+      { id: 'b', participant: { display_name: 'Bob' }, status: 'CANCELLED', registered_at: date.toISOString(), checked_in_at: null },
     ] });
     expect(tx.event.findFirst).toHaveBeenCalledWith(expect.objectContaining({ where: { id: 'event', organizerId: 'owner' } }));
   });
@@ -43,6 +43,6 @@ describe('F-04/F-05 scoped reads', () => {
     const { tx, service } = fixture(); tx.registration.findMany.mockResolvedValue([]);
     tx.event.findFirst.mockResolvedValue({ id: 'event', capacity: 3, registrations: [] });
     expect(await service.list('participant')).toEqual([]);
-    expect(await service.roster('event', 'owner')).toEqual({ event_id: 'event', capacity: 3, active_count: 0, registrations: [] });
+    expect(await service.roster('event', 'owner')).toEqual({ event_id: 'event', capacity: 3, active_count: 0, checked_in_count: 0, registrations: [] });
   });
 });

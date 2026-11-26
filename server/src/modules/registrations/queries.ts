@@ -26,14 +26,15 @@ export function createRegistrationQueries(db: PrismaClient) {
     roster: (id: string, organizerId: string) => db.$transaction(async tx => {
       const event = await tx.event.findFirst({ where: { id, organizerId }, select: {
         id: true, capacity: true, registrations: { orderBy: [{ registeredAt: 'asc' }, { id: 'asc' }], select: {
-          id: true, status: true, registeredAt: true, participant: { select: { displayName: true } },
+          id: true, status: true, registeredAt: true, checkedInAt: true, participant: { select: { displayName: true } },
         } },
       } });
       if (!event) throw new ApiError(404, 'EVENT_NOT_FOUND', 'ไม่พบกิจกรรมนี้');
       return { event_id: event.id, capacity: event.capacity,
         active_count: event.registrations.filter(record => record.status === 'ACTIVE').length,
+        checked_in_count: event.registrations.filter(record => record.status === 'ACTIVE' && record.checkedInAt !== null).length,
         registrations: event.registrations.map(record => ({ id: record.id, participant: { display_name: record.participant.displayName },
-          status: record.status, registered_at: record.registeredAt.toISOString() })),
+          status: record.status, registered_at: record.registeredAt.toISOString(), checked_in_at: record.checkedInAt?.toISOString() ?? null })),
       };
     }, { isolationLevel: Prisma.TransactionIsolationLevel.RepeatableRead }),
   };

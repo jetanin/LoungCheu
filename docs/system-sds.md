@@ -69,7 +69,7 @@ erDiagram
 | User | id, username, password_hash (salt/hash/parameters), display_name, role, is_active | username unique; role PARTICIPANT/ORGANIZER |
 | Event | id, organizer_id, title, description, location, starts_at, ends_at, registration_closes_at, capacity, status, created_at, updated_at | FK User; owner immutable; capacity 1–1000; ordered timestamps; DRAFT/PUBLISHED/CLOSED |
 | Registration | id, event_id, participant_id, status, registered_at, cancelled_at | FK Event/User; UNIQUE(event_id, participant_id); enum ACTIVE/CANCELLED; cancelled_at nullable; F-06 reuse record/first registered_at เมื่อ reactivate |
-| Registration attendance storage (F-08 migration; API/UI ยัง planned) | checked_in_at/checked_in_by_id | nullable timestamptz(3)/UUID; FK User แบบ Restrict; CHECK ให้เป็น null/มีค่าพร้อมกัน และมี check-in ได้เฉพาะ ACTIVE |
+| Registration attendance storage (F-08; check-in API บางส่วน, UI ยัง planned) | checked_in_at/checked_in_by_id | nullable timestamptz(3)/UUID; FK User แบบ Restrict; CHECK ให้เป็น null/มีค่าพร้อมกัน และมี check-in ได้เฉพาะ ACTIVE |
 | RegistrationHistory (F-06 implemented) | id, registration_id, actor_id, action, occurred_at | FK Registration/User Restrict; REGISTERED/CANCELLED/REACTIVATED; backfill initial REGISTERED ของ S1; index (registration_id, occurred_at, id) |
 
 IDs ใช้ UUID; timestamps ใช้ `timestamptz(3)` UTC ตาม BR-14 Fields ใน S1 required/non-null เพิ่ม S2/S3 fields/history ผ่าน versioned migrations ไม่มี hard delete และไม่มี history UI ใน baseline
@@ -109,7 +109,9 @@ EventStatus มี DRAFT/PUBLISHED/CLOSED; RegistrationStatus มี ACTIVE/CANC
 | POST | /api/my/registrations/:id/cancel | modules/registrations/cancellation-router.ts (F-06) |
 | POST | /api/organizer/events/:id/close | modules/events/router.ts (F-06 appended block) |
 
-Module paths ในตารางอยู่ใต้ `server/src/`; routers mount ที่ `/api`. F-06 own record มี id/status/registered_at/cancelled_at/event; create/reactivate ใช้ POST register เดิม (201/200 ตามลำดับ) พร้อม required cancelled_at=null ในผลสำเร็จ; roster fields คงเดิม ไม่มี history endpoint. F-07 edit implement แล้วจาก #48/PR #57 และรวมใน working tree นี้ตาม [Sprint 2 contracts](sprints/sprint-2/contracts.md); F-08/09 check-in/summary ยัง planned
+Module paths ในตารางอยู่ใต้ `server/src/`; routers mount ที่ `/api`. F-06 own record มี id/status/registered_at/cancelled_at/event; create/reactivate ใช้ POST register เดิม (201/200 ตามลำดับ) พร้อม required cancelled_at=null ในผลสำเร็จ; ไม่มี history endpoint. F-07 edit implement แล้วจาก #48/PR #57 และรวมใน working tree นี้ตาม [Sprint 2 contracts](sprints/sprint-2/contracts.md). F-08 check-in API และ roster extension อยู่ในขั้น TEST-55 ตามรายละเอียดด้านล่าง; own attendance/UI และ F-09 summary ยังไม่อยู่ในผลของขั้นนี้
+
+F-08 check-in rule update — 27 พ.ย. 2026 (#50): `modules/attendance/router.ts` และ `service.ts` เพิ่ม `POST /api/organizer/events/:eventId/registrations/:registrationId/check-in`. ใช้ auth → ORGANIZER → CSRF → JSON (1 KiB)/UUID/EmptyInput → owner-scoped Event lock → event-scoped Registration lock → อ่าน clock → inclusive starts/ends → ACTIVE → ยังไม่เคยเช็กชื่อ. สำเร็จเขียน checkedInAt/checkedInById ใน transaction เดียว และคืน RosterEntryS3 โดยไม่เปิดเผย actor; ไม่แก้ Event/history. GET roster เพิ่ม checked_in_count และ required checked_in_at ต่อแถวใน snapshot เดิม. [หลักฐาน TEST-55](sprints/sprint-3/evidence/f08-check-in-green/README.md) ตรวจ CANCELLED, repeat T1→T2 และ time-before-status; access matrix, boundary/race, own attendance, UI และ restart ต้องตรวจในขั้นถัดไปก่อนถือว่า F-08 ครบ
 
 ### Atomic registration
 
@@ -161,7 +163,7 @@ Express SPA fallback ใช้เฉพาะ frontend routes; unknown API ค�
 | 401 | INVALID_CREDENTIALS: Login ผิด; AUTH_REQUIRED: protected request ไม่มี/หมดอายุ/inactive session |
 | 403 | ROLE_FORBIDDEN: role ไม่ผ่าน; CSRF_FAILED: token/origin ไม่ผ่าน |
 | 404 | EVENT_NOT_FOUND หรือ REGISTRATION_NOT_FOUND: ไม่พบ/นอก record scope; ROUTE_NOT_FOUND: unknown API |
-| 409 | INVALID_TRANSITION, DEADLINE_PASSED (publish), REGISTRATION_CLOSED, ALREADY_REGISTERED, ALREADY_CANCELLED (F-06 cancel ซ้ำก่อน deadline), EVENT_FULL; ALREADY_CHECKED_IN เริ่ม S3 |
+| 409 | INVALID_TRANSITION, DEADLINE_PASSED (publish), REGISTRATION_CLOSED, ALREADY_REGISTERED, ALREADY_CANCELLED (F-06 cancel ซ้ำก่อน deadline), EVENT_FULL; F-08 check-in: CHECK_IN_NOT_OPEN, REGISTRATION_NOT_ACTIVE, ALREADY_CHECKED_IN |
 | 409 (S2 F-07 edit) | EVENT_NOT_EDITABLE: แก้กิจกรรม CLOSED; FIELD_NOT_EDITABLE: แก้ starts_at/ends_at/registration_closes_at ตอน PUBLISHED; CAPACITY_BELOW_ACTIVE: capacity ใหม่ต่ำกว่า ACTIVE count |
 | 500 | INTERNAL_ERROR: generic message, fields={} และไม่คืน internal details |
 
