@@ -147,6 +147,19 @@ F-07 (#48) implement ใน PR #57 (head `9eb9afb`, merge `582a60d` เข้า
 | NFR-04 → TEST-50 | ลด capacity × ลงทะเบียน 20 รอบบน PostgreSQL จริง, ยืนยันว่ารอ lock จริงผ่าน `pg_stat_activity` | ยังไม่ได้ทดสอบบน deployed environment |
 | NFR-01 → TEST-51 | edit endpoint access matrix + CSRF | ครอบคลุมเฉพาะ PATCH edit |
 
+### Sprint 3 F-08 storage/seed verification — 27 พฤศจิกายน 2026
+
+งานย่อยของ #50 บน `feature/50-f08-migration`: RED commit ที่ Jetanin Naitho ระบุ `ba4cb6e0ff369e5a573fe97240214832f24b534d` → GREEN working changes สำหรับ migration `202611270001_registration_attendance` และ demo seed ยังรอ commit/CI/review/merge ไม่ใช่ผล AC-41–46 ครบ และยังไม่เพิ่ม check-in API/UI
+
+| Requirement / design | Executed verification | Result / scope |
+|---|---|---|
+| NFR-05, F-08 DoD 4 → TEST-65(a) | S2→S3 ผ่าน real Prisma migration CLI บน DB แยก; ACTIVE/CANCELLED/history/refs/timestamps เดิมคงอยู่, attendance เริ่ม null, migrate ซ้ำ | Local PASS; ไม่ใช่ teammate fresh-machine reproduction |
+| NFR-05 → TEST-65(b) | Actual seed entry point, attendance demo ACTIVE 2/checked-in 1, REGISTERED history ครบ, repeated/concurrent seed คงข้อมูลเช็กชื่อที่แก้ | Local PASS |
+| F-08 data constraints → TEST-65(c) | CHECK pair/ACTIVE-only และ FK ทดสอบ INSERT/UPDATE; valid/null pair และ millisecond precision; referenced checker ลบไม่ได้ | Local PASS |
+| FR-13–14 / AC-41–46 | ขั้นนี้เพิ่ม storage เท่านั้น | Check-in service/API, own/roster serializers, UI และ TEST-66 เป็นงานถัดไป; ไม่อ้าง accepted release |
+
+[TEST-65 GREEN และ regression evidence](sprints/sprint-3/evidence/f08-migration-green/README.md): focused 8/8, Vitest 273/273, typecheck/build และ compiled smoke ผ่าน บน Docker test instance พอร์ต 55433; source TEST-65 เดิมไม่เปลี่ยนระหว่าง RED/GREEN
+
 ## 6. Coverage gaps และการอัปเดต
 
 24 พ.ย. 2026 staging integration: ผู้ใช้เริ่ม merge origin/sprint-2-staging เข้า feature/47-f06 และรวม F-07 implementation แล้วใน working tree; ดู [ผลรัน F-06/F-07 หลังแก้ conflict](sprints/sprint-2/evidence/f06-staging-merge/README.md). ผลนี้แยกจาก F-06-only/เก่า และไม่ปิด TEST-44(c), independent acceptance หรือ release gates อัตโนมัติ; ผู้ใช้ยังต้อง commit merge และทำ PR workflow
