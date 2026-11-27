@@ -36,7 +36,7 @@ F-06 ใช้ `REGISTRATION_CLOSED` เดิมเมื่อ cancel/reactiva
 
 **Links:** FR-09–10, FR-12; BR-03–11, BR-14; NFR-01, NFR-03, NFR-04, NFR-05, NFR-06; V2-01, V2-02, V2-04; dependency: F-03–05
 
-สถานะ: **implemented; local verification recorded; ยังไม่ถือว่า Done/accepted release** งานออกแบบ #46 ปิดแล้วตามข้อมูลผู้ใช้; implementation #47 บน `feature/47-f06` ผูก source ล่าสุดที่ผู้ใช้ระบุ `ba89488079a2c884735a18642dbd7487b6872559` ดู [completion/หลักฐานและข้อจำกัด](README.md) ซึ่งแยกผลแต่ละ commit ออกจาก CI/review/merge/release ที่ยัง pending; TEST-44(c) และ TEST-47/52 แบบใช้ close จริงรันแล้วใน PR integration `test/47-sprint-2-cross-feature` ([ผล](evidence/f07-cross-feature/README.md))
+สถานะ (24 พ.ย. 2026, ประวัติ — สถานะปัจจุบันดูอัปเดต 26 พ.ย. ด้านล่าง): **implemented; local verification recorded; ยังไม่ถือว่า Done/accepted release** งานออกแบบ #46 ปิดแล้วตามข้อมูลผู้ใช้; implementation #47 บน `feature/47-f06` ผูก source ล่าสุดที่ผู้ใช้ระบุ `ba89488079a2c884735a18642dbd7487b6872559` ดู [completion/หลักฐานและข้อจำกัด](README.md) ซึ่งแยกผลแต่ละ commit ออกจาก CI/review/merge/release ที่ยัง pending; TEST-44(c) และ TEST-47/52 แบบใช้ close จริงรันแล้วใน PR integration `test/47-sprint-2-cross-feature` ([ผล](evidence/f07-cross-feature/README.md))
 
 อัปเดตสถานะ 26 พ.ย. 2026 (ไม่เปลี่ยน contract/AC): F-06 (PR #59/#60) และ F-07 (PR #57/#60) release บน main เป็น `v2.0.0-sprint-2` (`c0faf24`) ผ่าน release PR #67, CI run 45666007554 (Vitest 264/264, Playwright 39/39), deploy revision `scccd8b05-00011-fvb`; ดู [completion](README.md). ยังไม่มี independent UAT ของ Sprint 2
 
