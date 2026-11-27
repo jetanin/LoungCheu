@@ -1,0 +1,21 @@
+RED commit: 54deba90eb510cf0626066367464f2ecc1bfc6bb
+Source: RED commit + uncommitted GREEN changes
+Node: v22.23.2
+Started UTC: 2026-11-26T19:30:17.458Z
+Command: node node_modules/@playwright/test/cli.js test tests/e2e/attendance.spec.ts
+Target: Docker 55433 / loungcheu_test only
+Exit: 0
+
+[WebServer] (node:49132) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+[WebServer] (Use `node --trace-warnings ...` to show where the warning was created)
+[WebServer] (node:56260) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+[WebServer] (Use `node --trace-warnings ...` to show where the warning was created)
+
+Running 1 test using 1 worker
+
+(node:54928) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+F08_BROWSER {"result":"verified","mutationCount":1,"activeCount":2,"checkedInCount":1,"timestamp":"2026-11-26T19:30:23.135Z","reloadedRoster":true,"freshParticipantLogin":true,"ownListAndDetail":true,"historyUnchanged":true}
+  ok 1 tests\e2e\attendance.spec.ts:17:1 › TEST-59: real check-in confirmation/cancel, roster reload and own attendance survive logout/login (2.5s)
+
+  1 passed (7.5s)

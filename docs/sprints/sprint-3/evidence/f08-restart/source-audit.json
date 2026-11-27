@@ -1,0 +1,8 @@
+{
+  "baseline": "609e2d0e779271970e1669eebc85281ec71cf5d9",
+  "productionSourceUnchangedDuringRun": true,
+  "testFileSha256": "afade73cda2fb002ec2d00767c7c8aed79a65b869062e22a6df8af9b4ecc044d",
+  "compiledEntrypointSha256": "28c4d6a9012854ba56871e4024a1ee0ab00aecdaf1024a5ba047742daf4f078f",
+  "compiledAppSha256": "e106bc8c2feea40985d63df19efa4a91c4485246148cf45e102586c1861df88c",
+  "port": 55433
+}

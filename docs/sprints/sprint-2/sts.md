@@ -25,6 +25,8 @@ Fixtures เพิ่มเติม (เวลาอ้างอิง `t0 = 20
 
 สถานะ: **F-06 implemented พร้อมผลทดสอบในเครื่อง; review/CI/release ยัง pending** ดู [completion และ executed verification](README.md) ที่แยก TEST-44(a/b) จาก TEST-44(c) ซึ่งรันแล้วใน PR integration `test/47-sprint-2-cross-feature` ([ผล](evidence/f07-cross-feature/README.md)) ผลในเครื่องไม่ใช่ independent UAT หรือ accepted release; TEST-45–52 ของ F-07 คงเดิม
 
+อัปเดตสถานะ 26 พ.ย. 2026 (ไม่เปลี่ยน test design/ID): TEST-37–52 รันผ่านใน CI run 45666007554 บน release head `0643806` (Vitest 264/264, Playwright 39/39, 0 skipped) และอยู่ใน release `v2.0.0-sprint-2` (`c0faf24`) (PR #67)
+
 ### Fixtures และวิธีตรวจ F-06
 
 - ใช้ clock ที่ควบคุมได้และ fixtures ใน §1; `ECANCEL2` เต็มก่อน cancel และ `ECYCLE2` มี CANCELLED ของ PA โดยไม่มี ACTIVE ตามตาราง

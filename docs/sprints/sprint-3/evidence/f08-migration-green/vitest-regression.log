@@ -1,0 +1,21 @@
+RED commit supplied by Jetanin: ba4cb6e0ff369e5a573fe97240214832f24b534d
+Source: RED commit + uncommitted GREEN changes
+Started UTC: 2026-11-26T18:03:05.867Z
+Node: v22.23.2
+Command: node node_modules/vitest/vitest.mjs run
+Target: Docker localhost:55433 only; no 5432 access
+Exit: 0
+
+
+ RUN  v5.1.0 C:/Work/2569/CPE334/GroupWork/LoungCheu
+
+
+ Test Files  26 passed (26)
+      Tests  273 passed (273)
+   Start at  01:03:06
+   Duration  117.42s (tests 66%, environment 21%, import 12%, transform 1%)
+
+    Isolate  26 workers spawned · ~1.05s startup each (spawn + environment, per file)
+             at least ~26.21s faster with isolate: false — reuses workers across files instead of one per file
+
+

@@ -47,9 +47,13 @@ describe('F-06 TEST-43 / initial UI RED slice', () => {
   });
 
   it('uses the same first-registration label in the organizer roster', async () => {
-    vi.stubGlobal('fetch', vi.fn().mockResolvedValue(reply({ event_id: event.id, capacity: 2, active_count: 1,
-      registrations: [{ id: active.id, participant: { display_name: participant.display_name },
-        status: 'ACTIVE', registered_at: active.registered_at }] })));
+    vi.stubGlobal('fetch', vi.fn(async (path: string) => {
+      if (path === `/api/organizer/events/${event.id}`) return reply(ownerEvent);
+      if (path === `/api/organizer/events/${event.id}/registrations`) return reply({ event_id: event.id, capacity: 2, active_count: 1, checked_in_count: 0,
+        registrations: [{ id: active.id, participant: { display_name: participant.display_name },
+          status: 'ACTIVE', registered_at: active.registered_at, checked_in_at: null }] });
+      throw new Error(`Unexpected read: ${path}`);
+    }));
     render(<OrganizerRoster identity={organizer} eventId={event.id} onAuthRequired={vi.fn()}/>);
     await screen.findByRole('cell', { name: participant.display_name });
     expect(screen.getByRole('columnheader', { name: 'ลงทะเบียนครั้งแรกเมื่อ' })).toBeTruthy();

@@ -1,0 +1,62 @@
+RED commit: cca5f331e8123f83dd743b90960d530a5b725855
+Source: RED commit + uncommitted GREEN implementation
+Node: v22.23.2
+Started UTC: 2026-11-26T18:34:16.323Z
+Command: node node_modules/@playwright/test/cli.js test
+Target: Docker 55433 / loungcheu_test only
+Exit: 0
+
+[WebServer] (node:51872) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+[WebServer] (Use `node --trace-warnings ...` to show where the warning was created)
+[WebServer] (node:48212) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+[WebServer] (Use `node --trace-warnings ...` to show where the warning was created)
+
+Running 39 tests using 1 worker
+
+(node:53756) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ok  1 tests\e2e\auth.spec.ts:3:3 › F-01 participant.a: login, refresh, logout and browser back (930ms)
+  ok  2 tests\e2e\auth.spec.ts:3:3 › F-01 organizer.a: login, refresh, logout and browser back (685ms)
+  ok  3 tests\e2e\auth.spec.ts:18:1 › F-01 invalid form, generic credentials and pending submit (1.2s)
+  ok  4 tests\e2e\auth.spec.ts:29:1 › F-01 expired session clears private UI on focus (443ms)
+  ok  5 tests\e2e\auth.spec.ts:37:1 › F-01 failed logout clears private UI and offers a working retry (516ms)
+  ok  6 tests\e2e\auth.spec.ts:50:1 › F-01 ignores an older successful session response after a newer 401 (440ms)
+  ok  7 tests\e2e\auth.spec.ts:76:1 › F-01 rechecks a restored page after its session was logged out elsewhere (396ms)
+  ok  8 tests\e2e\consistency.spec.ts:10:1 › F-02 consistency: field errors follow corrected values and dependent time ordering (884ms)
+  ok  9 tests\e2e\consistency.spec.ts:37:1 › F-02 consistency: CLOSED totals and forbidden refresh discard older private overview data (555ms)
+  ok 10 tests\e2e\event-edit.spec.ts:25:1 › TEST-52 / AC-40 Organizer edits DRAFT and PUBLISHED events; CLOSED has no edit (3.4s)
+  ok 11 tests\e2e\events-audit.spec.ts:20:36 › TEST-03/14 owner event read 401 clears the session after a newer refresh fails (739ms)
+  ok 12 tests\e2e\events-audit.spec.ts:20:36 › TEST-03/14 shared event read 401 clears the session after a newer refresh fails (964ms)
+  ok 13 tests\e2e\events-audit.spec.ts:51:1 › TEST-03/14 a late event read 401 cannot clear the next signed-in account (766ms)
+  ok 14 tests\e2e\events-audit.spec.ts:66:34 › TEST-14 publish 403 removes cached private record even if an old refresh returns later (609ms)
+  ok 15 tests\e2e\events-audit.spec.ts:66:34 › TEST-14 publish 404 removes cached private record even if an old refresh returns later (659ms)
+  ok 16 tests\e2e\events-audit.spec.ts:83:34 › TEST-14 read 403 cannot be overwritten by an earlier publish success (683ms)
+  ok 17 tests\e2e\events-audit.spec.ts:83:34 › TEST-14 read 404 cannot be overwritten by an earlier publish success (659ms)
+  ok 18 tests\e2e\events-audit.spec.ts:102:1 › TEST-09/14 publish conflict explains rejection and refreshes the committed event status (618ms)
+  ok 19 tests\e2e\events-audit.spec.ts:113:1 › TEST-14 a late create success cannot navigate the next signed-in account to the previous owner record (1.2s)
+  ok 20 tests\e2e\events-audit.spec.ts:134:1 › TEST-14 a late publish 401 cannot clear the next account session (776ms)
+  ok 21 tests\e2e\events-audit.spec.ts:149:1 › TEST-14 canonical detail and create routes work with a trailing slash (523ms)
+  ok 22 tests\e2e\events-audit.spec.ts:155:1 › TEST-14 a definitive session 401 still wins over a later temporary identity failure (453ms)
+  ok 23 tests\e2e\events-registration.spec.ts:11:1 › real #1/#2/#3 journey: publish, register across focus refresh, keep reference and reject stale full attempt (2.6s)
+  ok 24 tests\e2e\events.spec.ts:10:1 › TEST-07/09/14/36 Organizer creates, previews, publishes; Participant browses persisted shared detail (3.0s)
+  ok 25 tests\e2e\events.spec.ts:103:1 › TEST-14 list loading, empty, failure and retry; detail 404 and publish conflict (1.2s)
+  ok 26 tests\e2e\events.spec.ts:128:1 › TEST-09/14 an older availability refresh cannot overwrite a successful publish (585ms)
+  ok 27 tests\e2e\events.spec.ts:149:69 › F-02/#3 focus and availability refresh preserve RegistrationAction pending (1.2s)
+  ok 28 tests\e2e\events.spec.ts:149:69 › F-02/#3 focus and availability refresh preserve RegistrationAction success (1.3s)
+  ok 29 tests\e2e\events.spec.ts:149:69 › F-02/#3 focus and availability refresh preserve RegistrationAction uncertain (1.3s)
+  ok 30 tests\e2e\overview.spec.ts:17:1 › F-02 overview empty state, active navigation and create entry work on desktop and mobile (830ms)
+  ok 31 tests\e2e\overview.spec.ts:35:1 › F-02 overview uses real owner-list counts/order, excludes another owner and preserves all-list/detail routes (1.5s)
+  ok 32 tests\e2e\overview.spec.ts:69:1 › F-02 overview distinguishes loading/error from zero and retries; 401 clears private overview (585ms)
+  ok 33 tests\e2e\overview.spec.ts:89:1 › F-02 Participant keeps shared browsing and cannot open Organizer overview (476ms)
+F06_BROWSER cancelled and screenshot saved
+F06_BROWSER re-login preserved cancelled registration
+F06_BROWSER second participant returned seat
+F06_BROWSER reactivated original reference
+  ok 34 tests\e2e\registration-lifecycle.spec.ts:31:1 › TEST-43: real cancel/re-login/full/reactivate/roster/close journey preserves identity and history (4.4s)
+  ok 35 tests\e2e\registration-views.spec.ts:35:1 › TEST-24/29/30: real publish → register → own detail/re-login → owner roster journey (3.1s)
+  ok 36 tests\e2e\registration-views.spec.ts:89:1 › TEST-25: own list empty/error/retry, session rejection and wrong-role direct access (1.0s)
+  ok 37 tests\e2e\visual-consistency.spec.ts:14:39 › visual consistency: page hierarchy, branding, controls and layout at 1280px (3.9s)
+  ok 38 tests\e2e\visual-consistency.spec.ts:14:39 › visual consistency: page hierarchy, branding, controls and layout at 390px (3.9s)
+  ok 39 tests\e2e\visual-consistency.spec.ts:14:39 › visual consistency: page hierarchy, branding, controls and layout at 320px (4.1s)
+
+  39 passed (58.6s)

@@ -1,0 +1,121 @@
+RED commit: 54deba90eb510cf0626066367464f2ecc1bfc6bb
+Source: RED commit + uncommitted GREEN changes
+Node: v22.23.2
+Started UTC: 2026-11-26T19:31:18.527Z
+Command: node node_modules/vitest/vitest.mjs run client/src --reporter=verbose
+Target: Docker 55433 / loungcheu_test only
+Exit: 0
+
+
+ RUN  v5.1.0 C:/Work/2569/CPE334/GroupWork/LoungCheu
+
+ ✓ client/src/features/registrations/RegistrationLifecycle.test.tsx > F-06 TEST-43 / initial UI RED slice > uses the first-registration label in own records without changing its timestamp 185ms
+ ✓ client/src/features/registrations/RegistrationLifecycle.test.tsx > F-06 TEST-43 / initial UI RED slice > uses the same first-registration label in the organizer roster 54ms
+ ✓ client/src/features/registrations/RegistrationLifecycle.test.tsx > F-06 TEST-43 / initial UI RED slice > cancel asks for confirmation (accepted=false) and never sends a duplicate mutation 30ms
+ ✓ client/src/features/registrations/RegistrationLifecycle.test.tsx > F-06 TEST-43 / initial UI RED slice > cancel asks for confirmation (accepted=true) and never sends a duplicate mutation 40ms
+ ✓ client/src/features/registrations/RegistrationLifecycle.test.tsx > F-06 TEST-43 / initial UI RED slice > shows the cancellation timestamp and retains the original reference on own detail 16ms
+ ✓ client/src/features/registrations/RegistrationLifecycle.test.tsx > F-06 TEST-43 / initial UI RED slice > looks up own registrations by event.id and re-registers using the existing endpoint 57ms
+ ✓ client/src/features/registrations/RegistrationLifecycle.test.tsx > F-06 TEST-43 / initial UI RED slice > explains a cancelled registration on a full event instead of offering re-registration 15ms
+ ✓ client/src/features/registrations/RegistrationLifecycle.test.tsx > F-06 TEST-43 / initial UI RED slice > does not treat a failed own-registration lookup as permission to register 13ms
+ ✓ client/src/features/registrations/RegistrationLifecycle.test.tsx > F-06 TEST-43 / initial UI RED slice > closes a published owner event only after confirmation and displays CLOSED 30ms
+ ✓ client/src/features/registrations/RegistrationLifecycle.test.tsx > F-06 TEST-43 / initial UI RED slice > does not offer close for an owner event in DRAFT 20ms
+ ✓ client/src/features/registrations/RegistrationLifecycle.test.tsx > F-06 TEST-43 / initial UI RED slice > does not offer close for an owner event in CLOSED 30ms
+ ✓ client/src/features/registrations/RegistrationViews.test.tsx > TEST-25: shows loading/empty and retries failure without stale records 183ms
+ ✓ client/src/features/registrations/RegistrationViews.test.tsx > TEST-22/24: links own list to detail and renders reference/Bangkok time 58ms
+ ✓ client/src/features/registrations/RegistrationViews.test.tsx > TEST-25: clears private records immediately on account changes and ignores late results 29ms
+ ✓ client/src/features/registrations/RegistrationViews.test.tsx > clears protected records when refreshed access is rejected with 401 20ms
+ ✓ client/src/features/registrations/RegistrationViews.test.tsx > clears protected records when refreshed access is rejected with 403 15ms
+ ✓ client/src/features/registrations/RegistrationViews.test.tsx > clears protected records when refreshed access is rejected with 404 16ms
+ ✓ client/src/features/registrations/RegistrationViews.test.tsx > TEST-28/29: roster empty state then reloads names, references and ACTIVE count 49ms
+ ✓ client/src/features/registrations/RegistrationViews.test.tsx > TEST-23/27: wrong-role views do not fetch protected data 6ms
+ ✓ client/src/features/registrations/RegistrationLifecycleEdges.test.tsx > TEST-43 cancel mutation edges > keeps the action busy until the pending response and sends only one POST 207ms
+ ✓ client/src/features/registrations/RegistrationLifecycleEdges.test.tsx > TEST-43 cancel mutation edges > does not send a mutation when CSRF bootstrap fails, and leaves retry available 39ms
+ ✓ client/src/features/registrations/RegistrationLifecycleEdges.test.tsx > TEST-43 cancel mutation edges > requires a successful status read after network uncertainty without replaying POST 44ms
+ ✓ client/src/features/registrations/RegistrationLifecycleEdges.test.tsx > TEST-43 cancel mutation edges > requires a successful status read after timeout uncertainty without replaying POST 30ms
+ ✓ client/src/features/registrations/RegistrationLifecycleEdges.test.tsx > TEST-43 close mutation edges > keeps the action busy until the pending response and sends only one POST 65ms
+ ✓ client/src/features/registrations/RegistrationLifecycleEdges.test.tsx > TEST-43 close mutation edges > does not send a mutation when CSRF bootstrap fails, and leaves retry available 15ms
+ ✓ client/src/features/registrations/RegistrationLifecycleEdges.test.tsx > TEST-43 close mutation edges > requires a successful status read after network uncertainty without replaying POST 45ms
+ ✓ client/src/features/registrations/RegistrationLifecycleEdges.test.tsx > TEST-43 close mutation edges > requires a successful status read after timeout uncertainty without replaying POST 62ms
+ ✓ client/src/features/registrations/RegistrationLifecycleEdges.test.tsx > TEST-43 integrated mutation rejections > cancel 401 clears private detail and disables further mutation 66ms
+ ✓ client/src/features/registrations/RegistrationLifecycleEdges.test.tsx > TEST-43 integrated mutation rejections > cancel 403 clears private detail and disables further mutation 33ms
+ ✓ client/src/features/registrations/RegistrationLifecycleEdges.test.tsx > TEST-43 integrated mutation rejections > cancel 404 clears private detail and disables further mutation 33ms
+ ✓ client/src/features/registrations/RegistrationLifecycleEdges.test.tsx > TEST-43 integrated mutation rejections > close 401 clears owner detail and disables further mutation 40ms
+ ✓ client/src/features/registrations/RegistrationLifecycleEdges.test.tsx > TEST-43 integrated mutation rejections > close 403 clears owner detail and disables further mutation 34ms
+ ✓ client/src/features/registrations/RegistrationLifecycleEdges.test.tsx > TEST-43 integrated mutation rejections > close 404 clears owner detail and disables further mutation 31ms
+ ✓ client/src/features/registrations/RegistrationLifecycleEdges.test.tsx > TEST-43 integrated mutation rejections > cancel 409 refreshes to CLOSED while retaining the rejection message 34ms
+ ✓ client/src/features/registrations/RegistrationLifecycleEdges.test.tsx > TEST-43 integrated mutation rejections > close 409 refreshes owner status while retaining the rejection message 32ms
+ ✓ client/src/features/registrations/RegistrationLifecycleEdges.test.tsx > TEST-43 own-registration lookup and stale responses > retries a failed own lookup and uses the cancelled record instead of a first-registration action 27ms
+ ✓ client/src/features/registrations/RegistrationLifecycleEdges.test.tsx > TEST-43 own-registration lookup and stale responses > ignores old own lookup after changing account, including a late 401 17ms
+ ✓ client/src/features/registrations/RegistrationLifecycleEdges.test.tsx > TEST-43 own-registration lookup and stale responses > ignores old own lookup after changing event, including a late 401 16ms
+ ✓ client/src/features/registrations/RegistrationLifecycleEdges.test.tsx > TEST-43 own-registration lookup and stale responses > ignores a late private ACTIVE record after changing account 14ms
+ ✓ client/src/features/registrations/RegistrationLifecycleEdges.test.tsx > TEST-43 own-registration lookup and stale responses > ignores a late private ACTIVE record after changing event 16ms
+ ✓ client/src/features/registrations/RegistrationLifecycleEdges.test.tsx > TEST-43 own-registration lookup and stale responses > ignores an older ACTIVE lookup after a newer focus read returns CANCELLED 16ms
+ ✓ client/src/features/registrations/RegistrationLifecycleEdges.test.tsx > TEST-43 own-registration lookup and stale responses > a focus lookup 401 blocks a later mutation success from restoring private data 113ms
+ ✓ client/src/features/registrations/RegistrationLifecycleEdges.test.tsx > TEST-43 own-registration lookup and stale responses > a focus lookup 401 removes an already displayed private success reference 46ms
+ ✓ client/src/features/registrations/AttendanceViews.test.tsx > F-08 TEST-59 own attendance display > renders checked-in time in own list without organizer identity 57ms
+ ✓ client/src/features/registrations/AttendanceViews.test.tsx > F-08 TEST-59 own attendance display > renders checked-in time in own detail without organizer identity 25ms
+ ✓ client/src/features/registrations/AttendanceViews.test.tsx > F-08 TEST-59 own attendance display > renders required not-yet-checked status in own list 13ms
+ ✓ client/src/features/registrations/AttendanceViews.test.tsx > F-08 TEST-59 own attendance display > renders required not-yet-checked status in own detail 15ms
+ ✓ client/src/features/registrations/AttendanceViews.test.tsx > F-08 TEST-59 own attendance display > omits attendance for CANCELLED in own list 16ms
+ ✓ client/src/features/registrations/AttendanceViews.test.tsx > F-08 TEST-59 own attendance display > omits attendance for CANCELLED in own detail 16ms
+ ✓ client/src/features/registrations/AttendanceViews.test.tsx > F-08 TEST-59 organizer attendance actions > renders attendance column and authoritative checked-in/ACTIVE counts 131ms
+ ✓ client/src/features/registrations/AttendanceViews.test.tsx > F-08 TEST-59 organizer attendance actions > confirms the participant name before mutation (accepted=false) 41ms
+ ✓ client/src/features/registrations/AttendanceViews.test.tsx > F-08 TEST-59 organizer attendance actions > confirms the participant name before mutation (accepted=true) 58ms
+ ✓ client/src/features/registrations/AttendanceViews.test.tsx > F-08 TEST-59 organizer attendance actions > disables the pending row and sends one request even after a second click 64ms
+ ✓ client/src/features/registrations/AttendanceViews.test.tsx > F-08 TEST-59 organizer attendance actions > does not offer check-in outside the window (1793941199999) 49ms
+ ✓ client/src/features/registrations/AttendanceViews.test.tsx > F-08 TEST-59 organizer attendance actions > does not offer check-in outside the window (1793948400001) 24ms
+ ✓ client/src/features/registrations/AttendanceViews.test.tsx > F-08 TEST-59 organizer attendance actions > shows a dash for CANCELLED and no action 37ms
+ ✓ client/src/features/registrations/AttendanceViews.test.tsx > F-08 TEST-59 organizer attendance actions > shows a previously checked-in row without another action 12ms
+ ✓ client/src/features/registrations/AttendanceViews.test.tsx > F-08 TEST-59 organizer attendance actions > shows CHECK_IN_NOT_OPEN in Thai and reloads authoritative roster 29ms
+ ✓ client/src/features/registrations/AttendanceViews.test.tsx > F-08 TEST-59 organizer attendance actions > shows REGISTRATION_NOT_ACTIVE in Thai and reloads authoritative roster 62ms
+ ✓ client/src/features/registrations/AttendanceViews.test.tsx > F-08 TEST-59 organizer attendance actions > shows ALREADY_CHECKED_IN in Thai and reloads authoritative roster 32ms
+ ✓ client/src/features/registrations/AttendanceViews.test.tsx > F-08 TEST-59 organizer attendance actions > clears private roster when mutation is denied with 401 47ms
+ ✓ client/src/features/registrations/AttendanceViews.test.tsx > F-08 TEST-59 organizer attendance actions > clears private roster when mutation is denied with 403 48ms
+ ✓ client/src/features/registrations/AttendanceViews.test.tsx > F-08 TEST-59 organizer attendance actions > clears private roster when mutation is denied with 404 46ms
+ ✓ client/src/features/registrations/AttendanceViews.test.tsx > F-08 TEST-59 organizer attendance actions > never retries an uncertain POST timeout automatically and reconciles via explicit roster reload 63ms
+ ✓ client/src/features/registrations/RegistrationAction.test.tsx > F-03 registration UI > submits only event reference/empty input, disables repeat clicks, and displays reference 211ms
+ ✓ client/src/features/registrations/RegistrationAction.test.tsx > F-03 registration UI > explains EVENT_FULL and refreshes availability 49ms
+ ✓ client/src/features/registrations/RegistrationAction.test.tsx > F-03 registration UI > explains REGISTRATION_CLOSED and refreshes availability 47ms
+ ✓ client/src/features/registrations/RegistrationAction.test.tsx > F-03 registration UI > explains ALREADY_REGISTERED and refreshes availability 46ms
+ ✓ client/src/features/registrations/RegistrationAction.test.tsx > F-03 registration UI > requires checking own records before retrying an uncertain network result 43ms
+ ✓ client/src/features/registrations/RegistrationAction.test.tsx > F-03 registration UI > handles expired authentication and blocks further submissions 41ms
+ ✓ client/src/features/registrations/RegistrationAction.test.tsx > F-03 registration UI > treats request timeout as uncertain instead of automatically retrying 18ms
+ ✓ client/src/features/registrations/RegistrationAction.test.tsx > F-03 registration UI > does not send a mutation when CSRF bootstrap fails 24ms
+ ✓ client/src/features/registrations/RegistrationAction.test.tsx > F-03 registration UI > clears private success on account change 36ms
+ ✓ client/src/features/registrations/RegistrationAction.test.tsx > F-03 registration UI > ignores a pending response after changing account 75ms
+ ✓ client/src/features/registrations/RegistrationAction.test.tsx > F-03 registration UI > disables closed events and excludes organizer registration controls 5ms
+ ✓ client/src/features/events/EventEdit.test.tsx > F-07 edit event UI (TEST-52 component, AC-40) > owner detail shows แก้ไขกิจกรรม only for DRAFT/PUBLISHED (DRAFT) 200ms
+ ✓ client/src/features/events/EventEdit.test.tsx > F-07 edit event UI (TEST-52 component, AC-40) > owner detail shows แก้ไขกิจกรรม only for DRAFT/PUBLISHED (PUBLISHED) 38ms
+ ✓ client/src/features/events/EventEdit.test.tsx > F-07 edit event UI (TEST-52 component, AC-40) > owner detail shows แก้ไขกิจกรรม only for DRAFT/PUBLISHED (CLOSED) 26ms
+ ✓ client/src/features/events/EventEdit.test.tsx > F-07 edit event UI (TEST-52 component, AC-40) > prefills current values, enables save only after a real change and sends only changed fields 104ms
+ ✓ client/src/features/events/EventEdit.test.tsx > F-07 edit event UI (TEST-52 component, AC-40) > PUBLISHED keeps the three time fields disabled with a note and explains the ACTIVE floor 20ms
+ ✓ client/src/features/events/EventEdit.test.tsx > F-07 edit event UI (TEST-52 component, AC-40) > on 409 shows the Thai reason, reloads ACTIVE/status and keeps what the user typed 75ms
+ ✓ client/src/features/events/EventEdit.test.tsx > F-07 edit event UI (TEST-52 component, AC-40) > shows client and server (400) field errors in Thai under the input 60ms
+ ✓ client/src/features/events/EventEdit.test.tsx > F-07 edit event UI (TEST-52 component, AC-40) > a focus refresh that returns PUBLISHED locks the time fields and keeps typed details 45ms
+ ✓ client/src/features/events/EventEdit.test.tsx > F-07 edit event UI (TEST-52 component, AC-40) > PATCH 404 clears the protected record and shows not found like owner detail 35ms
+ ✓ client/src/features/events/EventEdit.test.tsx > F-07 edit event UI (TEST-52 component, AC-40) > CLOSED has no edit form; 404 and Participant are refused like owner routes 33ms
+ ✓ client/src/features/registrations/RegistrationPage.test.tsx > Vite registration page integration adapter > retains timeout recovery through a focus refresh with success 224ms
+ ✓ client/src/features/registrations/RegistrationPage.test.tsx > Vite registration page integration adapter > retains timeout recovery through a focus refresh with network failure 55ms
+ ✓ client/src/features/registrations/RegistrationPage.test.tsx > Vite registration page integration adapter > loads identity/event and retains rejection while refreshing availability 45ms
+ ✓ client/src/features/registrations/RegistrationPage.test.tsx > Vite registration page integration adapter > does not load event data when identity is unauthenticated 15ms
+ ✓ client/src/features/registrations/RegistrationPage.test.tsx > Vite registration page integration adapter > clears the form when a focus refresh returns AUTH_REQUIRED 16ms
+ ✓ client/src/features/registrations/RegistrationPage.test.tsx > Vite registration page integration adapter > clears the form when a focus refresh returns EVENT_NOT_FOUND 20ms
+ ✓ client/src/features/registrations/RegistrationPage.test.tsx > Vite registration page integration adapter > retries failed reads without exposing stale private data 12ms
+ ✓ client/src/features/events/model.test.ts > F-02 form/time contract audit > TEST-08 rejects unrepresentable text in title and permits paired emoji 2ms
+ ✓ client/src/features/events/model.test.ts > F-02 form/time contract audit > TEST-08 rejects unrepresentable text in description and permits paired emoji 0ms
+ ✓ client/src/features/events/model.test.ts > F-02 form/time contract audit > TEST-08 rejects unrepresentable text in location and permits paired emoji 0ms
+ ✓ client/src/features/events/model.test.ts > F-02 form/time contract audit > TEST-08/36 rejects invalid/UTC-out-of-range calendar input 2026-02-29T10:00 before sending 0ms
+ ✓ client/src/features/events/model.test.ts > F-02 form/time contract audit > TEST-08/36 rejects invalid/UTC-out-of-range calendar input 2026-02-30T10:00 before sending 0ms
+ ✓ client/src/features/events/model.test.ts > F-02 form/time contract audit > TEST-08/36 rejects invalid/UTC-out-of-range calendar input 2026-04-31T10:00 before sending 0ms
+ ✓ client/src/features/events/model.test.ts > F-02 form/time contract audit > TEST-08/36 rejects invalid/UTC-out-of-range calendar input 0000-01-01T10:00 before sending 0ms
+ ✓ client/src/features/events/model.test.ts > F-02 form/time contract audit > TEST-08/36 rejects invalid/UTC-out-of-range calendar input 0001-01-01T00:00 before sending 0ms
+ ✓ client/src/features/events/model.test.ts > F-02 form/time contract audit > TEST-08/36 accepts leap dates, millisecond Bangkok input and normalizes strings without using host timezone 16ms
+
+ Test Files  8 passed (8)
+      Tests  101 passed (101)
+   Start at  02:31:19
+   Duration  13.33s (environment 50%, tests 37%, import 12%, transform 1%)
+
+    Isolate  8 workers spawned · ~888ms startup each (spawn + environment, per file)
+             at least ~6.21s faster with isolate: false — reuses workers across files instead of one per file
+

@@ -1,0 +1,105 @@
+﻿
+ RUN  v5.1.0 C:/DEV/University/Kmutt/Year3/Term1/CPE334/Final/LoungCheu-lab6
+
+ ❯ server/tests/integration/attendance-summary.test.ts (5 tests | 3 failed) 2295ms
+   ❯ F-09 counts from the current registration state (TEST-60 / AC-47) (2)
+     × (a) ESUM3: ACTIVE 2, CANCELLED 1, checked-in 1, rate 50.00, equal to the DB 263ms
+     × (b) ELIFE3: reactivate/cancel/reactivate moves counts 3/0 → 2/1 → 3/0 without counting history 315ms
+   ❯ F-09 re-read after a change and DRAFT zeros (TEST-62 / AC-49) (1)
+     × ECHECK3: a check-in shows on the next read (0→1, "0.00"→"50.00"), generated_at = clock; EDRAFT3 is all zero 286ms
+node.exe : 
+At line:1 char:1
++ & "C:\Program Files\nodejs/node.exe" "C:\Users\ppkls\AppData\Roaming\ ...
++ ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : NotSpecified: (:String) [], RemoteException
+    + FullyQualifiedErrorId : NativeCommandError
+ 
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 3 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  server/tests/integration/attendance-summary.test.ts > F-09 counts from the current registration state (TEST-60 
+/ AC-47) > (a) ESUM3: ACTIVE 2, CANCELLED 1, checked-in 1, rate 50.00, equal to the DB
+AssertionError: expected { …(8) } to deeply equal { …(8) }
+
+- Expected
++ Received
+
+  {
+-   "active_count": 2,
+-   "attendance_rate": "50.00",
++   "active_count": 3,
++   "attendance_rate": "66.67",
+    "cancelled_count": 1,
+    "capacity": 5,
+-   "checked_in_count": 1,
++   "checked_in_count": 2,
+    "event_id": "fa811ad3-8777-4f7a-b2f2-ac1a9abd26ac",
+    "generated_at": "2026-11-06T06:00:00.000Z",
+    "status": "PUBLISHED",
+  }
+
+ ❯ server/tests/integration/attendance-summary.test.ts:120:18
+    118|     await at(t0 + 10_800_000);
+    119|     const data = await ok(event.id);
+    120|     expect(data).toEqual({ event_id: event.id, status: 'PUBLISHED', ca…
+       |                  ^
+    121|       attendance_rate: '50.00', generated_at: new Date(clock).toISOStr…
+    122|     expect(await dbCounts(event.id)).toEqual({ active_count: 2, cancel…
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/3]⎯
+
+ FAIL  server/tests/integration/attendance-summary.test.ts > F-09 counts from the current registration state (TEST-60 
+/ AC-47) > (b) ELIFE3: reactivate/cancel/reactivate moves counts 3/0 → 2/1 → 3/0 without counting history
+AssertionError: expected { …(8) } to match object { active_count: 2, cancelled_count: 1 }
+(6 matching properties omitted from actual)
+
+- Expected
++ Received
+
+  {
+-   "active_count": 2,
++   "active_count": 3,
+    "cancelled_count": 1,
+  }
+
+ ❯ server/tests/integration/attendance-summary.test.ts:132:32
+    130|     const pbRegistration = await db.registration.findFirstOrThrow({ wh…
+    131|     await pb.agent.post(`/api/my/registrations/${pbRegistration.id}/ca…
+    132|     expect(await ok(event.id)).toMatchObject({ active_count: 2, cancel…
+       |                                ^
+    133|     await pb.agent.post(`/api/events/${event.id}/registrations`).set('…
+    134|     expect(await ok(event.id)).toMatchObject({ active_count: 3, cancel…
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[2/3]⎯
+
+ FAIL  server/tests/integration/attendance-summary.test.ts > F-09 re-read after a change and DRAFT zeros (TEST-62 / 
+AC-49) > ECHECK3: a check-in shows on the next read (0→1, "0.00"→"50.00"), generated_at = clock; EDRAFT3 is all zero
+AssertionError: expected { …(8) } to match object { checked_in_count: +0, …(2) }
+(5 matching properties omitted from actual)
+
+- Expected
++ Received
+
+  {
+-   "attendance_rate": "0.00",
+-   "checked_in_count": 0,
++   "attendance_rate": "33.33",
++   "checked_in_count": 1,
+    "generated_at": "2026-11-06T06:00:00.000Z",
+  }
+
+ ❯ server/tests/integration/attendance-summary.test.ts:166:32
+    164|     const event = await fixture('ECHECK3');
+    165|     await at(t0 + 10_800_000);
+    166|     expect(await ok(event.id)).toMatchObject({ checked_in_count: 0, at…
+       |                                ^
+    167|     // The F-08 check-in endpoint does not exist yet; store the check-…
+    168|     await db.registration.updateMany({ where: { eventId: event.id, par…
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[3/3]⎯
+
+
+ Test Files  1 failed (1)
+      Tests  3 failed | 2 passed (5)
+   Start at  01:21:02
+   Duration  3.00s (tests 82%, import 14%, transform 4%)
+

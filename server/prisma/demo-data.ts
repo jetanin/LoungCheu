@@ -8,10 +8,12 @@ export const demoEventIds = {
   draft: 'de202600-0000-4000-8000-000000000004',
   closed: 'de202600-0000-4000-8000-000000000005',
   otherOwner: 'de202600-0000-4000-8000-000000000006',
+  attendance: 'de202600-0000-4000-8000-000000000007',
 } as const;
 
 type Scenario = { id: string; title: string; description: string; location: string; capacity: number; status: EventStatus;
-  owner: string; startDays: number; startHour: number; endHour: number; closeDays: number; attendees: string[] };
+  owner: string; startDays: number; startHour: number; endHour: number; closeDays: number; attendees: string[];
+  endDays?: number; closeHour?: number; checkedIn?: string };
 const scenarios: Scenario[] = [
   { id: demoEventIds.open, title: '[DEMO] React Workshop เริ่มสร้างเว็บด้วยกัน', description: 'เรียนรู้พื้นฐาน React และลองสร้างหน้าเว็บร่วมกับเพื่อน เหมาะสำหรับผู้เริ่มต้น', location: 'อาคารเรียนรวม ห้องคอมพิวเตอร์ 301', capacity: 3, status: 'PUBLISHED',
     owner: 'organizer.a', startDays: 7, startHour: 9, endHour: 12, closeDays: 6, attendees: ['participant.b'] },
@@ -25,6 +27,9 @@ const scenarios: Scenario[] = [
     owner: 'organizer.a', startDays: -3, startHour: 9, endHour: 12, closeDays: -4, attendees: ['participant.a'] },
   { id: demoEventIds.otherOwner, title: '[DEMO] Design Thinking สำหรับนักศึกษา', description: 'ลองตั้งโจทย์และออกแบบแนวทางแก้ปัญหาจากเรื่องใกล้ตัว ทำงานเป็นกลุ่มและนำเสนอไอเดีย', location: 'ห้องเรียนรู้ร่วมกัน อาคาร B', capacity: 20, status: 'PUBLISHED',
     owner: 'organizer.b', startDays: 8, startHour: 10, endHour: 12, closeDays: 7, attendees: [] },
+  { id: demoEventIds.attendance, title: '[DEMO] เช็กชื่อผู้เข้าร่วมกิจกรรม', description: 'ข้อมูลตัวอย่างสำหรับสาธิตการเช็กชื่อ มีผู้ลงทะเบียน ACTIVE สองคนและเช็กชื่อแล้วหนึ่งคน', location: 'จุดลงทะเบียนหน้าห้องกิจกรรม', capacity: 3, status: 'PUBLISHED',
+    owner: 'organizer.a', startDays: 0, startHour: 0, endDays: 7, endHour: 0, closeDays: 0, closeHour: 0,
+    attendees: ['participant.a', 'participant.b'], checkedIn: 'participant.a' },
 ];
 
 export async function seedDemoEvents(db: PrismaClient, now = new Date()) {
@@ -52,13 +57,14 @@ export async function seedDemoEvents(db: PrismaClient, now = new Date()) {
       const createdAt = wall(-20 - index, 9);
       await tx.event.create({ data: { id: scenario.id, title: scenario.title, description: scenario.description, location: scenario.location,
         capacity: scenario.capacity, status: scenario.status, organizerId: accountId(scenario.owner),
-        startsAt: wall(scenario.startDays, scenario.startHour), endsAt: wall(scenario.startDays, scenario.endHour),
-        registrationClosesAt: wall(scenario.closeDays, 18), createdAt, updatedAt: createdAt } });
+        startsAt: wall(scenario.startDays, scenario.startHour), endsAt: wall(scenario.endDays ?? scenario.startDays, scenario.endHour),
+        registrationClosesAt: wall(scenario.closeDays, scenario.closeHour ?? 18), createdAt, updatedAt: createdAt } });
       result.createdEvents++;
       for (const username of scenario.attendees) {
         const participantId = accountId(username), registeredAt = wall(scenario.status === 'CLOSED' ? -5 : -1, 12);
         const registration = await tx.registration.create({ data: {
           eventId: scenario.id, participantId, status: 'ACTIVE', registeredAt,
+          ...(username === scenario.checkedIn ? { checkedInAt: now, checkedInById: accountId(scenario.owner) } : {}),
         } });
         await tx.registrationHistory.create({ data: {
           registrationId: registration.id, actorId: participantId, action: 'REGISTERED', occurredAt: registeredAt,

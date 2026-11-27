@@ -1,0 +1,13 @@
+{
+  "test65Sha256": "9ea23ce528d3bf51a3373b86eb42cc9b0b0bb4293bc62cfb46371c6d2699a7d2",
+  "documentationLinks": "PASS",
+  "trailingWhitespace": "none",
+  "disposableDatabasesRemaining": 0,
+  "migrationDirectories": [
+    "202611060001_auth",
+    "202611060002_registration_extension",
+    "202611240001_registration_lifecycle",
+    "202611270001_registration_attendance"
+  ],
+  "scope": "local verification only; CI/review/merge/release pending"
+}

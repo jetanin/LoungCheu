@@ -1,6 +1,8 @@
 # Part C — System-Level Software Design Specification
 
-**Staging update — 25 พ.ย. 2026:** F-06 (PR #59), F-07 (PR #57) และ cross-feature TEST-44(c)/47/52 (PR #60) review และ merge เข้า `sprint-2-staging` แล้ว CI `test-and-docker` ผ่าน (Vitest 264/264, Playwright 39/39 @ `2e6ddc2`); ยังไม่ release บน main. Main ปัจจุบัน `v1.0.1-uat`/`0b2cc80` deploy บน Cloud Run และผ่าน independent UAT (Accepted 25 พ.ย.). ข้อความลงวันที่ก่อนหน้านี้คงไว้เป็นประวัติ
+**Release update — 26 พ.ย. 2026:** Sprint 2 (F-06/F-07) release บน main เป็น `v2.0.0-sprint-2` (`c0faf24`, PR #67) CI run 45666007554 ผ่าน (Vitest 264/264, Playwright 39/39 บน head `0643806` ซึ่ง tree เดียวกับ `c0faf24`) แล้ว deploy ผ่าน pipeline (run 45668146212: job test บน `c0faf24` Vitest 264/264, Playwright 39/39 → build image → migrate job `scccd8b05-migrate` ด้วย image ที่มี migration `202611240001_registration_lifecycle` → revision `scccd8b05-00011-fvb` → smoke test). Main ปัจจุบัน `v2.0.1-lab6` (`6f49d32`, revision `scccd8b05-00012-msg`) เพิ่มเพียง test/เอกสาร Lab 6; schema/routes ตามเอกสารนี้ไม่เปลี่ยน
+
+**Staging update — 25 พ.ย. 2026 (ประวัติ):** F-06 (PR #59), F-07 (PR #57) และ cross-feature TEST-44(c)/47/52 (PR #60) review และ merge เข้า `sprint-2-staging` แล้ว CI `test-and-docker` ผ่าน (Vitest 264/264, Playwright 39/39 @ `2e6ddc2`); ยังไม่ release บน main. Main ปัจจุบัน `v1.0.1-uat`/`0b2cc80` deploy บน Cloud Run และผ่าน independent UAT (Accepted 25 พ.ย.). ข้อความลงวันที่ก่อนหน้านี้คงไว้เป็นประวัติ
 
 **F-06 update — 24 พ.ย. 2026:** cancel/reactivate/close และ cancelled_at/history implement แล้วบน `feature/47-f06` พร้อม local API/DB/UI/browser และ actual process-restart evidence ดู [Sprint 2 completion](sprints/sprint-2/README.md). Snapshot Sprint 1 ด้านล่างเป็นประวัติของผลเดิม; F-06 ยังไม่ใช่ accepted release และไม่แทน independent UAT/clean reproduction. F-07 และ Sprint 3 ไม่ถูกนับว่าผ่านจากผลนี้
 
@@ -67,12 +69,14 @@ erDiagram
 | User | id, username, password_hash (salt/hash/parameters), display_name, role, is_active | username unique; role PARTICIPANT/ORGANIZER |
 | Event | id, organizer_id, title, description, location, starts_at, ends_at, registration_closes_at, capacity, status, created_at, updated_at | FK User; owner immutable; capacity 1–1000; ordered timestamps; DRAFT/PUBLISHED/CLOSED |
 | Registration | id, event_id, participant_id, status, registered_at, cancelled_at | FK Event/User; UNIQUE(event_id, participant_id); enum ACTIVE/CANCELLED; cancelled_at nullable; F-06 reuse record/first registered_at เมื่อ reactivate |
-| Registration extensions (S3 planned) | checked_in_at/checked_in_by_id | nullable จนเกิด action; checked_in_by_id FK User |
+| Registration attendance storage (F-08 implemented; tested local) | checked_in_at/checked_in_by_id | nullable timestamptz(3)/UUID; FK User แบบ Restrict; CHECK ให้เป็น null/มีค่าพร้อมกัน และมี check-in ได้เฉพาะ ACTIVE |
 | RegistrationHistory (F-06 implemented) | id, registration_id, actor_id, action, occurred_at | FK Registration/User Restrict; REGISTERED/CANCELLED/REACTIVATED; backfill initial REGISTERED ของ S1; index (registration_id, occurred_at, id) |
 
 IDs ใช้ UUID; timestamps ใช้ `timestamptz(3)` UTC ตาม BR-14 Fields ใน S1 required/non-null เพิ่ม S2/S3 fields/history ผ่าน versioned migrations ไม่มี hard delete และไม่มี history UI ใน baseline
 
 registered_at เป็นเวลาลงครั้งแรกที่ service ใส่จาก clock หลัง Event lock; S2 cancel ตั้ง cancelled_at และ append history, reactivate คง registered_at/ล้าง cancelled_at พร้อม REACTIVATED history; S3 checked_in_at/checked_in_by_id มีค่าพร้อมกันเมื่อเช็กชื่อและไม่เปลี่ยนเมื่อเช็กซ้ำ
+
+F-08 storage update — 27 พ.ย. 2026 (#50): migration `202611270001_registration_attendance` เพิ่มสองคอลัมน์แบบ nullable และ constraints ใน transaction เดียว ไม่มี backfill และไม่เปลี่ยน Registration/history เดิม Prisma ใช้ relation names `RegistrationParticipant` และ `RegistrationCheckIn` เพื่อแยก participant ออกจากผู้เช็กชื่อ Demo seed เพิ่มกิจกรรมเช็กชื่อหนึ่งรายการพร้อม ACTIVE 2 คน/เช็กชื่อแล้ว 1 คน โดยสร้าง REGISTERED history และข้าม Event ที่มีอยู่แล้วใน transaction/advisory lock เดิม [TEST-65 และหลักฐาน](sprints/sprint-3/evidence/f08-migration-green/README.md). ขั้นนี้ยังไม่เพิ่ม check-in endpoint, serializer fields, UI หรือผล TEST-66; ไม่ถือว่า AC-41–46 ผ่านครบ
 
 Prisma schema กำหนด relations/enums/unique; migrations เพิ่ม SQL checks สำหรับ capacity/time ordering ส่วน role relations, transitions และ ACTIVE count ตรวจใน service/transaction PostgreSQL session table เป็น infrastructure แยกจาก domain model
 
@@ -104,8 +108,23 @@ EventStatus มี DRAFT/PUBLISHED/CLOSED; RegistrationStatus มี ACTIVE/CANC
 | GET | /api/my/registrations; /api/my/registrations/:id; /api/organizer/events/:id/registrations | modules/registrations/read-router.ts |
 | POST | /api/my/registrations/:id/cancel | modules/registrations/cancellation-router.ts (F-06) |
 | POST | /api/organizer/events/:id/close | modules/events/router.ts (F-06 appended block) |
+| GET | /api/organizer/events/:id/summary (F-09, branch `feature/74-sprint-3-f09-summary`; ยังไม่ merge) | modules/attendance/summary-router.ts + summary.ts + rate.ts |
 
-Module paths ในตารางอยู่ใต้ `server/src/`; routers mount ที่ `/api`. F-06 own record มี id/status/registered_at/cancelled_at/event; create/reactivate ใช้ POST register เดิม (201/200 ตามลำดับ) พร้อม required cancelled_at=null ในผลสำเร็จ; roster fields คงเดิม ไม่มี history endpoint. F-07 edit implement แล้วจาก #48/PR #57 และรวมใน working tree นี้ตาม [Sprint 2 contracts](sprints/sprint-2/contracts.md); F-08/09 check-in/summary ยัง planned
+Module paths ในตารางอยู่ใต้ `server/src/`; routers mount ที่ `/api`. Own record มี id/status/registered_at/cancelled_at/event และ F-08 เพิ่ม checked_in_at; create/reactivate ใช้ POST register เดิม (201/200 ตามลำดับ) พร้อม required cancelled_at=null ในผลสำเร็จ; ไม่มี history endpoint. F-07 edit implement แล้วจาก #48/PR #57 ตาม [Sprint 2 contracts](sprints/sprint-2/contracts.md). F-08 check-in/own attendance API และ UI มี local results ของ TEST-53–59, TEST-65–66 ตามรายละเอียดด้านล่าง; F-09 summary แยกจากผลของ #50 นี้
+
+F-08 check-in rule update — 27 พ.ย. 2026 (#50): `modules/attendance/router.ts` และ `service.ts` เพิ่ม `POST /api/organizer/events/:eventId/registrations/:registrationId/check-in`. ใช้ auth → ORGANIZER → CSRF → JSON (1 KiB)/UUID/EmptyInput → owner-scoped Event lock → event-scoped Registration lock → อ่าน clock → inclusive starts/ends → ACTIVE → ยังไม่เคยเช็กชื่อ. สำเร็จเขียน checkedInAt/checkedInById ใน transaction เดียว และคืน RosterEntryS3 โดยไม่เปิดเผย actor; ไม่แก้ Event/history. GET roster เพิ่ม checked_in_count และ required checked_in_at ต่อแถวใน snapshot เดิม. [หลักฐาน TEST-55](sprints/sprint-3/evidence/f08-check-in-green/README.md) ตรวจ CANCELLED, repeat T1→T2 และ time-before-status; access matrix, boundary/race, UI และ restart ต้องตรวจในขั้นถัดไปก่อนถือว่า F-08 ครบ
+
+F-08 own attendance API update — 27 พ.ย. 2026 (#50): `modules/registrations/queries.ts` ขยาย ownSelect และ serializer ให้ GET `/api/my/registrations` และ `/api/my/registrations/:id` คืน required `checked_in_at` เป็น UTC ISO timestamp หรือ null (MyRegistrationS3). ไม่เลือกหรือคืน checked_in_by_id; ยังคง participant scope, ordering และ field เดิม. Cancellation response ที่ใช้ serializer เดียวกันมีฟิลด์นี้ด้วย. [TEST-53 และ MyRegistrationS3 RED/GREEN](sprints/sprint-3/evidence/f08-own-green/README.md) ตรวจ public check-in → roster → own list/detail บน DB จริง รวม ACTIVE ที่ยังไม่เช็กชื่อและ CANCELLED ที่ต้องคืน null; ไม่ใช่ผล TEST-59 UI หรือ TEST-66 restart
+
+F-08 time-boundary verification — 27 พ.ย. 2026 (#50): [TEST-54 / AC-42](sprints/sprint-3/evidence/f08-boundaries/README.md) local PASS 9/9 บน production code เดิม: starts−1 ms/ends+1 ms ปฏิเสธและข้อมูลไม่เปลี่ยน; starts/ends พอดีเช็กชื่อได้; actual close API → CLOSED ยังเช็กชื่อในช่วงงานได้; actual create DRAFT → PATCH → publish → register ใช้ starts/ends ที่แก้ใหม่. ขั้นนี้เพิ่ม verification tests เท่านั้น ไม่มี RED ใหม่หรือ production changes; access matrix, concurrency, UI และ restart ยังต้องตรวจ
+
+F-08 input/access verification — 27 พ.ย. 2026 (#50): [TEST-56/57](sprints/sprint-3/evidence/f08-access/README.md) local PASS 25 API/DB + 5 router unit cases. Auth/role/CSRF ปฏิเสธก่อน parse/service; malformed UUID/body/forged fields/oversize ถูกปฏิเสธ 400; ไม่มี body และ `{}` ใช้ server clock/session owner. Anonymous/Participant/foreign organizer/foreign registration/CSRF ตอบตาม contract; foreign own attendance/roster ไม่เปิดเผยชื่อ ID หรือเวลา. ทุก API rejection คง Event/Registration/history ทุก field. ไม่แก้ production code; ส่วนที่เหลือคือ concurrency/lock-wait, attendance UI และ compiled-process restart
+
+F-08 concurrency verification — 27 พ.ย. 2026 (#50): [TEST-58](sprints/sprint-3/evidence/f08-concurrency/README.md) local PASS 21/21: สอง runtime/Prisma connections ใช้ T1/T2 ต่างกัน มี PostgreSQL Event lock barrier และตรวจ actual waits ด้วย pg_stat_activity/pg_blocking_pids. 20 รอบสลับคิวแรก A/B ชนะอย่างละ 10; ทุกรอบได้ 200 หนึ่งและ 409 ALREADY_CHECKED_IN หนึ่ง, timestamp/actor ของผู้ชนะไม่ถูกเขียนทับ, Event/history คงเดิมและ roster count=1. คำขอที่รอ lock จน ends+1 ms ได้ 409 CHECK_IN_NOT_OPEN และข้อมูลไม่เปลี่ยน. ไม่แก้ production code; attendance UI และ compiled-process restart ยังเป็นงานถัดไป
+
+F-08 restart verification — 27 พ.ย. 2026 (#50): [TEST-66 / NFR-03](sprints/sprint-3/evidence/f08-restart/README.md) local PASS บน actual compiled `server/dist/server.js`: migrate ฐานชั่วคราว → compile → OA/PA login → check-in → หยุด process และยืนยัน readiness ใช้ไม่ได้ → เปิด process PID ใหม่บน DB/port เดิม → OA/PA login ใหม่. DB timestamp/actor, Event, registrations/history และ roster/own detail/list ตรงเดิมทั้งหมด. ใช้ real server clock กับ fixture window รอบเวลาปัจจุบัน ไม่เพิ่ม clock override หรือ endpoint ทดสอบ; cleanup ฐานชั่วคราวยืนยันแล้ว. ขั้นนี้ไม่แก้ production code; TEST-59 attendance UI ยังเป็นงานถัดไป
+
+F-08 UI update — 27 พ.ย. 2026 (#50): `RegistrationViews.tsx` เพิ่ม own attendance และ roster column/count; roster รวม GET เดิมของ roster กับ owner event detail เพื่ออ่าน starts/ends โดยไม่เพิ่ม endpoint. `AttendanceAction.tsx` ตรวจเวลาเครื่องแบบ inclusive (รวม CLOSED), ยืนยันชื่อก่อน POST, busy/single flight, อัปเดตแถวจาก response แล้ว refresh authoritative roster. 409 คงข้อความไทยและ refresh; 401 ล้างข้อมูลไป login; 403/404 ล้าง roster; timeout หลังส่งไม่ retry เอง มี explicit reload ก่อนส่งซ้ำ. Keyed account/event scope และ abort/generation/mount guards ป้องกัน stale private results; functional row updates ไม่ทับผลของแถวอื่น. F-06 LifecycleMutation เดิมไม่ถูกแก้. [TEST-59 GREEN และ local evidence map](sprints/sprint-3/evidence/f08-ui-green/README.md): 21 component cases และ real Chromium journey ผ่าน; ผล local ไม่แทน CI/review/staging/release acceptance
 
 ### Atomic registration
 
@@ -130,7 +149,8 @@ Concurrency tests ใช้ separate connections/transactions และ barrier 
 | /organizer/events/{id} | เจ้าของ preview/publish/roster/count | 1 |
 | /organizer/events/{id}/edit | เจ้าของแก้กิจกรรม (F-07): DRAFT ทุก field, PUBLISHED เฉพาะ title/description/location/capacity (ช่องเวลา disabled), CLOSED ไม่มีฟอร์ม; ส่งเฉพาะ field ที่เปลี่ยน | 2 |
 | หน้าเดิมเพิ่ม Cancel/Close/Edit (F-06/F-07 implemented) | ตาม role/ownership/deadline; edit อยู่ก่อน close ใน action row เดิม | 2 |
-| Roster เพิ่ม Check-in; own record เพิ่ม attendance; หน้า summary | ตาม permission matrix | 3 |
+| /organizer/events/{id}/summary (F-09, branch #75) | เจ้าของดู ACTIVE/CANCELLED/เช็กชื่อแล้ว/อัตราเข้าร่วม และ "ข้อมูล ณ" (Asia/Bangkok); ปุ่มรีเฟรชสรุป ไม่ auto-refresh; ลิงก์ **ดูสรุปผล** จาก owner detail | 3 |
+| Roster เพิ่ม Check-in; own record เพิ่ม attendance (F-08) | ตาม permission matrix | 3 |
 
 Loading ปิดปุ่มซ้ำ; empty มีทางเลือกดู/สร้างกิจกรรม; field errors อยู่ใต้ input; conflicts อธิบายเหตุผลและ refresh availability; network errors retry ได้; expired session กลับ Login และล้าง private state; 403/404 ไม่เปิดเผยข้อมูลนอกสิทธิ์ เวลา UI แสดง Asia/Bangkok
 
@@ -157,7 +177,7 @@ Express SPA fallback ใช้เฉพาะ frontend routes; unknown API ค�
 | 401 | INVALID_CREDENTIALS: Login ผิด; AUTH_REQUIRED: protected request ไม่มี/หมดอายุ/inactive session |
 | 403 | ROLE_FORBIDDEN: role ไม่ผ่าน; CSRF_FAILED: token/origin ไม่ผ่าน |
 | 404 | EVENT_NOT_FOUND หรือ REGISTRATION_NOT_FOUND: ไม่พบ/นอก record scope; ROUTE_NOT_FOUND: unknown API |
-| 409 | INVALID_TRANSITION, DEADLINE_PASSED (publish), REGISTRATION_CLOSED, ALREADY_REGISTERED, ALREADY_CANCELLED (F-06 cancel ซ้ำก่อน deadline), EVENT_FULL; ALREADY_CHECKED_IN เริ่ม S3 |
+| 409 | INVALID_TRANSITION, DEADLINE_PASSED (publish), REGISTRATION_CLOSED, ALREADY_REGISTERED, ALREADY_CANCELLED (F-06 cancel ซ้ำก่อน deadline), EVENT_FULL; F-08 check-in: CHECK_IN_NOT_OPEN, REGISTRATION_NOT_ACTIVE, ALREADY_CHECKED_IN |
 | 409 (S2 F-07 edit) | EVENT_NOT_EDITABLE: แก้กิจกรรม CLOSED; FIELD_NOT_EDITABLE: แก้ starts_at/ends_at/registration_closes_at ตอน PUBLISHED; CAPACITY_BELOW_ACTIVE: capacity ใหม่ต่ำกว่า ACTIVE count |
 | 500 | INTERNAL_ERROR: generic message, fields={} และไม่คืน internal details |
 
@@ -267,3 +287,13 @@ UI เพิ่ม cancel confirmation ใน own detail และ close confirm
 F-07 integration fixture เพิ่ม REGISTERED history ใน nested create เดียวกับ Registration; cleanup ลบเฉพาะ suite-owned history → Registration → Event ใน transaction เดียวก่อนปิด connections เพื่อรองรับ Restrict FK ของ F-06 โดยไม่เปลี่ยน assertions ของ TEST-45–51. [ผลทดสอบหลังรวม](sprints/sprint-2/evidence/f06-staging-merge/README.md) แยกจาก historical F-06-only runs. TEST-44(c) ยังเป็น PR แยกหลังทั้งสอง feature เข้า staging; TEST-47/52 เปลี่ยนจาก CLOSED fixture เป็น actual close ในขั้น integration ตามข้อตกลง ไม่ถือว่าผ่านเพียงเพราะ local merge นี้
 
 **อัปเดต 25 พ.ย. 2026:** TEST-44(c) และ TEST-47/52 แบบปิดผ่าน F-06 จริงทำใน PR #60 (review โดย jetanin, CI ผ่าน, merge `128c35c`) ไม่มีการเปลี่ยน application code; ดู [cross-feature evidence](sprints/sprint-2/evidence/f07-cross-feature/README.md) และ [F-07 completion](sprints/sprint-2/README.md#f-07-completion-record)
+
+## 13. F-09 attendance summary — 27 พฤศจิกายน 2026
+
+งานบน branch `feature/74-sprint-3-f09-summary` (draft PR #75) ยังไม่ merge เข้า staging; อ้าง [Sprint 3 contract F-09](sprints/sprint-3/contracts.md) โดยไม่เปลี่ยน design
+
+- **API:** `GET /api/organizer/events/:id/summary` ลำดับ authenticate → requireRole(ORGANIZER) → ตรวจ path UUID → owner filter บน Event (ไม่พบหรือไม่ใช่เจ้าของ = 404 EVENT_NOT_FOUND) แล้วจึง aggregate ใน transaction REPEATABLE READ เดียว: `COUNT(*) FILTER` ของ ACTIVE, CANCELLED และ ACTIVE ที่ `checked_in_at IS NOT NULL` จาก `registrations` (ไม่ใช้ `registration_history`); `generated_at` มาจาก server clock
+- **Rate:** `attendanceRate(checked, active)` ใน `modules/attendance/rate.ts` คำนวณด้วยจำนวนเต็มแบบ half-up และคืน string 2 ตำแหน่ง; active=0 คืน `"0.00"`
+- **Data:** ไม่มี schema ใหม่ ใช้คอลัมน์ `checked_in_at` จาก migration F-08 `202611270001_registration_attendance` (PR #78); CHECK ของ F-08 ทำให้ CANCELLED ไม่มี `checked_in_at` อยู่แล้ว
+- **UI:** `client/src/features/attendance/AttendanceSummary.tsx` อ่านครั้งเดียวเมื่อเปิดหน้าและเมื่อกดรีเฟรชสรุป ไม่ refresh ตาม focus; ระหว่างโหลดแสดงข้อความแทนตัวเลข; 401 กลับ login; 403/404 ล้างค่าแล้วแสดงข้อความ; Participant ไม่ส่ง request
+- **หลักฐาน:** [step 1 rate/access](sprints/sprint-3/evidence/f09-red/README.md), [step 2 UI](sprints/sprint-3/evidence/f09-ui/README.md), [step 3 API counts + E2E](sprints/sprint-3/evidence/f09-api/README.md), [step 4 integration กับ F-08 check-in จริง](sprints/sprint-3/evidence/f09-integration/README.md)
