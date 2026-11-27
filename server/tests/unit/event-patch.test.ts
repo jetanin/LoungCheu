@@ -29,12 +29,12 @@ describe('F-07 EventPatch validation (TEST-48 unit, AC-37)', () => {
       { title: null }, { description: null }, { location: 2 },
       ...[0, 1001, '5', 2.5, true, null].map(capacity => ({ capacity })),
       { starts_at: '2026-11-06T05:00:00' }, { starts_at: '2026-11-06T05:00:00.0001Z' }, { ends_at: null }, { registration_closes_at: 123 },
-      ...['id', 'organizer_id', 'status', 'created_at', 'updated_at', 'active_count', 'foo'].map(key => ({ title: 'ok', [key]: 'spoofed' }))];
+      ...['id', 'organizer_id', 'status', 'created_at', 'updated_at', 'active_count', 'foo'].map(key => ({ title: 'okay', [key]: 'spoofed' }))];
     for (const body of invalid) expect(rejection(body), JSON.stringify(body) ?? 'undefined').toMatchObject({ status: 400, code: 'INVALID_INPUT' });
   });
 
   it('reuses the create-form field messages', () => {
-    expect(rejection({ title: '' })?.fields).toEqual({ title: ['กรุณากรอก 1–120 ตัวอักษร'] });
+    expect(rejection({ title: '' })?.fields).toEqual({ title: ['กรุณากรอก 3–120 ตัวอักษร'] });
     expect(rejection({ capacity: 0 })?.fields).toEqual({ capacity: ['จำนวนที่นั่งต้องเป็นจำนวนเต็ม 1–1000'] });
   });
 });

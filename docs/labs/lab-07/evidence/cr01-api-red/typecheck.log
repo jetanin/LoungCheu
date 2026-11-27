@@ -1,0 +1,11 @@
+CR-01 / #85
+Tester: Jetanin Naitho (jetanin), executed with Codex assistance
+Pre-change SHA: 079397267e354e4c9dd8034d5652cf191fd49361
+Source: pre-change implementation + test-only working-tree additions (RED mode)
+Node: v22.23.2
+Started UTC: 2026-11-27T16:24:25.038Z
+Finished UTC: 2026-11-27T16:24:31.829Z
+Command: node node_modules/typescript/bin/tsc --noEmit -p server/tsconfig.json
+Target: Docker 127.0.0.1:55433 / loungcheu_test only
+Exit: 0
+

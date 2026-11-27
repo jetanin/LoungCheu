@@ -154,7 +154,7 @@ describe('F-07 PATCH /api/organizer/events/{id} (TEST-45–TEST-51)', () => {
     const invalid: (object | undefined)[] = [{}, undefined, { title: '   ' }, { title: '🌱'.repeat(121) }, { description: 'ก'.repeat(2001) },
       { location: '🌱'.repeat(201) }, { title: null }, ...[0, 1001, '5', 2.5, true, null].map(capacity => ({ capacity })),
       { starts_at: '2026-11-06T05:00:00' }, { starts_at: '2026-11-06T05:00:00.0001Z' },
-      ...['id', 'organizer_id', 'status', 'created_at', 'foo'].map(key => ({ title: 'ok', [key]: key === 'status' ? 'PUBLISHED' : 'spoofed' })),
+      ...['id', 'organizer_id', 'status', 'created_at', 'foo'].map(key => ({ title: 'okay', [key]: key === 'status' ? 'PUBLISHED' : 'spoofed' })),
       { registration_closes_at: new Date(starts + 1).toISOString() }, { ends_at: new Date(starts).toISOString() }];
     for (const body of invalid) {
       const r = await patch(as('OA'), event.id, body);
