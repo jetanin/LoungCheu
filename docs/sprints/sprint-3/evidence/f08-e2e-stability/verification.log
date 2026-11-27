@@ -1,0 +1,115 @@
+Selected actual output; browser launch arguments and repetitive infrastructure warnings omitted.
+No output or result counts are rewritten. Full-log SHA-256 identifies each local source log.
+
+
+=== baseline.log ===
+Full local log SHA-256: 7bb6e288bec8219c372f87611e80b799b8e36a1997598d0dad26c4d6dd730898
+Base snapshot: PR #75 head 7553660 (same TEST-59 source as staging d520f0f)
+Phase: baseline
+Started UTC: 2026-11-27T10:46:17.215Z
+Node: v22.23.2
+Command: playwright test tests/e2e/attendance.spec.ts --repeat-each=10 --retries=0
+Test DB: 127.0.0.1:55433/loungcheu_test
+Exit: 1
+Running 10 tests using 1 worker
+  ok  1 tests\e2e\attendance.spec.ts:17:1 › TEST-59: real check-in confirmation/cancel, roster reload and own attendance survive logout/login (2.8s)
+  ok  2 tests\e2e\attendance.spec.ts:17:1 › TEST-59: real check-in confirmation/cancel, roster reload and own attendance survive logout/login (2.4s)
+  ok  3 tests\e2e\attendance.spec.ts:17:1 › TEST-59: real check-in confirmation/cancel, roster reload and own attendance survive logout/login (2.5s)
+  ok  4 tests\e2e\attendance.spec.ts:17:1 › TEST-59: real check-in confirmation/cancel, roster reload and own attendance survive logout/login (2.6s)
+  x   5 tests\e2e\attendance.spec.ts:17:1 › TEST-59: real check-in confirmation/cancel, roster reload and own attendance survive logout/login (1.0m)
+  x   6 tests\e2e\attendance.spec.ts:17:1 › TEST-59: real check-in confirmation/cancel, roster reload and own attendance survive logout/login (1.0m)
+  ok  7 tests\e2e\attendance.spec.ts:17:1 › TEST-59: real check-in confirmation/cancel, roster reload and own attendance survive logout/login (2.0s)
+  ok  8 tests\e2e\attendance.spec.ts:17:1 › TEST-59: real check-in confirmation/cancel, roster reload and own attendance survive logout/login (2.6s)
+  ok  9 tests\e2e\attendance.spec.ts:17:1 › TEST-59: real check-in confirmation/cancel, roster reload and own attendance survive logout/login (2.2s)
+  ok 10 tests\e2e\attendance.spec.ts:17:1 › TEST-59: real check-in confirmation/cancel, roster reload and own attendance survive logout/login (2.1s)
+    Test timeout of 60000ms exceeded.
+    Error: browserContext.close: Test ended.
+    Test timeout of 60000ms exceeded.
+    Error: browserContext.close: Test ended.
+  2 failed
+  8 passed (2.7m)
+
+=== fixed.log ===
+Full local log SHA-256: 6c03fffbc6f6bf37b4c6534012407d830d8fa2533029eb0c9d9c567db9b38c3e
+Base snapshot: PR #75 head 7553660 (same TEST-59 source as staging d520f0f)
+Phase: fixed
+TEST-59 SHA-256: 75990bde9485e7f5dead5eb24a49a6b4b7090e393ba42c9ecafa7de34ecb56cf
+Started UTC: 2026-11-27T10:52:38.313Z
+Node: v22.23.2
+Command: playwright test tests/e2e/attendance.spec.ts --repeat-each=10 --retries=0
+Test DB: 127.0.0.1:55433/loungcheu_test
+Exit: 0
+Running 10 tests using 1 worker
+  ok  1 tests\e2e\attendance.spec.ts:29:1 › TEST-59: real check-in confirmation/cancel, roster reload and own attendance survive logout/login (3.1s)
+  ok  2 tests\e2e\attendance.spec.ts:29:1 › TEST-59: real check-in confirmation/cancel, roster reload and own attendance survive logout/login (2.6s)
+  ok  3 tests\e2e\attendance.spec.ts:29:1 › TEST-59: real check-in confirmation/cancel, roster reload and own attendance survive logout/login (3.3s)
+  ok  4 tests\e2e\attendance.spec.ts:29:1 › TEST-59: real check-in confirmation/cancel, roster reload and own attendance survive logout/login (3.3s)
+  ok  5 tests\e2e\attendance.spec.ts:29:1 › TEST-59: real check-in confirmation/cancel, roster reload and own attendance survive logout/login (3.1s)
+  ok  6 tests\e2e\attendance.spec.ts:29:1 › TEST-59: real check-in confirmation/cancel, roster reload and own attendance survive logout/login (3.2s)
+  ok  7 tests\e2e\attendance.spec.ts:29:1 › TEST-59: real check-in confirmation/cancel, roster reload and own attendance survive logout/login (2.9s)
+  ok  8 tests\e2e\attendance.spec.ts:29:1 › TEST-59: real check-in confirmation/cancel, roster reload and own attendance survive logout/login (3.1s)
+  ok  9 tests\e2e\attendance.spec.ts:29:1 › TEST-59: real check-in confirmation/cancel, roster reload and own attendance survive logout/login (3.2s)
+  ok 10 tests\e2e\attendance.spec.ts:29:1 › TEST-59: real check-in confirmation/cancel, roster reload and own attendance survive logout/login (3.0s)
+  10 passed (43.4s)
+
+=== chromium-regression.log ===
+Full local log SHA-256: 15f58c386f4dd7f7f92ec4865fbbe18d9a42ce48b56db2899c54428480685421
+Base snapshot: PR #75 head 7553660 (same TEST-59 source as staging d520f0f)
+Phase: fixed
+TEST-59 SHA-256: 75990bde9485e7f5dead5eb24a49a6b4b7090e393ba42c9ecafa7de34ecb56cf
+Started UTC: 2026-11-27T10:53:23.838Z
+Node: v22.23.2
+Command: playwright test --retries=0
+Test DB: 127.0.0.1:55433/loungcheu_test
+Exit: 0
+Running 41 tests using 1 worker
+  ok  1 tests\e2e\attendance.spec.ts:29:1 › TEST-59: real check-in confirmation/cancel, roster reload and own attendance survive logout/login (3.4s)
+  ok  2 tests\e2e\attendance-summary.spec.ts:18:1 › TEST-64: owner opens ดูสรุปผล, sees DB-matching values, refreshes after a check-in; participant is refused (2.2s)
+  ok  3 tests\e2e\auth.spec.ts:3:3 › F-01 participant.a: login, refresh, logout and browser back (917ms)
+  ok  4 tests\e2e\auth.spec.ts:3:3 › F-01 organizer.a: login, refresh, logout and browser back (701ms)
+  ok  5 tests\e2e\auth.spec.ts:18:1 › F-01 invalid form, generic credentials and pending submit (1.2s)
+  ok  6 tests\e2e\auth.spec.ts:29:1 › F-01 expired session clears private UI on focus (484ms)
+  ok  7 tests\e2e\auth.spec.ts:37:1 › F-01 failed logout clears private UI and offers a working retry (667ms)
+  ok  8 tests\e2e\auth.spec.ts:50:1 › F-01 ignores an older successful session response after a newer 401 (551ms)
+  ok  9 tests\e2e\auth.spec.ts:76:1 › F-01 rechecks a restored page after its session was logged out elsewhere (495ms)
+  ok 10 tests\e2e\consistency.spec.ts:10:1 › F-02 consistency: field errors follow corrected values and dependent time ordering (885ms)
+  ok 11 tests\e2e\consistency.spec.ts:37:1 › F-02 consistency: CLOSED totals and forbidden refresh discard older private overview data (589ms)
+  ok 12 tests\e2e\event-edit.spec.ts:25:1 › TEST-52 / AC-40 Organizer edits DRAFT and PUBLISHED events; CLOSED has no edit (4.0s)
+  ok 13 tests\e2e\events-audit.spec.ts:20:36 › TEST-03/14 owner event read 401 clears the session after a newer refresh fails (971ms)
+  ok 14 tests\e2e\events-audit.spec.ts:20:36 › TEST-03/14 shared event read 401 clears the session after a newer refresh fails (1.2s)
+  ok 15 tests\e2e\events-audit.spec.ts:51:1 › TEST-03/14 a late event read 401 cannot clear the next signed-in account (924ms)
+  ok 16 tests\e2e\events-audit.spec.ts:66:34 › TEST-14 publish 403 removes cached private record even if an old refresh returns later (719ms)
+  ok 17 tests\e2e\events-audit.spec.ts:66:34 › TEST-14 publish 404 removes cached private record even if an old refresh returns later (678ms)
+  ok 18 tests\e2e\events-audit.spec.ts:83:34 › TEST-14 read 403 cannot be overwritten by an earlier publish success (740ms)
+  ok 19 tests\e2e\events-audit.spec.ts:83:34 › TEST-14 read 404 cannot be overwritten by an earlier publish success (793ms)
+  ok 20 tests\e2e\events-audit.spec.ts:102:1 › TEST-09/14 publish conflict explains rejection and refreshes the committed event status (633ms)
+  ok 21 tests\e2e\events-audit.spec.ts:113:1 › TEST-14 a late create success cannot navigate the next signed-in account to the previous owner record (1.3s)
+  ok 22 tests\e2e\events-audit.spec.ts:134:1 › TEST-14 a late publish 401 cannot clear the next account session (926ms)
+  ok 23 tests\e2e\events-audit.spec.ts:149:1 › TEST-14 canonical detail and create routes work with a trailing slash (761ms)
+  ok 24 tests\e2e\events-audit.spec.ts:155:1 › TEST-14 a definitive session 401 still wins over a later temporary identity failure (628ms)
+  ok 25 tests\e2e\events-registration.spec.ts:11:1 › real #1/#2/#3 journey: publish, register across focus refresh, keep reference and reject stale full attempt (3.0s)
+  ok 26 tests\e2e\events.spec.ts:10:1 › TEST-07/09/14/36 Organizer creates, previews, publishes; Participant browses persisted shared detail (3.5s)
+  ok 27 tests\e2e\events.spec.ts:103:1 › TEST-14 list loading, empty, failure and retry; detail 404 and publish conflict (1.3s)
+  ok 28 tests\e2e\events.spec.ts:128:1 › TEST-09/14 an older availability refresh cannot overwrite a successful publish (599ms)
+  ok 29 tests\e2e\events.spec.ts:149:69 › F-02/#3 focus and availability refresh preserve RegistrationAction pending (1.4s)
+  ok 30 tests\e2e\events.spec.ts:149:69 › F-02/#3 focus and availability refresh preserve RegistrationAction success (1.4s)
+  ok 31 tests\e2e\events.spec.ts:149:69 › F-02/#3 focus and availability refresh preserve RegistrationAction uncertain (1.3s)
+  ok 32 tests\e2e\overview.spec.ts:17:1 › F-02 overview empty state, active navigation and create entry work on desktop and mobile (905ms)
+  ok 33 tests\e2e\overview.spec.ts:35:1 › F-02 overview uses real owner-list counts/order, excludes another owner and preserves all-list/detail routes (1.8s)
+  ok 34 tests\e2e\overview.spec.ts:69:1 › F-02 overview distinguishes loading/error from zero and retries; 401 clears private overview (666ms)
+  ok 35 tests\e2e\overview.spec.ts:89:1 › F-02 Participant keeps shared browsing and cannot open Organizer overview (493ms)
+  ok 36 tests\e2e\registration-lifecycle.spec.ts:31:1 › TEST-43: real cancel/re-login/full/reactivate/roster/close journey preserves identity and history (4.5s)
+  ok 37 tests\e2e\registration-views.spec.ts:35:1 › TEST-24/29/30: real publish → register → own detail/re-login → owner roster journey (3.2s)
+  ok 38 tests\e2e\registration-views.spec.ts:89:1 › TEST-25: own list empty/error/retry, session rejection and wrong-role direct access (1.2s)
+  ok 39 tests\e2e\visual-consistency.spec.ts:14:39 › visual consistency: page hierarchy, branding, controls and layout at 1280px (4.6s)
+  ok 40 tests\e2e\visual-consistency.spec.ts:14:39 › visual consistency: page hierarchy, branding, controls and layout at 390px (4.4s)
+  ok 41 tests\e2e\visual-consistency.spec.ts:14:39 › visual consistency: page hierarchy, branding, controls and layout at 320px (4.5s)
+  41 passed (1.2m)
+
+=== Typecheck ===
+Command: node node_modules/typescript/bin/tsc -p tsconfig.tools.json --noEmit
+Exit: 0
+Compiler output: empty (success)
+
+=== Assertion preservation ===
+TypeScript AST comparison: all 24 original expect assertions preserved; dialog.type() is now captured as type before closing the modal.

@@ -10,7 +10,7 @@ part of F-08, before the check-in endpoint and UI implementation.
 | Branch | `feature/50-f08-migration` |
 | Baseline before RED | `a5bf4bac0c17ede5cb2e4c4d1bac243fc473b74c` |
 | RED commit supplied by Jetanin Naitho | `ba4cb6e0ff369e5a573fe97240214832f24b534d` |
-| GREEN commit | Pending: Jetanin commits the working changes after local verification |
+| GREEN commit | `61d1a05812e78e09a70f2ff8b1644046b4b7749e` ([PR #78](https://github.com/jetanin/LoungCheu/pull/78); [CI run 45873633625](https://github.com/jetanin/LoungCheu/actions/runs/45873633625) SUCCESS) |
 | Test design | [STS v0.2, TEST-65](../../sts.md); NFR-05 / F-08 DoD 4 |
 | Migration | `202611270001_registration_attendance` |
 | Node / database | Node 22.23.2; PostgreSQL Docker at `127.0.0.1:55433`; test DB only |
