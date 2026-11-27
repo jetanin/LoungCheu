@@ -10,7 +10,11 @@ Codex in Jetanin's workspace; it is not independent UAT.
 | Reviewed CR-01 contract | PR #100, head `634eda9a914905a17a6bcd6267b60950416c2450` |
 | Actual pre-change implementation / contract merge | `079397267e354e4c9dd8034d5652cf191fd49361` |
 | Separate test-only RED commit | `4ab6ccf816e002167350594f19eb26aef889ad45` |
-| This GREEN verification | RED commit plus working-tree server implementation and justified existing-test updates; record GREEN commit SHA after committing |
+| GREEN implementation, committed after local verification | `90d03039efe6a545addac1bb67149210b83219b6` (SHA supplied by Jetanin; implementation and test hashes match the verification audit) |
+
+The logs retain the original working-tree execution context: verification ran
+before the GREEN commit was created. The committed implementation and unchanged
+RED test file were checked against the retained SHA-256 values afterwards.
 
 [RED evidence](../cr01-api-red/README.md): the same 36 assertions produced
 20 failures and 16 passes against the old rule. The test file's SHA-256 is
