@@ -7,6 +7,61 @@ async function login(page: Page, username = 'organizer.a') {
   await page.getByRole('button', { name: 'เข้าสู่ระบบ', exact: true }).click(); await expect(page).toHaveURL(/\/events$/);
 }
 
+test('CR-01 TEST-08/52 rejects short titles in the browser and preserves create, edit, read and access', async ({ page, browser }) => {
+  await login(page);
+  await page.goto('/organizer/events/new');
+  for (const [label, value] of [['รายละเอียด', 'CR-01 browser regression'], ['สถานที่', 'บางมด'], ['จำนวนที่นั่ง', '2']]) {
+    await page.getByLabel(label, { exact: true }).fill(value);
+  }
+  await fillEventTime(page, 'ปิดรับลงทะเบียน', '2099-04-01T09:00');
+  await fillEventTime(page, 'เริ่มกิจกรรม', '2099-04-01T10:00');
+  await fillEventTime(page, 'สิ้นสุดกิจกรรม', '2099-04-01T12:00');
+  let posts = 0, patches = 0;
+  page.on('request', request => {
+    if (new URL(request.url()).pathname === '/api/organizer/events' && request.method() === 'POST') posts++;
+    if (/\/api\/organizer\/events\/[0-9a-f-]{36}$/.test(new URL(request.url()).pathname) && request.method() === 'PATCH') patches++;
+  });
+  for (const title of ['ab', '🌱🌱']) {
+    await page.getByLabel('ชื่อกิจกรรม', { exact: true }).fill(title);
+    await page.getByRole('button', { name: 'บันทึก DRAFT' }).click();
+    await expect(page.getByText('กรุณากรอก 3–120 ตัวอักษร')).toBeVisible();
+    await expect(page).toHaveURL(/\/organizer\/events\/new$/);
+    expect(posts).toBe(0);
+  }
+  await page.getByLabel('ชื่อกิจกรรม', { exact: true }).fill('🌱🌱🌱');
+  await page.getByRole('button', { name: 'บันทึก DRAFT' }).click();
+  await expect(page.getByRole('heading', { name: '🌱🌱🌱' })).toBeVisible();
+  expect(posts).toBe(1);
+  const id = new URL(page.url()).pathname.split('/').pop()!;
+  const ownerRead = await page.request.get(`/api/organizer/events/${id}`);
+  expect(ownerRead.status()).toBe(200);
+  expect((await ownerRead.json()).data.title).toBe('🌱🌱🌱');
+
+  await page.getByRole('link', { name: 'แก้ไขกิจกรรม' }).click();
+  await page.getByLabel('ชื่อกิจกรรม', { exact: true }).fill('ab');
+  await page.getByRole('button', { name: 'บันทึกการแก้ไข' }).click();
+  await expect(page.getByText('กรุณากรอก 3–120 ตัวอักษร')).toBeVisible();
+  expect(patches).toBe(0);
+  await page.getByLabel('ชื่อกิจกรรม', { exact: true }).fill('กขค');
+  await page.getByRole('button', { name: 'บันทึกการแก้ไข' }).click();
+  await expect(page.getByRole('heading', { name: 'กขค' })).toBeVisible();
+  expect(patches).toBe(1);
+  await page.reload();
+  await expect(page.getByRole('heading', { name: 'กขค' })).toBeVisible();
+  await page.getByRole('button', { name: 'เผยแพร่กิจกรรม' }).click();
+  await expect(page.getByText('PUBLISHED', { exact: true })).toBeVisible();
+
+  const context = await browser.newContext(), participant = await context.newPage();
+  try {
+    await login(participant, 'participant.a');
+    await participant.goto(`/events/${id}`);
+    await expect(participant.getByRole('heading', { name: 'กขค' })).toBeVisible();
+    await participant.goto(`/organizer/events/${id}/edit`);
+    await expect(participant.getByRole('heading', { name: 'ไม่มีสิทธิ์ใช้งาน' })).toBeVisible();
+    await expect(participant.getByRole('button', { name: 'บันทึกการแก้ไข' })).toHaveCount(0);
+  } finally { await context.close(); }
+});
+
 test('TEST-07/09/14/36 Organizer creates, previews, publishes; Participant browses persisted shared detail', async ({ page, browser }) => {
   await login(page);
   await page.getByRole('link', { name: 'กิจกรรมของฉัน', exact: true }).click();
@@ -52,7 +107,7 @@ test('TEST-07/09/14/36 Organizer creates, previews, publishes; Participant brows
   const dateBounds = await page.getByLabel('วันที่เริ่มกิจกรรม', { exact: true }).boundingBox(), timezoneBounds = await timezone.boundingBox();
   expect(timezoneBounds!.x).toBeGreaterThan(dateBounds!.x + dateBounds!.width);
   await page.getByRole('button', { name: 'บันทึก DRAFT' }).click();
-  await expect(page.getByText('กรุณากรอก 1–120 ตัวอักษร')).toBeVisible();
+  await expect(page.getByText('กรุณากรอก 3–120 ตัวอักษร')).toBeVisible();
   const title = `E2E Event ${Date.now()}`;
   await page.getByLabel('ชื่อกิจกรรม', { exact: true }).fill(title);
   await page.getByLabel('รายละเอียด', { exact: true }).fill('กิจกรรมทดสอบภาษาไทย 🌱');

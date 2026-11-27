@@ -20,6 +20,14 @@ function changedFields(values: FormValues, initial: FormValues, status: OwnerEve
   return patch;
 }
 
+function validateForSubmit(values: FormValues, initial: FormValues, current?: OwnerEvent) {
+  const checked = validateForm(values);
+  // Existing 1–2 code-point titles remain readable. PATCH validates a title
+  // only when that normalized field is included in the request.
+  if (current && !('title' in changedFields(values, initial, current.status))) delete checked.fields.title;
+  return checked;
+}
+
 export function EventForm({ onCreated, onSaved, onLost, onAuthRequired, editing }: {
   onCreated?: (event: OwnerEvent) => void; onSaved?: (event: OwnerEvent) => void; onLost?: (message: string) => void;
   onAuthRequired: () => void; editing?: OwnerEvent;
@@ -50,7 +58,7 @@ export function EventForm({ onCreated, onSaved, onLost, onAuthRequired, editing 
     setValues(next);
     // Recheck dependent time fields too; correcting one field can invalidate
     // or resolve another. Keep mutation warnings until the next submission.
-    if (hasSubmitted.current) setFields(validateForm(next).fields);
+    if (hasSubmitted.current) setFields(validateForSubmit(next, initial, current).fields);
   }
   async function reload(id: string) {
     try { const latest = await api<OwnerEvent>(`/organizer/events/${encodeURIComponent(id)}`); if (mounted.current) adopt(latest); }
@@ -63,7 +71,7 @@ export function EventForm({ onCreated, onSaved, onLost, onAuthRequired, editing 
   async function submit(e: FormEvent) {
     e.preventDefault(); if (inFlight.current) return;
     hasSubmitted.current = true;
-    const checked = validateForm(values); setFields(checked.fields); setError('');
+    const checked = validateForSubmit(values, initial, current); setFields(checked.fields); setError('');
     if (Object.keys(checked.fields).length) return;
     if (pending && !Object.keys(pending).length) return;
     inFlight.current = true; setBusy(true);

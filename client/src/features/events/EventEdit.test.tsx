@@ -61,6 +61,10 @@ describe('F-07 edit event UI (TEST-52 component, AC-40)', () => {
     fireEvent.click(saveButton());
     await waitFor(() => expect(onNavigate).toHaveBeenCalledWith(detailPath));
     expect(calls.filter(c => c.method === 'PATCH')).toEqual([{ path: `/api${detailPath}`, method: 'PATCH', csrf: 'token-1', body: { capacity: 4 } }]);
+    cleanup();
+    server([ok(ownerEvent({ title: 'ab', capacity: 4 }))]);
+    open(detailPath);
+    expect(await screen.findByRole('heading', { name: 'ab' })).toBeTruthy();
   });
 
   it.each(['DRAFT', 'PUBLISHED', 'CLOSED'] as const)('owner detail shows แก้ไขกิจกรรม only for DRAFT/PUBLISHED (%s)', async status => {
@@ -144,7 +148,7 @@ describe('F-07 edit event UI (TEST-52 component, AC-40)', () => {
     await screen.findByRole('heading', { name: 'แก้ไขกิจกรรม' });
     fireEvent.change(field('ชื่อกิจกรรม'), { target: { value: '   ' } });
     fireEvent.click(saveButton());
-    expect(await screen.findByText('กรุณากรอก 1–120 ตัวอักษร')).toBeTruthy();
+    expect(await screen.findByText('กรุณากรอก 3–120 ตัวอักษร')).toBeTruthy();
     expect(calls.filter(c => c.method === 'PATCH')).toHaveLength(0);
     fireEvent.change(field('ชื่อกิจกรรม'), { target: { value: 'กิจกรรมเดิม' } });
     fireEvent.change(field('สถานที่'), { target: { value: 'ที่ใหม่' } });
