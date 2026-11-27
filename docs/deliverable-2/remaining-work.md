@@ -43,9 +43,9 @@ AC-25 และ AC-27 ของ Sprint 1 ยังเป็น PARTIAL ตาม
 | NFR-02 cookie บน HTTPS จริง | **Tested — PASS** 27 พ.ย. 2026 บน `3f80759`: `HttpOnly; Secure; SameSite=Lax`, Expires +2 ชม. ([หลักฐาน](../sprints/sprint-3/evidence/nfr02-https-cookie/README.md)) | (ไม่บังคับ) ดู cookie หลัง login ใน browser จริง | DevTools → Application → Cookies หลัง login, ไม่แคปค่า cookie | credentials ส่วนตัว | Paphangkorn; 30 พ.ย. |
 | NFR-06 browser/device matrix | **Partial verification.** automated UI/Chromium 41/41 บน `3f80759` (รวม 1280/390/320 px) | manual desktop + mobile matrix — Not executed | รันเคสหลักบน desktop + mobile อย่างละ 1 browser บน release สุดท้าย | final release | Jetanin + Paphangkorn; 12 ธ.ค. |
 | AC-27 / NFR-08 process acceptance (TEST-34) | **Partial verification.** reviewed releases บน main: PR #12, #67, #81; ทุก feature PR มี teammate review + CI | final TEST-34 audit — Not executed | audit AC/test refs, TDD, Issue/PR chains, releases และ limitations ทั้งชุด | แถวข้างบนทั้งหมด | Paphangkorn; 12 ธ.ค. |
-| NFR-09 independent UAT ของ Sprint 2–3 | Sprint 1: Accepted by independent UAT (`v1.0.1-uat`, 25 พ.ย.); LAB6-CX-01 retest PASS (26 พ.ย.); Sprint 2–3: **Not executed** | UAT ของ F-06–F-09 | ทำตาม Lab 7 / การทดสอบสุดท้ายที่อาจารย์กำหนด แล้วบันทึกผลกับ release ที่ทดสอบ | handout Lab 7 | ทั้งทีม; ตามกำหนด Lab 7 |
+| NFR-09 independent UAT ของ Sprint 2–3 | Sprint 1: Accepted by independent UAT (`v1.0.1-uat`, 25 พ.ย.); LAB6-CX-01 retest PASS (26 พ.ย.); Sprint 2–3: **Not executed** | UAT ของ F-06–F-09 | ตาม [#95](https://github.com/jetanin/LoungCheu/issues/95) (Final-D): ตกลง independent testers/รอบทดสอบภายใน 30 พ.ย.; แจก case/version/fixtures; reuse UAT Sprint 1 + journey ที่เปลี่ยนใน Lab 7 และเพิ่ม S2 cancel/reactivate/close/edit, S3 check-in/summary; บันทึก tester/date/version/result | ทีมทดสอบยืนยันนัด; final candidate freeze | Paphangkorn (reviewer Jetanin); ตกลงภายใน 30 พ.ย., รัน ≤ 12 ธ.ค. |
 | CHG-06 browser timeout ที่เกิดเป็นครั้งคราว (F-06 TEST-43) | เกิด 1 ครั้งบนเครื่อง local หาสาเหตุไม่ได้; CI release `3f80759` ผ่าน 41/41 | root cause | เฝ้าดูใน CI ถ้าเกิดซ้ำให้เปิด issue พร้อม log ห้ามลด assertion | — | Jetanin; ต่อเนื่องถึง 13 ธ.ค. |
-| CHG-07 Lab 7 change request | **Planned** — ยังไม่ได้รับ handout ณ 27 พ.ย. | ทั้งหมด | ทำตาม handout เมื่อได้รับ (ต้องเปลี่ยนกฎ Sprint 1, ห้ามใช้ LAB6-CX-01 — EV-TA-01) | handout Lab 7 | ทั้งทีม; ยังไม่กำหนดวัน |
+| CHG-07 Lab 7 change request (CR-01, BR-01) | **Planned** — CR DRAFT ใน #84 | ยืนยัน CR, reviewed contract, RED/GREEN, release, deployed re-test | ยืนยัน CR + review contract PR (#84) → API #85 / UI #86 → release #87 → metrics #88 → PDF #89 | contract #84 ผ่าน review ก่อน #85/#86 | #84/#86/#88 Paphangkorn, #85/#87/#89 Jetanin; ส่ง Lab 7 29 พ.ย. 23:59 |
 
 ข้อจำกัดที่เปิดเผยไว้ แต่แก้ย้อนหลังไม่ได้: output ของ F-07 RED commit `ef94a3f`/`1fd71db` ไม่ได้เก็บไว้ตอนรัน ดู [Sprint 2 completion](../sprints/sprint-2/README.md)
 
@@ -55,10 +55,11 @@ AC-25 และ AC-27 ของ Sprint 1 ยังเป็น PARTIAL ตาม
 |---|---|---|
 | 27 พ.ย. | **เสร็จแล้ว:** PR นี้ (#73) และ PR #76 merge, #64/#44 ปิด; F-08 (PR #78, #79, #80) และ F-09 (PR #75) merge เข้า `sprint-3-staging`; release `v3.0.0-sprint-3` (PR #81) + deploy + post-deploy 19/19 PASS รวม GAP-02 redeploy readback | Jetanin, Paphangkorn |
 | 28 พ.ย. | (งานที่วางไว้ — F-08/F-09 merge, release candidate บน main + deploy + tag — เสร็จก่อนกำหนดแล้วเมื่อ 27 พ.ย.) ประกอบ D2 PDF | Paphangkorn |
-| 29 พ.ย. | ส่ง Lab 6 PDF (#45) และ D2 PDF (#51) ภายใน 23:59 | Jetanin (#45), Paphangkorn (#51) |
-| 30 พ.ย. | NFR-02 deployed cookie attributes ตรวจแล้ว 27 พ.ย. (PASS); (ไม่บังคับ) ยืนยัน cookie หลัง login ใน browser | Paphangkorn |
+| 28–29 พ.ย. | Lab 7: ยืนยัน CR-01 และ review contract (#84) ก่อนโค้ด → API/UI (#85, #86) → release + deployed re-test (#87) → metrics (#88) → PDF (#89) | Jetanin, Paphangkorn |
+| 29 พ.ย. | ส่ง Lab 6 PDF (#45), D2 PDF (#51) และ Lab 7 PDF (#89) ภายใน 23:59 | Jetanin (#45, #89), Paphangkorn (#51) |
+| 30 พ.ย. | ตกลง independent testers/รอบ UAT Final (#95); (ไม่บังคับ) ยืนยัน cookie หลัง login — NFR-02 attributes ตรวจผ่านแล้ว 27 พ.ย. | Paphangkorn |
 | 1–11 ธ.ค. | ช่วงสอบ — ไม่ทำงาน implement; แก้แค่ defect ร้ายแรงถ้ามี | — |
-| 12 ธ.ค. | Clean reproduction (TEST-35, Paphangkorn), browser/device matrix, UAT re-test (ถ้ามี), audit traceability ขั้นสุดท้าย, อัดวิดีโอ | Jetanin, Paphangkorn |
+| 12 ธ.ค. | Clean reproduction (TEST-35, Paphangkorn), browser/device matrix, independent UAT + re-test ของ final candidate (#95), audit traceability ขั้นสุดท้าย, อัดวิดีโอ | Jetanin, Paphangkorn |
 | 13 ธ.ค. | Final release บน main + deploy + tag, ส่งงาน | Jetanin, Paphangkorn |
 
-Lab 7 (change request) ยังไม่ได้ใส่วันที่ในตาราง จะเพิ่มตามกำหนดใน handout ของ Lab 7. ข้อกำหนดที่ทราบแล้วจาก TA (EV-TA-01): ต้องเปลี่ยนกฎหรือพฤติกรรมที่มีอยู่แล้วใน Sprint 1 และห้ามใช้ LAB6-CX-01 เป็น change request
+Lab 7 (change request): CR-01 ร่างแล้วใน [#84](https://github.com/jetanin/LoungCheu/issues/84): ชื่อกิจกรรมยาวอย่างน้อย 3 ตัวอักษร (BR-01) — สถานะ DRAFT รอทั้งคู่ยืนยัน CR และ jetanin review contract PR ก่อนเขียน test/โค้ด; งานต่อไป #85 API (Jetanin), #86 UI (Paphangkorn), #87 integrate/release/deploy (Jetanin), #88 metrics (Paphangkorn), #89 readiness/PDF (Jetanin); กำหนดส่ง Lab 7 29 พ.ย. 2026 23:59. ข้อกำหนดจาก TA (EV-TA-01): ต้องเปลี่ยนกฎหรือพฤติกรรมที่มีอยู่แล้วใน Sprint 1 และห้ามใช้ LAB6-CX-01 เป็น change request. Independent UAT รอบ Final ดู #95
