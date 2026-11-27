@@ -28,8 +28,9 @@ const timeKeys = { starts_at: 'startsAt', ends_at: 'endsAt', registration_closes
 // Per-field rules shared by create (EventInput) and edit (EventPatch) so both
 // report the same Thai field messages (F-07 contract: INVALID_INPUT).
 function text(b: Record<string, unknown>, key: keyof typeof textLimits, fields: Fields) {
-  const value = b[key], max = textLimits[key];
-  if (typeof value !== 'string' || !value.trim() || [...value.trim()].length > max) { fields[key] = [`กรุณากรอก 1–${max} ตัวอักษร`]; return ''; }
+  const value = b[key], max = textLimits[key], min = key === 'title' ? 3 : 1;
+  const length = typeof value === 'string' ? [...value.trim()].length : 0;
+  if (typeof value !== 'string' || length < min || length > max) { fields[key] = [`กรุณากรอก ${min}–${max} ตัวอักษร`]; return ''; }
   // PostgreSQL TEXT cannot store NUL; reject unpaired UTF-16 surrogates
   // before the driver silently replaces them. Paired emoji remain valid.
   if (/[\u0000\uD800-\uDFFF]/u.test(value)) { fields[key] = ['มีอักขระที่ไม่รองรับ กรุณากรอกข้อความใหม่']; return ''; }

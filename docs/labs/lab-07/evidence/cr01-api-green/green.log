@@ -1,0 +1,56 @@
+CR-01 / #85
+Owner: Jetanin Naitho (jetanin), automated execution through Codex
+RED commit: 4ab6ccf816e002167350594f19eb26aef889ad45
+Source: RED commit + uncommitted API implementation/legitimate old-test updates
+Node: v22.23.2
+Started UTC: 2026-11-27T16:28:32.197Z
+Finished UTC: 2026-11-27T16:28:34.604Z
+Command: node node_modules/vitest/vitest.mjs run server/tests/integration/event-title-maintenance.test.ts --reporter=verbose
+Target: Docker 127.0.0.1:55433 / loungcheu_test only
+Exit: 0
+
+
+ RUN  v5.1.0 C:/Work/2569/CPE334/GroupWork/LoungCheu
+
+ ✓ server/tests/integration/event-title-maintenance.test.ts > CR-01 title validation — TEST-08/48 (AC-07/37) > TEST-08 create rejects empty without inserting 17ms
+ ✓ server/tests/integration/event-title-maintenance.test.ts > CR-01 title validation — TEST-08/48 (AC-07/37) > TEST-08 create rejects whitespace without inserting 12ms
+ ✓ server/tests/integration/event-title-maintenance.test.ts > CR-01 title validation — TEST-08/48 (AC-07/37) > TEST-08 create rejects one code point without inserting 8ms
+ ✓ server/tests/integration/event-title-maintenance.test.ts > CR-01 title validation — TEST-08/48 (AC-07/37) > TEST-08 create rejects two code points without inserting 8ms
+ ✓ server/tests/integration/event-title-maintenance.test.ts > CR-01 title validation — TEST-08/48 (AC-07/37) > TEST-08 create rejects two after trim without inserting 10ms
+ ✓ server/tests/integration/event-title-maintenance.test.ts > CR-01 title validation — TEST-08/48 (AC-07/37) > TEST-08 create rejects two emoji / four UTF-16 units without inserting 7ms
+ ✓ server/tests/integration/event-title-maintenance.test.ts > CR-01 title validation — TEST-08/48 (AC-07/37) > TEST-08 create rejects 121 code points without inserting 6ms
+ ✓ server/tests/integration/event-title-maintenance.test.ts > CR-01 title validation — TEST-08/48 (AC-07/37) > TEST-08 create rejects wrong type without inserting 7ms
+ ✓ server/tests/integration/event-title-maintenance.test.ts > CR-01 title validation — TEST-08/48 (AC-07/37) > TEST-08 create rejects null without inserting 11ms
+ ✓ server/tests/integration/event-title-maintenance.test.ts > CR-01 title validation — TEST-08/48 (AC-07/37) > TEST-08 create rejects array without inserting 10ms
+ ✓ server/tests/integration/event-title-maintenance.test.ts > CR-01 title validation — TEST-08/48 (AC-07/37) > TEST-48 PATCH rejects empty without changing any field 18ms
+ ✓ server/tests/integration/event-title-maintenance.test.ts > CR-01 title validation — TEST-08/48 (AC-07/37) > TEST-48 PATCH rejects whitespace without changing any field 10ms
+ ✓ server/tests/integration/event-title-maintenance.test.ts > CR-01 title validation — TEST-08/48 (AC-07/37) > TEST-48 PATCH rejects one code point without changing any field 11ms
+ ✓ server/tests/integration/event-title-maintenance.test.ts > CR-01 title validation — TEST-08/48 (AC-07/37) > TEST-48 PATCH rejects two code points without changing any field 9ms
+ ✓ server/tests/integration/event-title-maintenance.test.ts > CR-01 title validation — TEST-08/48 (AC-07/37) > TEST-48 PATCH rejects two after trim without changing any field 8ms
+ ✓ server/tests/integration/event-title-maintenance.test.ts > CR-01 title validation — TEST-08/48 (AC-07/37) > TEST-48 PATCH rejects two emoji / four UTF-16 units without changing any field 8ms
+ ✓ server/tests/integration/event-title-maintenance.test.ts > CR-01 title validation — TEST-08/48 (AC-07/37) > TEST-48 PATCH rejects 121 code points without changing any field 9ms
+ ✓ server/tests/integration/event-title-maintenance.test.ts > CR-01 title validation — TEST-08/48 (AC-07/37) > TEST-48 PATCH rejects wrong type without changing any field 9ms
+ ✓ server/tests/integration/event-title-maintenance.test.ts > CR-01 title validation — TEST-08/48 (AC-07/37) > TEST-48 PATCH rejects null without changing any field 11ms
+ ✓ server/tests/integration/event-title-maintenance.test.ts > CR-01 title validation — TEST-08/48 (AC-07/37) > TEST-48 PATCH rejects array without changing any field 8ms
+ ✓ server/tests/integration/event-title-maintenance.test.ts > CR-01 title validation — TEST-08/48 (AC-07/37) > TEST-08 create accepts three ASCII and persists normalized text 41ms
+ ✓ server/tests/integration/event-title-maintenance.test.ts > CR-01 title validation — TEST-08/48 (AC-07/37) > TEST-08 create accepts trimmed three and persists normalized text 25ms
+ ✓ server/tests/integration/event-title-maintenance.test.ts > CR-01 title validation — TEST-08/48 (AC-07/37) > TEST-08 create accepts three Thai letters and persists normalized text 19ms
+ ✓ server/tests/integration/event-title-maintenance.test.ts > CR-01 title validation — TEST-08/48 (AC-07/37) > TEST-08 create accepts three emoji and persists normalized text 21ms
+ ✓ server/tests/integration/event-title-maintenance.test.ts > CR-01 title validation — TEST-08/48 (AC-07/37) > TEST-08 create accepts Thai combining marks / three code points and persists normalized text 21ms
+ ✓ server/tests/integration/event-title-maintenance.test.ts > CR-01 title validation — TEST-08/48 (AC-07/37) > TEST-08 create accepts 120 emoji / 240 UTF-16 units and persists normalized text 22ms
+ ✓ server/tests/integration/event-title-maintenance.test.ts > CR-01 title validation — TEST-08/48 (AC-07/37) > TEST-48 PATCH accepts three ASCII and reads it back 28ms
+ ✓ server/tests/integration/event-title-maintenance.test.ts > CR-01 title validation — TEST-08/48 (AC-07/37) > TEST-48 PATCH accepts trimmed three and reads it back 22ms
+ ✓ server/tests/integration/event-title-maintenance.test.ts > CR-01 title validation — TEST-08/48 (AC-07/37) > TEST-48 PATCH accepts three Thai letters and reads it back 25ms
+ ✓ server/tests/integration/event-title-maintenance.test.ts > CR-01 title validation — TEST-08/48 (AC-07/37) > TEST-48 PATCH accepts three emoji and reads it back 31ms
+ ✓ server/tests/integration/event-title-maintenance.test.ts > CR-01 title validation — TEST-08/48 (AC-07/37) > TEST-48 PATCH accepts Thai combining marks / three code points and reads it back 22ms
+ ✓ server/tests/integration/event-title-maintenance.test.ts > CR-01 title validation — TEST-08/48 (AC-07/37) > TEST-48 PATCH accepts 120 emoji / 240 UTF-16 units and reads it back 30ms
+ ✓ server/tests/integration/event-title-maintenance.test.ts > CR-01 title validation — TEST-08/48 (AC-07/37) > TEST-48 legacy DRAFT title stays readable and omitted-title PATCH works 31ms
+ ✓ server/tests/integration/event-title-maintenance.test.ts > CR-01 title validation — TEST-08/48 (AC-07/37) > TEST-48 legacy PUBLISHED title stays readable and omitted-title PATCH works 56ms
+ ✓ server/tests/integration/event-title-maintenance.test.ts > CR-01 title validation — TEST-08/48 (AC-07/37) > preserved legacy short-title publish and registration do not revalidate title 43ms
+ ✓ server/tests/integration/event-title-maintenance.test.ts > CR-01 title validation — TEST-08/48 (AC-07/37) > TEST-08/48 keeps auth, role and CSRF ahead of short-title validation 54ms
+
+ Test Files  1 passed (1)
+      Tests  36 passed (36)
+   Start at  23:28:32
+   Duration  1.92s (tests 76%, import 19%, transform 5%)
+

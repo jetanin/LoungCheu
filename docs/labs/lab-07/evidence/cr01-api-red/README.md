@@ -12,9 +12,9 @@ in Jetanin's workspace; this is developer verification, not independent UAT.
 - Working branch: `feature/85-lab7-title-validation`.
 - Scope: BR-01, AC-07 / TEST-08 (create), AC-37 / TEST-48 (PATCH).
 - These runs use the pre-change implementation plus a test-only working-tree
-  addition. Record the separate RED test commit SHA after committing these files;
-  it does not yet exist at evidence preparation time. No GREEN implementation is
-  included in this step.
+  addition, subsequently committed separately as RED test commit
+  `4ab6ccf816e002167350594f19eb26aef889ad45` (SHA supplied by Jetanin).
+  No GREEN implementation is included in that RED commit.
 - The accepted Sprint 1 reference is `v1.0.1-uat` /
   `0b2cc804f298a28041d9ba9c7ec05d2cf64e4e08`. The actual implementation under
   maintenance includes later-sprint development, notably F-07 PATCH and F-08/F-09.

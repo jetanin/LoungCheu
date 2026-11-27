@@ -1,0 +1,10 @@
+{
+  "redCommit": "4ab6ccf816e002167350594f19eb26aef889ad45",
+  "testFile": "server/tests/integration/event-title-maintenance.test.ts",
+  "testSha256": "852c8ff3776831cec3aa68fe536243a733932559d25f99fdc9d86bf947306d0a",
+  "sameRedAssertions": true,
+  "inputSha256": "2cdcb795cee868f4a17c3f107fc0c3c1fe19d5dbe66be4c52acfc0e1dbe8727a",
+  "productionSourceUnchangedDuringVerification": true,
+  "clientSourceUnchangedFromRed": true,
+  "prismaSchemaMigrationsUnchangedFromRed": true
+}
