@@ -4,6 +4,7 @@ import { Login } from "../features/auth/Login";
 import { EventPage } from "../features/events/EventPage";
 import { EventOverview } from "../features/events/EventOverview";
 import { MyRegistrations, OrganizerRoster } from "../features/registrations/RegistrationViews";
+import { AttendanceSummary } from "../features/attendance/AttendanceSummary";
 
 function navigate(path: string) {
   if (window.location.pathname !== path)
@@ -23,6 +24,7 @@ export function App() {
   const isSharedList = /^\/events\/?$/.test(path);
   const myRegistrations = /^\/my\/registrations(?:\/([^/]+))?\/?$/.exec(path);
   const roster = /^\/organizer\/events\/([^/]+)\/registrations\/?$/.exec(path);
+  const summary = /^\/organizer\/events\/([^/]+)\/summary\/?$/.exec(path);
   const go = useCallback((target: string) => {
     navigate(target);
     setPath(target);
@@ -53,6 +55,7 @@ export function App() {
             /^\/organizer\/?$/.test(current) ||
             /^\/my\/registrations(?:\/[^/]+)?\/?$/.test(current) ||
             /^\/organizer\/events\/[^/]+\/registrations\/?$/.test(current) ||
+            /^\/organizer\/events\/[^/]+\/summary\/?$/.test(current) ||
             /^\/organizer\/events\/[^/]+\/edit\/?$/.test(current) ||
             /^\/(?:organizer\/)?events(?:\/[^/]+)?\/?$/.test(current)
           )
@@ -243,6 +246,8 @@ export function App() {
               <MyRegistrations identity={identity} id={myRegistrations[1]} onAuthRequired={authRequired}/>
             ) : roster ? (
               <OrganizerRoster identity={identity} eventId={roster[1]} onAuthRequired={authRequired}/>
+            ) : summary ? (
+              <AttendanceSummary identity={identity} eventId={summary[1]} onAuthRequired={authRequired}/>
             ) : isOverview ? (
               <EventOverview
                 key={`${identity.id}:${identity.role}:overview`}

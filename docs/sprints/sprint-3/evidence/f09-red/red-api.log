@@ -1,0 +1,61 @@
+# F-09 RED — 2bfdb9a + new tests (uncommitted at run time; committed as the RED commit)
+# Command: npx vitest run server/tests/unit/attendance-rate.test.ts server/tests/integration/attendance-summary.test.ts
+# Run: 2026-11-26 03:17 Asia/Bangkok, local loungcheu_test
+
+ RUN  v5.1.0 C:/DEV/University/Kmutt/Year3/Term1/CPE334/Final/LoungCheu-lab6
+
+ ❯ server/tests/integration/attendance-summary.test.ts (1 test | 1 failed) 1699ms
+   ❯ F-09 GET /api/organizer/events/{id}/summary access (TEST-63 / AC-50) (1)
+     × rejects anonymous, participant, other organizer, unknown and malformed ids without leaking counts 184ms
+ ❯ server/tests/unit/attendance-rate.test.ts (0 test)
+⎯⎯⎯⎯⎯⎯ Failed Suites 1 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  server/tests/unit/attendance-rate.test.ts [ server/tests/unit/attendance-rate.test.ts ]
+Error: Cannot find module '../../src/modules/attendance/rate.js' imported from 
+C:/DEV/University/Kmutt/Year3/Term1/CPE334/Final/LoungCheu-lab6/server/tests/unit/attendance-rate.test.ts
+ ❯ server/tests/unit/attendance-rate.test.ts:2:1
+      1| import { describe, expect, it } from 'vitest';
+      2| import { attendanceRate } from '../../src/modules/attendance/rate.js';
+       | ^
+      3|
+      4| // F-09 TEST-61 / AC-48 (unit part): half-up to 2 decimals with intege…
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/2]⎯
+
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 1 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  server/tests/integration/attendance-summary.test.ts > F-09 GET /api/organizer/events/{id}/summary access 
+(TEST-63 / AC-50) > rejects anonymous, participant, other organizer, unknown and malformed ids without leaking counts
+AssertionError: expected { Object (status, code) } to deeply equal { status: 401, code: 'AUTH_REQUIRED' }
+
+- Expected
++ Received
+
+  {
+-   "code": "AUTH_REQUIRED",
+-   "status": 401,
++   "code": "ROUTE_NOT_FOUND",
++   "status": 404,
+  }
+
+ ❯ rejected server/tests/integration/attendance-summary.test.ts:33:59
+     31| // "error ไม่มียอดหรือข้อมูลกิจกรรม": only the error envelope comes ba…
+     32| function rejected(r: request.Response, status: number, code: string) {
+     33|   expect({ status: r.status, code: r.body?.error?.code }).toEqual({ st…
+       |                                                           ^
+     34|   expect(r.body.data).toBeUndefined();
+     35|   expect(JSON.stringify(r.body)).not.toMatch(/active_count|cancelled_c…
+ ❯ server/tests/integration/attendance-summary.test.ts:83:5
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[2/2]⎯
+
+
+ Test Files  2 failed (2)
+      Tests  1 failed (1)
+   Start at  03:17:34
+   Duration  7.48s (import 67%, tests 26%, transform 7%)
+
+    Isolate  2 workers spawned · ~457ms startup each (spawn + environment, per file)
+             at least ~457ms faster with isolate: false — reuses workers across files instead of one per file
+

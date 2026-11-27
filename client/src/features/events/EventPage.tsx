@@ -134,6 +134,7 @@ export function EventPage({ path, identity, onAuthRequired, onNavigate }: {
       <p>ว่าง {event.available_seats} / {event.capacity} ที่นั่ง</p><p>ลงทะเบียน ACTIVE {event.active_count} คน</p>
       <div className="event-actions">
         {owner && <a className="btn btn-outline-success" href={`/organizer/events/${event.id}/registrations`}>ดูรายชื่อผู้ลงทะเบียน</a>}
+        {owner && <a className="btn btn-outline-success" href={`/organizer/events/${event.id}/summary`}>ดูสรุปผล</a>}
         <button className="btn btn-outline-secondary" onClick={() => void refresh()}>รีเฟรชที่นั่ง</button>
         {owner && event.status !== 'CLOSED' && <a className="btn btn-outline-success" href={`${base}/${event.id}/edit`}>แก้ไขกิจกรรม</a>}
         {owner && event.status === 'DRAFT' && <button className="btn btn-success" disabled={publishing} onClick={() => void publish()}>{publishing ? 'กำลังเผยแพร่…' : 'เผยแพร่กิจกรรม'}</button>}

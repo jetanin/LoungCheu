@@ -1,0 +1,191 @@
+# F-09 UI RED (TEST-64 component) — tests + empty stub, committed as the RED commit
+# Command: npx vitest run client/src/features/attendance/AttendanceSummary.test.tsx
+# Run: 2026-11-27 00:38 Asia/Bangkok, base a43b03e
+
+﻿
+ RUN  v5.1.0 C:/DEV/University/Kmutt/Year3/Term1/CPE334/Final/LoungCheu-lab6
+
+ ❯ client/src/features/attendance/AttendanceSummary.test.tsx (8 tests | 8 failed) 6204ms
+   × TEST-64: shows a placeholder while loading, then the four values, rate line and Bangkok read time 19ms
+   × TEST-64: ACTIVE=0 shows 0.00% with the empty note and keeps every number visible (DRAFT) 1017ms
+   × TEST-64: รีเฟรชสรุป reads again and replaces the values; focus does not auto-refresh 1011ms
+   × TEST-64: a failed read shows an error with retry, then recovers 1009ms
+   × TEST-64: 401 sends the user back to login without showing values 1014ms
+   × TEST-64: 403 on refresh clears the shown values and shows the error 1012ms
+   × TEST-64: 404 on refresh clears the shown values and shows the error 1011ms
+   × TEST-64: a participant gets a role message and no summary request 110ms
+node.exe : 
+At line:1 char:1
++ & "C:\Program Files\nodejs/node.exe" "C:\Users\ppkls\AppData\Roaming\ ...
++ ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : NotSpecified: (:String) [], RemoteException
+    + FullyQualifiedErrorId : NativeCommandError
+ 
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 8 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  client/src/features/attendance/AttendanceSummary.test.tsx > TEST-64: shows a placeholder while loading, then 
+the four values, rate line and Bangkok read time
+TypeError: Cannot read properties of undefined (reading '0')
+ ❯ client/src/features/attendance/AttendanceSummary.test.tsx:23:28
+     21|   vi.stubGlobal('fetch', fetch);
+     22|   render(<AttendanceSummary identity={organizer} eventId={eventId} onA…
+     23|   expect(fetch.mock.calls[0][0]).toBe(`/api/organizer/events/${eventId…
+       |                            ^
+     24|   expect(screen.getByRole('status').textContent).toContain('กำลังโหลด'…
+     25|   // Loading must not show zero before data arrives.
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/8]⎯
+
+ FAIL  client/src/features/attendance/AttendanceSummary.test.tsx > TEST-64: ACTIVE=0 shows 0.00% with the empty note 
+and keeps every number visible (DRAFT)
+TestingLibraryElementError: Unable to find an element with the text: ยังไม่มีผู้ลงทะเบียน ACTIVE. This could be 
+because the text is broken up by multiple elements. In this case, you can provide a function for your text matcher to 
+make your matcher more flexible.
+
+Ignored nodes: comments, script, style
+[36m<body>[39m
+  [36m<div />[39m
+[36m</body>[39m
+
+Ignored nodes: comments, script, style
+[36m<body>[39m
+  [36m<div />[39m
+[36m</body>[39m
+ ❯ waitForWrapper node_modules/@testing-library/dom/dist/wait-for.js:163:27
+ ❯ node_modules/@testing-library/dom/dist/query-helpers.js:86:33
+ ❯ client/src/features/attendance/AttendanceSummary.test.tsx:45:23
+     43|     cancelled_count: 0, checked_in_count: 0, attendance_rate: '0.00' }…
+     44|   render(<AttendanceSummary identity={organizer} eventId={eventId} onA…
+     45|   expect(await screen.findByText('ยังไม่มีผู้ลงทะเบียน ACTIVE')).toBeT…
+       |                       ^
+     46|   expect(value('ลงทะเบียนอยู่ (ACTIVE)')).toBe('0');
+     47|   expect(value('ยกเลิก (CANCELLED)')).toBe('0');
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[2/8]⎯
+
+ FAIL  client/src/features/attendance/AttendanceSummary.test.tsx > TEST-64: รีเฟรชสรุป reads again and replaces the 
+values; focus does not auto-refresh
+TestingLibraryElementError: Unable to find an element with the text: 50.00%. This could be because the text is broken 
+up by multiple elements. In this case, you can provide a function for your text matcher to make your matcher more 
+flexible.
+
+Ignored nodes: comments, script, style
+[36m<body>[39m
+  [36m<div />[39m
+[36m</body>[39m
+
+Ignored nodes: comments, script, style
+[36m<body>[39m
+  [36m<div />[39m
+[36m</body>[39m
+ ❯ waitForWrapper node_modules/@testing-library/dom/dist/wait-for.js:163:27
+ ❯ node_modules/@testing-library/dom/dist/query-helpers.js:86:33
+ ❯ client/src/features/attendance/AttendanceSummary.test.tsx:57:16
+     55|   vi.stubGlobal('fetch', fetch);
+     56|   render(<AttendanceSummary identity={organizer} eventId={eventId} onA…
+     57|   await screen.findByText('50.00%');
+       |                ^
+     58|   fireEvent.focus(window);
+     59|   expect(fetch).toHaveBeenCalledTimes(1);
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[3/8]⎯
+
+ FAIL  client/src/features/attendance/AttendanceSummary.test.tsx > TEST-64: a failed read shows an error with retry, 
+then recovers
+TestingLibraryElementError: Unable to find role="alert"
+
+Ignored nodes: comments, script, style
+[36m<body>[39m
+  [36m<div />[39m
+[36m</body>[39m
+
+Ignored nodes: comments, script, style
+[36m<body>[39m
+  [36m<div />[39m
+[36m</body>[39m
+ ❯ waitForWrapper node_modules/@testing-library/dom/dist/wait-for.js:163:27
+ ❯ node_modules/@testing-library/dom/dist/query-helpers.js:86:33
+ ❯ client/src/features/attendance/AttendanceSummary.test.tsx:70:24
+     68|   vi.stubGlobal('fetch', vi.fn().mockRejectedValueOnce(new Error('offl…
+     69|   render(<AttendanceSummary identity={organizer} eventId={eventId} onA…
+     70|   expect((await screen.findByRole('alert')).textContent).toContain('โห…
+       |                        ^
+     71|   expect(screen.queryByText('ลงทะเบียนอยู่ (ACTIVE)')).toBeNull();
+     72|   fireEvent.click(screen.getByRole('button', { name: 'ลองใหม่' }));
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[4/8]⎯
+
+ FAIL  client/src/features/attendance/AttendanceSummary.test.tsx > TEST-64: 401 sends the user back to login without 
+showing values
+AssertionError: expected "vi.fn()" to be called 1 times, but got 0 times
+ ❯ client/src/features/attendance/AttendanceSummary.test.tsx:81:49
+     79|   vi.stubGlobal('fetch', vi.fn().mockResolvedValueOnce(failure(401, 'A…
+     80|   render(<AttendanceSummary identity={organizer} eventId={eventId} onA…
+     81|   await vi.waitFor(() => expect(onAuthRequired).toHaveBeenCalledTimes(…
+       |                                                 ^
+     82|   expect(screen.queryByText('ลงทะเบียนอยู่ (ACTIVE)')).toBeNull();
+     83| });
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[5/8]⎯
+
+ FAIL  client/src/features/attendance/AttendanceSummary.test.tsx > TEST-64: 403 on refresh clears the shown values and 
+shows the error
+ FAIL  client/src/features/attendance/AttendanceSummary.test.tsx > TEST-64: 404 on refresh clears the shown values and 
+shows the error
+TestingLibraryElementError: Unable to find an element with the text: 50.00%. This could be because the text is broken 
+up by multiple elements. In this case, you can provide a function for your text matcher to make your matcher more 
+flexible.
+
+Ignored nodes: comments, script, style
+[36m<body>[39m
+  [36m<div />[39m
+[36m</body>[39m
+
+Ignored nodes: comments, script, style
+[36m<body>[39m
+  [36m<div />[39m
+[36m</body>[39m
+ ❯ waitForWrapper node_modules/@testing-library/dom/dist/wait-for.js:163:27
+ ❯ node_modules/@testing-library/dom/dist/query-helpers.js:86:33
+ ❯ client/src/features/attendance/AttendanceSummary.test.tsx:91:16
+     89|   vi.stubGlobal('fetch', vi.fn().mockResolvedValueOnce(reply(summary))…
+     90|   render(<AttendanceSummary identity={organizer} eventId={eventId} onA…
+     91|   await screen.findByText('50.00%');
+       |                ^
+     92|   fireEvent.click(screen.getByRole('button', { name: 'รีเฟรชสรุป' }));
+     93|   expect((await screen.findByRole('alert')).textContent).toContain(mes…
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[6/8]⎯
+
+ FAIL  client/src/features/attendance/AttendanceSummary.test.tsx > TEST-64: a participant gets a role message and no 
+summary request
+TestingLibraryElementError: Unable to find an accessible element with the role "alert"
+
+There are no accessible roles. But there might be some inaccessible roles. If you wish to access them, then set the 
+`hidden` option to `true`. Learn more about this here: 
+https://testing-library.com/docs/dom-testing-library/api-queries#byrole
+
+Ignored nodes: comments, script, style
+
+ Test Files  1 failed (1)
+      Tests  8 failed (8)
+   Start at  00:37:44
+   Duration  9.19s (tests 70%, environment 18%, import 11%, transform 1%)
+
+[36m<body>[39m
+  [36m<div />[39m
+[36m</body>[39m
+ ❯ Object.getElementError node_modules/@testing-library/dom/dist/config.js:37:19
+ ❯ node_modules/@testing-library/dom/dist/query-helpers.js:76:38
+ ❯ node_modules/@testing-library/dom/dist/query-helpers.js:52:17
+ ❯ node_modules/@testing-library/dom/dist/query-helpers.js:95:19
+ ❯ client/src/features/attendance/AttendanceSummary.test.tsx:102:17
+    100|   vi.stubGlobal('fetch', fetch);
+    101|   render(<AttendanceSummary identity={participant} eventId={eventId} o…
+    102|   expect(screen.getByRole('alert').textContent).toContain('เฉพาะผู้จัด…
+       |                 ^
+    103|   expect(fetch).not.toHaveBeenCalled();
+    104| });
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[7/8]⎯
+
