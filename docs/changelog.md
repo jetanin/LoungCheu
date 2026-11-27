@@ -101,3 +101,7 @@ Release PR #67 merged F-06/F-07 into `main` as `c0faf24`, tagged `v2.0.0-sprint-
 ## Persistence evidence correction — 27 November 2026
 
 The remaining-work GAP-02 row and traceability NFR-03/AC-25 said redeploy persistence had not been checked. Lab 5 Issue #20 (22 November 2026) already showed the original event and ACTIVE registration surviving a Cloud Run application restart and a redeploy (`scccd8b05-00005-5xj` → `scccd8b05-00006-68j`). The rows now cite that result. The Sprint 3 check is a repeat for the new release. GAP-02 is not declared closed from this evidence alone, and TEST-35 clean reproduction stays NOT EXECUTED.
+
+## Sprint 3 traceability — 27 November 2026
+
+Added traceability §7: AC-41–AC-50 rows with planned tests, implementation state, actual test file, result and version, plus a Sprint 3 NFR table. FR-15 and BR-13 rows now point to the Sprint 3 AC and TEST IDs (contract/STS v0.2, PR #71) instead of "STS to be defined". Results as of the latest runs: F-08 is in staging (TEST-65 through PR #78 `a8ff503`; TEST-53–59 and TEST-66 through PR #79 `03a5927`, final head `6cc516b`). F-09 TEST-60–64 are in staging through PR #75 `a7e0338` (final head `7553660`), with TEST-62 and the TEST-64 E2E using the real F-08 check-in API/UI. The FR-13, FR-14 and BR-12 rows now say PASS (staging) instead of local PASS with CI/review/staging pending.
