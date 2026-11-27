@@ -1,23 +1,40 @@
 import { randomUUID } from 'node:crypto';
-import { test, expect, type Page } from '@playwright/test';
+import { test as base, expect, type Page } from '@playwright/test';
 import { createDatabaseClient } from '../../server/src/db/client.js';
 import { readTestDatabaseUrl } from '../../server/src/config/database-url.js';
 import { bangkokTime } from '../../client/src/features/events/model.js';
 
-test.use({ screenshot: 'only-on-failure' });
+// A fixture owns teardown so closing the second context cannot replace a
+// failure from the test body (the previous CI timeout was reported at close()).
+const test = base.extend<{ participant: Page }>({
+  participant: async ({ browser }, use) => {
+    const context = await browser.newContext();
+    try { await use(await context.newPage()); }
+    finally { await context.close(); }
+  },
+});
+
+test.use({ screenshot: 'only-on-failure', trace: 'retain-on-failure' });
 
 async function login(page: Page, username: string) {
-  await page.goto('/login');
-  await page.getByLabel('ชื่อผู้ใช้').fill(username);
-  await page.getByLabel('รหัสผ่าน', { exact: true }).fill(process.env.E2E_PASSWORD!);
-  await page.getByRole('button', { name: 'เข้าสู่ระบบ', exact: true }).click();
-  await expect(page).toHaveURL(/\/events$/);
+  await test.step(`Sign in as ${username}`, async () => {
+    await page.goto('/login');
+    await page.getByLabel('ชื่อผู้ใช้').fill(username);
+    await page.getByLabel('รหัสผ่าน', { exact: true }).fill(process.env.E2E_PASSWORD!);
+    await page.getByRole('button', { name: 'เข้าสู่ระบบ', exact: true }).click();
+    await expect(page).toHaveURL(/\/events$/);
+  });
 }
 
-test('TEST-59: real check-in confirmation/cancel, roster reload and own attendance survive logout/login', async ({ page, browser }) => {
+test('TEST-59: real check-in confirmation/cancel, roster reload and own attendance survive logout/login', async ({ page, participant }) => {
   test.setTimeout(60_000);
+  // Bound individual operations, retaining the original overall test budget.
+  // A stalled dialog/navigation now identifies its step instead of waiting 60s.
+  for (const current of [page, participant]) {
+    current.setDefaultTimeout(10_000);
+    current.setDefaultNavigationTimeout(15_000);
+  }
   const db = createDatabaseClient(readTestDatabaseUrl(process.env.TEST_DATABASE_URL), 1);
-  const participantContext = await browser.newContext(), participant = await participantContext.newPage();
   const eventId = randomUUID(), reference = randomUUID(), title = `F08 attendance ${Date.now()}`;
   let created = false, mutations = 0;
   const snapshot = async () => ({
@@ -55,19 +72,27 @@ test('TEST-59: real check-in confirmation/cancel, roster reload and own attendan
     await expect(action).toBeVisible(); // RED: baseline roster has no attendance action.
 
     async function confirm(accept: boolean) {
-      let message = '';
-      page.once('dialog', async dialog => {
-        message = dialog.message(); expect(dialog.type()).toBe('confirm');
-        if (accept) await dialog.accept(); else await dialog.dismiss();
+      await test.step(`${accept ? 'Accept' : 'Cancel'} the named check-in dialog`, async () => {
+        // Register before clicking and await accept/dismiss as well as the click.
+        // Assertions run after closing the dialog, so a failed assertion cannot
+        // leave a modal blocking the page or its context teardown.
+        const handled = page.waitForEvent('dialog', { timeout: 10_000 }).then(async dialog => {
+          const type = dialog.type(), message = dialog.message();
+          if (accept) await dialog.accept(); else await dialog.dismiss();
+          expect(type).toBe('confirm');
+          expect(message).toBe(`ยืนยันเช็กชื่อ ${pa.displayName}?`);
+        });
+        await Promise.all([handled, action.click()]);
       });
-      await action.click(); expect(message).toBe(`ยืนยันเช็กชื่อ ${pa.displayName}?`);
     }
     await confirm(false);
     expect(mutations).toBe(0); expect(await snapshot()).toEqual(before);
-    const pending = page.waitForResponse(response => response.request().method() === 'POST'
-      && response.url().endsWith(`/registrations/${reference}/check-in`));
-    await confirm(true);
-    const checked = await pending; expect(checked.status()).toBe(200);
+    const [checked] = await test.step('Confirm check-in and receive the API response', () => Promise.all([
+      page.waitForResponse(response => response.request().method() === 'POST'
+        && response.url().endsWith(`/registrations/${reference}/check-in`)),
+      confirm(true),
+    ]));
+    expect(checked.status()).toBe(200);
     const stamp = (await checked.json()).data.checked_in_at as string;
     expect(mutations).toBe(1);
     await expect(row).toContainText(`เช็กชื่อแล้ว ${bangkokTime(stamp)}`);
@@ -75,7 +100,7 @@ test('TEST-59: real check-in confirmation/cancel, roster reload and own attendan
     await expect(page.getByText('เช็กชื่อแล้ว 1 / ACTIVE 2 คน', { exact: true })).toBeVisible();
     await page.reload();
     await expect(row).toContainText(`เช็กชื่อแล้ว ${bangkokTime(stamp)}`);
-    await page.screenshot({ path: '.local/verification/f08-browser-roster.png', fullPage: true });
+    await test.step('Capture the reloaded roster', () => page.screenshot({ path: '.local/verification/f08-browser-roster.png', fullPage: true }));
     await participant.goto(`/my/registrations/${reference}`);
     await expect(participant.getByText(`เช็กชื่อแล้วเมื่อ ${bangkokTime(stamp)}`, { exact: true })).toBeVisible();
     await participant.getByRole('button', { name: 'ออกจากระบบ', exact: true }).click();
@@ -86,7 +111,7 @@ test('TEST-59: real check-in confirmation/cancel, roster reload and own attendan
     await card.getByRole('link', { name: title, exact: true }).click();
     await participant.reload();
     await expect(participant.getByText(`เช็กชื่อแล้วเมื่อ ${bangkokTime(stamp)}`, { exact: true })).toBeVisible();
-    await participant.screenshot({ path: '.local/verification/f08-browser-own-detail.png', fullPage: true });
+    await test.step('Capture own attendance after fresh login', () => participant.screenshot({ path: '.local/verification/f08-browser-own-detail.png', fullPage: true }));
     const after = await snapshot();
     expect(after.event).toEqual(before.event); expect(after.history).toEqual(before.history);
     expect(after.records).toEqual(before.records.map(record => record.id === reference
@@ -96,7 +121,6 @@ test('TEST-59: real check-in confirmation/cancel, roster reload and own attendan
       timestamp: stamp, reloadedRoster: true, freshParticipantLogin: true, ownListAndDetail: true, historyUnchanged: true }));
   } finally {
     try {
-      await participantContext.close();
       if (created) await db.$transaction(async tx => {
         await tx.registrationHistory.deleteMany({ where: { registration: { eventId } } });
         await tx.registration.deleteMany({ where: { eventId } }); await tx.event.delete({ where: { id: eventId } });
