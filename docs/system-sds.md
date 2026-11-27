@@ -1,12 +1,14 @@
 # Part C — System-Level Software Design Specification
 
-**Release update — 26 พ.ย. 2026:** Sprint 2 (F-06/F-07) release บน main เป็น `v2.0.0-sprint-2` (`c0faf24`, PR #67) CI run 45666007554 ผ่าน (Vitest 264/264, Playwright 39/39 บน head `0643806` ซึ่ง tree เดียวกับ `c0faf24`) แล้ว deploy ผ่าน pipeline (run 45668146212: job test บน `c0faf24` Vitest 264/264, Playwright 39/39 → build image → migrate job `scccd8b05-migrate` ด้วย image ที่มี migration `202611240001_registration_lifecycle` → revision `scccd8b05-00011-fvb` → smoke test). Main ปัจจุบัน `v2.0.1-lab6` (`6f49d32`, revision `scccd8b05-00012-msg`) เพิ่มเพียง test/เอกสาร Lab 6; schema/routes ตามเอกสารนี้ไม่เปลี่ยน
+**Release update — 27 พ.ย. 2026 (current):** F-08/F-09 release บน main เป็น `v3.0.0-sprint-3` (`3f80759`, PR #81); CI run 45991439969 และ Deploy demo run 45994749187 (job test บน `3f80759`: Vitest 37 files 381/381, compiled smoke 4/4, Playwright 41/41, 0 failed / 0 skipped); revision `scccd8b05-00013-nwj`. Schema ปัจจุบันมี 4 migrations (`202611060001_auth`, `202611060002_registration_extension`, `202611240001_registration_lifecycle`, `202611270001_registration_attendance`) และ API ตามตาราง §2 รวม F-08 check-in และ F-09 summary. ข้อความที่ระบุวันที่ก่อนหน้านี้เป็นประวัติ
+
+**Release update — 26 พ.ย. 2026 (ประวัติ):** Sprint 2 (F-06/F-07) release บน main เป็น `v2.0.0-sprint-2` (`c0faf24`, PR #67) CI run 45666007554 ผ่าน (Vitest 264/264, Playwright 39/39 บน head `0643806` ซึ่ง tree เดียวกับ `c0faf24`) แล้ว deploy ผ่าน pipeline (run 45668146212: job test บน `c0faf24` Vitest 264/264, Playwright 39/39 → build image → migrate job `scccd8b05-migrate` ด้วย image ที่มี migration `202611240001_registration_lifecycle` → revision `scccd8b05-00011-fvb` → smoke test). Main ปัจจุบัน `v2.0.1-lab6` (`6f49d32`, revision `scccd8b05-00012-msg`) เพิ่มเพียง test/เอกสาร Lab 6; schema/routes ตามเอกสารนี้ไม่เปลี่ยน
 
 **Staging update — 25 พ.ย. 2026 (ประวัติ):** F-06 (PR #59), F-07 (PR #57) และ cross-feature TEST-44(c)/47/52 (PR #60) review และ merge เข้า `sprint-2-staging` แล้ว CI `test-and-docker` ผ่าน (Vitest 264/264, Playwright 39/39 @ `2e6ddc2`); ยังไม่ release บน main. Main ปัจจุบัน `v1.0.1-uat`/`0b2cc80` deploy บน Cloud Run และผ่าน independent UAT (Accepted 25 พ.ย.). ข้อความลงวันที่ก่อนหน้านี้คงไว้เป็นประวัติ
 
 **F-06 update — 24 พ.ย. 2026:** cancel/reactivate/close และ cancelled_at/history implement แล้วบน `feature/47-f06` พร้อม local API/DB/UI/browser และ actual process-restart evidence ดู [Sprint 2 completion](sprints/sprint-2/README.md). Snapshot Sprint 1 ด้านล่างเป็นประวัติของผลเดิม; F-06 ยังไม่ใช่ accepted release และไม่แทน independent UAT/clean reproduction. F-07 และ Sprint 3 ไม่ถูกนับว่าผ่านจากผลนี้
 
-**Implementation/evidence update — 14 พ.ย. 2026:** PR #7/#10 ได้ teammate review โดย i3artuf และ merge เข้า sprint-1-staging แล้ว ตาม snapshot 12 พ.ย.; PR #10 reviewed head `0bd3468`, merge `97a5b91` (10 พ.ย. 16:26:11 Asia/Bangkok). ผล 159 Vitest / 37 Chromium / typecheck / build / compiled smoke 3 PASS เป็นผลรัน 8 พ.ย. ของ source ที่ commit เป็น `3313288`; รอบแก้เอกสารนี้ไม่ได้รันทดสอบแอปใหม่. OS-process restart, independent clean reproduction/UAT และ reviewed main release ยังขาดหลักฐาน; GAP-02 ยัง OPEN และ Product DoD ยังไม่ครบ. [Review/merge evidence](deliverable-1/evidence/review-merge-20261112/README.md). Baseline FR/BR/NFR/AC ไม่เปลี่ยน; F-06–09 อยู่ Sprint 2/3
+**Implementation/evidence update — 14 พ.ย. 2026 (ประวัติ):** PR #7/#10 ได้ teammate review โดย i3artuf และ merge เข้า sprint-1-staging แล้ว ตาม snapshot 12 พ.ย.; PR #10 reviewed head `0bd3468`, merge `97a5b91` (10 พ.ย. 16:26:11 Asia/Bangkok). ผล 159 Vitest / 37 Chromium / typecheck / build / compiled smoke 3 PASS เป็นผลรัน 8 พ.ย. ของ source ที่ commit เป็น `3313288`; รอบแก้เอกสารนี้ไม่ได้รันทดสอบแอปใหม่. OS-process restart, independent clean reproduction/UAT และ reviewed main release ยังขาดหลักฐาน; GAP-02 ยัง OPEN และ Product DoD ยังไม่ครบ. [Review/merge evidence](deliverable-1/evidence/review-merge-20261112/README.md). Baseline FR/BR/NFR/AC ไม่เปลี่ยน; F-06–09 อยู่ Sprint 2/3
 
 เอกสาร LC-SYS-SDS | Documentation baseline v0.5 | 5 พฤศจิกายน 2026
 
@@ -20,7 +22,7 @@ React SPA → REST JSON `/api` → Express application services → PostgreSQL �
 | Express + TypeScript | Routers, session/CSRF middleware, authorization, services และ JSON errors |
 | PostgreSQL + Prisma | Domain/session persistence, migrations, constraints และ transactions |
 | Vitest + Supertest | Unit และ API/database integration; concurrency ใช้ PostgreSQL จริง |
-| Browser E2E | Playwright: recorded37 Chromium PASS at3313288 รวม cross-feature create/publish/register/own detail/roster; independent UAT ยัง pending |
+| Browser E2E | Playwright: ปัจจุบัน 41/41 Chromium PASS บน `3f80759` (Deploy run 45994749187); ประวัติ: recorded37 Chromium PASS at3313288 รวม cross-feature create/publish/register/own detail/roster; independent UAT ยัง pending |
 
 ```mermaid
 flowchart LR
@@ -30,11 +32,11 @@ flowchart LR
     A --> X[PostgreSQL session store]
 ```
 
-Modules: accounts (auth/seed), events (create/publish/list/close/update; F-07 edit — PR #57 merge เข้า sprint-2-staging แล้ว), registrations (allocate seats/own records/roster/cancel/reactivate), attendance (S3 check-in/summary) และ shared (errors/time/config/version) Backend/DB บังคับกฎ; frontend validation ช่วยผู้ใช้
+Modules: accounts (auth/seed), events (create/publish/list/close/update; F-07 edit — release `v2.0.0-sprint-2`), registrations (allocate seats/own records/roster/cancel/reactivate), attendance (S3 check-in/summary) และ shared (errors/time/config/version) Backend/DB บังคับกฎ; frontend validation ช่วยผู้ใช้
 
 ### Planned source layout
 
-Layout ด้านล่างแสดง Sprint1 responsibilities; F-01–05 รวม own registrations/roster implement แล้วบน feature/registration-views@3313288 ดู [current source/results](registration/views-verification.md). Event-only integration records เป็น historical runs; staging/main acceptance ต้องตรวจแยก
+Layout ด้านล่างแสดง Sprint1 responsibilities (ปัจจุบันมี `server/src/modules/attendance/` และ `client/src/features/attendance/` เพิ่มใน Sprint 3); F-01–05 รวม own registrations/roster implement แล้วบน feature/registration-views@3313288 ดู [current source/results](registration/views-verification.md). Event-only integration records เป็น historical runs; staging/main acceptance ต้องตรวจแยก
 
 ```text
 LoungCheu/
@@ -69,7 +71,7 @@ erDiagram
 | User | id, username, password_hash (salt/hash/parameters), display_name, role, is_active | username unique; role PARTICIPANT/ORGANIZER |
 | Event | id, organizer_id, title, description, location, starts_at, ends_at, registration_closes_at, capacity, status, created_at, updated_at | FK User; owner immutable; capacity 1–1000; ordered timestamps; DRAFT/PUBLISHED/CLOSED |
 | Registration | id, event_id, participant_id, status, registered_at, cancelled_at | FK Event/User; UNIQUE(event_id, participant_id); enum ACTIVE/CANCELLED; cancelled_at nullable; F-06 reuse record/first registered_at เมื่อ reactivate |
-| Registration attendance storage (F-08 implemented; tested local) | checked_in_at/checked_in_by_id | nullable timestamptz(3)/UUID; FK User แบบ Restrict; CHECK ให้เป็น null/มีค่าพร้อมกัน และมี check-in ได้เฉพาะ ACTIVE |
+| Registration attendance storage (F-08, release `v3.0.0-sprint-3`) | checked_in_at/checked_in_by_id | nullable timestamptz(3)/UUID; FK User แบบ Restrict; CHECK ให้เป็น null/มีค่าพร้อมกัน และมี check-in ได้เฉพาะ ACTIVE |
 | RegistrationHistory (F-06 implemented) | id, registration_id, actor_id, action, occurred_at | FK Registration/User Restrict; REGISTERED/CANCELLED/REACTIVATED; backfill initial REGISTERED ของ S1; index (registration_id, occurred_at, id) |
 
 IDs ใช้ UUID; timestamps ใช้ `timestamptz(3)` UTC ตาม BR-14 Fields ใน S1 required/non-null เพิ่ม S2/S3 fields/history ผ่าน versioned migrations ไม่มี hard delete และไม่มี history UI ใน baseline
@@ -108,6 +110,7 @@ EventStatus มี DRAFT/PUBLISHED/CLOSED; RegistrationStatus มี ACTIVE/CANC
 | GET | /api/my/registrations; /api/my/registrations/:id; /api/organizer/events/:id/registrations | modules/registrations/read-router.ts |
 | POST | /api/my/registrations/:id/cancel | modules/registrations/cancellation-router.ts (F-06) |
 | POST | /api/organizer/events/:id/close | modules/events/router.ts (F-06 appended block) |
+| POST | /api/organizer/events/:eventId/registrations/:registrationId/check-in (F-08, release `v3.0.0-sprint-3`) | modules/attendance/router.ts + service.ts |
 | GET | /api/organizer/events/:id/summary (F-09, release `v3.0.0-sprint-3`) | modules/attendance/summary-router.ts + summary.ts + rate.ts |
 
 Module paths ในตารางอยู่ใต้ `server/src/`; routers mount ที่ `/api`. Own record มี id/status/registered_at/cancelled_at/event และ F-08 เพิ่ม checked_in_at; create/reactivate ใช้ POST register เดิม (201/200 ตามลำดับ) พร้อม required cancelled_at=null ในผลสำเร็จ; ไม่มี history endpoint. F-07 edit implement แล้วจาก #48/PR #57 ตาม [Sprint 2 contracts](sprints/sprint-2/contracts.md). F-08 check-in/own attendance API และ UI มี local results ของ TEST-53–59, TEST-65–66 ตามรายละเอียดด้านล่าง; F-09 summary แยกจากผลของ #50 นี้
@@ -149,7 +152,7 @@ Concurrency tests ใช้ separate connections/transactions และ barrier 
 | /organizer/events/{id} | เจ้าของ preview/publish/roster/count | 1 |
 | /organizer/events/{id}/edit | เจ้าของแก้กิจกรรม (F-07): DRAFT ทุก field, PUBLISHED เฉพาะ title/description/location/capacity (ช่องเวลา disabled), CLOSED ไม่มีฟอร์ม; ส่งเฉพาะ field ที่เปลี่ยน | 2 |
 | หน้าเดิมเพิ่ม Cancel/Close/Edit (F-06/F-07 implemented) | ตาม role/ownership/deadline; edit อยู่ก่อน close ใน action row เดิม | 2 |
-| /organizer/events/{id}/summary (F-09, branch #75) | เจ้าของดู ACTIVE/CANCELLED/เช็กชื่อแล้ว/อัตราเข้าร่วม และ "ข้อมูล ณ" (Asia/Bangkok); ปุ่มรีเฟรชสรุป ไม่ auto-refresh; ลิงก์ **ดูสรุปผล** จาก owner detail | 3 |
+| /organizer/events/{id}/summary (F-09, release `v3.0.0-sprint-3`) | เจ้าของดู ACTIVE/CANCELLED/เช็กชื่อแล้ว/อัตราเข้าร่วม และ "ข้อมูล ณ" (Asia/Bangkok); ปุ่มรีเฟรชสรุป ไม่ auto-refresh; ลิงก์ **ดูสรุปผล** จาก owner detail | 3 |
 | Roster เพิ่ม Check-in; own record เพิ่ม attendance (F-08) | ตาม permission matrix | 3 |
 
 Loading ปิดปุ่มซ้ำ; empty มีทางเลือกดู/สร้างกิจกรรม; field errors อยู่ใต้ input; conflicts อธิบายเหตุผลและ refresh availability; network errors retry ได้; expired session กลับ Login และล้าง private state; 403/404 ไม่เปิดเผยข้อมูลนอกสิทธิ์ เวลา UI แสดง Asia/Bangkok
