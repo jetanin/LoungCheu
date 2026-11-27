@@ -123,7 +123,7 @@ Out of scope: self-registration, reset password, email verification, หลา�
 
 | FR | Feature | สถานะ ณ 26 พ.ย. 2026 |
 |---|---|---|
-| FR-01–FR-08 | F-01–F-05 | Implemented และ tested; release บน main tag `v1.0.0-sprint-1` แล้วแก้ CI ใน `v1.0.1-uat` (`0b2cc80`); independent UAT โดยทีม TH-005_P5 ผ่าน 7/7 เคส ผลตัดสิน **Accepted** 25 พ.ย. 2026 |
+| FR-01–FR-08 | F-01–F-05 | Implemented และ tested; release บน main tag `v1.0.0-sprint-1` แล้วแก้ CI ใน `v1.0.1-uat` (`0b2cc80`); independent UAT โดยทีม TH-005_P5 ผ่าน 7/7 เคส ผลตัดสิน **Accepted** 25 พ.ย. 2026; AC-25 และ AC-27 ยัง Partial verification (ขาด TEST-35 และ final TEST-34) |
 | FR-09, FR-10, FR-12 | F-06 | Implemented, tested, teammate-reviewed และ merge เข้า `sprint-2-staging` (PR #59, #60) CI ผ่าน; release บน main เป็น release `v2.0.0-sprint-2` (`c0faf24`, PR #67) deploy revision `scccd8b05-00011-fvb` |
 | FR-11 | F-07 | Implemented, tested, teammate-reviewed และ merge เข้า `sprint-2-staging` (PR #57, #60) CI ผ่าน; release บน main เป็น release `v2.0.0-sprint-2` (`c0faf24`, PR #67) deploy revision `scccd8b05-00011-fvb` |
 | FR-13, FR-14 | F-08 | Implemented, tested, teammate-reviewed และ merge เข้า `sprint-3-staging` (PR #78, #79, #80) CI ผ่าน; release บน main เป็น `v3.0.0-sprint-3` (`3f80759`, PR #81) deploy revision `scccd8b05-00013-nwj` |

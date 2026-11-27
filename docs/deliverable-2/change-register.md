@@ -1,0 +1,17 @@
+# Deliverable 2 — Change / defect register
+
+Issue #51 | ทีม TH-001_P3 LoungCheu | snapshot 27 พ.ย. 2026 (Asia/Bangkok) | candidate `v3.0.0-sprint-3` (`3f80759`)
+
+D2 §3.1 ต้องการ: ID, source, affected requirement/feature, accepted decision, resolved/remaining, fix/change release และ re-test outcome. ทะเบียนนี้รวม finding จาก deployment (Lab 5), UAT (Lab 6) และ maintenance; แผนของรายการที่ยังเปิดอยู่ใน [remaining-work](remaining-work.md)
+
+| ID | Source | Requirement / feature | Accepted decision | Status | Fix / change release | Re-test outcome |
+|---|---|---|---|---|---|---|
+| CHG-01 | Lab 5 deployment (#17) | NFR-05, NFR-07 / delivery | automatic deploy run 44882261079 และ migrate execution `scccd8b05-migrate-8qszm` ล้มเหลว (ไม่ได้เก็บสาเหตุ) → first deployment แบบ manual ตาม course kit แล้วเปิด auto-deploy ผ่าน reviewed PR (#19) | Resolved | manual first deploy revision `scccd8b05-00002-72x` (`87c77af`); auto-deploy PR #29/#30 | Deploy demo สำเร็จทุก release ต่อมา ล่าสุด run 45994749187 (`3f80759`) |
+| CHG-02 | Lab 5 persistence (#20) | NFR-03, AC-25 | ตรวจ record เดิมหลัง restart และ redeploy (ไม่ใช่ defect) | Verified (ส่วน restart ของ AC-25) | revision `scccd8b05-00005-5xj` → `scccd8b05-00006-68j` | ตรวจซ้ำหลัง Sprint 3 migration + redeploy 27 พ.ย.: PASS ([post-deploy](../sprints/sprint-3/evidence/release-v3.0.0/README.md)); AC-25 ยังขาด TEST-35 |
+| CHG-03 | Lab 6 UAT โดย TH-005_P5 | F-01–F-05 | 7/7 PASS ไม่มี finding → Accepted (EV-D-01) | Closed (no defect) | `v1.0.1-uat` (`0b2cc80`) | — |
+| CHG-04 | Lab 6 controlled exercise ที่ TA กำหนด (EV-TA-01) — LAB6-CX-01, #64 | BR-04, FR-06, NFR-04, AC-13, AC-17 | Accepted defect, Critical: ลงทะเบียนซ้ำผ่าน API ได้ 201 (defect commit `97268f4` อยู่บน branch เท่านั้น ไม่เคย deploy) | Resolved | RED `fe31120` → GREEN `37d5be4` (PR #65) → `v2.0.1-lab6` (`6f49d32`, PR #68), revision `scccd8b05-00012-msg` | Independent retest PASS โดย Nantakorn (TH-005_P5) 26 พ.ย. 19:56–20:28 และ Sprint 1 ยัง Accepted ([ผล](../labs/lab-06/controlled-exercise.md)); test LAB6-CX-01 ผ่านใน regression `3f80759` |
+| CHG-05 | Maintenance (CI ของ PR #77) | F-08 TEST-59 | TEST-59 timeout เป็นครั้งคราว → รอ dialog ด้วย `waitForEvent` + `Promise.all`, participant context เป็น fixture, timeout ต่อ action; ไม่ลด assertion | Resolved | PR #80 (`b76b617`) → `v3.0.0-sprint-3` | CI PR #81 และ Deploy run 45994749187: Playwright 41/41 |
+| CHG-06 | Maintenance (F-06 browser run, 24 พ.ย.) | F-06 TEST-43 | timeout 1 ครั้งบนเครื่อง local ขณะปุ่มลงทะเบียนของ B ถูก disable; รันซ้ำ 3 ครั้งและ full run ผ่าน หาสาเหตุไม่ได้ | Remaining (monitor) | — | ยังไม่เกิดซ้ำใน CI (release `3f80759` ผ่าน 41/41) |
+| CHG-07 | Lab 7 change request | ต้องเปลี่ยนกฎ/พฤติกรรมของ Sprint 1; ห้ามใช้ LAB6-CX-01 (EV-TA-01) | ยังไม่ได้รับ handout ณ 27 พ.ย. 2026 | Planned | — | — |
+
+Baseline revisions (ไม่มีการเปลี่ยนข้อความ FR/BR/NFR หลัง baseline v0.5 และไม่มีการย้าย feature ข้าม sprint): DEC-18 (BR-13 half-up rounding) และ DEC-19 (check-in ไม่มี undo/history) ใน [decisions](../decisions.md); revision ของเอกสารอยู่ใน [changelog](../changelog.md)

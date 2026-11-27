@@ -38,15 +38,17 @@ Registration integration update: F-01–05 implemented; PR #7/#10 approved/merge
 | SYS-DELIVERY | Reproduction, Docker, CI gate, GCP และ version identification | Sprint 1 ออกแบบ/ local setup; Lab 5 ทำจริง; ทุก release หลังจากนั้น |
 | SYS-QA | AC→test traceability, regression และ independent UAT | ทุก Sprint; Lab 6 ทำ UAT; Lab 7 ทำ maintenance |
 
-## สถานะ — 25 พฤศจิกายน 2026
+## สถานะปัจจุบัน — 27 พฤศจิกายน 2026 (candidate `v3.0.0-sprint-3`, `3f80759`)
+
+Accepted ในตารางนี้ = Accepted in reviewed release บน main; Accepted by independent UAT ระบุแยก ทุก feature ผ่าน regression บน `3f80759` (Vitest 381/381, Playwright 41/41)
 
 | Feature | Planned | In progress | Implemented | Tested | Accepted |
 |---|---|---|---|---|---|
-| F-01–F-05 | ✓ | — | ✓ | ✓ CI + browser | ✓ release `v1.0.1-uat`; UAT Accepted 25 พ.ย. 2026 |
-| F-06 | ✓ | — | ✓ PR #59 | ✓ CI PR #59/#60/#67 | ✓ release `v2.0.0-sprint-2` (`c0faf24`, PR #67) |
-| F-07 | ✓ | — | ✓ PR #57 | ✓ CI PR #57/#60/#67 | ✓ release `v2.0.0-sprint-2` (`c0faf24`, PR #67) |
-| F-08 | ✓ contract #49 (PR #71) | — | ✓ PR #78, #79, #80 | ✓ CI PR #78/#79/#80/#81 | ✓ release `v3.0.0-sprint-3` (`3f80759`, PR #81) |
-| F-09 | ✓ contract #49 (PR #71) | — | ✓ PR #75 | ✓ CI PR #75/#81 | ✓ release `v3.0.0-sprint-3` (`3f80759`, PR #81) |
+| F-01–F-05 | ✓ | — | ✓ | ✓ CI + browser (AC-25, AC-27 Partial verification — ขาด TEST-35 และ final TEST-34) | ✓ reviewed release `v1.0.0-sprint-1` → `v1.0.1-uat`; Accepted by independent UAT 25 พ.ย. 2026 |
+| F-06 | ✓ | — | ✓ PR #59 | ✓ CI PR #59/#60/#67 | ✓ reviewed release `v2.0.0-sprint-2` (`c0faf24`, PR #67); independent UAT Not executed |
+| F-07 | ✓ | — | ✓ PR #57 | ✓ CI PR #57/#60/#67 | ✓ reviewed release `v2.0.0-sprint-2` (`c0faf24`, PR #67); independent UAT Not executed |
+| F-08 | ✓ contract #49 (PR #71) | — | ✓ PR #78, #79, #80 | ✓ CI PR #78/#79/#80/#81 | ✓ reviewed release `v3.0.0-sprint-3` (`3f80759`, PR #81); independent UAT Not executed |
+| F-09 | ✓ contract #49 (PR #71) | — | ✓ PR #75 | ✓ CI PR #75/#81 | ✓ reviewed release `v3.0.0-sprint-3` (`3f80759`, PR #81); independent UAT Not executed |
 
 หมายเหตุ 25 พ.ย. 2026: เพิ่ม BR-05 ให้ F-07 ตามที่ [Sprint 2 contract](sprints/sprint-2/contracts.md) และ traceability ระบุไว้แล้ว (ลด capacity พร้อมการลงทะเบียนต้องไม่ทำให้ ACTIVE เกิน capacity) ไม่ใช่ข้อกำหนดใหม่
 
