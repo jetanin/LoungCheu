@@ -1,8 +1,9 @@
 # TEST-59 synchronization and timeout diagnostics
 
 Issue #50 / D2 #51. Local verification: Jetanin Naitho, 27 November 2026
-(Asia/Bangkok). Base: `sprint-3-staging` `d520f0f`; this verification is for
-the working changes on `fix/f08-evidence-e2e-stability`, before its commit.
+(Asia/Bangkok). Base: `sprint-3-staging` `d520f0f`; verified changes are recorded
+in commit [`111130a73dcf745781fd8514df43f00080d70bb0`](https://github.com/jetanin/LoungCheu/commit/111130a73dcf745781fd8514df43f00080d70bb0)
+on `fix/f08-evidence-e2e-stability` (PR #80). The local runs preceded that commit.
 
 ## Observation and change
 
@@ -55,7 +56,7 @@ Results: original test **8 passed / 2 failed / 0 skipped**; revised TEST-59
 The revised stress and regression logs identify the same final TEST-59 source
 by SHA-256. An AST comparison confirms all 24 original expect assertions remain.
 The baseline is the original TEST-59 from PR #75 head `7553660`, byte-identical
-to staging `d520f0f`; the revised runs use the current fix working tree. Passing
+to staging `d520f0f`; the revised runs use the changes committed as `111130a`. Passing
 repetitions demonstrate the observed result, not a guarantee against every
 future infrastructure or browser timeout. CI on the committed PR head is still
 required before merge.
