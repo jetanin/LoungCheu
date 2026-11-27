@@ -4,7 +4,7 @@
 
 เอกสาร LC-S1-CONTRACT | Documentation v0.6 (CR-01, 27 พฤศจิกายน 2026) | baseline v0.5 | 5 พฤศจิกายน 2026
 
-ใช้ SRS/System SDS baseline v0.5 และ IDs เดิมตาม traceability; F-01–05 implement แล้ว ผลทดสอบอ้าง [tested source3313288](../../registration/views-verification.md). Feature review/staging merge มีหลักฐานแยกจาก main release และ independent process acceptance ซึ่งยัง pending; ไม่มีการเปลี่ยน baseline AC/schema
+ใช้ SRS/System SDS baseline v0.5 และ IDs เดิมตาม traceability; F-01–05 implement แล้ว ผลทดสอบอ้าง [tested source3313288](../../registration/views-verification.md). Feature review/staging merge มีหลักฐานแยกจาก main release และ independent process acceptance ซึ่งยัง pending; ไม่มีการเปลี่ยน baseline AC/schema ยกเว้น AC-07 ที่ revise ตาม CR-01 (v0.6, #84) ซึ่งยังไม่ implement
 
 ## Sprint 1 JSON schemas ร่วม
 

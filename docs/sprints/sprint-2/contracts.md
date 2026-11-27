@@ -205,7 +205,7 @@ UI rules:
 - PUBLISHED: ช่องเวลาทั้งสามแสดงค่าเดิมแบบ disabled พร้อมข้อความ "เผยแพร่แล้ว แก้เวลาไม่ได้"
 - เมื่อ PUBLISHED ช่อง capacity แสดงคำอธิบาย "มีผู้ลงทะเบียน ACTIVE n คน ตั้งได้ไม่ต่ำกว่า n" (DRAFT ไม่แสดง เพราะลงทะเบียนได้เฉพาะ PUBLISHED จึงมี ACTIVE = 0 เสมอ) (ค่า n จาก `active_count` ตอนเปิดฟอร์ม) เป็นคำอธิบายเท่านั้น ไม่บล็อกการกดบันทึก เพราะยอดอาจเปลี่ยนระหว่างแก้ server เป็นผู้ตัดสิน
 - ส่งเฉพาะ field ที่เปลี่ยน ถ้าไม่มีอะไรเปลี่ยน ปุ่มบันทึกถูกปิด
-- ใช้ validation ฝั่ง client แบบเดียวกับหน้าสร้าง (BR-01/02) แต่ backend เป็นผู้ตัดสิน; แสดง loading/disabled ระหว่างส่ง
+- ใช้ validation ฝั่ง client แบบเดียวกับหน้าสร้าง (BR-01/02) แต่ backend เป็นผู้ตัดสิน; **CR-01 v0.9:** ฟอร์มแก้ไขตรวจกฎ title 3–120 เฉพาะเมื่อผู้ใช้เปลี่ยน title — title เดิมของกิจกรรมเก่าที่สั้นกว่า 3 ต้องไม่บล็อกการบันทึก field อื่น (PATCH ไม่มี title); แสดง loading/disabled ระหว่างส่ง
 - เมื่อได้ 409 แสดงเหตุผลภาษาไทย แล้วโหลดข้อมูลกิจกรรมล่าสุด (status, active_count) มาแสดงใหม่ โดยคงค่าที่ผู้ใช้พิมพ์ไว้ในฟอร์ม (เช่น มีคนลงทะเบียนเพิ่มระหว่างแก้จนคำอธิบาย capacity ต้องเปลี่ยน)
 - 404 แสดง "ไม่พบกิจกรรมนี้" เหมือน owner detail; Participant เปิด URL แก้ไขเห็นหน้าปฏิเสธสิทธิ์แบบเดียวกับ owner routes
 
@@ -280,7 +280,7 @@ CLOSED ──edit──▶ 409 EVENT_NOT_EDITABLE (ไม่เปลี่ย�
 | AC-37 | EventPatch ว่าง/ผิด type/null/ยาวเกิน/สั้นเกินหลัง trim/capacity นอก 1–1000/เวลาผิดรูปแบบหรือละเอียดเกิน 3 หลัก/มี system หรือ unknown field ได้ 400; DRAFT ที่ค่ารวมผิดลำดับ BR-02 ได้ 400; **CR-01 v0.9:** title ที่ส่งมา < 3 code points หลัง trim ได้ 400 และ PATCH ที่ไม่มี title บนกิจกรรมเก่า title สั้นได้ 200 โดย title เดิมไม่เปลี่ยน; ทุกกรณี 400 ไม่เปลี่ยนข้อมูล | TEST-48 |
 | AC-38 | ลด capacity เท่ากับ ACTIVE count ได้ (boundary); ตั้งเป็น ACTIVE count − 1 ได้ 409 CAPACITY_BELOW_ACTIVE โดยข้อมูลไม่เปลี่ยน; เพิ่ม capacity ของกิจกรรมที่เต็มแล้ว Participant ใหม่ลงทะเบียนได้ | TEST-49 |
 | AC-39 | ลด capacity พร้อมกับมีการลงทะเบียนที่นั่งสุดท้าย (คนละ connection) ผลหลัง commit ACTIVE count ≤ capacity เสมอ; คำขอที่ทำทีหลังได้ 409 (EVENT_FULL หรือ CAPACITY_BELOW_ACTIVE) โดยไม่มีผลข้างเคียง และไม่มี deadlock/500 | TEST-50 |
-| AC-40 | Anonymous 401, Participant 403, Organizer อื่น 404, ไม่มี/ผิด CSRF 403 และ UI: ฟอร์มเติมค่าเดิม, ช่องเวลา disabled เมื่อ PUBLISHED, ไม่มีปุ่มเมื่อ CLOSED, แสดง error 400/409 เป็นภาษาไทย, หลังบันทึกและ reload เห็นค่าใหม่ | TEST-51, TEST-52 |
+| AC-40 | Anonymous 401, Participant 403, Organizer อื่น 404, ไม่มี/ผิด CSRF 403 และ UI: ฟอร์มเติมค่าเดิม, ช่องเวลา disabled เมื่อ PUBLISHED, ไม่มีปุ่มเมื่อ CLOSED, แสดง error 400/409 เป็นภาษาไทย, หลังบันทึกและ reload เห็นค่าใหม่; **CR-01 v0.9:** title ใหม่ที่ < 3 code points แสดง "กรุณากรอก 3–120 ตัวอักษร" และไม่ส่ง PATCH; กิจกรรมเก่า title `"ab"` แก้เฉพาะ field อื่นแล้วบันทึกได้ โดย PATCH ไม่มี title | TEST-51, TEST-52 |
 
 DoD F-07 (ครบทุกข้อจึงถือว่าเสร็จ):
 
@@ -317,4 +317,4 @@ DoD F-07 (ครบทุกข้อจึงถือว่าเสร็จ)
 | 0.6 | 24 พ.ย. 2026 | อัปเดตสถานะ F-06 และลิงก์ completion/evidence; ระบุ actual process restart และ TEST-44(c) แยก PR; AC/TEST/FR/BR และ F-07 คงเดิม | reconcile design กับ implementation/local runs โดยไม่อ้างว่า CI/review/merge/release ผ่านแล้ว | M1 |
 | 0.7 | 24 พ.ย. 2026 | รวม revision v0.6 ของ M1/F-06 และ M2/F-07 จากสอง branch โดยเก็บทั้งสองแถว; คง AC/TEST IDs และการแก้ F-07 ทุกข้อ | แก้ merge conflict หลังรวม sprint-2-staging เข้า feature/47-f06; TEST-44(c) ยังแยก PR และผลหลัง merge บันทึกแยกจากผลเดิม | M1 |
 | 0.8 | 24 พ.ย. 2026 | อัปเดตสถานะ: TEST-44(c) และ TEST-47/52 (close จริงของ F-06) รันแล้วใน PR integration; ไม่เปลี่ยน AC, API, TEST IDs หรือ expected | หลัง #59/#57 เข้า sprint-2-staging ทำ cross-feature ตามตาราง Cross-feature acceptance ได้แล้ว (M1 ตกลงให้ M2 เขียน TEST-44(c)) | M2 |
-| 0.9 | 27 พ.ย. 2026 | CR-01 (Lab 7, #84): title ขั้นต่ำ 1 → 3 code points หลัง trim สำหรับ EventPatch ที่มี title; PATCH ไม่มี title ไม่ตรวจ title เดิม; revise AC-37/TEST-48 | requirement change ตาม CR-01; ก่อน implementation | i3artuf |
+| 0.9 | 27 พ.ย. 2026 | CR-01 (Lab 7, #84): title ขั้นต่ำ 1 → 3 code points หลัง trim สำหรับ EventPatch ที่มี title; PATCH ไม่มี title ไม่ตรวจ title เดิม (รวมฟอร์มแก้ไขฝั่ง UI); revise AC-37/AC-40 | requirement change ตาม CR-01; ก่อน implementation | i3artuf |

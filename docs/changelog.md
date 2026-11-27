@@ -9,7 +9,7 @@ Documentation v0.6 (CR-01, 27 พฤศจิกายน 2026) | baseline v0.5 
 | 0.3 | 5 พ.ย. 2026 | ตรวจ PDF ทั้งสองฉบับ; ปรับ metadata, API schemas/UUID และ DEC-06/11/15–17; revise AC-07/15, TEST-08/18/32/36; staging เปลี่ยนจากแผน dev ผ่าน sprint-1 มาเป็น sprint-1-staging |
 | 0.4 | 5 พ.ย. 2026 | ย่อข้อความซ้ำ/ประวัติสนทนา; รวม revision history ไว้ที่นี่; ใช้ version เดียวทั้งชุด; แก้ FR-11, feature dependencies/mappings, API schemas/statuses, UI detail route, permission matrix และ STS ให้ตรงกัน โดยคง IDs และขอบเขต features |
 | 0.5 | 5 พ.ย. 2026 | ตรวจ PDF/baseline ซ้ำ; ผูก Issues #1–4, assignment และ board/Done; เพิ่ม planned layout; แก้แผน baseline PR เพราะ local Git roots ต่างกัน; ชี้แจง BR-01/04/09/14, error schema/precedence และ AC/STS ที่เกี่ยวข้อง; แก้ traceability และ .gitignore โดยคง IDs |
-| 0.6 | 27 พ.ย. 2026 | CR-01 (Lab 7, #84): BR-01 title 1–120 → 3–120 code points หลัง trim; revise AC-07/TEST-08 (Sprint 1 contracts/STS), AC-37/TEST-48 (Sprint 2 v0.9) และ traceability; ไม่มี migration; ข้อมูลเก่าไม่ตรวจย้อนหลัง; review ก่อน implementation |
+| 0.6 | 27 พ.ย. 2026 | CR-01 (Lab 7, #84): BR-01 title 1–120 → 3–120 code points หลัง trim; revise AC-07/TEST-08 รวม component (Sprint 1 contracts/STS), AC-37/AC-40/TEST-48/TEST-52 รวมฟอร์มแก้ไขกิจกรรมเก่า (Sprint 2 v0.9) และ traceability/SRS §10 status; ไม่มี migration; ข้อมูลเก่าไม่ตรวจย้อนหลัง; review ก่อน implementation |
 
 ## Git และ review history
 
