@@ -19,6 +19,9 @@ import { createCancellationService } from './modules/registrations/cancellation.
 import { createCancellationRouter } from './modules/registrations/cancellation-router.js';
 import { createAttendanceRouter } from './modules/attendance/router.js';
 import { createAttendanceService } from './modules/attendance/service.js';
+// F-09 attendance summary (#74).
+import { createAttendanceSummary } from './modules/attendance/summary.js';
+import { createAttendanceSummaryRouter } from './modules/attendance/summary-router.js';
 
 export const SESSION_MS = 2 * 60 * 60 * 1000;
 export const COOKIE_NAME = 'loungcheu.sid';
@@ -111,6 +114,7 @@ export async function createApp(config: AppConfig, db: PrismaClient, now: () => 
   app.use('/api', createRegistrationReadRouter(auth, createRegistrationQueries(db)));
   app.use('/api', createCancellationRouter(auth, csrf, createCancellationService(db, () => new Date(now()))));
   app.use('/api', createAttendanceRouter(auth, csrf, jsonBody('1kb'), createAttendanceService(db, () => new Date(now()))));
+  app.use('/api', createAttendanceSummaryRouter(auth, createAttendanceSummary(db, now)));
   app.use('/api', (_req, _res) => { throw new ApiError(404, 'ROUTE_NOT_FOUND', 'ไม่พบเส้นทาง'); });
   if (config.production) {
     const clientBuild = fileURLToPath(new URL('../../client/dist/', import.meta.url));

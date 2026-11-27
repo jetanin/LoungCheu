@@ -1,0 +1,128 @@
+
+ RUN  v5.1.0 C:/DEV/University/Kmutt/Year3/Term1/CPE334/Final/LoungCheu-lab6
+
+ ❯ server/tests/integration/registration-lifecycle-migration.test.ts (8 tests | 8 failed) 14ms
+   × TEST-44(a): real S1→S2 migrate preserves legacy data, backfills REGISTERED once and enforces history FKs 7ms
+   × TEST-44(a): legacy CANCELLED without its timestamp stops migration without inventing data 1ms
+   × TEST-44(a): fresh migrate→actual seed entry point creates history and repeated/concurrent seed preserves it 1ms
+   × TEST-44(a): concurrent actual seed processes on a fresh database create one REGISTERED entry per record 1ms
+   × TEST-44(b): create rolls back state and history when the history INSERT fails 1ms
+   × TEST-44(b): cancel rolls back state and history when the history INSERT fails 1ms
+   × TEST-44(b): reactivate rolls back state and history when the history INSERT fails 1ms
+   × TEST-44(a/b): demo-data history failure rolls back newly seeded events and registrations 1ms
+ ❯ server/tests/integration/registration-lifecycle-restart.test.ts (1 test | 1 failed) 10ms
+   × NFR-03 / TEST-43 persistence: CANCELLED then reactivated/CLOSED state survives actual compiled backend process restarts 8ms
+ 
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 9 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  server/tests/integration/registration-lifecycle-migration.test.ts > TEST-44(a): real S1→S2 migrate preserves 
+legacy data, backfills REGISTERED once and enforces history FKs
+Error: Lifecycle disposable databases require Docker:55433 or the ephemeral GitHub Actions PostgreSQL service
+ ❯ withLifecycleDatabase server/tests/helpers/lifecycle-environment.ts:23:11
+     21|     && process.env.GITHUB_ACTIONS === 'true' && process.env.CI === 'tr…
+     22|   if (!approvedDocker && !githubService) {
+     23|     throw new Error('Lifecycle disposable databases require Docker:554…
+       |           ^
+     24|   }
+     25|   const name = `loungcheu_test_f06_${randomUUID().replaceAll('-', '')}…
+ ❯ server/tests/integration/registration-lifecycle-migration.test.ts:28:9
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/9]⎯
+
+ FAIL  server/tests/integration/registration-lifecycle-migration.test.ts > TEST-44(a): legacy CANCELLED without its 
+timestamp stops migration without inventing data
+Error: Lifecycle disposable databases require Docker:55433 or the ephemeral GitHub Actions PostgreSQL service
+ ❯ withLifecycleDatabase server/tests/helpers/lifecycle-environment.ts:23:11
+     21|     && process.env.GITHUB_ACTIONS === 'true' && process.env.CI === 'tr…
+     22|   if (!approvedDocker && !githubService) {
+     23|     throw new Error('Lifecycle disposable databases require Docker:554…
+       |           ^
+     24|   }
+     25|   const name = `loungcheu_test_f06_${randomUUID().replaceAll('-', '')}…
+ ❯ server/tests/integration/registration-lifecycle-migration.test.ts:63:9
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[2/9]⎯
+
+ FAIL  server/tests/integration/registration-lifecycle-migration.test.ts > TEST-44(a): fresh migrate→actual seed entry 
+point creates history and repeated/concurrent seed preserves it
+Error: Lifecycle disposable databases require Docker:55433 or the ephemeral GitHub Actions PostgreSQL service
+ ❯ withLifecycleDatabase server/tests/helpers/lifecycle-environment.ts:23:11
+     21|     && process.env.GITHUB_ACTIONS === 'true' && process.env.CI === 'tr…
+     22|   if (!approvedDocker && !githubService) {
+     23|     throw new Error('Lifecycle disposable databases require Docker:554…
+       |           ^
+     24|   }
+     25|   const name = `loungcheu_test_f06_${randomUUID().replaceAll('-', '')}…
+ ❯ server/tests/integration/registration-lifecycle-migration.test.ts:82:9
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[3/9]⎯
+
+ FAIL  server/tests/integration/registration-lifecycle-migration.test.ts > TEST-44(a): concurrent actual seed 
+processes on a fresh database create one REGISTERED entry per record
+Error: Lifecycle disposable databases require Docker:55433 or the ephemeral GitHub Actions PostgreSQL service
+ ❯ withLifecycleDatabase server/tests/helpers/lifecycle-environment.ts:23:11
+     21|     && process.env.GITHUB_ACTIONS === 'true' && process.env.CI === 'tr…
+     22|   if (!approvedDocker && !githubService) {
+     23|     throw new Error('Lifecycle disposable databases require Docker:554…
+       |           ^
+     24|   }
+     25|   const name = `loungcheu_test_f06_${randomUUID().replaceAll('-', '')}…
+ ❯ server/tests/integration/registration-lifecycle-migration.test.ts:113:9
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[4/9]⎯
+
+ FAIL  server/tests/integration/registration-lifecycle-migration.test.ts > TEST-44(b): create rolls back state and 
+history when the history INSERT fails
+ FAIL  server/tests/integration/registration-lifecycle-migration.test.ts > TEST-44(b): cancel rolls back state and 
+history when the history INSERT fails
+ FAIL  server/tests/integration/registration-lifecycle-migration.test.ts > TEST-44(b): reactivate rolls back state and 
+history when the history INSERT fails
+Error: Lifecycle disposable databases require Docker:55433 or the ephemeral GitHub Actions PostgreSQL service
+ ❯ withLifecycleDatabase server/tests/helpers/lifecycle-environment.ts:23:11
+     21|     && process.env.GITHUB_ACTIONS === 'true' && process.env.CI === 'tr…
+     22|   if (!approvedDocker && !githubService) {
+     23|     throw new Error('Lifecycle disposable databases require Docker:554…
+       |           ^
+     24|   }
+     25|   const name = `loungcheu_test_f06_${randomUUID().replaceAll('-', '')}…
+ ❯ server/tests/integration/registration-lifecycle-migration.test.ts:132:9
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[5/9]⎯
+
+ FAIL  server/tests/integration/registration-lifecycle-migration.test.ts > TEST-44(a/b): demo-data history failure 
+rolls back newly seeded events and registrations
+Error: Lifecycle disposable databases require Docker:55433 or the ephemeral GitHub Actions PostgreSQL service
+ ❯ withLifecycleDatabase server/tests/helpers/lifecycle-environment.ts:23:11
+     21|     && process.env.GITHUB_ACTIONS === 'true' && process.env.CI === 'tr…
+     22|   if (!approvedDocker && !githubService) {
+     23|     throw new Error('Lifecycle disposable databases require Docker:554…
+       |           ^
+     24|   }
+     25|   const name = `loungcheu_test_f06_${randomUUID().replaceAll('-', '')}…
+ ❯ server/tests/integration/registration-lifecycle-migration.test.ts:180:9
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[6/9]⎯
+
+ FAIL  server/tests/integration/registration-lifecycle-restart.test.ts > NFR-03 / TEST-43 persistence: CANCELLED then 
+reactivated/CLOSED state survives actual compiled backend process restarts
+Error: Lifecycle disposable databases require Docker:55433 or the ephemeral GitHub Actions PostgreSQL service
+ ❯ withLifecycleDatabase server/tests/helpers/lifecycle-environment.ts:23:11
+     21|     && process.env.GITHUB_ACTIONS === 'true' && process.env.CI === 'tr…
+     22|   if (!approvedDocker && !githubService) {
+     23|     throw new Error('Lifecycle disposable databases require Docker:554…
+       |           ^
+     24|   }
+     25|   const name = `loungcheu_test_f06_${randomUUID().replaceAll('-', '')}…
+ ❯ server/tests/integration/registration-lifecycle-restart.test.ts:82:9
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[7/9]⎯
+
+
+ Test Files  2 failed | 25 passed (27)
+      Tests  9 failed | 264 passed (273)
+   Start at  03:19:20
+   Duration  73.92s (tests 65%, environment 19%, import 14%, transform 1%)
+
+    Isolate  27 workers spawned · ~696ms startup each (spawn + environment, per file)
+             at least ~18.09s faster with isolate: false — reuses workers across files instead of one per file
+
