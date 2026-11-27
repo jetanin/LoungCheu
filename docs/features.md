@@ -1,6 +1,8 @@
 # Part B — Feature Inventory
 
-**สถานะปัจจุบัน — 26 พ.ย. 2026:** F-06/F-07 release บน main เป็น `v2.0.0-sprint-2` (`c0faf24`, release PR #67 merge 26 พ.ย. 00:45 Asia/Bangkok; CI run 45666007554 Vitest 264/264, Playwright 39/39; deploy run 45668146212 → revision `scccd8b05-00011-fvb`, `/api/ready` version = `c0faf24`). Main ปัจจุบัน `v2.0.1-lab6` (`6f49d32`) เพิ่มเพียง test/เอกสารของ Lab 6 controlled exercise ไม่เปลี่ยนโค้ดแอป. F-08/F-09 contract/STS อยู่ใน PR #71 → `sprint-3-staging` ยังไม่ implement
+**สถานะปัจจุบัน — 27 พ.ย. 2026:** F-08/F-09 release บน main เป็น `v3.0.0-sprint-3` (`3f80759`, release PR #81 merge 27 พ.ย. 18:58 Asia/Bangkok; CI run 45991439969 Vitest 37 files, Playwright 41/41; deploy run 45994749187 → revision `scccd8b05-00013-nwj`, `/api/ready` version = `3f80759`; [post-deploy check](sprints/sprint-3/evidence/release-v3.0.0/README.md) 19/19 PASS)
+
+**สถานะ — 26 พ.ย. 2026 (ประวัติ):** F-06/F-07 release บน main เป็น `v2.0.0-sprint-2` (`c0faf24`, release PR #67 merge 26 พ.ย. 00:45 Asia/Bangkok; CI run 45666007554 Vitest 264/264, Playwright 39/39; deploy run 45668146212 → revision `scccd8b05-00011-fvb`, `/api/ready` version = `c0faf24`). Main ปัจจุบัน `v2.0.1-lab6` (`6f49d32`) เพิ่มเพียง test/เอกสารของ Lab 6 controlled exercise ไม่เปลี่ยนโค้ดแอป. F-08/F-09 contract/STS อยู่ใน PR #71 → `sprint-3-staging` ยังไม่ implement
 
 **สถานะ — 25 พ.ย. 2026 (ประวัติ):** F-01–05 release บน main (`v1.0.0-sprint-1`, แล้ว `v1.0.1-uat`/`0b2cc80`) และผ่าน independent UAT ของทีม TH-005_P5 (7/7 PASS, Accepted 25 พ.ย.). F-06/F-07 merge เข้า `sprint-2-staging` แล้ว CI ผ่าน ยังไม่ release บน main. F-08/F-09 มี contract/STS ร่างใน Issue #49 ยังไม่ implement. ดูตาราง "สถานะ" ท้ายไฟล์; ข้อความลงวันที่ด้านล่างเป็นประวัติ
 
@@ -43,8 +45,8 @@ Registration integration update: F-01–05 implemented; PR #7/#10 approved/merge
 | F-01–F-05 | ✓ | — | ✓ | ✓ CI + browser | ✓ release `v1.0.1-uat`; UAT Accepted 25 พ.ย. 2026 |
 | F-06 | ✓ | — | ✓ PR #59 | ✓ CI PR #59/#60/#67 | ✓ release `v2.0.0-sprint-2` (`c0faf24`, PR #67) |
 | F-07 | ✓ | — | ✓ PR #57 | ✓ CI PR #57/#60/#67 | ✓ release `v2.0.0-sprint-2` (`c0faf24`, PR #67) |
-| F-08 | ✓ contract #49 (PR #71) | — | — | — | — |
-| F-09 | ✓ contract #49 (PR #71) | — | — | — | — |
+| F-08 | ✓ contract #49 (PR #71) | — | ✓ PR #78, #79, #80 | ✓ CI PR #78/#79/#80/#81 | ✓ release `v3.0.0-sprint-3` (`3f80759`, PR #81) |
+| F-09 | ✓ contract #49 (PR #71) | — | ✓ PR #75 | ✓ CI PR #75/#81 | ✓ release `v3.0.0-sprint-3` (`3f80759`, PR #81) |
 
 หมายเหตุ 25 พ.ย. 2026: เพิ่ม BR-05 ให้ F-07 ตามที่ [Sprint 2 contract](sprints/sprint-2/contracts.md) และ traceability ระบุไว้แล้ว (ลด capacity พร้อมการลงทะเบียนต้องไม่ทำให้ ACTIVE เกิน capacity) ไม่ใช่ข้อกำหนดใหม่
 

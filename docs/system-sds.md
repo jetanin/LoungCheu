@@ -108,7 +108,7 @@ EventStatus มี DRAFT/PUBLISHED/CLOSED; RegistrationStatus มี ACTIVE/CANC
 | GET | /api/my/registrations; /api/my/registrations/:id; /api/organizer/events/:id/registrations | modules/registrations/read-router.ts |
 | POST | /api/my/registrations/:id/cancel | modules/registrations/cancellation-router.ts (F-06) |
 | POST | /api/organizer/events/:id/close | modules/events/router.ts (F-06 appended block) |
-| GET | /api/organizer/events/:id/summary (F-09, branch `feature/74-sprint-3-f09-summary`; ยังไม่ merge) | modules/attendance/summary-router.ts + summary.ts + rate.ts |
+| GET | /api/organizer/events/:id/summary (F-09, release `v3.0.0-sprint-3`) | modules/attendance/summary-router.ts + summary.ts + rate.ts |
 
 Module paths ในตารางอยู่ใต้ `server/src/`; routers mount ที่ `/api`. Own record มี id/status/registered_at/cancelled_at/event และ F-08 เพิ่ม checked_in_at; create/reactivate ใช้ POST register เดิม (201/200 ตามลำดับ) พร้อม required cancelled_at=null ในผลสำเร็จ; ไม่มี history endpoint. F-07 edit implement แล้วจาก #48/PR #57 ตาม [Sprint 2 contracts](sprints/sprint-2/contracts.md). F-08 check-in/own attendance API และ UI มี local results ของ TEST-53–59, TEST-65–66 ตามรายละเอียดด้านล่าง; F-09 summary แยกจากผลของ #50 นี้
 
@@ -290,7 +290,7 @@ F-07 integration fixture เพิ่ม REGISTERED history ใน nested create
 
 ## 13. F-09 attendance summary — 27 พฤศจิกายน 2026
 
-งานบน branch `feature/74-sprint-3-f09-summary` (draft PR #75) ยังไม่ merge เข้า staging; อ้าง [Sprint 3 contract F-09](sprints/sprint-3/contracts.md) โดยไม่เปลี่ยน design
+PR #75 merge เข้า `sprint-3-staging` (`a7e0338`) และ release บน main เป็น `v3.0.0-sprint-3` (`3f80759`, PR #81); อ้าง [Sprint 3 contract F-09](sprints/sprint-3/contracts.md) โดยไม่เปลี่ยน design
 
 - **API:** `GET /api/organizer/events/:id/summary` ลำดับ authenticate → requireRole(ORGANIZER) → ตรวจ path UUID → owner filter บน Event (ไม่พบหรือไม่ใช่เจ้าของ = 404 EVENT_NOT_FOUND) แล้วจึง aggregate ใน transaction REPEATABLE READ เดียว: `COUNT(*) FILTER` ของ ACTIVE, CANCELLED และ ACTIVE ที่ `checked_in_at IS NOT NULL` จาก `registrations` (ไม่ใช้ `registration_history`); `generated_at` มาจาก server clock
 - **Rate:** `attendanceRate(checked, active)` ใน `modules/attendance/rate.ts` คำนวณด้วยจำนวนเต็มแบบ half-up และคืน string 2 ตำแหน่ง; active=0 คืน `"0.00"`

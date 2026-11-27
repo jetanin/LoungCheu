@@ -1,10 +1,10 @@
 # Sprint 3 — Software Test Specification (F-08, F-09)
 
-เอกสาร LC-S3-STS | v0.3 (test design + local F-08 results) | 27 พฤศจิกายน 2026
+เอกสาร LC-S3-STS | v0.4 (test design + results) | 27 พฤศจิกายน 2026
 
 Contract: [contracts.md](contracts.md) ทุก test ต้องเขียนและ commit ให้ **fail ก่อน** implementation (RED) แล้วจึง implement ให้ผ่าน (GREEN) เก็บ SHA ทั้งสองจังหวะ
 
-สถานะ: **F-08 implemented และ tested (local)** ตาม [หลักฐานและ TDD trace](evidence/f08-ui-green/README.md); ยังไม่ใช่ผล CI/teammate acceptance/release. ผล F-09 ไม่อยู่ใน implementation #50 นี้
+สถานะ: **F-08 และ F-09 released ใน `v3.0.0-sprint-3`** (`3f80759`, PR #81) — F-08 ตาม [หลักฐานและ TDD trace](evidence/f08-ui-green/README.md), F-09 ตาม [f09-integration](evidence/f09-integration/README.md); ตรวจบน deployment แล้ว ([post-deploy](evidence/release-v3.0.0/README.md)). ผลรายการ AC อยู่ใน [traceability §7](../../traceability.md); ยังไม่มี independent UAT
 
 ## 1. Environment และ fixtures
 
@@ -80,3 +80,4 @@ Final regression: Vitest 34 files, 361/361 PASS; Chromium 40/40 PASS; typecheck/
 | 0.1 | 24 พ.ย. 2026 | fixtures, F-08 TEST-53–59 และ F-09 TEST-60–64 | ฉบับแรกก่อน implementation #50 | M2 |
 | 0.2 | 26 พ.ย. 2026 | TEST-55(b) ใช้ T1 แล้ว T2 ก่อนส่งซ้ำ; TEST-58(a) สอง runtime คนละ clock; เพิ่ม TEST-65 (migration/constraints) และ TEST-66 (backend restart) | Review PR #71 โดย jetanin: clock เดียวกันจับการเขียนทับ timestamp ไม่ได้; migration และ NFR-03 หลัง restart ไม่มี test design. แก้ก่อนเริ่ม implementation #50 | M2 |
 | 0.3 | 27 พ.ย. 2026 | เพิ่ม local F-08 result/evidence map และอัปเดตสถานะ; เก็บ expected cases/design เดิม | #50 มี implementation และผลรันจริงแล้ว; ไม่ใช่ F-09/CI/release acceptance | M1 |
+| 0.4 | 27 พ.ย. 2026 | สถานะ → F-08/F-09 released `v3.0.0-sprint-3`; ลิงก์ F-09 และ post-deploy evidence | release PR #81 merge และ post-deploy check ผ่าน; test design ไม่เปลี่ยน | M2 |
