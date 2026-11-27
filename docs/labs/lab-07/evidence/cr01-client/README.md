@@ -11,4 +11,21 @@ Contract: reviewed PR #100 / Issue #84. API dependency: PR #101 / Issue #85, mer
 - Missing behavior: old client accepts `a`, `ab`, trimmed `ab`, and two emoji as event titles; create/edit components do not show the new `3–120` field error. The 121-code-point case rejects the value but still uses the old `1–120` message. The six passes are the five valid boundary examples and the preserved legacy-title edit case.
 - These failures are assertion failures on the old client behavior. The API change was already integrated; this run isolates the client behavior with component fetch mocks.
 
-The RED test commit and subsequent GREEN implementation commit must be recorded separately. Add their SHAs and the GREEN/regression results after execution.
+RED test commit: `36f049b` (tests and RED log only). GREEN implementation commit: `596c53b` (client code, revised expectations and browser regression). The RED tests were not weakened between these commits.
+
+## GREEN and regression — 28 Nov 2026, 04:49–04:52 ICT
+
+Operator: Codex in Paphangkorn's local workspace. Tested committed source: `596c53b`. All listed commands ran after that commit, with no application or test source edits between runs.
+
+| Scope | Command | Actual result | Evidence |
+|---|---|---|---|
+| CR-01 and existing event client unit/component tests | `node node_modules/vitest/vitest.mjs run client/src/features/events` | 3 files, **36 passed, 0 failed, 0 skipped** | [green-vitest.log](green-vitest.log) |
+| Server/client TypeScript | `npm run typecheck` | exit 0 | [typecheck.log](typecheck.log) |
+| Real browser create/edit/read/access, including CR-01 | `npx playwright test tests/e2e/events.spec.ts tests/e2e/event-edit.spec.ts` | **8 passed, 0 failed, 0 skipped** | [e2e-events-edit.log](e2e-events-edit.log) |
+| Existing visual regression at 1280/390/320 px | `npx playwright test tests/e2e/visual-consistency.spec.ts` | **3 passed, 0 failed, 0 skipped** | [e2e-visual.log](e2e-visual.log) |
+
+The new browser test confirms that `ab` and two emoji show the title error without POST/PATCH, three emoji create a DRAFT, a three-code-point Thai title is saved by PATCH and survives reload/publish, a Participant can read the published event, and a Participant cannot open its organizer edit form. The component test also confirms that a legacy title `ab` remains readable and changing capacity sends PATCH without `title`.
+
+Client validation uses code-point counting after trim. The form has `noValidate` and does not set HTML `minlength`/`maxlength` on title because browser length constraints count UTF-16 units and would disagree for emoji; API validation remains authoritative.
+
+The first local typecheck attempt used an old generated Prisma client and failed on `checkedInAt`; `npm run db:generate` refreshed it, then the recorded typecheck passed. The first browser attempt could not start the local server in the sandbox (`uv_os_get_passwd`); the recorded browser runs completed in the permitted local environment. No test was disabled or skipped in the GREEN/regression runs.
