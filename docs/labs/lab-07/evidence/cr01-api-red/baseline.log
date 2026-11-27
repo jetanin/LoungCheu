@@ -1,0 +1,53 @@
+CR-01 / #85
+Tester: Jetanin Naitho (jetanin), executed with Codex assistance
+Pre-change SHA: 079397267e354e4c9dd8034d5652cf191fd49361
+Source: pre-change implementation + test-only working-tree additions (RED mode)
+Node: v22.23.2
+Started UTC: 2026-11-27T16:22:47.820Z
+Finished UTC: 2026-11-27T16:23:07.040Z
+Command: node node_modules/vitest/vitest.mjs run server/tests/integration/events.test.ts server/tests/integration/event-edit.test.ts server/tests/unit/event-patch.test.ts --reporter=verbose
+Target: Docker 127.0.0.1:55433 / loungcheu_test only
+Exit: 0
+
+
+ RUN  v5.1.0 C:/Work/2569/CPE334/GroupWork/LoungCheu
+
+ ✓ server/tests/integration/events.test.ts > TEST-07 creates normalized DRAFT from session and reads it back 370ms
+ ✓ server/tests/integration/events.test.ts > TEST-08 strict schema rejects invalid fields without inserting 473ms
+ ✓ server/tests/integration/events.test.ts > TEST-08/36 accepts Unicode boundaries, capacities, fractions, equal closes/start and past DRAFT 112ms
+ ✓ server/tests/integration/events.test.ts > TEST-09 publishes and becomes shared with exactly the contracted public fields 99ms
+ ✓ server/tests/integration/events.test.ts > TEST-10/36 status precedes deadline; rejects deadline equality and +1ms, permits -1ms 189ms
+ ✓ server/tests/integration/events.test.ts > TEST-10 rereads clock after waiting for Event row lock; concurrent publish changes status once 113ms
+ ✓ server/tests/integration/events.test.ts > TEST-11 shared visibility, real ACTIVE counts, availability and both sorting tie breaks 192ms
+ ✓ server/tests/integration/events.test.ts > TEST-11/36 availability uses server clock at deadline -1ms/equality/+1ms 103ms
+ ✓ server/tests/integration/events.test.ts > TEST-11 fields/counts use committed snapshots during concurrent capacity/registration commits 432ms
+ ✓ server/tests/integration/events.test.ts > TEST-12/13 auth → role → CSRF → input → scope and session ownership 344ms
+ ✓ server/tests/integration/events.test.ts > TEST-08/36 validates every timestamp field and normalizes leap-day instants with negative offsets 251ms
+ ✓ server/tests/integration/events.test.ts > TEST-11 checks exact OwnerEvent fields on list/detail and CLOSED SharedEvent detail for both roles 153ms
+ ✓ server/tests/integration/events.test.ts > TEST-12/13 event endpoints use current role/active state, rotated CSRF and absolute session expiry 164ms
+ ✓ server/tests/integration/events.test.ts > TEST-07 event and session survive recreating createApp against the same PostgreSQL database 130ms
+ ✓ server/tests/integration/events.test.ts > TEST-08/36 accepts minute-precision ISO timestamps with offsets and normalizes seconds 68ms
+ ✓ server/tests/integration/events.test.ts > TEST-08 rejects NUL and unpaired surrogates instead of DB errors or lossy inserts 105ms
+ ✓ server/tests/integration/events.test.ts > F-02/F-03 create, publish, register and recreate app preserve reference and consistent counts 401ms
+ ✓ server/tests/integration/events.test.ts > TEST-08 accepts max-length Unicode text encoded as JSON escapes without truncation 82ms
+ ✓ server/tests/integration/event-edit.test.ts > F-07 PATCH /api/organizer/events/{id} (TEST-45–TEST-51) > TEST-45 / AC-34 owner edits every EventInput field of a DRAFT and reads it back 50ms
+ ✓ server/tests/integration/event-edit.test.ts > F-07 PATCH /api/organizer/events/{id} (TEST-45–TEST-51) > TEST-46 / AC-35 PUBLISHED allows details/capacity but rejects any time field 188ms
+ ✓ server/tests/integration/event-edit.test.ts > F-07 PATCH /api/organizer/events/{id} (TEST-45–TEST-51) > TEST-47 / AC-36 CLOSED is not editable and status is checked before field rules 124ms
+ ✓ server/tests/integration/event-edit.test.ts > F-07 PATCH /api/organizer/events/{id} (TEST-45–TEST-51) > TEST-48 / AC-37 rejects invalid EventPatch and merged BR-02 order without changes; accepts boundaries 252ms
+ ✓ server/tests/integration/event-edit.test.ts > F-07 PATCH /api/organizer/events/{id} (TEST-45–TEST-51) > TEST-49 / AC-38 capacity may equal ACTIVE but not go below; raising a full event reopens it 79ms
+ ✓ server/tests/integration/event-edit.test.ts > F-07 PATCH /api/organizer/events/{id} (TEST-45–TEST-51) > TEST-50 / AC-39 capacity decrease and last-seat registration serialize on the Event lock 1346ms
+ ✓ server/tests/integration/event-edit.test.ts > F-07 PATCH /api/organizer/events/{id} (TEST-45–TEST-51) > TEST-51 / AC-40 enforces auth → role → CSRF → input → ownership without changes 75ms
+ ✓ server/tests/integration/event-edit.test.ts > F-06 × F-07 cross-feature (Sprint 2 STS TEST-44(c)) > TEST-44(c) / AC-33 cancel → capacity down → reactivate full → capacity up → reactivate the same record 103ms
+ ✓ server/tests/unit/event-patch.test.ts > F-07 EventPatch validation (TEST-48 unit, AC-37) > normalizes only the fields that were sent 2ms
+ ✓ server/tests/unit/event-patch.test.ts > F-07 EventPatch validation (TEST-48 unit, AC-37) > accepts the EventInput boundaries 0ms
+ ✓ server/tests/unit/event-patch.test.ts > F-07 EventPatch validation (TEST-48 unit, AC-37) > rejects empty, malformed, null, out-of-range and non-editable input with 400 INVALID_INPUT 2ms
+ ✓ server/tests/unit/event-patch.test.ts > F-07 EventPatch validation (TEST-48 unit, AC-37) > reuses the create-form field messages 0ms
+
+ Test Files  3 passed (3)
+      Tests  30 passed (30)
+   Start at  23:22:51
+   Duration  15.19s (tests 55%, import 40%, transform 4%)
+
+    Isolate  3 workers spawned · ~402ms startup each (spawn + environment, per file)
+             at least ~804ms faster with isolate: false — reuses workers across files instead of one per file
+

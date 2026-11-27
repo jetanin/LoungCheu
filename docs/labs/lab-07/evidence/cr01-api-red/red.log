@@ -1,0 +1,381 @@
+CR-01 / #85
+Tester: Jetanin Naitho (jetanin), executed with Codex assistance
+Pre-change SHA: 079397267e354e4c9dd8034d5652cf191fd49361
+Source: pre-change implementation + test-only working-tree additions (RED mode)
+Node: v22.23.2
+Started UTC: 2026-11-27T16:24:31.832Z
+Finished UTC: 2026-11-27T16:24:34.345Z
+Command: node node_modules/vitest/vitest.mjs run server/tests/integration/event-title-maintenance.test.ts --reporter=verbose
+Target: Docker 127.0.0.1:55433 / loungcheu_test only
+Exit: 1
+
+
+ RUN  v5.1.0 C:/Work/2569/CPE334/GroupWork/LoungCheu
+
+ × server/tests/integration/event-title-maintenance.test.ts > CR-01 title validation — TEST-08/48 (AC-07/37) > TEST-08 create rejects empty without inserting 23ms
+   → expected { Object (title) } to deeply equal { Object (title) }
+ × server/tests/integration/event-title-maintenance.test.ts > CR-01 title validation — TEST-08/48 (AC-07/37) > TEST-08 create rejects whitespace without inserting 10ms
+   → expected { Object (title) } to deeply equal { Object (title) }
+ × server/tests/integration/event-title-maintenance.test.ts > CR-01 title validation — TEST-08/48 (AC-07/37) > TEST-08 create rejects one code point without inserting 24ms
+   → expected { status: 201, eventCount: 61 } to deeply equal { status: 400, eventCount: 60 }
+ × server/tests/integration/event-title-maintenance.test.ts > CR-01 title validation — TEST-08/48 (AC-07/37) > TEST-08 create rejects two code points without inserting 10ms
+   → expected { status: 201, eventCount: 62 } to deeply equal { status: 400, eventCount: 61 }
+ × server/tests/integration/event-title-maintenance.test.ts > CR-01 title validation — TEST-08/48 (AC-07/37) > TEST-08 create rejects two after trim without inserting 11ms
+   → expected { status: 201, eventCount: 63 } to deeply equal { status: 400, eventCount: 62 }
+ × server/tests/integration/event-title-maintenance.test.ts > CR-01 title validation — TEST-08/48 (AC-07/37) > TEST-08 create rejects two emoji / four UTF-16 units without inserting 15ms
+   → expected { status: 201, eventCount: 64 } to deeply equal { status: 400, eventCount: 63 }
+ × server/tests/integration/event-title-maintenance.test.ts > CR-01 title validation — TEST-08/48 (AC-07/37) > TEST-08 create rejects 121 code points without inserting 8ms
+   → expected { Object (title) } to deeply equal { Object (title) }
+ × server/tests/integration/event-title-maintenance.test.ts > CR-01 title validation — TEST-08/48 (AC-07/37) > TEST-08 create rejects wrong type without inserting 7ms
+   → expected { Object (title) } to deeply equal { Object (title) }
+ × server/tests/integration/event-title-maintenance.test.ts > CR-01 title validation — TEST-08/48 (AC-07/37) > TEST-08 create rejects null without inserting 11ms
+   → expected { Object (title) } to deeply equal { Object (title) }
+ × server/tests/integration/event-title-maintenance.test.ts > CR-01 title validation — TEST-08/48 (AC-07/37) > TEST-08 create rejects array without inserting 8ms
+   → expected { Object (title) } to deeply equal { Object (title) }
+ × server/tests/integration/event-title-maintenance.test.ts > CR-01 title validation — TEST-08/48 (AC-07/37) > TEST-48 PATCH rejects empty without changing any field 10ms
+   → expected { Object (title) } to deeply equal { Object (title) }
+ × server/tests/integration/event-title-maintenance.test.ts > CR-01 title validation — TEST-08/48 (AC-07/37) > TEST-48 PATCH rejects whitespace without changing any field 8ms
+   → expected { Object (title) } to deeply equal { Object (title) }
+ × server/tests/integration/event-title-maintenance.test.ts > CR-01 title validation — TEST-08/48 (AC-07/37) > TEST-48 PATCH rejects one code point without changing any field 17ms
+   → expected { status: 200, event: { …(12) } } to deeply equal { status: 400, event: { …(12) } }
+ × server/tests/integration/event-title-maintenance.test.ts > CR-01 title validation — TEST-08/48 (AC-07/37) > TEST-48 PATCH rejects two code points without changing any field 14ms
+   → expected { status: 200, event: { …(12) } } to deeply equal { status: 400, event: { …(12) } }
+ × server/tests/integration/event-title-maintenance.test.ts > CR-01 title validation — TEST-08/48 (AC-07/37) > TEST-48 PATCH rejects two after trim without changing any field 17ms
+   → expected { status: 200, event: { …(12) } } to deeply equal { status: 400, event: { …(12) } }
+ × server/tests/integration/event-title-maintenance.test.ts > CR-01 title validation — TEST-08/48 (AC-07/37) > TEST-48 PATCH rejects two emoji / four UTF-16 units without changing any field 16ms
+   → expected { status: 200, event: { …(12) } } to deeply equal { status: 400, event: { …(12) } }
+ × server/tests/integration/event-title-maintenance.test.ts > CR-01 title validation — TEST-08/48 (AC-07/37) > TEST-48 PATCH rejects 121 code points without changing any field 8ms
+   → expected { Object (title) } to deeply equal { Object (title) }
+ × server/tests/integration/event-title-maintenance.test.ts > CR-01 title validation — TEST-08/48 (AC-07/37) > TEST-48 PATCH rejects wrong type without changing any field 10ms
+   → expected { Object (title) } to deeply equal { Object (title) }
+ × server/tests/integration/event-title-maintenance.test.ts > CR-01 title validation — TEST-08/48 (AC-07/37) > TEST-48 PATCH rejects null without changing any field 10ms
+   → expected { Object (title) } to deeply equal { Object (title) }
+ × server/tests/integration/event-title-maintenance.test.ts > CR-01 title validation — TEST-08/48 (AC-07/37) > TEST-48 PATCH rejects array without changing any field 7ms
+   → expected { Object (title) } to deeply equal { Object (title) }
+ ✓ server/tests/integration/event-title-maintenance.test.ts > CR-01 title validation — TEST-08/48 (AC-07/37) > TEST-08 create accepts three ASCII and persists normalized text 25ms
+ ✓ server/tests/integration/event-title-maintenance.test.ts > CR-01 title validation — TEST-08/48 (AC-07/37) > TEST-08 create accepts trimmed three and persists normalized text 22ms
+ ✓ server/tests/integration/event-title-maintenance.test.ts > CR-01 title validation — TEST-08/48 (AC-07/37) > TEST-08 create accepts three Thai letters and persists normalized text 19ms
+ ✓ server/tests/integration/event-title-maintenance.test.ts > CR-01 title validation — TEST-08/48 (AC-07/37) > TEST-08 create accepts three emoji and persists normalized text 20ms
+ ✓ server/tests/integration/event-title-maintenance.test.ts > CR-01 title validation — TEST-08/48 (AC-07/37) > TEST-08 create accepts Thai combining marks / three code points and persists normalized text 21ms
+ ✓ server/tests/integration/event-title-maintenance.test.ts > CR-01 title validation — TEST-08/48 (AC-07/37) > TEST-08 create accepts 120 emoji / 240 UTF-16 units and persists normalized text 19ms
+ ✓ server/tests/integration/event-title-maintenance.test.ts > CR-01 title validation — TEST-08/48 (AC-07/37) > TEST-48 PATCH accepts three ASCII and reads it back 22ms
+ ✓ server/tests/integration/event-title-maintenance.test.ts > CR-01 title validation — TEST-08/48 (AC-07/37) > TEST-48 PATCH accepts trimmed three and reads it back 22ms
+ ✓ server/tests/integration/event-title-maintenance.test.ts > CR-01 title validation — TEST-08/48 (AC-07/37) > TEST-48 PATCH accepts three Thai letters and reads it back 24ms
+ ✓ server/tests/integration/event-title-maintenance.test.ts > CR-01 title validation — TEST-08/48 (AC-07/37) > TEST-48 PATCH accepts three emoji and reads it back 27ms
+ ✓ server/tests/integration/event-title-maintenance.test.ts > CR-01 title validation — TEST-08/48 (AC-07/37) > TEST-48 PATCH accepts Thai combining marks / three code points and reads it back 25ms
+ ✓ server/tests/integration/event-title-maintenance.test.ts > CR-01 title validation — TEST-08/48 (AC-07/37) > TEST-48 PATCH accepts 120 emoji / 240 UTF-16 units and reads it back 27ms
+ ✓ server/tests/integration/event-title-maintenance.test.ts > CR-01 title validation — TEST-08/48 (AC-07/37) > TEST-48 legacy DRAFT title stays readable and omitted-title PATCH works 42ms
+ ✓ server/tests/integration/event-title-maintenance.test.ts > CR-01 title validation — TEST-08/48 (AC-07/37) > TEST-48 legacy PUBLISHED title stays readable and omitted-title PATCH works 56ms
+ ✓ server/tests/integration/event-title-maintenance.test.ts > CR-01 title validation — TEST-08/48 (AC-07/37) > preserved legacy short-title publish and registration do not revalidate title 38ms
+ ✓ server/tests/integration/event-title-maintenance.test.ts > CR-01 title validation — TEST-08/48 (AC-07/37) > TEST-08/48 keeps auth, role and CSRF ahead of short-title validation 58ms
+
+⎯⎯⎯⎯⎯⎯ Failed Tests 20 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  server/tests/integration/event-title-maintenance.test.ts > CR-01 title validation — TEST-08/48 (AC-07/37) > TEST-08 create rejects empty without inserting
+ FAIL  server/tests/integration/event-title-maintenance.test.ts > CR-01 title validation — TEST-08/48 (AC-07/37) > TEST-08 create rejects whitespace without inserting
+ FAIL  server/tests/integration/event-title-maintenance.test.ts > CR-01 title validation — TEST-08/48 (AC-07/37) > TEST-08 create rejects 121 code points without inserting
+ FAIL  server/tests/integration/event-title-maintenance.test.ts > CR-01 title validation — TEST-08/48 (AC-07/37) > TEST-08 create rejects wrong type without inserting
+ FAIL  server/tests/integration/event-title-maintenance.test.ts > CR-01 title validation — TEST-08/48 (AC-07/37) > TEST-08 create rejects null without inserting
+ FAIL  server/tests/integration/event-title-maintenance.test.ts > CR-01 title validation — TEST-08/48 (AC-07/37) > TEST-08 create rejects array without inserting
+AssertionError: expected { Object (title) } to deeply equal { Object (title) }
+
+- Expected
++ Received
+
+  {
+    "title": [
+-     "กรุณากรอก 3–120 ตัวอักษร",
++     "กรุณากรอก 1–120 ตัวอักษร",
+    ],
+  }
+
+ ❯ invalidTitle server/tests/integration/event-title-maintenance.test.ts:47:38
+     45| function invalidTitle(response: request.Response) {
+     46|   error(response, 400, 'INVALID_INPUT');
+     47|   expect(response.body.error.fields).toEqual({ title: ['กรุณากรอก 3–12…
+       |                                      ^
+     48| }
+     49| async function fixture(title = 'Original title', status: 'DRAFT' | 'PU…
+ ❯ server/tests/integration/event-title-maintenance.test.ts:91:5
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/20]⎯
+
+ FAIL  server/tests/integration/event-title-maintenance.test.ts > CR-01 title validation — TEST-08/48 (AC-07/37) > TEST-08 create rejects one code point without inserting
+AssertionError: expected { status: 201, eventCount: 61 } to deeply equal { status: 400, eventCount: 60 }
+
+- Expected
++ Received
+
+  {
+-   "eventCount": 60,
+-   "status": 400,
++   "eventCount": 61,
++   "status": 201,
+  }
+
+ ❯ server/tests/integration/event-title-maintenance.test.ts:90:60
+     88|     // Check the no-write guarantee even when the old code incorrectly…
+     89|     const after = await db.event.count();
+     90|     expect({ status: response.status, eventCount: after }).toEqual({ s…
+       |                                                            ^
+     91|     invalidTitle(response);
+     92|   });
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[2/20]⎯
+
+ FAIL  server/tests/integration/event-title-maintenance.test.ts > CR-01 title validation — TEST-08/48 (AC-07/37) > TEST-08 create rejects two code points without inserting
+AssertionError: expected { status: 201, eventCount: 62 } to deeply equal { status: 400, eventCount: 61 }
+
+- Expected
++ Received
+
+  {
+-   "eventCount": 61,
+-   "status": 400,
++   "eventCount": 62,
++   "status": 201,
+  }
+
+ ❯ server/tests/integration/event-title-maintenance.test.ts:90:60
+     88|     // Check the no-write guarantee even when the old code incorrectly…
+     89|     const after = await db.event.count();
+     90|     expect({ status: response.status, eventCount: after }).toEqual({ s…
+       |                                                            ^
+     91|     invalidTitle(response);
+     92|   });
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[3/20]⎯
+
+ FAIL  server/tests/integration/event-title-maintenance.test.ts > CR-01 title validation — TEST-08/48 (AC-07/37) > TEST-08 create rejects two after trim without inserting
+AssertionError: expected { status: 201, eventCount: 63 } to deeply equal { status: 400, eventCount: 62 }
+
+- Expected
++ Received
+
+  {
+-   "eventCount": 62,
+-   "status": 400,
++   "eventCount": 63,
++   "status": 201,
+  }
+
+ ❯ server/tests/integration/event-title-maintenance.test.ts:90:60
+     88|     // Check the no-write guarantee even when the old code incorrectly…
+     89|     const after = await db.event.count();
+     90|     expect({ status: response.status, eventCount: after }).toEqual({ s…
+       |                                                            ^
+     91|     invalidTitle(response);
+     92|   });
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[4/20]⎯
+
+ FAIL  server/tests/integration/event-title-maintenance.test.ts > CR-01 title validation — TEST-08/48 (AC-07/37) > TEST-08 create rejects two emoji / four UTF-16 units without inserting
+AssertionError: expected { status: 201, eventCount: 64 } to deeply equal { status: 400, eventCount: 63 }
+
+- Expected
++ Received
+
+  {
+-   "eventCount": 63,
+-   "status": 400,
++   "eventCount": 64,
++   "status": 201,
+  }
+
+ ❯ server/tests/integration/event-title-maintenance.test.ts:90:60
+     88|     // Check the no-write guarantee even when the old code incorrectly…
+     89|     const after = await db.event.count();
+     90|     expect({ status: response.status, eventCount: after }).toEqual({ s…
+       |                                                            ^
+     91|     invalidTitle(response);
+     92|   });
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[5/20]⎯
+
+ FAIL  server/tests/integration/event-title-maintenance.test.ts > CR-01 title validation — TEST-08/48 (AC-07/37) > TEST-48 PATCH rejects empty without changing any field
+ FAIL  server/tests/integration/event-title-maintenance.test.ts > CR-01 title validation — TEST-08/48 (AC-07/37) > TEST-48 PATCH rejects whitespace without changing any field
+ FAIL  server/tests/integration/event-title-maintenance.test.ts > CR-01 title validation — TEST-08/48 (AC-07/37) > TEST-48 PATCH rejects 121 code points without changing any field
+ FAIL  server/tests/integration/event-title-maintenance.test.ts > CR-01 title validation — TEST-08/48 (AC-07/37) > TEST-48 PATCH rejects wrong type without changing any field
+ FAIL  server/tests/integration/event-title-maintenance.test.ts > CR-01 title validation — TEST-08/48 (AC-07/37) > TEST-48 PATCH rejects null without changing any field
+ FAIL  server/tests/integration/event-title-maintenance.test.ts > CR-01 title validation — TEST-08/48 (AC-07/37) > TEST-48 PATCH rejects array without changing any field
+AssertionError: expected { Object (title) } to deeply equal { Object (title) }
+
+- Expected
++ Received
+
+  {
+    "title": [
+-     "กรุณากรอก 3–120 ตัวอักษร",
++     "กรุณากรอก 1–120 ตัวอักษร",
+    ],
+  }
+
+ ❯ invalidTitle server/tests/integration/event-title-maintenance.test.ts:47:38
+     45| function invalidTitle(response: request.Response) {
+     46|   error(response, 400, 'INVALID_INPUT');
+     47|   expect(response.body.error.fields).toEqual({ title: ['กรุณากรอก 3–12…
+       |                                      ^
+     48| }
+     49| async function fixture(title = 'Original title', status: 'DRAFT' | 'PU…
+ ❯ server/tests/integration/event-title-maintenance.test.ts:98:5
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[6/20]⎯
+
+ FAIL  server/tests/integration/event-title-maintenance.test.ts > CR-01 title validation — TEST-08/48 (AC-07/37) > TEST-48 PATCH rejects one code point without changing any field
+AssertionError: expected { status: 200, event: { …(12) } } to deeply equal { status: 400, event: { …(12) } }
+
+- Expected
++ Received
+
+  {
+    "event": {
+-     "capacity": 2,
++     "capacity": 4,
+      "createdAt": 2026-11-27T15:59:00.000Z,
+      "description": "d",
+      "endsAt": 2026-11-29T18:00:00.000Z,
+      "id": "ccfa8953-ddaf-478e-bf70-16955fd4a66f",
+      "location": "l",
+      "organizerId": "2f54903e-6435-4258-86c4-f352499c5cff",
+      "registrationClosesAt": 2026-11-28T16:00:00.000Z,
+      "startsAt": 2026-11-29T16:00:00.000Z,
+      "status": "DRAFT",
+-     "title": "Original title",
+-     "updatedAt": 2026-11-27T15:59:00.000Z,
++     "title": "a",
++     "updatedAt": 2026-11-27T16:00:00.000Z,
+    },
+-   "status": 400,
++   "status": 200,
+  }
+
+ ❯ server/tests/integration/event-title-maintenance.test.ts:97:55
+     95|     const response = await patch(oa, original.id, { title, capacity: 4…
+     96|     const after = await db.event.findUniqueOrThrow({ where: { id: orig…
+     97|     expect({ status: response.status, event: after }).toEqual({ status…
+       |                                                       ^
+     98|     invalidTitle(response);
+     99|   });
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[7/20]⎯
+
+ FAIL  server/tests/integration/event-title-maintenance.test.ts > CR-01 title validation — TEST-08/48 (AC-07/37) > TEST-48 PATCH rejects two code points without changing any field
+AssertionError: expected { status: 200, event: { …(12) } } to deeply equal { status: 400, event: { …(12) } }
+
+- Expected
++ Received
+
+  {
+    "event": {
+-     "capacity": 2,
++     "capacity": 4,
+      "createdAt": 2026-11-27T15:59:00.000Z,
+      "description": "d",
+      "endsAt": 2026-11-29T18:00:00.000Z,
+      "id": "bc27f2f9-1f1a-400f-91fe-02f6b6b16589",
+      "location": "l",
+      "organizerId": "2f54903e-6435-4258-86c4-f352499c5cff",
+      "registrationClosesAt": 2026-11-28T16:00:00.000Z,
+      "startsAt": 2026-11-29T16:00:00.000Z,
+      "status": "DRAFT",
+-     "title": "Original title",
+-     "updatedAt": 2026-11-27T15:59:00.000Z,
++     "title": "ab",
++     "updatedAt": 2026-11-27T16:00:00.000Z,
+    },
+-   "status": 400,
++   "status": 200,
+  }
+
+ ❯ server/tests/integration/event-title-maintenance.test.ts:97:55
+     95|     const response = await patch(oa, original.id, { title, capacity: 4…
+     96|     const after = await db.event.findUniqueOrThrow({ where: { id: orig…
+     97|     expect({ status: response.status, event: after }).toEqual({ status…
+       |                                                       ^
+     98|     invalidTitle(response);
+     99|   });
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[8/20]⎯
+
+ FAIL  server/tests/integration/event-title-maintenance.test.ts > CR-01 title validation — TEST-08/48 (AC-07/37) > TEST-48 PATCH rejects two after trim without changing any field
+AssertionError: expected { status: 200, event: { …(12) } } to deeply equal { status: 400, event: { …(12) } }
+
+- Expected
++ Received
+
+  {
+    "event": {
+-     "capacity": 2,
++     "capacity": 4,
+      "createdAt": 2026-11-27T15:59:00.000Z,
+      "description": "d",
+      "endsAt": 2026-11-29T18:00:00.000Z,
+      "id": "714c854a-8a1c-48ac-974a-eca03b1037e5",
+      "location": "l",
+      "organizerId": "2f54903e-6435-4258-86c4-f352499c5cff",
+      "registrationClosesAt": 2026-11-28T16:00:00.000Z,
+      "startsAt": 2026-11-29T16:00:00.000Z,
+      "status": "DRAFT",
+-     "title": "Original title",
+-     "updatedAt": 2026-11-27T15:59:00.000Z,
++     "title": "ab",
++     "updatedAt": 2026-11-27T16:00:00.000Z,
+    },
+-   "status": 400,
++   "status": 200,
+  }
+
+ ❯ server/tests/integration/event-title-maintenance.test.ts:97:55
+     95|     const response = await patch(oa, original.id, { title, capacity: 4…
+     96|     const after = await db.event.findUniqueOrThrow({ where: { id: orig…
+     97|     expect({ status: response.status, event: after }).toEqual({ status…
+       |                                                       ^
+     98|     invalidTitle(response);
+     99|   });
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[9/20]⎯
+
+ FAIL  server/tests/integration/event-title-maintenance.test.ts > CR-01 title validation — TEST-08/48 (AC-07/37) > TEST-48 PATCH rejects two emoji / four UTF-16 units without changing any field
+AssertionError: expected { status: 200, event: { …(12) } } to deeply equal { status: 400, event: { …(12) } }
+
+- Expected
++ Received
+
+  {
+    "event": {
+-     "capacity": 2,
++     "capacity": 4,
+      "createdAt": 2026-11-27T15:59:00.000Z,
+      "description": "d",
+      "endsAt": 2026-11-29T18:00:00.000Z,
+      "id": "b2fc268c-374e-4d82-81b6-b33b2ec6b9c0",
+      "location": "l",
+      "organizerId": "2f54903e-6435-4258-86c4-f352499c5cff",
+      "registrationClosesAt": 2026-11-28T16:00:00.000Z,
+      "startsAt": 2026-11-29T16:00:00.000Z,
+      "status": "DRAFT",
+-     "title": "Original title",
+-     "updatedAt": 2026-11-27T15:59:00.000Z,
++     "title": "🌱🌱",
++     "updatedAt": 2026-11-27T16:00:00.000Z,
+    },
+-   "status": 400,
++   "status": 200,
+  }
+
+ ❯ server/tests/integration/event-title-maintenance.test.ts:97:55
+     95|     const response = await patch(oa, original.id, { title, capacity: 4…
+     96|     const after = await db.event.findUniqueOrThrow({ where: { id: orig…
+     97|     expect({ status: response.status, event: after }).toEqual({ status…
+       |                                                       ^
+     98|     invalidTitle(response);
+     99|   });
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[10/20]⎯
+
+
+ Test Files  1 failed (1)
+      Tests  20 failed | 16 passed (36)
+   Start at  23:24:32
+   Duration  1.98s (tests 75%, import 18%, transform 6%)
+

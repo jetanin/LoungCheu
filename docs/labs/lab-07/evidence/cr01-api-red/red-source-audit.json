@@ -1,0 +1,23 @@
+{
+  "baseline": "079397267e354e4c9dd8034d5652cf191fd49361",
+  "branch": "ref: refs/heads/feature/85-lab7-title-validation",
+  "mode": "red",
+  "productionSourceUnchangedDuringRun": true,
+  "testFile": "server/tests/integration/event-title-maintenance.test.ts",
+  "testSha256": "852c8ff3776831cec3aa68fe536243a733932559d25f99fdc9d86bf947306d0a",
+  "production": {
+    "server/src": {
+      "files": 36,
+      "manifestSha256": "e19d4ddb543523d4cf6fd1dafff65be469c63b4f480db36bcab27028051d3730"
+    },
+    "server/prisma": {
+      "files": 8,
+      "manifestSha256": "c55196183483fb0d8e6991166657c0f002087decd85a9f8be2e327921707e14b"
+    },
+    "client/src": {
+      "files": 27,
+      "manifestSha256": "7b89f8c5f0b4ac3e32f41686e6b0fbee1c3df5705727e779e04a03dff6cad268"
+    }
+  },
+  "productionSourceUnchangedBetweenBaselineAndRed": true
+}

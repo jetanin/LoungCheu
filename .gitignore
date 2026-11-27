@@ -68,3 +68,4 @@ Desktop.ini
 
 # Temporary WIF credentials created by google-github-actions/auth
 /gha-creds-*.json
+/output
