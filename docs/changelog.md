@@ -111,3 +111,7 @@ Added traceability §7: AC-41–AC-50 rows with planned tests, implementation st
 F-08 and F-09 are released on `main` as tag `v3.0.0-sprint-3` (`3f80759`, release PR #81; CI run 45991439969; deploy run 45994749187, revision `scccd8b05-00013-nwj`; `/api/ready` reports `3f80759`). A post-deploy check on the live app passed 19/19: ready, 401 without login, participant 403 on organizer endpoints, a real F-08 check-in (before start 409, inside window 200, repeat 409), F-09 summary 100.00%, and the Lab 5 event and registration still present after the migration and redeploy. Evidence is in `docs/sprints/sprint-3/evidence/release-v3.0.0/`.
 
 Status updates: traceability FR-13–15, BR-12–13, NFR-01/03/04/05/06 and §7 AC-41–50 now say Accepted (release), meaning in a reviewed release on main as remaining-work defines it, not independent UAT. Contracts and STS v0.4, SRS §10, features, System SDS and remaining-work follow the same release.
+
+## Stale status cleanup — 27 November 2026
+
+No FR/BR/NFR, AC or TEST changed. remaining-work: GAP-02 row records the 27 Nov redeploy readback on `v3.0.0-sprint-3` (closure still waits for TEST-35); the 27–28 Nov plan rows now state what was done. traceability: NFR-07 now cites the Lab 5 C-01/C-02 gate evidence, required `test-and-docker` checks and the deploy `--expected-commit` smoke; NFR-09 records the LAB6-CX-01 retest PASS. SRS §10: date 27 Nov, BR-13/DEC-18 and NFR-09 items updated without changing baseline text. Merged `lab6-staging` (PR #76 retest record) so the Lab 6 retest evidence reaches the next main release.

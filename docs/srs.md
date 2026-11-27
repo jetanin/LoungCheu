@@ -117,7 +117,7 @@ Out of scope: self-registration, reset password, email verification, หลา�
 
 รายละเอียดที่ทีมเลือกเอง เช่น session อายุ 2 ชั่วโมง capacity สูงสุด และกติกายกเลิก/check-in อยู่ใน [Decisions](decisions.md) การเปลี่ยนกฎต้องปรับ AC/STS/traceability และบันทึกเหตุผลใน [Changelog](changelog.md)
 
-## 10. สถานะเทียบผลิตภัณฑ์ปัจจุบัน — 26 พฤศจิกายน 2026
+## 10. สถานะเทียบผลิตภัณฑ์ปัจจุบัน — 27 พฤศจิกายน 2026
 
 ข้อความ FR/BR/NFR ด้านบนยังเป็น baseline v0.5 ที่ teammate อนุมัติ ไม่มีการเปลี่ยนข้อกำหนดที่อนุมัติแล้วหลังจากนั้น ส่วนนี้บอกเพียงว่าแต่ละ FR อยู่ขั้นไหนของผลิตภัณฑ์จริง หลักฐานรายละเอียดอยู่ใน [traceability](traceability.md)
 
@@ -129,7 +129,7 @@ Out of scope: self-registration, reset password, email verification, หลา�
 | FR-13, FR-14 | F-08 | Implemented, tested, teammate-reviewed และ merge เข้า `sprint-3-staging` (PR #78, #79, #80) CI ผ่าน; release บน main เป็น `v3.0.0-sprint-3` (`3f80759`, PR #81) deploy revision `scccd8b05-00013-nwj` |
 | FR-15 | F-09 | Implemented, tested, teammate-reviewed และ merge เข้า `sprint-3-staging` (PR #75) CI ผ่าน; release บน main เป็น `v3.0.0-sprint-3` (`3f80759`, PR #81) deploy revision `scccd8b05-00013-nwj` |
 
-ประเด็นที่ยังเปิดอยู่ (ยังไม่แก้ข้อความ baseline):
+ประเด็นที่บันทึกไว้ (ไม่แก้ข้อความ baseline):
 
-- **BR-13 การปัดเศษ:** baseline ระบุแค่ "ปัดทศนิยม 2 ตำแหน่ง"; DEC-18 (ร่าง Sprint 3, Issue #49) เสนอปัดครึ่งขึ้น (half-up) ด้วยจำนวนเต็ม จะปรับข้อความ BR-13 เมื่อ contract Sprint 3 ผ่าน review
-- **NFR-09 re-test accepted defect:** UAT Lab 6 ไม่พบ defect จึงไม่มี accepted defect ให้ re-test; ตาม Lab 6 ทีมขอ controlled defect exercise จาก TA แทน — NFR-09 ส่วน re-test ยังไม่ครบจนกว่าจะทำ exercise นั้น
+- **BR-13 การปัดเศษ:** baseline ระบุแค่ "ปัดทศนิยม 2 ตำแหน่ง"; DEC-18 (ร่าง Sprint 3, Issue #49) เสนอปัดครึ่งขึ้น (half-up) ด้วยจำนวนเต็ม จะปรับข้อความ BR-13 เมื่อ contract Sprint 3 ผ่าน review. **อัปเดต 27 พ.ย.:** contract Sprint 3 ผ่าน review ใน PR #71 (26 พ.ย.) และ F-09 ใช้ DEC-18 ตาม AC-48 (TEST-61 PASS, release `v3.0.0-sprint-3`); ข้อความ BR-13 ใน baseline คงเดิม DEC-18 เป็นการกำหนดรายละเอียดที่ test ได้ ไม่ใช่การเปลี่ยน requirement
+- **NFR-09 re-test accepted defect:** UAT Lab 6 ไม่พบ defect จึงไม่มี accepted defect ให้ re-test; ตาม Lab 6 ทีมขอ controlled defect exercise จาก TA แทน — NFR-09 ส่วน re-test ยังไม่ครบจนกว่าจะทำ exercise นั้น. **อัปเดต 27 พ.ย.:** ทำแล้ว — LAB6-CX-01 (#64) release `v2.0.1-lab6` และ independent retest PASS 26 พ.ย. 2026 (Nantakorn, TH-005_P5); independent UAT ของ Sprint 2–3 ยังไม่มี

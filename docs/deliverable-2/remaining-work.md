@@ -36,7 +36,7 @@ AC-25 และ AC-27 ของ Sprint 1 ยังเป็น PARTIAL ตาม
 
 | Gap | สถานะปัจจุบัน | Remaining action | Owner; วันที่เสร็จ |
 |---|---|---|---|
-| GAP-02 / AC-25 / NFR-03 / TEST-31 | PARTIAL: recreate app (S1) และ backend process restart บน DB เดิม (F-06 TEST-43, CI) ผ่าน; Lab 5 (#20, 22 พ.ย. 2026) ตรวจบน Cloud Run แล้ว: event `L5-C05-20261122-A` และ registration `dd47235f-be9f-46ed-830a-4d49586cf1e2` (ACTIVE, 4/5) ยังอยู่ครบหลัง application restart บน revision `scccd8b05-00005-5xj` และหลัง redeploy ไป revision ใหม่ `scccd8b05-00006-68j` ([หลักฐาน](../labs/lab-05/evidence/issue20-persistence-20261122/README.md)). หลักฐานนี้เป็นของ release เดิม จึงไม่ประกาศปิด GAP-02 จากหลักฐานนี้อย่างเดียว | ตรวจซ้ำสำหรับ release ใหม่ของ Sprint 3: จด ID ของ event/registration เดิมก่อน deploy → deploy → อ่านกลับผ่าน API/UI ด้วย ID เดิม บันทึก revision ก่อน/หลัง | Paphangkorn; 30 พ.ย. (ทำพร้อม Sprint 3 deploy) |
+| GAP-02 / AC-25 / NFR-03 / TEST-31 | PARTIAL: recreate app (S1) และ backend process restart บน DB เดิม (F-06 TEST-43, CI) ผ่าน; Lab 5 (#20, 22 พ.ย. 2026) ตรวจบน Cloud Run แล้ว: event `L5-C05-20261122-A` และ registration `dd47235f-be9f-46ed-830a-4d49586cf1e2` (ACTIVE, 4/5) ยังอยู่ครบหลัง application restart บน revision `scccd8b05-00005-5xj` และหลัง redeploy ไป revision ใหม่ `scccd8b05-00006-68j` ([หลักฐาน](../labs/lab-05/evidence/issue20-persistence-20261122/README.md)). หลักฐานนี้เป็นของ release เดิม จึงไม่ประกาศปิด GAP-02 จากหลักฐานนี้อย่างเดียว. **ตรวจซ้ำแล้ว 27 พ.ย. 2026:** หลัง migration และ redeploy ของ `v3.0.0-sprint-3` (revision `scccd8b05-00013-nwj`) event และ registration ชุดเดิมอ่านกลับได้ด้วย ID เดิม (`checked_in_at` = null) PASS ([post-deploy](../sprints/sprint-3/evidence/release-v3.0.0/README.md)) | ตัดสินปิด GAP-02 หลัง TEST-35 clean reproduction (แถวถัดไป) | Paphangkorn; 12 ธ.ค. |
 | NFR-05 / TEST-35 clean reproduction | PARTIAL: Docker build ผ่านใน CI; ยังไม่มี tester/date/commands จากเครื่องใหม่ | อีกคนในทีมทำตาม README บนเครื่อง/DB ใหม่: install → migrate → seed → test → run บันทึกผล | Paphangkorn (README อัปเดตโดย Jetanin ตามแผน D2 6.14 จึงให้อีกคนเป็นผู้ทดสอบ); 12 ธ.ค. |
 | NFR-02 cookie บน HTTPS จริง | NOT EXECUTED บน deployment | ตรวจ `Set-Cookie` (Secure/HttpOnly/SameSite) จาก URL Cloud Run แล้วบันทึก | Paphangkorn; 30 พ.ย. |
 | NFR-06 independent browser/device matrix | automated UI coverage ผ่าน; manual matrix ยังไม่ครบ | รันเคสหลักบน desktop + mobile อย่างละ 1 browser บน release สุดท้าย | Jetanin + Paphangkorn; 12 ธ.ค. |
@@ -50,8 +50,8 @@ AC-25 และ AC-27 ของ Sprint 1 ยังเป็น PARTIAL ตาม
 
 | วันที่ | งาน | Owner |
 |---|---|---|
-| 27 พ.ย. | merge PR นี้ และ PR #76 (ผล retest LAB6-CX-01) แล้วปิด #64/#44 (PR #71 และ #72 merge แล้ว 26 พ.ย.); F-08 migration ขึ้น `sprint-3-staging`; F-08 RED; F-09 UI (TEST-64) | Jetanin, Paphangkorn |
-| 28 พ.ย. | F-08 กฎแรก GREEN; F-09 ครบ AC-47–AC-50 merge เข้า staging; release candidate ของ D2 บน main + deploy + tag | Jetanin, Paphangkorn |
+| 27 พ.ย. | **เสร็จแล้ว:** PR นี้ (#73) และ PR #76 merge, #64/#44 ปิด; F-08 (PR #78, #79, #80) และ F-09 (PR #75) merge เข้า `sprint-3-staging`; release `v3.0.0-sprint-3` (PR #81) + deploy + post-deploy 19/19 PASS รวม GAP-02 redeploy readback | Jetanin, Paphangkorn |
+| 28 พ.ย. | (งานที่วางไว้ — F-08/F-09 merge, release candidate บน main + deploy + tag — เสร็จก่อนกำหนดแล้วเมื่อ 27 พ.ย.) ประกอบ D2 PDF | Paphangkorn |
 | 29 พ.ย. | ส่ง Lab 6 PDF (#45) และ D2 PDF (#51) ภายใน 23:59 | Jetanin (#45), Paphangkorn (#51) |
 | 30 พ.ย. | NFR-02 (deployed HTTPS cookie check) — F-08/F-09 และ release `v3.0.0-sprint-3` เสร็จก่อนกำหนดแล้วเมื่อ 27 พ.ย. | Jetanin, Paphangkorn |
 | 1–11 ธ.ค. | ช่วงสอบ — ไม่ทำงาน implement; แก้แค่ defect ร้ายแรงถ้ามี | — |

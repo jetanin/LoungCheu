@@ -19,9 +19,10 @@ The TA requires the UAT Team to **independently retest the corrected behaviour o
 | Item | Value |
 |---|---|
 | App URL | https://scccd8b05-4d7hbszvwq-as.a.run.app/ |
-| Corrected release | `<tag>` / `<commit>` — _we fill this in when we send you this file_ |
-| Cloud Run revision | `<revision>` |
-| Version check | Open `/api/ready`. It must show `"status":"ready"`, `"db":"connected"` and `"version":"<full commit SHA>"`. If the version is different, stop and tell us. |
+| Corrected release | [`v2.0.1-lab6`](https://github.com/jetanin/LoungCheu/releases/tag/v2.0.1-lab6) / `6f49d327e8e709fc716b9eeb60591ea4fd692fc9` (release [PR #68](https://github.com/jetanin/LoungCheu/pull/68)) |
+| Cloud Run revision | `scccd8b05-00012-msg` |
+| Deployment | [Deploy demo run 45685620954](https://github.com/jetanin/LoungCheu/actions/runs/45685620954), SUCCESS; [release evidence](evidence/controlled-exercise/README.md) |
+| Version check | Open `/api/ready`. Its `data` must show `"status":"ready"`, `"db":"connected"` and `"version":"6f49d327e8e709fc716b9eeb60591ea4fd692fc9"`. If the version is different, stop and tell us before sending the register requests. |
 
 **Note:** this revision also includes our Sprint 2 features (cancel/re-register, close event, edit event). They do not change the duplicate rule. Please test only the steps below.
 
@@ -97,7 +98,7 @@ Run **UAT-02** from the original UAT cases again on this revision, with a new ti
 
 ## 5. What to send back (IG group)
 
-- Tester name(s), date/time, tested version (`<tag> / <first 7 characters of version>`)
+- Tester name(s), date/time and timezone, tested version (`v2.0.1-lab6 / 6f49d32`; record the full SHA from `/api/ready` with the evidence)
 - PASS/FAIL for B1–B5, C1–C3 and UAT-02, with the actual result if anything differs
 - Screenshots: the console table (Part B) and C1–C3. **Do not show passwords.**
 - Your decision for this retest: **PASS** or **FAIL**, and whether your Sprint 1 decision for LoungCheu stays **Accepted** on this revision
