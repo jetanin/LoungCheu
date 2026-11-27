@@ -1,6 +1,6 @@
 # Part A — Software Requirements Specification
 
-เอกสาร LC-SRS | Documentation baseline v0.5 | 5 พฤศจิกายน 2026
+เอกสาร LC-SRS | Documentation v0.6 (CR-01, 27 พฤศจิกายน 2026) | baseline v0.5 | 5 พฤศจิกายน 2026
 
 ## 1. ปัญหาและเป้าหมาย
 
@@ -72,7 +72,7 @@ Out of scope: self-registration, reset password, email verification, หลา�
 
 | ID | กฎและผลเมื่อไม่ผ่าน |
 |---|---|
-| BR-01 | capacity เป็น JSON integer 1–1,000 ไม่ coercion string/boolean; title 1–120, description 1–2,000, location 1–200 Unicode code points หลัง trim; ทุกช่องต้องเป็น string และว่างไม่ได้ |
+| BR-01 | capacity เป็น JSON integer 1–1,000 ไม่ coercion string/boolean; title **3–120** (CR-01 v0.6; เดิม 1–120), description 1–2,000, location 1–200 Unicode code points หลัง trim; ทุกช่องต้องเป็น string และว่างไม่ได้; title ของกิจกรรมที่บันทึกก่อน CR-01 ไม่ถูกตรวจย้อนหลังและไม่แก้อัตโนมัติ |
 | BR-02 | `registration_closes_at <= starts_at < ends_at`; เผยแพร่ได้เมื่อ closes_at อยู่ในอนาคตเทียบเวลา server |
 | BR-03 | ลงทะเบียนได้เมื่อ status=PUBLISHED และ `server_now < registration_closes_at`; ที่เท่ากับ deadline ต้องปฏิเสธ |
 | BR-04 | หนึ่ง registration record ต่อ user/event; S2 reactivate record เดิมโดยคง registered_at ครั้งแรก ล้าง cancelled_at และ append history; ไม่สร้าง ACTIVE ซ้ำ |

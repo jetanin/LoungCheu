@@ -1,6 +1,6 @@
 # Sprint 2 — Feature Engineering Contracts (F-06, F-07)
 
-เอกสาร LC-S2-CONTRACT | v0.8 (F-06 × F-07 cross-feature status) | 24 พฤศจิกายน 2026
+เอกสาร LC-S2-CONTRACT | v0.9 (CR-01; v0.8 F-06 × F-07 cross-feature status) | 27 พฤศจิกายน 2026
 
 ฐานของ Sprint 2: `sprint-2-staging` แตกจาก `main` ที่ `0b2cc80` (tag `v1.0.1-uat`) ใช้ SRS/System SDS baseline v0.5 และ IDs เดิมตาม [traceability](../../traceability.md) เอกสารนี้ต้อง merge เข้า `sprint-2-staging` **ก่อน** เริ่มเขียนโค้ด F-06/F-07 (D2 §3.2 "contracts before implementation")
 
@@ -216,7 +216,7 @@ UI rules:
 | EVENT_NOT_EDITABLE | กิจกรรมนี้ปิดแล้ว แก้ไขไม่ได้ |
 | FIELD_NOT_EDITABLE | กิจกรรมเผยแพร่แล้ว แก้เวลาเริ่ม เวลาสิ้นสุด และเวลาปิดรับไม่ได้ |
 | CAPACITY_BELOW_ACTIVE | จำนวนที่นั่งต้องไม่น้อยกว่าผู้ลงทะเบียน ACTIVE ปัจจุบัน (n คน) |
-| INVALID_INPUT | ใช้ข้อความรายช่องเดียวกับหน้าสร้างกิจกรรม เช่น "กรุณากรอก 1–120 ตัวอักษร", "จำนวนที่นั่งต้องเป็นจำนวนเต็ม 1–1000" |
+| INVALID_INPUT | ใช้ข้อความรายช่องเดียวกับหน้าสร้างกิจกรรม เช่น "กรุณากรอก 3–120 ตัวอักษร" (title, CR-01 v0.9; เดิม 1–120), "กรุณากรอก 1–2000 ตัวอักษร", "จำนวนที่นั่งต้องเป็นจำนวนเต็ม 1–1000" |
 
 ### API / data contract
 
@@ -224,7 +224,7 @@ UI rules:
 |---|---|---|---|
 | PATCH /api/organizer/events/{id} | EventPatch + CSRF header | 200 data: OwnerEvent (ค่าหลังแก้, `updated_at` ใหม่) | 400 INVALID_INPUT; 401 AUTH_REQUIRED; 403 ROLE_FORBIDDEN / CSRF_FAILED; 404 EVENT_NOT_FOUND; 409 EVENT_NOT_EDITABLE / FIELD_NOT_EDITABLE / CAPACITY_BELOW_ACTIVE |
 
-**EventPatch:** JSON object ที่มี field จาก EventInput **อย่างน้อย 1 field** แต่ละ field ใช้ type/trim/length/range เดียวกับ EventInput (BR-01, BR-14) ห้าม `null`; field อื่น (เช่น `id`, `organizer_id`, `status`, `created_at`, `updated_at`, `active_count`) หรือ object ว่าง ตอบ 400 INVALID_INPUT (BR-11) Parser budget 32 KiB เท่า Event
+**EventPatch:** JSON object ที่มี field จาก EventInput **อย่างน้อย 1 field** แต่ละ field ใช้ type/trim/length/range เดียวกับ EventInput (BR-01, BR-14) ห้าม `null`; **CR-01 v0.9:** ถ้ามี `title` ต้องยาว 3–120 code points หลัง trim; ถ้าไม่ส่ง `title` ไม่ตรวจ title ที่เก็บไว้ (กิจกรรมเก่าที่ title 1–2 ตัวยังแก้ field อื่นได้); field อื่น (เช่น `id`, `organizer_id`, `status`, `created_at`, `updated_at`, `active_count`) หรือ object ว่าง ตอบ 400 INVALID_INPUT (BR-11) Parser budget 32 KiB เท่า Event
 
 **ลำดับการตรวจ** (ผลลัพธ์คือเหตุผลแรกที่เจอ):
 
@@ -277,7 +277,7 @@ CLOSED ──edit──▶ 409 EVENT_NOT_EDITABLE (ไม่เปลี่ย�
 | AC-34 | เจ้าของแก้ DRAFT ได้ทุก field ของ EventInput; ได้ 200 OwnerEvent, ค่าอ่านกลับจาก own endpoint ตรงกับที่แก้, owner/status/created_at เดิม, updated_at เปลี่ยน | TEST-45 |
 | AC-35 | เจ้าของแก้ title/description/location/capacity ของ PUBLISHED ได้ และ shared list/detail แสดงค่าใหม่; ส่ง field เวลาใด ๆ ได้ 409 FIELD_NOT_EDITABLE โดยข้อมูลไม่เปลี่ยน | TEST-46 |
 | AC-36 | แก้ CLOSED ได้ 409 EVENT_NOT_EDITABLE โดยข้อมูลไม่เปลี่ยน | TEST-47 |
-| AC-37 | EventPatch ว่าง/ผิด type/null/ยาวเกิน/สั้นเกินหลัง trim/capacity นอก 1–1000/เวลาผิดรูปแบบหรือละเอียดเกิน 3 หลัก/มี system หรือ unknown field ได้ 400; DRAFT ที่ค่ารวมผิดลำดับ BR-02 ได้ 400; ทุกกรณีไม่เปลี่ยนข้อมูล | TEST-48 |
+| AC-37 | EventPatch ว่าง/ผิด type/null/ยาวเกิน/สั้นเกินหลัง trim/capacity นอก 1–1000/เวลาผิดรูปแบบหรือละเอียดเกิน 3 หลัก/มี system หรือ unknown field ได้ 400; DRAFT ที่ค่ารวมผิดลำดับ BR-02 ได้ 400; **CR-01 v0.9:** title ที่ส่งมา < 3 code points หลัง trim ได้ 400 และ PATCH ที่ไม่มี title บนกิจกรรมเก่า title สั้นได้ 200 โดย title เดิมไม่เปลี่ยน; ทุกกรณี 400 ไม่เปลี่ยนข้อมูล | TEST-48 |
 | AC-38 | ลด capacity เท่ากับ ACTIVE count ได้ (boundary); ตั้งเป็น ACTIVE count − 1 ได้ 409 CAPACITY_BELOW_ACTIVE โดยข้อมูลไม่เปลี่ยน; เพิ่ม capacity ของกิจกรรมที่เต็มแล้ว Participant ใหม่ลงทะเบียนได้ | TEST-49 |
 | AC-39 | ลด capacity พร้อมกับมีการลงทะเบียนที่นั่งสุดท้าย (คนละ connection) ผลหลัง commit ACTIVE count ≤ capacity เสมอ; คำขอที่ทำทีหลังได้ 409 (EVENT_FULL หรือ CAPACITY_BELOW_ACTIVE) โดยไม่มีผลข้างเคียง และไม่มี deadlock/500 | TEST-50 |
 | AC-40 | Anonymous 401, Participant 403, Organizer อื่น 404, ไม่มี/ผิด CSRF 403 และ UI: ฟอร์มเติมค่าเดิม, ช่องเวลา disabled เมื่อ PUBLISHED, ไม่มีปุ่มเมื่อ CLOSED, แสดง error 400/409 เป็นภาษาไทย, หลังบันทึกและ reload เห็นค่าใหม่ | TEST-51, TEST-52 |
@@ -317,3 +317,4 @@ DoD F-07 (ครบทุกข้อจึงถือว่าเสร็จ)
 | 0.6 | 24 พ.ย. 2026 | อัปเดตสถานะ F-06 และลิงก์ completion/evidence; ระบุ actual process restart และ TEST-44(c) แยก PR; AC/TEST/FR/BR และ F-07 คงเดิม | reconcile design กับ implementation/local runs โดยไม่อ้างว่า CI/review/merge/release ผ่านแล้ว | M1 |
 | 0.7 | 24 พ.ย. 2026 | รวม revision v0.6 ของ M1/F-06 และ M2/F-07 จากสอง branch โดยเก็บทั้งสองแถว; คง AC/TEST IDs และการแก้ F-07 ทุกข้อ | แก้ merge conflict หลังรวม sprint-2-staging เข้า feature/47-f06; TEST-44(c) ยังแยก PR และผลหลัง merge บันทึกแยกจากผลเดิม | M1 |
 | 0.8 | 24 พ.ย. 2026 | อัปเดตสถานะ: TEST-44(c) และ TEST-47/52 (close จริงของ F-06) รันแล้วใน PR integration; ไม่เปลี่ยน AC, API, TEST IDs หรือ expected | หลัง #59/#57 เข้า sprint-2-staging ทำ cross-feature ตามตาราง Cross-feature acceptance ได้แล้ว (M1 ตกลงให้ M2 เขียน TEST-44(c)) | M2 |
+| 0.9 | 27 พ.ย. 2026 | CR-01 (Lab 7, #84): title ขั้นต่ำ 1 → 3 code points หลัง trim สำหรับ EventPatch ที่มี title; PATCH ไม่มี title ไม่ตรวจ title เดิม; revise AC-37/TEST-48 | requirement change ตาม CR-01; ก่อน implementation | i3artuf |

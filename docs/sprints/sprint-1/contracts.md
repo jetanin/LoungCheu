@@ -2,7 +2,7 @@
 
 **Evidence update — 14 พ.ย. 2026:** PR #7/#10 ได้ teammate review โดย i3artuf และ merge เข้า sprint-1-staging แล้ว ตาม snapshot 12 พ.ย.; PR #10 reviewed head `0bd3468`, merge `97a5b91` (10 พ.ย. 16:26:11 Asia/Bangkok). ผล 159 Vitest / 37 Chromium / typecheck / build / compiled smoke 3 PASS เป็นผลรัน 8 พ.ย. ของ source ที่ commit เป็น `3313288`; รอบแก้เอกสารนี้ไม่ได้รันทดสอบแอปใหม่. OS-process restart, independent clean reproduction/UAT และ reviewed main release ยังขาดหลักฐาน; GAP-02 ยัง OPEN และ Product DoD ยังไม่ครบ. [Review/merge evidence](../../deliverable-1/evidence/review-merge-20261112/README.md). Baseline FR/BR/NFR/AC ไม่เปลี่ยน; F-06–09 อยู่ Sprint 2/3
 
-เอกสาร LC-S1-CONTRACT | Documentation baseline v0.5 | 5 พฤศจิกายน 2026
+เอกสาร LC-S1-CONTRACT | Documentation v0.6 (CR-01, 27 พฤศจิกายน 2026) | baseline v0.5 | 5 พฤศจิกายน 2026
 
 ใช้ SRS/System SDS baseline v0.5 และ IDs เดิมตาม traceability; F-01–05 implement แล้ว ผลทดสอบอ้าง [tested source3313288](../../registration/views-verification.md). Feature review/staging merge มีหลักฐานแยกจาก main release และ independent process acceptance ซึ่งยัง pending; ไม่มีการเปลี่ยน baseline AC/schema
 
@@ -23,7 +23,7 @@ Technical JSON parser budgets: Auth 16 KiB, Event 32 KiB, Registration 1 KiB; �
 | Schema | Fields / types |
 |---|---|
 | Identity | id: ID, display_name: string, role: PARTICIPANT หรือ ORGANIZER |
-| EventInput | title/description/location: strings หลัง trim นับ code points ตาม BR-01 (well-formed Unicode ไม่มี NUL/unpaired UTF-16 surrogate ที่ PostgreSQL TEXT เก็บไม่ได้); capacity: JSON integer 1–1000; starts_at/ends_at/registration_closes_at: Timestamp ตาม BR-02/14; required ทุก field และไม่ coercion/รับ field เพิ่ม |
+| EventInput | title/description/location: strings หลัง trim นับ code points ตาม BR-01 — title 3–120, description 1–2000, location 1–200 (CR-01 v0.6: title เดิม 1–120) (well-formed Unicode ไม่มี NUL/unpaired UTF-16 surrogate ที่ PostgreSQL TEXT เก็บไม่ได้); capacity: JSON integer 1–1000; starts_at/ends_at/registration_closes_at: Timestamp ตาม BR-02/14; required ทุก field และไม่ coercion/รับ field เพิ่ม |
 | SharedEvent | id: ID; title/description/location: string; capacity: integer; starts_at/ends_at/registration_closes_at: Timestamp; status: PUBLISHED หรือ CLOSED; active_count/available_seats: integer; registration_open: boolean |
 | OwnerEvent | fields เหมือน SharedEvent แต่ status อนุญาต DRAFT เพิ่ม และมี organizer_id: ID, created_at: Timestamp, updated_at: Timestamp; DRAFT มี registration_open=false |
 | EventSummary | id: ID, title: string, location: string, starts_at/ends_at/registration_closes_at: Timestamp, status: EventStatus |
@@ -97,7 +97,7 @@ Data: สร้าง Event schema/constraints/index/FK owner และ validate
 | AC | ผลที่ต้องสังเกตได้ | Planned tests |
 |---|---|---|
 | AC-06 | Organizer สร้าง DRAFT ถูกต้อง owner ตรง session และอ่านกลับผ่าน own endpoint ได้ | TEST-07 |
-| AC-07 | ผิด type/required fields/trimmed code-point lengths/capacity/timestamp ordering/offset/precision หรือ unknown fields ได้ 400 โดยไม่ insert | TEST-08 |
+| AC-07 | ผิด type/required fields/trimmed code-point lengths/capacity/timestamp ordering/offset/precision หรือ unknown fields ได้ 400 โดยไม่ insert; **CR-01 v0.6:** title < 3 หรือ > 120 code points หลัง trim ได้ 400 INVALID_INPUT `fields.title=["กรุณากรอก 3–120 ตัวอักษร"]` โดยไม่ insert และ title 3/120 code points สร้างได้ (เดิม: ขั้นต่ำ 1) | TEST-08 |
 | AC-08 | เจ้าของ publish DRAFT ก่อน deadline ได้; status ไม่ใช่ DRAFT ได้ INVALID_TRANSITION ก่อนตรวจ deadline; DRAFT ที่/หลัง deadline ได้ DEADLINE_PASSED โดย status เดิม | TEST-09, TEST-10 |
 | AC-09 | Shared list/detail แสดงเฉพาะ PUBLISHED/CLOSED; own list แสดงเฉพาะของตนรวม DRAFT; ไม่แสดง private roster | TEST-11 |
 | AC-10 | Anonymous ทำ protected operations ไม่ได้; Participant สร้าง/publish/อ่าน owner routes ได้ 403; Organizer อื่นเข้าถึง owner record/publish ได้ 404; spoof owner/status fields ได้ 400 | TEST-12, TEST-13 |
