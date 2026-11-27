@@ -105,3 +105,9 @@ The remaining-work GAP-02 row and traceability NFR-03/AC-25 said redeploy persis
 ## Sprint 3 traceability — 27 November 2026
 
 Added traceability §7: AC-41–AC-50 rows with planned tests, implementation state, actual test file, result and version, plus a Sprint 3 NFR table. FR-15 and BR-13 rows now point to the Sprint 3 AC and TEST IDs (contract/STS v0.2, PR #71) instead of "STS to be defined". Results as of the latest runs: F-08 is in staging (TEST-65 through PR #78 `a8ff503`; TEST-53–59 and TEST-66 through PR #79 `03a5927`, final head `6cc516b`). F-09 TEST-60–64 are in staging through PR #75 `a7e0338` (final head `7553660`), with TEST-62 and the TEST-64 E2E using the real F-08 check-in API/UI. The FR-13, FR-14 and BR-12 rows now say PASS (staging) instead of local PASS with CI/review/staging pending.
+
+## Sprint 3 release — 27 November 2026
+
+F-08 and F-09 are released on `main` as tag `v3.0.0-sprint-3` (`3f80759`, release PR #81; CI run 45991439969; deploy run 45994749187, revision `scccd8b05-00013-nwj`; `/api/ready` reports `3f80759`). A post-deploy check on the live app passed 19/19: ready, 401 without login, participant 403 on organizer endpoints, a real F-08 check-in (before start 409, inside window 200, repeat 409), F-09 summary 100.00%, and the Lab 5 event and registration still present after the migration and redeploy. Evidence is in `docs/sprints/sprint-3/evidence/release-v3.0.0/`.
+
+Status updates: traceability FR-13–15, BR-12–13, NFR-01/03/04/05/06 and §7 AC-41–50 now say Accepted (release), meaning in a reviewed release on main as remaining-work defines it, not independent UAT. Contracts and STS v0.4, SRS §10, features, System SDS and remaining-work follow the same release.

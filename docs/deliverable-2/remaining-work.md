@@ -25,10 +25,10 @@ AC-25 และ AC-27 ของ Sprint 1 ยังเป็น PARTIAL ตาม
 
 | Feature / defect | สถานะปัจจุบัน (AC ที่ได้ + tested commit) | Remaining action (AC / verification / fix ที่ขาด) | Dependency | Owner; วันที่เสร็จ |
 |---|---|---|---|---|
-| **F-08 Check-in และ own attendance** (#50) | planned: contract AC-41–AC-46 และ STS TEST-53–TEST-59 และ TEST-65–TEST-66 (STS v0.2) merge เข้า `sprint-3-staging` แล้ว (PR #71, 26 พ.ย.); ยังไม่มี code และยังไม่มี tested commit | ① Migration `checked_in_at`/`checked_in_by_id` + CHECK ตาม contract ขึ้น `sprint-3-staging` ก่อน (F-09 ใช้คอลัมน์นี้) ② Implement กฎอย่างน้อย 1 ข้อพร้อม TDD RED→GREEN ให้ทันอยู่ใน D2 candidate (D2 §2) เช่น AC-43 (เช็กชื่อได้เฉพาะ ACTIVE, ห้ามเช็กซ้ำ) ③ ทำ AC-41–AC-46 ที่เหลือให้ครบ รัน TEST-53–TEST-59 และ TEST-65–TEST-66 (STS v0.2) ④ PR เข้า `sprint-3-staging` พร้อม review + CI | — | Jetanin (review: Paphangkorn); ① 27 พ.ย. ② 28 พ.ย. ③④ 30 พ.ย. |
-| **F-09 Attendance summary** (#74, draft PR #75) | in progress: rate (TEST-61 unit) และ access ของ summary API (TEST-63) RED `60cbc8e` → GREEN `062ed8d` ในเครื่อง; AC-47–AC-49 ยังไม่ผ่านเพราะยังไม่มีคอลัมน์ `checked_in_at` | รัน TEST-60, TEST-61 (API), TEST-62 หลัง migration ของ F-08 → UI summary TEST-64 (component + Chromium) → อัปเดต System SDS/traceability FR-15, BR-13 → review + CI → merge เข้า `sprint-3-staging` ให้อยู่ใน D2 candidate | Migration ของ F-08 (ข้อ ①) | Paphangkorn (review: Jetanin); 28 พ.ย. |
-| **Sprint 3 release** | ยังไม่มี | Release PR `sprint-3-staging` → main, CI, deploy, smoke check `/api/ready`, tag `v3.0.0-sprint-3` | F-08 และ F-09 merge เข้า staging | Jetanin เปิด PR / Paphangkorn review; 30 พ.ย. |
-| **LAB6-CX-01** retest (#64, #44) | แก้แล้ว: RED `fe31120` → GREEN `37d5be4`, release `v2.0.1-lab6`; retest PASS 26 พ.ย. 19:56–20:28 (Nantakorn) | review/merge หลักฐานใน PR #76 ([controlled-exercise.md](../labs/lab-06/controlled-exercise.md) §5) → ตรวจ checklist ของ #64/#44 ก่อนปิด (#64 ถูกปิดไปแล้ว 26 พ.ย. ก่อนได้ผล retest จึงต้องตรวจย้อนและลิงก์ผลใน issue) | review PR #76 | Jetanin (PR #76), Paphangkorn (review); 27 พ.ย. |
+| **F-08 Check-in และ own attendance** (#50) | **accepted (release)**: AC-41–AC-46 ผ่าน TEST-53–59, TEST-65–66; PR #78, #79, #80; release `v3.0.0-sprint-3` (`3f80759`) 27 พ.ย. และตรวจบน deployment แล้ว | ไม่มีงาน implement ที่เหลือ; รวมใน final verification 12 ธ.ค. | — | Jetanin; เสร็จ 27 พ.ย. |
+| **F-09 Attendance summary** (#74) | **accepted (release)**: AC-47–AC-50 ผ่าน TEST-60–64 รวมการเช็กชื่อจริงของ F-08; PR #75; release `v3.0.0-sprint-3` (`3f80759`) 27 พ.ย. และตรวจบน deployment แล้ว | ไม่มีงาน implement ที่เหลือ; รวมใน final verification 12 ธ.ค. | — | Paphangkorn; เสร็จ 27 พ.ย. |
+| **Sprint 3 release** | **เสร็จ**: PR #81 merge 27 พ.ย. 18:58 → `3f80759`, deploy revision `scccd8b05-00013-nwj`, `/api/ready` ตรง, tag `v3.0.0-sprint-3`; post-deploy check 19/19 PASS รวมตรวจ redeploy persistence ซ้ำ ([หลักฐาน](../sprints/sprint-3/evidence/release-v3.0.0/README.md)) | ใช้ tag นี้เป็นเวอร์ชันของ D2 | — | Jetanin (merge) / Paphangkorn (PR, verification); เสร็จ 27 พ.ย. |
+| **LAB6-CX-01** retest (#64, #44) | **เสร็จ**: RED `fe31120` → GREEN `37d5be4`, release `v2.0.1-lab6`; retest PASS 26 พ.ย. (Nantakorn); หลักฐานใน PR #76 (merge แล้ว); #44 และ #64 ปิดแล้ว | — | — | Jetanin; เสร็จ 27 พ.ย. |
 
 ตอนนี้ไม่มี defect จริงที่ยังเปิดอยู่: UAT ของ Sprint 1 ไม่พบ finding (EV-D-01) ส่วน LAB6-CX-01 เป็น defect ที่ TA กำหนดให้ทำเป็นแบบฝึกหัด และแก้แล้ว
 
@@ -53,7 +53,7 @@ AC-25 และ AC-27 ของ Sprint 1 ยังเป็น PARTIAL ตาม
 | 27 พ.ย. | merge PR นี้ และ PR #76 (ผล retest LAB6-CX-01) แล้วปิด #64/#44 (PR #71 และ #72 merge แล้ว 26 พ.ย.); F-08 migration ขึ้น `sprint-3-staging`; F-08 RED; F-09 UI (TEST-64) | Jetanin, Paphangkorn |
 | 28 พ.ย. | F-08 กฎแรก GREEN; F-09 ครบ AC-47–AC-50 merge เข้า staging; release candidate ของ D2 บน main + deploy + tag | Jetanin, Paphangkorn |
 | 29 พ.ย. | ส่ง Lab 6 PDF (#45) และ D2 PDF (#51) ภายใน 23:59 | Jetanin (#45), Paphangkorn (#51) |
-| 30 พ.ย. | F-08 ครบ AC-41–46 → Sprint 3 release `v3.0.0-sprint-3` + deploy; NFR-02 และตรวจ redeploy persistence ซ้ำบน release ใหม่ | Jetanin, Paphangkorn |
+| 30 พ.ย. | NFR-02 (deployed HTTPS cookie check) — F-08/F-09 และ release `v3.0.0-sprint-3` เสร็จก่อนกำหนดแล้วเมื่อ 27 พ.ย. | Jetanin, Paphangkorn |
 | 1–11 ธ.ค. | ช่วงสอบ — ไม่ทำงาน implement; แก้แค่ defect ร้ายแรงถ้ามี | — |
 | 12 ธ.ค. | Clean reproduction (TEST-35, Paphangkorn), browser/device matrix, UAT re-test (ถ้ามี), audit traceability ขั้นสุดท้าย, อัดวิดีโอ | Jetanin, Paphangkorn |
 | 13 ธ.ค. | Final release บน main + deploy + tag, ส่งงาน | Jetanin, Paphangkorn |

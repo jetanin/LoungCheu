@@ -1,6 +1,6 @@
 # Sprint 3 — Feature Engineering Contracts (F-08, F-09)
 
-เอกสาร LC-S3-CONTRACT | v0.3 (design + local implementation status) | 27 พฤศจิกายน 2026
+เอกสาร LC-S3-CONTRACT | v0.4 (design + released status) | 27 พฤศจิกายน 2026
 
 ฐานของ Sprint 3: `sprint-3-staging` แตกจาก `main` หลัง release Sprint 2 ใช้ SRS/System SDS baseline v0.5 และ IDs เดิมตาม [traceability](../../traceability.md) เอกสารนี้ต้อง merge เข้า `sprint-3-staging` **ก่อน** เริ่มเขียนโค้ด F-08/F-09 (D2 §3.3 "contracts … with enough UI/API/data detail to control implementation")
 
@@ -10,8 +10,8 @@ Test design แยกอยู่ใน [sts.md](sts.md)
 
 | Feature | Issue | สถานะ | หมายเหตุ |
 |---|---|---|---|
-| F-08 Check-in และ own attendance status | #50 | tested (local) | M1 implement ตาม design baseline v0.2; TEST-53–59, TEST-65–66 มี local evidence แล้ว ([ผลและ TDD trace](evidence/f08-ui-green/README.md)); ยังรอ PR/CI/teammate review/staging/release acceptance |
-| F-09 Attendance summary | #74 | in progress | Issue #74 สร้าง 26 พ.ย.; owner M2 (i3artuf) ให้ทันอยู่ใน D2 candidate; ใช้คอลัมน์ checked_in_at จาก migration ของ F-08 |
+| F-08 Check-in และ own attendance status | #50 | accepted (release) | TEST-53–59, TEST-65–66 ผ่าน ([ผลและ TDD trace](evidence/f08-ui-green/README.md)); PR #78, #79, #80 review + CI แล้ว; release `v3.0.0-sprint-3` (`3f80759`, PR #81) และตรวจบน deployment แล้ว ([post-deploy](evidence/release-v3.0.0/README.md)); ยังไม่มี independent UAT |
+| F-09 Attendance summary | #74 | accepted (release) | M2 (i3artuf); TEST-60–64 ผ่าน ([f09-integration](evidence/f09-integration/README.md)); PR #75 review + CI แล้ว; release `v3.0.0-sprint-3` (`3f80759`, PR #81) และตรวจบน deployment แล้ว ([post-deploy](evidence/release-v3.0.0/README.md)); ยังไม่มี independent UAT |
 
 ใช้สถานะ planned → in progress → implemented → tested → accepted ตามหลักฐานจริงเท่านั้น contract/STS ไม่ใช่ผล PASS
 
@@ -256,3 +256,4 @@ DoD F-09 (ครบทุกข้อจึงถือว่าเสร็จ)
 | 0.1 | 24 พ.ย. 2026 | ฉบับแรก: ส่วนร่วม, การจองเลข ID, F-08 (AC-41–46) และ F-09 (AC-47–50) | ทำ #49 ก่อนเริ่ม implementation #50 | M2 |
 | 0.2 | 26 พ.ย. 2026 | F-08: เพิ่ม TEST-65 (migration/constraints, NFR-05) และ TEST-66 (backend restart, NFR-03) ใน Links, NFR table, ID table และ DoD ข้อ 1/4; F-09 สถานะ → #74 in progress. AC-41–50 และ F-09 design ไม่เปลี่ยน | Review PR #71 โดย jetanin: NFR-03 ต้องพิสูจน์หลัง restart ไม่ใช่แค่ reload; DoD อ้าง migration แต่ไม่มี test design; ตาราง F-09 ไม่ตรงกับ #74. แก้ก่อน merge และก่อนเริ่ม implementation #50 | M2 |
 | 0.3 | 27 พ.ย. 2026 | อัปเดต F-08 เป็น tested (local) พร้อมลิงก์ evidence/TDD; header ตรง revision ปัจจุบัน | #50 มี implementation/ผลรันจริง; design/AC/API/DoD เดิมไม่เปลี่ยน และไม่อ้าง accepted หรือ CI ของ PR | M1 |
+| 0.4 | 27 พ.ย. 2026 | F-08 และ F-09 → accepted (release) `v3.0.0-sprint-3`; ลิงก์หลักฐาน post-deploy | release PR #81 merge, deploy และ post-deploy check ผ่าน; design/AC/API/DoD ไม่เปลี่ยน | M2 |

@@ -1,0 +1,38 @@
+# Sprint 3 post-deploy check, started 2026-11-27T12:38:24.206Z (UTC), base https://scccd8b05-4d7hbszvwq-as.a.run.app
+GET /api/ready -> {"status":"ready","db":"connected","version":"3f80759439d628d97ee0b1f33deb1b1d87c6d39d"}
+PASS ready = release merge commit 3f80759 
+PASS anonymous GET /api/organizer/events/1a3914aa-774f-4d13-bd38-105fd08462cd/summary -> 401 401 AUTH_REQUIRED
+PASS anonymous GET /api/my/registrations -> 401 401 AUTH_REQUIRED
+[2026-11-27T12:38:25.311Z] login organizer.a: 200
+[2026-11-27T12:38:25.650Z] login participant.a: 200
+L5 event -> 200 {"title":"L5-C05-20261122-A","status":"PUBLISHED","capacity":5}
+PASS NFR-03: Lab 5 event L5-C05-20261122-A still present 
+L5 registration (participant.a) -> 200 {"id":"dd47235f-be9f-46ed-830a-4d49586cf1e2","status":"ACTIVE","registered_at":"2026-11-22T13:05:51.130Z","checked_in_at":null}
+PASS NFR-03: Lab 5 registration dd47235f still present with same id; new field checked_in_at = null 
+L5 summary (organizer.a) -> 200 {"event_id":"1a3914aa-774f-4d13-bd38-105fd08462cd","status":"PUBLISHED","capacity":5,"active_count":1,"cancelled_count":0,"checked_in_count":0,"attendance_rate":"0.00","generated_at":"2026-11-27T12:38:25.798Z"}
+PASS F-09 on existing data: summary 200 
+PASS API 403: participant GET summary 403 ROLE_FORBIDDEN
+PASS API 403: participant POST check-in 403 ROLE_FORBIDDEN
+PASS API 403: participant GET roster 403 ROLE_FORBIDDEN
+create event -> 201 {"id":"a767aaac-a320-4a59-8bb5-f827c3dde420","title":"D2-S3-POSTDEPLOY-202611271238","status":"DRAFT","registration_closes_at":"2026-11-27T12:40:56.373Z","starts_at":"2026-11-27T12:41:26.373Z","ends_at":"2026-11-27T13:38:26.373Z"}
+PASS create DRAFT event 
+PASS publish 200 PUBLISHED
+participant.a register -> 201 {"id":"c3a1765b-41b5-4007-8953-39193b7bf7f1","status":"ACTIVE"}
+PASS participant.a registers 
+PASS F-08: check-in before starts_at -> 409 CHECK_IN_NOT_OPEN 409 CHECK_IN_NOT_OPEN
+summary before start -> 200 {"event_id":"a767aaac-a320-4a59-8bb5-f827c3dde420","status":"PUBLISHED","capacity":3,"active_count":1,"cancelled_count":0,"checked_in_count":0,"attendance_rate":"0.00","generated_at":"2026-11-27T12:38:26.575Z"}
+[2026-11-27T12:38:26.920Z] waiting 184 s for starts_at 2026-11-27T12:41:26.373Z
+[2026-11-27T12:41:31.972Z] login organizer.a: 200
+[2026-11-27T12:41:32.297Z] login participant.a: 200
+organizer.a check-in -> 200 {"id":"c3a1765b-41b5-4007-8953-39193b7bf7f1","participant":{"display_name":"Participant A"},"status":"ACTIVE","registered_at":"2026-11-27T12:38:26.349Z","checked_in_at":"2026-11-27T12:41:32.050Z"}
+PASS F-08: owner check-in inside window -> 200 with checked_in_at 
+PASS F-08: second check-in -> 409 ALREADY_CHECKED_IN 409 ALREADY_CHECKED_IN
+roster -> 200 {"active_count":1,"checked_in_count":1}
+PASS F-08: roster checked_in_count 1 
+participant.a own registration -> 200 {"id":"c3a1765b-41b5-4007-8953-39193b7bf7f1","status":"ACTIVE","checked_in_at":"2026-11-27T12:41:32.050Z"}
+PASS F-08: participant sees own checked_in_at (same as check-in response) 
+summary after check-in -> 200 {"event_id":"a767aaac-a320-4a59-8bb5-f827c3dde420","status":"PUBLISHED","capacity":3,"active_count":1,"cancelled_count":0,"checked_in_count":1,"attendance_rate":"100.00","generated_at":"2026-11-27T12:41:32.445Z"}
+PASS F-09: summary ACTIVE 1, CANCELLED 0, checked-in 1, rate "100.00" 
+PASS API 403: participant GET summary of new event 403 ROLE_FORBIDDEN
+# finished 2026-11-27T12:41:32.855Z: 19 passed, 0 failed
+# smoke event id a767aaac-a320-4a59-8bb5-f827c3dde420, registration c3a1765b-41b5-4007-8953-39193b7bf7f1
