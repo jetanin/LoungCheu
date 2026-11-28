@@ -1,0 +1,96 @@
+CR-01 integration / #87
+Tested commit: e56b3d917dfa08d0e6b7c8bb46be69a6625bd73d
+Branch: test/87-lab7-integration
+Tester: Jetanin Naitho (jetanin), automated execution via Codex
+Node: v22.23.2
+Started UTC: 2026-11-28T10:50:23.329Z
+Finished UTC: 2026-11-28T10:50:55.287Z
+Command: node node_modules/vitest/vitest.mjs run server/tests/integration/event-title-maintenance.test.ts client/src/features/events --reporter=verbose
+Target: Docker test DB 127.0.0.1:55433 / loungcheu_test
+Browser ports: web 5173 / API 3001
+Exit: 0
+
+
+ RUN  v5.1.0 C:/Work/2569/CPE334/GroupWork/LoungCheu
+
+ ✓ server/tests/integration/event-title-maintenance.test.ts > CR-01 title validation — TEST-08/48 (AC-07/37) > TEST-08 create rejects empty without inserting 14ms
+ ✓ server/tests/integration/event-title-maintenance.test.ts > CR-01 title validation — TEST-08/48 (AC-07/37) > TEST-08 create rejects whitespace without inserting 8ms
+ ✓ server/tests/integration/event-title-maintenance.test.ts > CR-01 title validation — TEST-08/48 (AC-07/37) > TEST-08 create rejects one code point without inserting 8ms
+ ✓ server/tests/integration/event-title-maintenance.test.ts > CR-01 title validation — TEST-08/48 (AC-07/37) > TEST-08 create rejects two code points without inserting 7ms
+ ✓ server/tests/integration/event-title-maintenance.test.ts > CR-01 title validation — TEST-08/48 (AC-07/37) > TEST-08 create rejects two after trim without inserting 7ms
+ ✓ server/tests/integration/event-title-maintenance.test.ts > CR-01 title validation — TEST-08/48 (AC-07/37) > TEST-08 create rejects two emoji / four UTF-16 units without inserting 7ms
+ ✓ server/tests/integration/event-title-maintenance.test.ts > CR-01 title validation — TEST-08/48 (AC-07/37) > TEST-08 create rejects 121 code points without inserting 10ms
+ ✓ server/tests/integration/event-title-maintenance.test.ts > CR-01 title validation — TEST-08/48 (AC-07/37) > TEST-08 create rejects wrong type without inserting 9ms
+ ✓ server/tests/integration/event-title-maintenance.test.ts > CR-01 title validation — TEST-08/48 (AC-07/37) > TEST-08 create rejects null without inserting 7ms
+ ✓ server/tests/integration/event-title-maintenance.test.ts > CR-01 title validation — TEST-08/48 (AC-07/37) > TEST-08 create rejects array without inserting 7ms
+ ✓ server/tests/integration/event-title-maintenance.test.ts > CR-01 title validation — TEST-08/48 (AC-07/37) > TEST-48 PATCH rejects empty without changing any field 17ms
+ ✓ server/tests/integration/event-title-maintenance.test.ts > CR-01 title validation — TEST-08/48 (AC-07/37) > TEST-48 PATCH rejects whitespace without changing any field 9ms
+ ✓ server/tests/integration/event-title-maintenance.test.ts > CR-01 title validation — TEST-08/48 (AC-07/37) > TEST-48 PATCH rejects one code point without changing any field 11ms
+ ✓ server/tests/integration/event-title-maintenance.test.ts > CR-01 title validation — TEST-08/48 (AC-07/37) > TEST-48 PATCH rejects two code points without changing any field 12ms
+ ✓ server/tests/integration/event-title-maintenance.test.ts > CR-01 title validation — TEST-08/48 (AC-07/37) > TEST-48 PATCH rejects two after trim without changing any field 10ms
+ ✓ server/tests/integration/event-title-maintenance.test.ts > CR-01 title validation — TEST-08/48 (AC-07/37) > TEST-48 PATCH rejects two emoji / four UTF-16 units without changing any field 12ms
+ ✓ server/tests/integration/event-title-maintenance.test.ts > CR-01 title validation — TEST-08/48 (AC-07/37) > TEST-48 PATCH rejects 121 code points without changing any field 8ms
+ ✓ server/tests/integration/event-title-maintenance.test.ts > CR-01 title validation — TEST-08/48 (AC-07/37) > TEST-48 PATCH rejects wrong type without changing any field 7ms
+ ✓ server/tests/integration/event-title-maintenance.test.ts > CR-01 title validation — TEST-08/48 (AC-07/37) > TEST-48 PATCH rejects null without changing any field 9ms
+ ✓ server/tests/integration/event-title-maintenance.test.ts > CR-01 title validation — TEST-08/48 (AC-07/37) > TEST-48 PATCH rejects array without changing any field 10ms
+ ✓ server/tests/integration/event-title-maintenance.test.ts > CR-01 title validation — TEST-08/48 (AC-07/37) > TEST-08 create accepts three ASCII and persists normalized text 33ms
+ ✓ server/tests/integration/event-title-maintenance.test.ts > CR-01 title validation — TEST-08/48 (AC-07/37) > TEST-08 create accepts trimmed three and persists normalized text 20ms
+ ✓ server/tests/integration/event-title-maintenance.test.ts > CR-01 title validation — TEST-08/48 (AC-07/37) > TEST-08 create accepts three Thai letters and persists normalized text 21ms
+ ✓ server/tests/integration/event-title-maintenance.test.ts > CR-01 title validation — TEST-08/48 (AC-07/37) > TEST-08 create accepts three emoji and persists normalized text 25ms
+ ✓ server/tests/integration/event-title-maintenance.test.ts > CR-01 title validation — TEST-08/48 (AC-07/37) > TEST-08 create accepts Thai combining marks / three code points and persists normalized text 21ms
+ ✓ server/tests/integration/event-title-maintenance.test.ts > CR-01 title validation — TEST-08/48 (AC-07/37) > TEST-08 create accepts 120 emoji / 240 UTF-16 units and persists normalized text 25ms
+ ✓ server/tests/integration/event-title-maintenance.test.ts > CR-01 title validation — TEST-08/48 (AC-07/37) > TEST-48 PATCH accepts three ASCII and reads it back 28ms
+ ✓ server/tests/integration/event-title-maintenance.test.ts > CR-01 title validation — TEST-08/48 (AC-07/37) > TEST-48 PATCH accepts trimmed three and reads it back 23ms
+ ✓ server/tests/integration/event-title-maintenance.test.ts > CR-01 title validation — TEST-08/48 (AC-07/37) > TEST-48 PATCH accepts three Thai letters and reads it back 23ms
+ ✓ server/tests/integration/event-title-maintenance.test.ts > CR-01 title validation — TEST-08/48 (AC-07/37) > TEST-48 PATCH accepts three emoji and reads it back 24ms
+ ✓ server/tests/integration/event-title-maintenance.test.ts > CR-01 title validation — TEST-08/48 (AC-07/37) > TEST-48 PATCH accepts Thai combining marks / three code points and reads it back 25ms
+ ✓ server/tests/integration/event-title-maintenance.test.ts > CR-01 title validation — TEST-08/48 (AC-07/37) > TEST-48 PATCH accepts 120 emoji / 240 UTF-16 units and reads it back 27ms
+ ✓ server/tests/integration/event-title-maintenance.test.ts > CR-01 title validation — TEST-08/48 (AC-07/37) > TEST-48 legacy DRAFT title stays readable and omitted-title PATCH works 36ms
+ ✓ server/tests/integration/event-title-maintenance.test.ts > CR-01 title validation — TEST-08/48 (AC-07/37) > TEST-48 legacy PUBLISHED title stays readable and omitted-title PATCH works 50ms
+ ✓ server/tests/integration/event-title-maintenance.test.ts > CR-01 title validation — TEST-08/48 (AC-07/37) > preserved legacy short-title publish and registration do not revalidate title 44ms
+ ✓ server/tests/integration/event-title-maintenance.test.ts > CR-01 title validation — TEST-08/48 (AC-07/37) > TEST-08/48 keeps auth, role and CSRF ahead of short-title validation 55ms
+ ✓ client/src/features/events/EventEdit.test.tsx > F-07 edit event UI (TEST-52 component, AC-40) > CR-01 refuses a changed short title without PATCH: ab 205ms
+ ✓ client/src/features/events/EventEdit.test.tsx > F-07 edit event UI (TEST-52 component, AC-40) > CR-01 refuses a changed short title without PATCH:   ab   74ms
+ ✓ client/src/features/events/EventEdit.test.tsx > F-07 edit event UI (TEST-52 component, AC-40) > CR-01 refuses a changed short title without PATCH: 🌱🌱 60ms
+ ✓ client/src/features/events/EventEdit.test.tsx > F-07 edit event UI (TEST-52 component, AC-40) > CR-01 edits a non-title field on a legacy short-title event without sending title 90ms
+ ✓ client/src/features/events/EventEdit.test.tsx > F-07 edit event UI (TEST-52 component, AC-40) > owner detail shows แก้ไขกิจกรรม only for DRAFT/PUBLISHED (DRAFT) 38ms
+ ✓ client/src/features/events/EventEdit.test.tsx > F-07 edit event UI (TEST-52 component, AC-40) > owner detail shows แก้ไขกิจกรรม only for DRAFT/PUBLISHED (PUBLISHED) 23ms
+ ✓ client/src/features/events/EventEdit.test.tsx > F-07 edit event UI (TEST-52 component, AC-40) > owner detail shows แก้ไขกิจกรรม only for DRAFT/PUBLISHED (CLOSED) 23ms
+ ✓ client/src/features/events/EventEdit.test.tsx > F-07 edit event UI (TEST-52 component, AC-40) > prefills current values, enables save only after a real change and sends only changed fields 89ms
+ ✓ client/src/features/events/EventEdit.test.tsx > F-07 edit event UI (TEST-52 component, AC-40) > PUBLISHED keeps the three time fields disabled with a note and explains the ACTIVE floor 15ms
+ ✓ client/src/features/events/EventEdit.test.tsx > F-07 edit event UI (TEST-52 component, AC-40) > on 409 shows the Thai reason, reloads ACTIVE/status and keeps what the user typed 45ms
+ ✓ client/src/features/events/EventEdit.test.tsx > F-07 edit event UI (TEST-52 component, AC-40) > shows client and server (400) field errors in Thai under the input 60ms
+ ✓ client/src/features/events/EventEdit.test.tsx > F-07 edit event UI (TEST-52 component, AC-40) > a focus refresh that returns PUBLISHED locks the time fields and keeps typed details 62ms
+ ✓ client/src/features/events/EventEdit.test.tsx > F-07 edit event UI (TEST-52 component, AC-40) > PATCH 404 clears the protected record and shows not found like owner detail 33ms
+ ✓ client/src/features/events/EventEdit.test.tsx > F-07 edit event UI (TEST-52 component, AC-40) > CLOSED has no edit form; 404 and Participant are refused like owner routes 35ms
+ ✓ client/src/features/events/model.test.ts > F-02 form/time contract audit > CR-01 TEST-08 rejects title shorter than 3 code points after trim: a 2ms
+ ✓ client/src/features/events/model.test.ts > F-02 form/time contract audit > CR-01 TEST-08 rejects title shorter than 3 code points after trim: ab 0ms
+ ✓ client/src/features/events/model.test.ts > F-02 form/time contract audit > CR-01 TEST-08 rejects title shorter than 3 code points after trim:   ab   0ms
+ ✓ client/src/features/events/model.test.ts > F-02 form/time contract audit > CR-01 TEST-08 rejects title shorter than 3 code points after trim: 🌱🌱 0ms
+ ✓ client/src/features/events/model.test.ts > F-02 form/time contract audit > CR-01 TEST-08 accepts title of 3–120 code points: abc 0ms
+ ✓ client/src/features/events/model.test.ts > F-02 form/time contract audit > CR-01 TEST-08 accepts title of 3–120 code points:   abc   0ms
+ ✓ client/src/features/events/model.test.ts > F-02 form/time contract audit > CR-01 TEST-08 accepts title of 3–120 code points: กขค 0ms
+ ✓ client/src/features/events/model.test.ts > F-02 form/time contract audit > CR-01 TEST-08 accepts title of 3–120 code points: 🌱🌱🌱 0ms
+ ✓ client/src/features/events/model.test.ts > F-02 form/time contract audit > CR-01 TEST-08 accepts title of 3–120 code points: xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx 0ms
+ ✓ client/src/features/events/model.test.ts > F-02 form/time contract audit > CR-01 TEST-08 rejects 121 code points 0ms
+ ✓ client/src/features/events/model.test.ts > F-02 form/time contract audit > TEST-08 rejects unrepresentable text in title and permits paired emoji 0ms
+ ✓ client/src/features/events/model.test.ts > F-02 form/time contract audit > TEST-08 rejects unrepresentable text in description and permits paired emoji 0ms
+ ✓ client/src/features/events/model.test.ts > F-02 form/time contract audit > TEST-08 rejects unrepresentable text in location and permits paired emoji 0ms
+ ✓ client/src/features/events/model.test.ts > F-02 form/time contract audit > TEST-08/36 rejects invalid/UTC-out-of-range calendar input 2026-02-29T10:00 before sending 0ms
+ ✓ client/src/features/events/model.test.ts > F-02 form/time contract audit > TEST-08/36 rejects invalid/UTC-out-of-range calendar input 2026-02-30T10:00 before sending 0ms
+ ✓ client/src/features/events/model.test.ts > F-02 form/time contract audit > TEST-08/36 rejects invalid/UTC-out-of-range calendar input 2026-04-31T10:00 before sending 0ms
+ ✓ client/src/features/events/model.test.ts > F-02 form/time contract audit > TEST-08/36 rejects invalid/UTC-out-of-range calendar input 0000-01-01T10:00 before sending 0ms
+ ✓ client/src/features/events/model.test.ts > F-02 form/time contract audit > TEST-08/36 rejects invalid/UTC-out-of-range calendar input 0001-01-01T00:00 before sending 0ms
+ ✓ client/src/features/events/model.test.ts > F-02 form/time contract audit > TEST-08/36 accepts leap dates, millisecond Bangkok input and normalizes strings without using host timezone 15ms
+ ✓ client/src/features/events/EventForm.test.tsx > CR-01 TEST-08 create form (AC-07) > shows the 3–120 error and sends no POST for ab 195ms
+ ✓ client/src/features/events/EventForm.test.tsx > CR-01 TEST-08 create form (AC-07) > shows the 3–120 error and sends no POST for   ab   53ms
+ ✓ client/src/features/events/EventForm.test.tsx > CR-01 TEST-08 create form (AC-07) > shows the 3–120 error and sends no POST for 🌱🌱 46ms
+
+ Test Files  4 passed (4)
+      Tests  72 passed (72)
+   Start at  17:50:26
+   Duration  28.55s (environment 57%, import 31%, tests 10%, transform 2%)
+
+    Isolate  4 workers spawned · ~4.15s startup each (spawn + environment, per file)
+             at least ~12.46s faster with isolate: false — reuses workers across files instead of one per file
+
