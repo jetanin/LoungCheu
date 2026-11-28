@@ -1,0 +1,563 @@
+{
+  "issue": 87,
+  "prepared_date": "2026-11-28",
+  "preparation_status": "LOCAL_INTEGRATION_VERIFIED_RELEASE_PENDING",
+  "note": "Actual local automation results on combined staging plus test-only browser coverage. Deployed cases remain NOT_EXECUTED. This is not independent UAT.",
+  "historical_versions": {
+    "contract_merge": "079397267e354e4c9dd8034d5652cf191fd49361",
+    "api_red": "4ab6ccf816e002167350594f19eb26aef889ad45",
+    "api_green": "90d03039efe6a545addac1bb67149210b83219b6",
+    "api_staging_merge": "11325474dd2b20512f0fe846ec7e85a0ca2d8a77"
+  },
+  "execution_versions": {
+    "ui_pr": "https://github.com/jetanin/LoungCheu/pull/102",
+    "ui_reviewed_head": "c1a48452f83f82b78462f3534bc76ad3ab2b41b8",
+    "ui_red": "36f049b338a33693b0404ecc646e19ef0c1bc498",
+    "ui_green": "596c53b1b2b8f526b5700232473def8e9d96c368",
+    "ui_merge": "e56b3d917dfa08d0e6b7c8bb46be69a6625bd73d",
+    "combined_staging_sha": "e56b3d917dfa08d0e6b7c8bb46be69a6625bd73d",
+    "integration_pr": null,
+    "required_ci_run": null,
+    "release_pr": null,
+    "release_reviewed_head": null,
+    "main_merge_sha": null,
+    "deploy_run": null,
+    "migrate_execution": null,
+    "deployed_revision": null,
+    "readiness_sha": null,
+    "release_tag": null,
+    "tag_object_sha": null,
+    "tag_peeled_commit": null
+  },
+  "automated_results": [
+    {
+      "suite": "typecheck",
+      "command": "node node_modules/typescript/bin/tsc --noEmit -p server/tsconfig.json",
+      "tested_sha": "e56b3d917dfa08d0e6b7c8bb46be69a6625bd73d",
+      "started_at": "2026-11-28T10:50:12.365Z",
+      "finished_at": "2026-11-28T10:50:18.334Z",
+      "tester": "Jetanin Naitho (jetanin); automated execution via Codex",
+      "passed": null,
+      "failed": null,
+      "skipped": null,
+      "exit_code": 0,
+      "status": "PASS",
+      "evidence_ids": [
+        "EV-L7-I-TYPE"
+      ],
+      "reruns": [],
+      "evidence_files": [
+        "typecheck-server.log",
+        "typecheck-client.log",
+        "typecheck-tools.log",
+        "typecheck-tools-coverage.log"
+      ]
+    },
+    {
+      "suite": "focused_cr01",
+      "command": "node node_modules/vitest/vitest.mjs run server/tests/integration/event-title-maintenance.test.ts client/src/features/events --reporter=verbose",
+      "tested_sha": "e56b3d917dfa08d0e6b7c8bb46be69a6625bd73d",
+      "started_at": "2026-11-28T10:50:23.329Z",
+      "finished_at": "2026-11-28T10:50:55.287Z",
+      "tester": "Jetanin Naitho (jetanin); automated execution via Codex",
+      "passed": 72,
+      "failed": 0,
+      "skipped": 0,
+      "exit_code": 0,
+      "status": "PASS",
+      "evidence_ids": [
+        "EV-L7-I-FOCUS"
+      ],
+      "reruns": [],
+      "files": 4,
+      "evidence_files": [
+        "focused-cr01.log"
+      ]
+    },
+    {
+      "suite": "vitest",
+      "command": "node node_modules/vitest/vitest.mjs run --reporter=default",
+      "tested_sha": "e56b3d917dfa08d0e6b7c8bb46be69a6625bd73d",
+      "started_at": "2026-11-28T10:50:55.289Z",
+      "finished_at": "2026-11-28T10:52:44.544Z",
+      "tester": "Jetanin Naitho (jetanin); automated execution via Codex",
+      "passed": 434,
+      "failed": 0,
+      "skipped": 0,
+      "exit_code": 0,
+      "status": "PASS",
+      "evidence_ids": [
+        "EV-L7-I-10"
+      ],
+      "reruns": [],
+      "files": 39,
+      "evidence_files": [
+        "regression-vitest.log"
+      ]
+    },
+    {
+      "suite": "build",
+      "command": "node node_modules/vite/bin/vite.js build client --config client/vite.config.ts",
+      "tested_sha": "e56b3d917dfa08d0e6b7c8bb46be69a6625bd73d",
+      "started_at": "2026-11-28T10:52:44.545Z",
+      "finished_at": "2026-11-28T10:52:46.793Z",
+      "tester": "Jetanin Naitho (jetanin); automated execution via Codex",
+      "passed": null,
+      "failed": null,
+      "skipped": null,
+      "exit_code": 0,
+      "status": "PASS",
+      "evidence_ids": [
+        "EV-L7-I-11"
+      ],
+      "reruns": [],
+      "evidence_files": [
+        "build-client.log",
+        "build-server.log"
+      ]
+    },
+    {
+      "suite": "compiled_smoke",
+      "command": "node scripts/smoke-built.mjs",
+      "tested_sha": "e56b3d917dfa08d0e6b7c8bb46be69a6625bd73d",
+      "started_at": "2026-11-28T10:52:48.237Z",
+      "finished_at": "2026-11-28T10:52:48.742Z",
+      "tester": "Jetanin Naitho (jetanin); automated execution via Codex",
+      "passed": 4,
+      "failed": 0,
+      "skipped": 0,
+      "exit_code": 0,
+      "status": "PASS",
+      "evidence_ids": [
+        "EV-L7-I-SMOKE"
+      ],
+      "reruns": [],
+      "evidence_files": [
+        "compiled-smoke.log"
+      ]
+    },
+    {
+      "suite": "browser_e2e",
+      "command": "node node_modules/@playwright/test/cli.js test",
+      "tested_sha": "e56b3d917dfa08d0e6b7c8bb46be69a6625bd73d",
+      "started_at": "2026-11-28T11:05:57.524Z",
+      "finished_at": "2026-11-28T11:07:23.227Z",
+      "tester": "Jetanin Naitho (jetanin); automated execution via Codex",
+      "passed": 46,
+      "failed": 0,
+      "skipped": 0,
+      "exit_code": 0,
+      "status": "PASS",
+      "evidence_ids": [
+        "EV-L7-I-12"
+      ],
+      "reruns": [],
+      "prior_run": {
+        "passed": 43,
+        "failed": 0,
+        "skipped": 0,
+        "log": "browser-e2e.log",
+        "note": "Before three browser coverage additions; no failure rerun"
+      },
+      "evidence_files": [
+        "browser-e2e-coverage.log"
+      ]
+    },
+    {
+      "suite": "integration_pr_required_ci",
+      "status": "NOT_EXECUTED",
+      "command": null,
+      "tested_sha": null,
+      "passed": null,
+      "failed": null,
+      "skipped": null,
+      "evidence_ids": [],
+      "notes": "PR not opened yet; historical #102 CI is not this future PR head."
+    }
+  ],
+  "cases": [
+    {
+      "case_id": "INT-01",
+      "phase": "local",
+      "ac_test": "AC-07 / TEST-08",
+      "planned_steps_input": "Owner create form: `ab`, then two emoji `🌱🌱`",
+      "expected_result": "New title error `กรุณากรอก 3–120 ตัวอักษร`; no create request",
+      "actual_input": "Create ab / padded ab / two emoji",
+      "actual_result": "Client component cases and real browser short-title cases pass: the new field message is shown and no create POST is sent.",
+      "status": "PASS",
+      "tester": "Jetanin Naitho (jetanin); automated execution via Codex",
+      "role": "Synthetic organizer/participant/anonymous roles as specified in the cited test source",
+      "fixture_ids": [],
+      "before_state": null,
+      "after_state": null,
+      "executed_at": "2026-11-28T10:50:55.287Z",
+      "timezone": "UTC",
+      "tested_sha": "e56b3d917dfa08d0e6b7c8bb46be69a6625bd73d",
+      "deployed_revision": null,
+      "evidence_ids": [
+        "EV-L7-I-01"
+      ],
+      "notes": "Automated assertion evidence; fixture UUIDs were not retained as standalone evidence. No claim of manual execution or live deployment.",
+      "evidence_files": [
+        "focused-cr01.log",
+        "browser-e2e-coverage.log"
+      ]
+    },
+    {
+      "case_id": "INT-02",
+      "phase": "local",
+      "ac_test": "AC-07 / TEST-08",
+      "planned_steps_input": "Owner create `  abc  ` and three emoji `🌱🌱🌱`, one isolated fixture each",
+      "expected_result": "Requests use normalized text; real API 201; own detail readback matches",
+      "actual_input": "Create padded abc and padded three-emoji titles",
+      "actual_result": "New real browser integration cases observe HTTP 201 and normalized POST titles; GET reads back abc and three emoji. API tests also persist the 3-code-point cases.",
+      "status": "PASS",
+      "tester": "Jetanin Naitho (jetanin); automated execution via Codex",
+      "role": "Synthetic organizer/participant/anonymous roles as specified in the cited test source",
+      "fixture_ids": [],
+      "before_state": null,
+      "after_state": null,
+      "executed_at": "2026-11-28T11:07:23.227Z",
+      "timezone": "UTC",
+      "tested_sha": "e56b3d917dfa08d0e6b7c8bb46be69a6625bd73d",
+      "deployed_revision": null,
+      "evidence_ids": [
+        "EV-L7-I-02"
+      ],
+      "notes": "Automated assertion evidence; fixture UUIDs were not retained as standalone evidence. No claim of manual execution or live deployment.",
+      "evidence_files": [
+        "browser-e2e-coverage.log",
+        "focused-cr01.log"
+      ]
+    },
+    {
+      "case_id": "INT-03",
+      "phase": "local",
+      "ac_test": "AC-07 / TEST-08",
+      "planned_steps_input": "Create 120 emoji then try 121 code points",
+      "expected_result": "120 succeeds; 121 rejected without insertion; code points rather than UTF-16 units",
+      "actual_input": "121 emoji; padded 120 emoji",
+      "actual_result": "Browser rejects 121 before POST; 120 code points (240 UTF-16 units before padding) saves with HTTP 201, normalized request and matching GET after reload.",
+      "status": "PASS",
+      "tester": "Jetanin Naitho (jetanin); automated execution via Codex",
+      "role": "Synthetic organizer/participant/anonymous roles as specified in the cited test source",
+      "fixture_ids": [],
+      "before_state": null,
+      "after_state": null,
+      "executed_at": "2026-11-28T11:07:23.227Z",
+      "timezone": "UTC",
+      "tested_sha": "e56b3d917dfa08d0e6b7c8bb46be69a6625bd73d",
+      "deployed_revision": null,
+      "evidence_ids": [
+        "EV-L7-I-03"
+      ],
+      "notes": "Automated assertion evidence; fixture UUIDs were not retained as standalone evidence. No claim of manual execution or live deployment.",
+      "evidence_files": [
+        "browser-e2e-coverage.log"
+      ]
+    },
+    {
+      "case_id": "INT-04",
+      "phase": "local",
+      "ac_test": "AC-37/40 / TEST-48/52",
+      "planned_steps_input": "Edit NEW title to `ab` / `🌱🌱`",
+      "expected_result": "New field error; no PATCH; stored row unchanged",
+      "actual_input": "Changed edit title ab / two emoji",
+      "actual_result": "Component cases reject both with no PATCH. Existing real browser edit case rejects ab with no PATCH. Real API cases separately reject short-title PATCH with no partial write.",
+      "status": "PASS",
+      "tester": "Jetanin Naitho (jetanin); automated execution via Codex",
+      "role": "Synthetic organizer/participant/anonymous roles as specified in the cited test source",
+      "fixture_ids": [],
+      "before_state": null,
+      "after_state": null,
+      "executed_at": "2026-11-28T10:50:55.287Z",
+      "timezone": "UTC",
+      "tested_sha": "e56b3d917dfa08d0e6b7c8bb46be69a6625bd73d",
+      "deployed_revision": null,
+      "evidence_ids": [
+        "EV-L7-I-04"
+      ],
+      "notes": "Automated assertion evidence; fixture UUIDs were not retained as standalone evidence. No claim of manual execution or live deployment.",
+      "evidence_files": [
+        "focused-cr01.log",
+        "browser-e2e-coverage.log"
+      ]
+    },
+    {
+      "case_id": "INT-05",
+      "phase": "local",
+      "ac_test": "AC-37/40 / TEST-48/52",
+      "planned_steps_input": "Edit NEW title to `  abc  ` / `🌱🌱🌱`",
+      "expected_result": "Real PATCH 200; trimmed title; owner/shared readback and reload match",
+      "actual_input": "Edit padded abc / padded three emoji",
+      "actual_result": "New real browser integration cases observe HTTP 200, exact normalized title-only PATCH bodies, matching headings and GET after reload.",
+      "status": "PASS",
+      "tester": "Jetanin Naitho (jetanin); automated execution via Codex",
+      "role": "Synthetic organizer/participant/anonymous roles as specified in the cited test source",
+      "fixture_ids": [],
+      "before_state": null,
+      "after_state": null,
+      "executed_at": "2026-11-28T11:07:23.227Z",
+      "timezone": "UTC",
+      "tested_sha": "e56b3d917dfa08d0e6b7c8bb46be69a6625bd73d",
+      "deployed_revision": null,
+      "evidence_ids": [
+        "EV-L7-I-05"
+      ],
+      "notes": "Automated assertion evidence; fixture UUIDs were not retained as standalone evidence. No claim of manual execution or live deployment.",
+      "evidence_files": [
+        "browser-e2e-coverage.log"
+      ]
+    },
+    {
+      "case_id": "INT-06",
+      "phase": "local",
+      "ac_test": "AC-37/40 / TEST-48/52",
+      "planned_steps_input": "Open LEGACY edit form, change only capacity to 4",
+      "expected_result": "PATCH has only capacity, omits title; 200; after reload title still `ab` and capacity 4",
+      "actual_input": "Synthetic legacy DRAFT title ab, capacity 3 to 4",
+      "actual_result": "Existing TEST-52 real browser/DB case observes exact PATCH {capacity:4}, HTTP 200, reload, GET and DB title ab/capacity4. Fixture is cleaned up.",
+      "status": "PASS",
+      "tester": "Jetanin Naitho (jetanin); automated execution via Codex",
+      "role": "Synthetic organizer/participant/anonymous roles as specified in the cited test source",
+      "fixture_ids": [],
+      "before_state": null,
+      "after_state": null,
+      "executed_at": "2026-11-28T11:07:23.227Z",
+      "timezone": "UTC",
+      "tested_sha": "e56b3d917dfa08d0e6b7c8bb46be69a6625bd73d",
+      "deployed_revision": null,
+      "evidence_ids": [
+        "EV-L7-I-06"
+      ],
+      "notes": "Automated assertion evidence; fixture UUIDs were not retained as standalone evidence. No claim of manual execution or live deployment.",
+      "evidence_files": [
+        "browser-e2e-coverage.log"
+      ]
+    },
+    {
+      "case_id": "INT-07",
+      "phase": "local",
+      "ac_test": "AC-07/37 / TEST-08/48",
+      "planned_steps_input": "Direct POST and PATCH with title `ab`, valid organizer/CSRF",
+      "expected_result": "400 INVALID_INPUT; fields.title exactly new message; no insert/partial update",
+      "actual_input": "Direct authenticated POST/PATCH title ab and other invalid title boundaries",
+      "actual_result": "CR-01 API tests assert INVALID_INPUT / 3–120 title message, unchanged event count on create rejection and unchanged full row on invalid PATCH.",
+      "status": "PASS",
+      "tester": "Jetanin Naitho (jetanin); automated execution via Codex",
+      "role": "Synthetic organizer/participant/anonymous roles as specified in the cited test source",
+      "fixture_ids": [],
+      "before_state": null,
+      "after_state": null,
+      "executed_at": "2026-11-28T10:50:55.287Z",
+      "timezone": "UTC",
+      "tested_sha": "e56b3d917dfa08d0e6b7c8bb46be69a6625bd73d",
+      "deployed_revision": null,
+      "evidence_ids": [
+        "EV-L7-I-07"
+      ],
+      "notes": "Automated assertion evidence; fixture UUIDs were not retained as standalone evidence. No claim of manual execution or live deployment.",
+      "evidence_files": [
+        "focused-cr01.log"
+      ]
+    },
+    {
+      "case_id": "INT-08",
+      "phase": "local",
+      "ac_test": "AC-10/40 / TEST-12/13/51",
+      "planned_steps_input": "Short-title write anonymous, participant, missing/wrong CSRF; other organizer with VALID title",
+      "expected_result": "401/403/CSRF403 precede title validation; foreign owner with valid title gets 404; no domain mutation",
+      "actual_input": "Anonymous/participant/missing or wrong CSRF writes; valid-title foreign-owner PATCH",
+      "actual_result": "CR-01 API tests retain 401 AUTH_REQUIRED, 403 ROLE_FORBIDDEN/CSRF_FAILED and 404 EVENT_NOT_FOUND with no domain writes.",
+      "status": "PASS",
+      "tester": "Jetanin Naitho (jetanin); automated execution via Codex",
+      "role": "Synthetic organizer/participant/anonymous roles as specified in the cited test source",
+      "fixture_ids": [],
+      "before_state": null,
+      "after_state": null,
+      "executed_at": "2026-11-28T10:50:55.287Z",
+      "timezone": "UTC",
+      "tested_sha": "e56b3d917dfa08d0e6b7c8bb46be69a6625bd73d",
+      "deployed_revision": null,
+      "evidence_ids": [
+        "EV-L7-I-08"
+      ],
+      "notes": "Automated assertion evidence; fixture UUIDs were not retained as standalone evidence. No claim of manual execution or live deployment.",
+      "evidence_files": [
+        "focused-cr01.log"
+      ]
+    },
+    {
+      "case_id": "INT-09",
+      "phase": "local",
+      "ac_test": "AC-06–24,34–40",
+      "planned_steps_input": "Preserved create/publish/register/own/roster; legacy publish/register; full/duplicate rejection",
+      "expected_result": "Normal persisted references/counts; rejection leaves counts unchanged; description/location rules remain unchanged",
+      "actual_input": "Preserved create/publish/register/own/roster, full/duplicate rejection, legacy publish/register",
+      "actual_result": "Existing integration/system/browser regression and CR-01 legacy API cases pass. The real registration browser case retains ACTIVE1 on duplicate/full rejection.",
+      "status": "PASS",
+      "tester": "Jetanin Naitho (jetanin); automated execution via Codex",
+      "role": "Synthetic organizer/participant/anonymous roles as specified in the cited test source",
+      "fixture_ids": [],
+      "before_state": null,
+      "after_state": null,
+      "executed_at": "2026-11-28T10:52:44.544Z",
+      "timezone": "UTC",
+      "tested_sha": "e56b3d917dfa08d0e6b7c8bb46be69a6625bd73d",
+      "deployed_revision": null,
+      "evidence_ids": [
+        "EV-L7-I-09"
+      ],
+      "notes": "Automated assertion evidence; fixture UUIDs were not retained as standalone evidence. No claim of manual execution or live deployment.",
+      "evidence_files": [
+        "regression-vitest.log",
+        "focused-cr01.log",
+        "browser-e2e-coverage.log"
+      ]
+    },
+    {
+      "case_id": "LIVE-01",
+      "phase": "deployed",
+      "ac_test": "NFR-07 / #87",
+      "planned_steps_input": "Compare /api/ready version to full main merge SHA",
+      "expected_result": "HTTPS200, ready, DBconnected, exact SHA; retain Date and run timestamp",
+      "actual_input": null,
+      "actual_result": null,
+      "status": "NOT_EXECUTED",
+      "tester": null,
+      "role": null,
+      "fixture_ids": [],
+      "before_state": null,
+      "after_state": null,
+      "executed_at": null,
+      "timezone": "Asia/Bangkok",
+      "tested_sha": null,
+      "deployed_revision": null,
+      "evidence_ids": [],
+      "notes": null
+    },
+    {
+      "case_id": "LIVE-02",
+      "phase": "deployed",
+      "ac_test": "AC-07 / TEST-08",
+      "planned_steps_input": "Synthetic create UI: invalid `ab`/two emoji then valid padded title",
+      "expected_result": "UI rejects invalid without request; valid API201 and normalized persisted readback",
+      "actual_input": null,
+      "actual_result": null,
+      "status": "NOT_EXECUTED",
+      "tester": null,
+      "role": null,
+      "fixture_ids": [],
+      "before_state": null,
+      "after_state": null,
+      "executed_at": null,
+      "timezone": "Asia/Bangkok",
+      "tested_sha": null,
+      "deployed_revision": null,
+      "evidence_ids": [],
+      "notes": null
+    },
+    {
+      "case_id": "LIVE-03",
+      "phase": "deployed",
+      "ac_test": "AC-37/40 / TEST-48/52",
+      "planned_steps_input": "Edit synthetic owned event: invalid then valid title",
+      "expected_result": "Invalid does not persist; valid PATCH200; reload/GET retains new title",
+      "actual_input": null,
+      "actual_result": null,
+      "status": "NOT_EXECUTED",
+      "tester": null,
+      "role": null,
+      "fixture_ids": [],
+      "before_state": null,
+      "after_state": null,
+      "executed_at": null,
+      "timezone": "Asia/Bangkok",
+      "tested_sha": null,
+      "deployed_revision": null,
+      "evidence_ids": [],
+      "notes": null
+    },
+    {
+      "case_id": "LIVE-04",
+      "phase": "deployed",
+      "ac_test": "AC-37/40 / TEST-48/52",
+      "planned_steps_input": "Eligible pre-deployment LEGACY: change only capacity",
+      "expected_result": "PATCH omits title; saved capacity; title unchanged; BLOCKED if no eligible record",
+      "actual_input": null,
+      "actual_result": null,
+      "status": "NOT_EXECUTED",
+      "tester": null,
+      "role": null,
+      "fixture_ids": [],
+      "before_state": null,
+      "after_state": null,
+      "executed_at": null,
+      "timezone": "Asia/Bangkok",
+      "tested_sha": null,
+      "deployed_revision": null,
+      "evidence_ids": [],
+      "notes": null
+    },
+    {
+      "case_id": "LIVE-05",
+      "phase": "deployed",
+      "ac_test": "AC-10/19/22/40",
+      "planned_steps_input": "Anonymous/participant attempt organizer write; cross-owner valid request / private reference",
+      "expected_result": "Backend contract401/403/404; no data changes; do not expose private bodies",
+      "actual_input": null,
+      "actual_result": null,
+      "status": "NOT_EXECUTED",
+      "tester": null,
+      "role": null,
+      "fixture_ids": [],
+      "before_state": null,
+      "after_state": null,
+      "executed_at": null,
+      "timezone": "Asia/Bangkok",
+      "tested_sha": null,
+      "deployed_revision": null,
+      "evidence_ids": [],
+      "notes": null
+    },
+    {
+      "case_id": "LIVE-06",
+      "phase": "deployed",
+      "ac_test": "AC-12–14/18/21",
+      "planned_steps_input": "FLOW: A registers; own/roster read; duplicate A request and full B request",
+      "expected_result": "Persisted reference and ACTIVE1; duplicate409 ALREADY_REGISTERED; full409 EVENT_FULL; ACTIVE remains1",
+      "actual_input": null,
+      "actual_result": null,
+      "status": "NOT_EXECUTED",
+      "tester": null,
+      "role": null,
+      "fixture_ids": [],
+      "before_state": null,
+      "after_state": null,
+      "executed_at": null,
+      "timezone": "Asia/Bangkok",
+      "tested_sha": null,
+      "deployed_revision": null,
+      "evidence_ids": [],
+      "notes": null
+    }
+  ],
+  "release_decision": {
+    "status": "RELEASE_PENDING",
+    "reviewer": null,
+    "reviewed_at": null,
+    "blockers": [],
+    "limitations": [
+      "No release/main merge/deploy/tag or live checks performed in this step.",
+      "No independent UAT claimed.",
+      "Test DB migration setup is automated local environment setup, not teammate TEST-35 clean reproduction."
+    ]
+  },
+  "verification_context": {
+    "application_base_sha": "e56b3d917dfa08d0e6b7c8bb46be69a6625bd73d",
+    "application_source_unchanged": true,
+    "added_test": "tests/e2e/lab7-integration.spec.ts",
+    "added_test_sha256": "c5ca1538ddecaf6868dca44e21a7475933a40c79735b6ab67665d3914134f60f",
+    "notes": "Existing suites ran first on e56b3d9; three integration browser cases were then added and the full browser suite rerun. This is coverage addition, not a new RED claim."
+  }
+}

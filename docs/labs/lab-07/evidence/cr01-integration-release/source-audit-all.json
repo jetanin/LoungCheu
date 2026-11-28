@@ -1,0 +1,86 @@
+{
+  "testedCommit": "e56b3d917dfa08d0e6b7c8bb46be69a6625bd73d",
+  "branch": "test/87-lab7-integration",
+  "phase": "all",
+  "node": "v22.23.2",
+  "tester": "Jetanin Naitho (jetanin); automated execution via Codex",
+  "database": {
+    "host": "127.0.0.1",
+    "port": 55433,
+    "name": "loungcheu_test",
+    "version": "PostgreSQL 17.11 on x86_64-pc-linux-musl, compiled by gcc (Alpine 15.2.0) 15.2.0, 64-bit",
+    "migrations": [
+      "202611060001_auth",
+      "202611060002_registration_extension",
+      "202611240001_registration_lifecycle",
+      "202611270001_registration_attendance"
+    ]
+  },
+  "browserPorts": {
+    "web": 5173,
+    "api": 3001
+  },
+  "startedUtc": "2026-11-28T10:50:12.364Z",
+  "before": {
+    "server/src": {
+      "files": 36,
+      "sha256": "25099713f373b165b73fdc8f0d4b040106996a1d2be78242db6cb13f61b01d3e"
+    },
+    "server/prisma": {
+      "files": 8,
+      "sha256": "c55196183483fb0d8e6991166657c0f002087decd85a9f8be2e327921707e14b"
+    },
+    "client/src": {
+      "files": 28,
+      "sha256": "a88e2a4497409c82569e9b32ae20e5b82ef3345402869266bba539fb160e971a"
+    },
+    "server/tests": {
+      "files": 30,
+      "sha256": "b13a7e374acb4568f9da0a64b8d50dc5c916b478c77e337d41f7f3dcedb69d13"
+    },
+    "tests/e2e": {
+      "files": 13,
+      "sha256": "46d8e66bd1917d9f716ef65e677ab111556ed032a186178b0a879db71eb7e957"
+    },
+    "scripts": {
+      "files": 10,
+      "sha256": "49b335dad528c148ebb94dd5d27c45dcfabdc3491a50f00ad083cc79753ccd9d"
+    },
+    ".github/workflows": {
+      "files": 2,
+      "sha256": "8e05f574f5a26fb2135c433a6cef3c55fa56353ee2e59fe80b03bb43e673f8ad"
+    }
+  },
+  "finishedUtc": "2026-11-28T10:54:02.403Z",
+  "sourceAndTestFilesUnchangedDuringRun": true,
+  "after": {
+    "server/src": {
+      "files": 36,
+      "sha256": "25099713f373b165b73fdc8f0d4b040106996a1d2be78242db6cb13f61b01d3e"
+    },
+    "server/prisma": {
+      "files": 8,
+      "sha256": "c55196183483fb0d8e6991166657c0f002087decd85a9f8be2e327921707e14b"
+    },
+    "client/src": {
+      "files": 28,
+      "sha256": "a88e2a4497409c82569e9b32ae20e5b82ef3345402869266bba539fb160e971a"
+    },
+    "server/tests": {
+      "files": 30,
+      "sha256": "b13a7e374acb4568f9da0a64b8d50dc5c916b478c77e337d41f7f3dcedb69d13"
+    },
+    "tests/e2e": {
+      "files": 13,
+      "sha256": "46d8e66bd1917d9f716ef65e677ab111556ed032a186178b0a879db71eb7e957"
+    },
+    "scripts": {
+      "files": 10,
+      "sha256": "49b335dad528c148ebb94dd5d27c45dcfabdc3491a50f00ad083cc79753ccd9d"
+    },
+    ".github/workflows": {
+      "files": 2,
+      "sha256": "8e05f574f5a26fb2135c433a6cef3c55fa56353ee2e59fe80b03bb43e673f8ad"
+    }
+  }
+}

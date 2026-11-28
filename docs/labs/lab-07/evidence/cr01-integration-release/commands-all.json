@@ -1,0 +1,103 @@
+[
+  {
+    "command": "node node_modules/typescript/bin/tsc --noEmit -p server/tsconfig.json",
+    "log": "typecheck-server.log",
+    "startedUtc": "2026-11-28T10:50:12.365Z",
+    "testedCommit": "e56b3d917dfa08d0e6b7c8bb46be69a6625bd73d",
+    "finishedUtc": "2026-11-28T10:50:18.334Z",
+    "exitCode": 0,
+    "status": "PASS",
+    "summary": []
+  },
+  {
+    "command": "node node_modules/typescript/bin/tsc --noEmit -p client/tsconfig.json",
+    "log": "typecheck-client.log",
+    "startedUtc": "2026-11-28T10:50:18.337Z",
+    "testedCommit": "e56b3d917dfa08d0e6b7c8bb46be69a6625bd73d",
+    "finishedUtc": "2026-11-28T10:50:21.033Z",
+    "exitCode": 0,
+    "status": "PASS",
+    "summary": []
+  },
+  {
+    "command": "node node_modules/typescript/bin/tsc --noEmit -p tsconfig.tools.json",
+    "log": "typecheck-tools.log",
+    "startedUtc": "2026-11-28T10:50:21.037Z",
+    "testedCommit": "e56b3d917dfa08d0e6b7c8bb46be69a6625bd73d",
+    "finishedUtc": "2026-11-28T10:50:23.328Z",
+    "exitCode": 0,
+    "status": "PASS",
+    "summary": []
+  },
+  {
+    "command": "node node_modules/vitest/vitest.mjs run server/tests/integration/event-title-maintenance.test.ts client/src/features/events --reporter=verbose",
+    "log": "focused-cr01.log",
+    "startedUtc": "2026-11-28T10:50:23.329Z",
+    "testedCommit": "e56b3d917dfa08d0e6b7c8bb46be69a6625bd73d",
+    "finishedUtc": "2026-11-28T10:50:55.287Z",
+    "exitCode": 0,
+    "status": "PASS",
+    "summary": [
+      "Test Files  4 passed (4)",
+      "Tests  72 passed (72)"
+    ]
+  },
+  {
+    "command": "node node_modules/vitest/vitest.mjs run --reporter=default",
+    "log": "regression-vitest.log",
+    "startedUtc": "2026-11-28T10:50:55.289Z",
+    "testedCommit": "e56b3d917dfa08d0e6b7c8bb46be69a6625bd73d",
+    "finishedUtc": "2026-11-28T10:52:44.544Z",
+    "exitCode": 0,
+    "status": "PASS",
+    "summary": [
+      "Test Files  39 passed (39)",
+      "Tests  434 passed (434)"
+    ]
+  },
+  {
+    "command": "node node_modules/vite/bin/vite.js build client --config client/vite.config.ts",
+    "log": "build-client.log",
+    "startedUtc": "2026-11-28T10:52:44.545Z",
+    "testedCommit": "e56b3d917dfa08d0e6b7c8bb46be69a6625bd73d",
+    "finishedUtc": "2026-11-28T10:52:46.793Z",
+    "exitCode": 0,
+    "status": "PASS",
+    "summary": []
+  },
+  {
+    "command": "node node_modules/typescript/bin/tsc -p server/tsconfig.build.json",
+    "log": "build-server.log",
+    "startedUtc": "2026-11-28T10:52:46.794Z",
+    "testedCommit": "e56b3d917dfa08d0e6b7c8bb46be69a6625bd73d",
+    "finishedUtc": "2026-11-28T10:52:48.235Z",
+    "exitCode": 0,
+    "status": "PASS",
+    "summary": []
+  },
+  {
+    "command": "node scripts/smoke-built.mjs",
+    "log": "compiled-smoke.log",
+    "startedUtc": "2026-11-28T10:52:48.237Z",
+    "testedCommit": "e56b3d917dfa08d0e6b7c8bb46be69a6625bd73d",
+    "finishedUtc": "2026-11-28T10:52:48.742Z",
+    "exitCode": 0,
+    "status": "PASS",
+    "summary": [
+      "Built production app smoke: SPA /login, database health/version, readiness, unknown API JSON 404: 4 passed."
+    ]
+  },
+  {
+    "command": "node node_modules/@playwright/test/cli.js test",
+    "log": "browser-e2e.log",
+    "startedUtc": "2026-11-28T10:52:48.743Z",
+    "testedCommit": "e56b3d917dfa08d0e6b7c8bb46be69a6625bd73d",
+    "finishedUtc": "2026-11-28T10:54:02.392Z",
+    "exitCode": 0,
+    "status": "PASS",
+    "summary": [
+      "ok  7 tests\\e2e\\auth.spec.ts:37:1 › F-01 failed logout clears private UI and offers a working retry (527ms)",
+      "43 passed (1.2m)"
+    ]
+  }
+]

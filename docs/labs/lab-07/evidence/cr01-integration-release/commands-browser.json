@@ -1,0 +1,25 @@
+[
+  {
+    "command": "node node_modules/typescript/bin/tsc --noEmit -p tsconfig.tools.json",
+    "log": "typecheck-tools-coverage.log",
+    "startedUtc": "2026-11-28T11:05:50.273Z",
+    "testedCommit": "e56b3d917dfa08d0e6b7c8bb46be69a6625bd73d",
+    "finishedUtc": "2026-11-28T11:05:57.522Z",
+    "exitCode": 0,
+    "status": "PASS",
+    "summary": []
+  },
+  {
+    "command": "node node_modules/@playwright/test/cli.js test",
+    "log": "browser-e2e-coverage.log",
+    "startedUtc": "2026-11-28T11:05:57.524Z",
+    "testedCommit": "e56b3d917dfa08d0e6b7c8bb46be69a6625bd73d",
+    "finishedUtc": "2026-11-28T11:07:23.227Z",
+    "exitCode": 0,
+    "status": "PASS",
+    "summary": [
+      "ok  7 tests\\e2e\\auth.spec.ts:37:1 › F-01 failed logout clears private UI and offers a working retry (571ms)",
+      "46 passed (1.4m)"
+    ]
+  }
+]

@@ -1,0 +1,13 @@
+CR-01 integration / #87
+Tested commit: e56b3d917dfa08d0e6b7c8bb46be69a6625bd73d
+Branch: test/87-lab7-integration
+Tester: Jetanin Naitho (jetanin), automated execution via Codex
+Node: v22.23.2
+Started UTC: 2026-11-28T10:52:48.237Z
+Finished UTC: 2026-11-28T10:52:48.742Z
+Command: node scripts/smoke-built.mjs
+Target: Docker test DB 127.0.0.1:55433 / loungcheu_test
+Browser ports: web 5173 / API 3001
+Exit: 0
+
+Built production app smoke: SPA /login, database health/version, readiness, unknown API JSON 404: 4 passed.
