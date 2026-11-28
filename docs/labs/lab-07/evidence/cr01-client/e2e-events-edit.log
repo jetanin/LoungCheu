@@ -1,0 +1,19 @@
+[WebServer] (node:40876) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+[WebServer] (Use `node --trace-warnings ...` to show where the warning was created)
+[WebServer] (node:37992) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+[WebServer] (Use `node --trace-warnings ...` to show where the warning was created)
+
+Running 8 tests using 1 worker
+
+(node:44464) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ok 1 tests\e2e\event-edit.spec.ts:25:1 › TEST-52 / AC-40 Organizer edits DRAFT and PUBLISHED events; CLOSED has no edit (4.1s)
+  ok 2 tests\e2e\events.spec.ts:10:1 › CR-01 TEST-08/52 rejects short titles in the browser and preserves create, edit, read and access (2.9s)
+  ok 3 tests\e2e\events.spec.ts:65:1 › TEST-07/09/14/36 Organizer creates, previews, publishes; Participant browses persisted shared detail (3.8s)
+  ok 4 tests\e2e\events.spec.ts:158:1 › TEST-14 list loading, empty, failure and retry; detail 404 and publish conflict (1.4s)
+  ok 5 tests\e2e\events.spec.ts:183:1 › TEST-09/14 an older availability refresh cannot overwrite a successful publish (756ms)
+  ok 6 tests\e2e\events.spec.ts:204:69 › F-02/#3 focus and availability refresh preserve RegistrationAction pending (1.5s)
+  ok 7 tests\e2e\events.spec.ts:204:69 › F-02/#3 focus and availability refresh preserve RegistrationAction success (1.5s)
+  ok 8 tests\e2e\events.spec.ts:204:69 › F-02/#3 focus and availability refresh preserve RegistrationAction uncertain (1.5s)
+
+  8 passed (22.2s)

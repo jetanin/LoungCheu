@@ -1,5 +1,8 @@
 import { test, expect, type Browser, type Page } from '@playwright/test';
 import { config } from 'dotenv';
+import { randomUUID } from 'node:crypto';
+import { createDatabaseClient } from '../../server/src/db/client.js';
+import { readTestDatabaseUrl } from '../../server/src/config/database-url.js';
 import { fillEventTime } from './event-form.js';
 
 // F-07 Edit event — Sprint 2 STS TEST-52 (E2E, Chromium), AC-40.
@@ -21,6 +24,41 @@ async function register(browser: Browser, username: string, eventId: string) {
   expect(response.status()).toBe(201);
   return page;
 }
+
+test('CR-01 TEST-52 edits capacity on a real legacy short-title event without revalidating title', async ({ page }) => {
+  const db = createDatabaseClient(readTestDatabaseUrl(process.env.TEST_DATABASE_URL));
+  const eventId = randomUUID();
+  let created = false;
+  try {
+    expect(await db.$queryRaw`SELECT current_database() AS name`).toEqual([{ name: 'loungcheu_test' }]);
+    const owner = await db.user.findUniqueOrThrow({ where: { username: 'organizer.a' } });
+    // Direct DB fixture models a Sprint 1 event that the new create API cannot produce.
+    await db.event.create({ data: { id: eventId, organizerId: owner.id, title: 'ab', description: 'Legacy title fixture',
+      location: 'KMUTT', capacity: 3, status: 'DRAFT', registrationClosesAt: new Date('2099-05-01T02:00:00Z'),
+      startsAt: new Date('2099-05-01T03:00:00Z'), endsAt: new Date('2099-05-01T05:00:00Z') } });
+    created = true;
+
+    await login(page, 'organizer.a');
+    await page.goto(`/organizer/events/${eventId}/edit`);
+    await expect(page.getByLabel('ชื่อกิจกรรม', { exact: true })).toHaveValue('ab');
+    await page.getByLabel('จำนวนที่นั่ง', { exact: true }).fill('4');
+    const patch = page.waitForRequest(request => request.url().endsWith(`/api/organizer/events/${eventId}`) && request.method() === 'PATCH');
+    const response = page.waitForResponse(reply => reply.url().endsWith(`/api/organizer/events/${eventId}`) && reply.request().method() === 'PATCH');
+    await page.getByRole('button', { name: 'บันทึกการแก้ไข' }).click();
+    expect((await patch).postDataJSON()).toEqual({ capacity: 4 });
+    expect((await response).status()).toBe(200);
+    await expect(page).toHaveURL(new RegExp(`/organizer/events/${eventId}$`));
+    await page.reload();
+    await expect(page.getByRole('heading', { name: 'ab' })).toBeVisible();
+    const read = await page.request.get(`/api/organizer/events/${eventId}`);
+    expect(read.status()).toBe(200);
+    expect((await read.json()).data).toMatchObject({ title: 'ab', capacity: 4 });
+    expect(await db.event.findUniqueOrThrow({ where: { id: eventId }, select: { title: true, capacity: true } })).toEqual({ title: 'ab', capacity: 4 });
+  } finally {
+    if (created) await db.event.delete({ where: { id: eventId } });
+    await db.$disconnect();
+  }
+});
 
 test('TEST-52 / AC-40 Organizer edits DRAFT and PUBLISHED events; CLOSED has no edit', async ({ page, browser }) => {
   await login(page, 'organizer.a');

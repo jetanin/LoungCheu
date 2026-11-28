@@ -5,6 +5,17 @@ const values = (): FormValues => ({ title: ' กิจกรรม 🌱 ', descr
   starts_at: '2026-11-07T00:30', ends_at: '2026-11-07T01:30', registration_closes_at: '2026-11-06T23:30' });
 
 describe('F-02 form/time contract audit', () => {
+  it.each(['a', 'ab', '  ab  ', '🌱🌱'])('CR-01 TEST-08 rejects title shorter than 3 code points after trim: %s', title => {
+    expect(validateForm({ ...values(), title }).fields.title).toEqual(['กรุณากรอก 3–120 ตัวอักษร']);
+  });
+  it.each(['abc', '  abc  ', 'กขค', '🌱🌱🌱', 'x'.repeat(120)])('CR-01 TEST-08 accepts title of 3–120 code points: %s', title => {
+    const checked = validateForm({ ...values(), title });
+    expect(checked.fields.title).toBeUndefined();
+    expect(checked.body.title).toBe(title.trim());
+  });
+  it('CR-01 TEST-08 rejects 121 code points', () => {
+    expect(validateForm({ ...values(), title: '🌱'.repeat(121) }).fields.title).toEqual(['กรุณากรอก 3–120 ตัวอักษร']);
+  });
   it.each(['title', 'description', 'location'] as const)('TEST-08 rejects unrepresentable text in %s and permits paired emoji', key => {
     for (const invalid of [String.fromCharCode(0), String.fromCharCode(0xD800), String.fromCharCode(0xDC00)]) expect(validateForm({ ...values(), [key]: `text${invalid}` }).fields[key]).toBeDefined();
     expect(validateForm({ ...values(), [key]: ' 🌱 ภาษาไทย ' }).fields[key]).toBeUndefined();

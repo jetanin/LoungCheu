@@ -1,0 +1,3080 @@
+
+ RUN  v5.1.0 C:/DEV/University/Kmutt/Year3/Term1/CPE334/Final/LoungCheu
+
+ ❯ client/src/features/events/EventEdit.test.tsx (14 tests | 3 failed | 10 skipped) 3553ms
+   ❯ F-07 edit event UI (TEST-52 component, AC-40) (14)
+     × CR-01 refuses a changed short title without PATCH: ab 1241ms
+     × CR-01 refuses a changed short title without PATCH:   ab   1071ms
+     × CR-01 refuses a changed short title without PATCH: 🌱🌱 1132ms
+ ❯ client/src/features/events/model.test.ts (19 tests | 5 failed | 9 skipped) 16ms
+   ❯ F-02 form/time contract audit (19)
+     × CR-01 TEST-08 rejects title shorter than 3 code points after trim: a 7ms
+     × CR-01 TEST-08 rejects title shorter than 3 code points after trim: ab 1ms
+     × CR-01 TEST-08 rejects title shorter than 3 code points after trim:   ab   1ms
+     × CR-01 TEST-08 rejects title shorter than 3 code points after trim: 🌱🌱 1ms
+     × CR-01 TEST-08 rejects 121 code points 2ms
+ ❯ client/src/features/events/EventForm.test.tsx (3 tests | 3 failed) 3521ms
+   ❯ CR-01 TEST-08 create form (AC-07) (3)
+     × shows the 3–120 error and sends no POST for ab 1271ms
+     × shows the 3–120 error and sends no POST for   ab   1135ms
+     × shows the 3–120 error and sends no POST for 🌱🌱 1112ms
+node.exe :
+At line:1 char:1
++ & "C:\Program Files\nodejs/node.exe" "C:\Users\ppkls\AppData\Roaming\ ...
++ ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : NotSpecified: (:String) [], RemoteException
+    + FullyQualifiedErrorId : NativeCommandError
+
+⎯⎯⎯⎯⎯⎯ Failed Tests 11 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  client/src/features/events/EventEdit.test.tsx > F-07 edit event UI (TEST-52 component, AC-40) > CR-01 refuses a
+changed short title without PATCH: ab
+TestingLibraryElementError: Unable to find an element with the text: กรุณากรอก 3–120 ตัวอักษร. This could be because
+the text is broken up by multiple elements. In this case, you can provide a function for your text matcher to make
+your matcher more flexible.
+
+Ignored nodes: comments, script, style
+<body>
+  <div>
+    <section
+      aria-label="แก้ไขกิจกรรม"
+    >
+      <section
+        class="card page-panel"
+      >
+        <div
+          class="mb-4"
+        >
+          <h1
+            class="page-title"
+          >
+            แก้ไขกิจกรรม
+          </h1>
+          <p
+            class="page-subtitle"
+          >
+            แก้ค่าที่ต้องการแล้วบันทึก ระบบจะส่งเฉพาะช่องที่เปลี่ยน
+             · เลือกวันและเวลาเป็นชั่วโมงและนาที ตามเวลาประเทศไทย (Asia/Bangkok)
+          </p>
+        </div>
+        <form
+          aria-busy="false"
+          novalidate=""
+        >
+          <div
+            class="mb-3"
+          >
+            <label
+              class="form-label"
+              for="event-title"
+            >
+              ชื่อกิจกรรม
+            </label>
+            <input
+              aria-invalid="false"
+              class="form-control"
+              id="event-title"
+              type="text"
+              value="ab"
+            />
+          </div>
+          <div
+            class="mb-3"
+          >
+            <label
+              class="form-label"
+              for="event-description"
+            >
+              รายละเอียด
+            </label>
+            <textarea
+              aria-invalid="false"
+              class="form-control"
+              id="event-description"
+            >
+              รายละเอียดเดิม
+            </textarea>
+          </div>
+          <div
+            class="mb-3"
+          >
+            <label
+              class="form-label"
+              for="event-location"
+            >
+              สถานที่
+            </label>
+            <input
+              aria-invalid="false"
+              class="form-control"
+              id="event-location"
+              type="text"
+              value="KMUTT"
+            />
+          </div>
+          <div
+            class="mb-3"
+          >
+            <label
+              class="form-label"
+              for="event-capacity"
+            >
+              จำนวนที่นั่ง
+            </label>
+            <input
+              aria-invalid="false"
+              class="form-control"
+              id="event-capacity"
+              max="1000"
+              min="1"
+              step="1"
+              type="number"
+              value="3"
+            />
+          </div>
+          <div
+            class="event-schedule-grid mb-4"
+          >
+            <fieldset
+              class="event-schedule-field"
+            >
+              <legend>
+                ปิดรับลงทะเบียน
+              </legend>
+              <div
+                class="event-date-time-row"
+              >
+                <input
+                  aria-invalid="false"
+                  aria-label="วันที่ปิดรับลงทะเบียน"
+                  class="form-control"
+                  type="date"
+                  value="2099-01-01"
+                />
+                <input
+                  aria-invalid="false"
+                  aria-label="เวลาปิดรับลงทะเบียน"
+                  class="form-control"
+                  step="60"
+                  type="time"
+                  value="09:00"
+                />
+              </div>
+            </fieldset>
+            <fieldset
+              class="event-schedule-field"
+            >
+              <legend>
+                เริ่มกิจกรรม
+              </legend>
+              <div
+                class="event-date-time-row"
+              >
+                <input
+                  aria-invalid="false"
+                  aria-label="วันที่เริ่มกิจกรรม"
+                  class="form-control"
+                  type="date"
+                  value="2099-01-01"
+                />
+                <input
+                  aria-invalid="false"
+                  aria-label="เวลาเริ่มกิจกรรม"
+                  class="form-control"
+                  step="60"
+                  type="time"
+                  value="10:00"
+                />
+              </div>
+            </fieldset>
+            <fieldset
+              class="event-schedule-field"
+            >
+              <legend>
+                สิ้นสุดกิจกรรม
+              </legend>
+              <div
+                class="event-date-time-row"
+              >
+                <input
+                  aria-invalid="false"
+                  aria-label="วันที่สิ้นสุดกิจกรรม"
+                  class="form-control"
+                  type="date"
+                  value="2099-01-01"
+                />
+                <input
+                  aria-invalid="false"
+                  aria-label="เวลาสิ้นสุดกิจกรรม"
+                  class="form-control"
+                  step="60"
+                  type="time"
+                  value="12:00"
+                />
+              </div>
+            </fieldset>
+            <aside
+              aria-label="เขตเวลากิจกรรม"
+              class="event-schedule-zone"
+            >
+              <svg
+                aria-hidden="true"
+                fill="none"
+                height="22"
+                stroke="currentColor"
+                stroke-width="1.6"
+                viewBox="0 0 24 24"
+                width="22"
+              >
+                <circle
+                  cx="12"
+                  cy="12"
+                  r="9"
+                />
+                <ellipse
+                  cx="12"
+                  cy="12"
+                  rx="4"
+                  ry="9"
+                />
+                <path
+                  d="M3 12h18"
+                />
+              </svg>
+              <div>
+                <strong>
+                  GMT+07:00
+                </strong>
+                <span>
+                  กรุงเทพมหานคร
+                </span>
+                <small>
+                  Asia/Bangkok
+                </small>
+              </div>
+            </aside>
+          </div>
+          <div
+            class="event-actions"
+          >
+            <button
+              class="btn btn-success"
+            >
+              บันทึกการแก้ไข
+            </button>
+            <a
+              class="btn btn-outline-secondary"
+              href="/organizer/events/33333333-3333-4333-8333-333333333333"
+            >
+              ยกเลิก
+            </a>
+          </div>
+        </form>
+      </section>
+    </section>
+  </div>
+</body>
+
+Ignored nodes: comments, script, style
+<body>
+  <div>
+    <section
+      aria-label="แก้ไขกิจกรรม"
+    >
+      <section
+        class="card page-panel"
+      >
+        <div
+          class="mb-4"
+        >
+          <h1
+            class="page-title"
+          >
+            แก้ไขกิจกรรม
+          </h1>
+          <p
+            class="page-subtitle"
+          >
+            แก้ค่าที่ต้องการแล้วบันทึก ระบบจะส่งเฉพาะช่องที่เปลี่ยน
+             · เลือกวันและเวลาเป็นชั่วโมงและนาที ตามเวลาประเทศไทย (Asia/Bangkok)
+          </p>
+        </div>
+        <form
+          aria-busy="false"
+          novalidate=""
+        >
+          <div
+            class="mb-3"
+          >
+            <label
+              class="form-label"
+              for="event-title"
+            >
+              ชื่อกิจกรรม
+            </label>
+            <input
+              aria-invalid="false"
+              class="form-control"
+              id="event-title"
+              type="text"
+              value="ab"
+            />
+          </div>
+          <div
+            class="mb-3"
+          >
+            <label
+              class="form-label"
+              for="event-description"
+            >
+              รายละเอียด
+            </label>
+            <textarea
+              aria-invalid="false"
+              class="form-control"
+              id="event-description"
+            >
+              รายละเอียดเดิม
+            </textarea>
+          </div>
+          <div
+            class="mb-3"
+          >
+            <label
+              class="form-label"
+              for="event-location"
+            >
+              สถานที่
+            </label>
+            <input
+              aria-invalid="false"
+              class="form-control"
+              id="event-location"
+              type="text"
+              value="KMUTT"
+            />
+          </div>
+          <div
+            class="mb-3"
+          >
+            <label
+              class="form-label"
+              for="event-capacity"
+            >
+              จำนวนที่นั่ง
+            </label>
+            <input
+              aria-invalid="false"
+              class="form-control"
+              id="event-capacity"
+              max="1000"
+              min="1"
+              step="1"
+              type="number"
+              value="3"
+            />
+          </div>
+          <div
+            class="event-schedule-grid mb-4"
+          >
+            <fieldset
+              class="event-schedule-field"
+            >
+              <legend>
+                ปิดรับลงทะเบียน
+              </legend>
+              <div
+                class="event-date-time-row"
+              >
+                <input
+                  aria-invalid="false"
+                  aria-label="วันที่ปิดรับลงทะเบียน"
+                  class="form-control"
+                  type="date"
+                  value="2099-01-01"
+                />
+                <input
+                  aria-invalid="false"
+                  aria-label="เวลาปิดรับลงทะเบียน"
+                  class="form-control"
+                  step="60"
+                  type="time"
+                  value="09:00"
+                />
+              </div>
+            </fieldset>
+            <fieldset
+              class="event-schedule-field"
+            >
+              <legend>
+                เริ่มกิจกรรม
+              </legend>
+              <div
+                class="event-date-time-row"
+              >
+                <input
+                  aria-invalid="false"
+                  aria-label="วันที่เริ่มกิจกรรม"
+                  class="form-control"
+                  type="date"
+                  value="2099-01-01"
+                />
+                <input
+                  aria-invalid="false"
+                  aria-label="เวลาเริ่มกิจกรรม"
+                  class="form-control"
+                  step="60"
+                  type="time"
+                  value="10:00"
+                />
+              </div>
+            </fieldset>
+            <fieldset
+              class="event-schedule-field"
+            >
+              <legend>
+                สิ้นสุดกิจกรรม
+              </legend>
+              <div
+                class="event-date-time-row"
+              >
+                <input
+                  aria-invalid="false"
+                  aria-label="วันที่สิ้นสุดกิจกรรม"
+                  class="form-control"
+                  type="date"
+                  value="2099-01-01"
+                />
+                <input
+                  aria-invalid="false"
+                  aria-label="เวลาสิ้นสุดกิจกรรม"
+                  class="form-control"
+                  step="60"
+                  type="time"
+                  value="12:00"
+                />
+              </div>
+            </fieldset>
+            <aside
+              aria-label="เขตเวลากิจกรรม"
+              class="event-schedule-zone"
+            >
+              <svg
+                aria-hidden="true"
+                fill="none"
+                height="22"
+                stroke="currentColor"
+                stroke-width="1.6"
+                viewBox="0 0 24 24"
+                width="22"
+              >
+                <circle
+                  cx="12"
+                  cy="12"
+                  r="9"
+                />
+                <ellipse
+                  cx="12"
+                  cy="12"
+                  rx="4"
+                  ry="9"
+                />
+                <path
+                  d="M3 12h18"
+                />
+              </svg>
+              <div>
+                <strong>
+                  GMT+07:00
+                </strong>
+                <span>
+                  กรุงเทพมหานคร
+                </span>
+                <small>
+                  Asia/Bangkok
+                </small>
+              </div>
+            </aside>
+          </div>
+          <div
+            class="event-actions"
+          >
+            <button
+              class="btn btn-success"
+            >
+              บันทึกการแก้ไข
+            </button>
+            <a
+              class="btn btn-outline-secondary"
+              href="/organizer/events/33333333-3333-4333-8333-333333333333"
+            >
+              ยกเลิก
+            </a>
+          </div>
+        </form>
+      </section>
+    </section>
+  </div>
+</body>
+ ❯ waitForWrapper node_modules/@testing-library/dom/dist/wait-for.js:163:27
+ ❯ node_modules/@testing-library/dom/dist/query-helpers.js:86:33
+ ❯ client/src/features/events/EventEdit.test.tsx:51:25
+     49|     fireEvent.change(field('ชื่อกิจกรรม'), { target: { value: title } …
+     50|     fireEvent.click(saveButton());
+     51|     expect(await screen.findByText('กรุณากรอก 3–120 ตัวอักษร')).toBeTr…
+       |                         ^
+     52|     expect(calls.filter(c => c.method === 'PATCH')).toHaveLength(0);
+     53|   });
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/11]⎯
+
+ FAIL  client/src/features/events/EventEdit.test.tsx > F-07 edit event UI (TEST-52 component, AC-40) > CR-01 refuses a
+changed short title without PATCH:   ab
+TestingLibraryElementError: Unable to find an element with the text: กรุณากรอก 3–120 ตัวอักษร. This could be because
+the text is broken up by multiple elements. In this case, you can provide a function for your text matcher to make
+your matcher more flexible.
+
+Ignored nodes: comments, script, style
+<body>
+  <div>
+    <section
+      aria-label="แก้ไขกิจกรรม"
+    >
+      <section
+        class="card page-panel"
+      >
+        <div
+          class="mb-4"
+        >
+          <h1
+            class="page-title"
+          >
+            แก้ไขกิจกรรม
+          </h1>
+          <p
+            class="page-subtitle"
+          >
+            แก้ค่าที่ต้องการแล้วบันทึก ระบบจะส่งเฉพาะช่องที่เปลี่ยน
+             · เลือกวันและเวลาเป็นชั่วโมงและนาที ตามเวลาประเทศไทย (Asia/Bangkok)
+          </p>
+        </div>
+        <form
+          aria-busy="false"
+          novalidate=""
+        >
+          <div
+            class="mb-3"
+          >
+            <label
+              class="form-label"
+              for="event-title"
+            >
+              ชื่อกิจกรรม
+            </label>
+            <input
+              aria-invalid="false"
+              class="form-control"
+              id="event-title"
+              type="text"
+              value="  ab  "
+            />
+          </div>
+          <div
+            class="mb-3"
+          >
+            <label
+              class="form-label"
+              for="event-description"
+            >
+              รายละเอียด
+            </label>
+            <textarea
+              aria-invalid="false"
+              class="form-control"
+              id="event-description"
+            >
+              รายละเอียดเดิม
+            </textarea>
+          </div>
+          <div
+            class="mb-3"
+          >
+            <label
+              class="form-label"
+              for="event-location"
+            >
+              สถานที่
+            </label>
+            <input
+              aria-invalid="false"
+              class="form-control"
+              id="event-location"
+              type="text"
+              value="KMUTT"
+            />
+          </div>
+          <div
+            class="mb-3"
+          >
+            <label
+              class="form-label"
+              for="event-capacity"
+            >
+              จำนวนที่นั่ง
+            </label>
+            <input
+              aria-invalid="false"
+              class="form-control"
+              id="event-capacity"
+              max="1000"
+              min="1"
+              step="1"
+              type="number"
+              value="3"
+            />
+          </div>
+          <div
+            class="event-schedule-grid mb-4"
+          >
+            <fieldset
+              class="event-schedule-field"
+            >
+              <legend>
+                ปิดรับลงทะเบียน
+              </legend>
+              <div
+                class="event-date-time-row"
+              >
+                <input
+                  aria-invalid="false"
+                  aria-label="วันที่ปิดรับลงทะเบียน"
+                  class="form-control"
+                  type="date"
+                  value="2099-01-01"
+                />
+                <input
+                  aria-invalid="false"
+                  aria-label="เวลาปิดรับลงทะเบียน"
+                  class="form-control"
+                  step="60"
+                  type="time"
+                  value="09:00"
+                />
+              </div>
+            </fieldset>
+            <fieldset
+              class="event-schedule-field"
+            >
+              <legend>
+                เริ่มกิจกรรม
+              </legend>
+              <div
+                class="event-date-time-row"
+              >
+                <input
+                  aria-invalid="false"
+                  aria-label="วันที่เริ่มกิจกรรม"
+                  class="form-control"
+                  type="date"
+                  value="2099-01-01"
+                />
+                <input
+                  aria-invalid="false"
+                  aria-label="เวลาเริ่มกิจกรรม"
+                  class="form-control"
+                  step="60"
+                  type="time"
+                  value="10:00"
+                />
+              </div>
+            </fieldset>
+            <fieldset
+              class="event-schedule-field"
+            >
+              <legend>
+                สิ้นสุดกิจกรรม
+              </legend>
+              <div
+                class="event-date-time-row"
+              >
+                <input
+                  aria-invalid="false"
+                  aria-label="วันที่สิ้นสุดกิจกรรม"
+                  class="form-control"
+                  type="date"
+                  value="2099-01-01"
+                />
+                <input
+                  aria-invalid="false"
+                  aria-label="เวลาสิ้นสุดกิจกรรม"
+                  class="form-control"
+                  step="60"
+                  type="time"
+                  value="12:00"
+                />
+              </div>
+            </fieldset>
+            <aside
+              aria-label="เขตเวลากิจกรรม"
+              class="event-schedule-zone"
+            >
+              <svg
+                aria-hidden="true"
+                fill="none"
+                height="22"
+                stroke="currentColor"
+                stroke-width="1.6"
+                viewBox="0 0 24 24"
+                width="22"
+              >
+                <circle
+                  cx="12"
+                  cy="12"
+                  r="9"
+                />
+                <ellipse
+                  cx="12"
+                  cy="12"
+                  rx="4"
+                  ry="9"
+                />
+                <path
+                  d="M3 12h18"
+                />
+              </svg>
+              <div>
+                <strong>
+                  GMT+07:00
+                </strong>
+                <span>
+                  กรุงเทพมหานคร
+                </span>
+                <small>
+                  Asia/Bangkok
+                </small>
+              </div>
+            </aside>
+          </div>
+          <div
+            class="event-actions"
+          >
+            <button
+              class="btn btn-success"
+            >
+              บันทึกการแก้ไข
+            </button>
+            <a
+              class="btn btn-outline-secondary"
+              href="/organizer/events/33333333-3333-4333-8333-333333333333"
+            >
+              ยกเลิก
+            </a>
+          </div>
+        </form>
+      </section>
+    </section>
+  </div>
+</body>
+
+Ignored nodes: comments, script, style
+<body>
+  <div>
+    <section
+      aria-label="แก้ไขกิจกรรม"
+    >
+      <section
+        class="card page-panel"
+      >
+        <div
+          class="mb-4"
+        >
+          <h1
+            class="page-title"
+          >
+            แก้ไขกิจกรรม
+          </h1>
+          <p
+            class="page-subtitle"
+          >
+            แก้ค่าที่ต้องการแล้วบันทึก ระบบจะส่งเฉพาะช่องที่เปลี่ยน
+             · เลือกวันและเวลาเป็นชั่วโมงและนาที ตามเวลาประเทศไทย (Asia/Bangkok)
+          </p>
+        </div>
+        <form
+          aria-busy="false"
+          novalidate=""
+        >
+          <div
+            class="mb-3"
+          >
+            <label
+              class="form-label"
+              for="event-title"
+            >
+              ชื่อกิจกรรม
+            </label>
+            <input
+              aria-invalid="false"
+              class="form-control"
+              id="event-title"
+              type="text"
+              value="  ab  "
+            />
+          </div>
+          <div
+            class="mb-3"
+          >
+            <label
+              class="form-label"
+              for="event-description"
+            >
+              รายละเอียด
+            </label>
+            <textarea
+              aria-invalid="false"
+              class="form-control"
+              id="event-description"
+            >
+              รายละเอียดเดิม
+            </textarea>
+          </div>
+          <div
+            class="mb-3"
+          >
+            <label
+              class="form-label"
+              for="event-location"
+            >
+              สถานที่
+            </label>
+            <input
+              aria-invalid="false"
+              class="form-control"
+              id="event-location"
+              type="text"
+              value="KMUTT"
+            />
+          </div>
+          <div
+            class="mb-3"
+          >
+            <label
+              class="form-label"
+              for="event-capacity"
+            >
+              จำนวนที่นั่ง
+            </label>
+            <input
+              aria-invalid="false"
+              class="form-control"
+              id="event-capacity"
+              max="1000"
+              min="1"
+              step="1"
+              type="number"
+              value="3"
+            />
+          </div>
+          <div
+            class="event-schedule-grid mb-4"
+          >
+            <fieldset
+              class="event-schedule-field"
+            >
+              <legend>
+                ปิดรับลงทะเบียน
+              </legend>
+              <div
+                class="event-date-time-row"
+              >
+                <input
+                  aria-invalid="false"
+                  aria-label="วันที่ปิดรับลงทะเบียน"
+                  class="form-control"
+                  type="date"
+                  value="2099-01-01"
+                />
+                <input
+                  aria-invalid="false"
+                  aria-label="เวลาปิดรับลงทะเบียน"
+                  class="form-control"
+                  step="60"
+                  type="time"
+                  value="09:00"
+                />
+              </div>
+            </fieldset>
+            <fieldset
+              class="event-schedule-field"
+            >
+              <legend>
+                เริ่มกิจกรรม
+              </legend>
+              <div
+                class="event-date-time-row"
+              >
+                <input
+                  aria-invalid="false"
+                  aria-label="วันที่เริ่มกิจกรรม"
+                  class="form-control"
+                  type="date"
+                  value="2099-01-01"
+                />
+                <input
+                  aria-invalid="false"
+                  aria-label="เวลาเริ่มกิจกรรม"
+                  class="form-control"
+                  step="60"
+                  type="time"
+                  value="10:00"
+                />
+              </div>
+            </fieldset>
+            <fieldset
+              class="event-schedule-field"
+            >
+              <legend>
+                สิ้นสุดกิจกรรม
+              </legend>
+              <div
+                class="event-date-time-row"
+              >
+                <input
+                  aria-invalid="false"
+                  aria-label="วันที่สิ้นสุดกิจกรรม"
+                  class="form-control"
+                  type="date"
+                  value="2099-01-01"
+                />
+                <input
+                  aria-invalid="false"
+                  aria-label="เวลาสิ้นสุดกิจกรรม"
+                  class="form-control"
+                  step="60"
+                  type="time"
+                  value="12:00"
+                />
+              </div>
+            </fieldset>
+            <aside
+              aria-label="เขตเวลากิจกรรม"
+              class="event-schedule-zone"
+            >
+              <svg
+                aria-hidden="true"
+                fill="none"
+                height="22"
+                stroke="currentColor"
+                stroke-width="1.6"
+                viewBox="0 0 24 24"
+                width="22"
+              >
+                <circle
+                  cx="12"
+                  cy="12"
+                  r="9"
+                />
+                <ellipse
+                  cx="12"
+                  cy="12"
+                  rx="4"
+                  ry="9"
+                />
+                <path
+                  d="M3 12h18"
+                />
+              </svg>
+              <div>
+                <strong>
+                  GMT+07:00
+                </strong>
+                <span>
+                  กรุงเทพมหานคร
+                </span>
+                <small>
+                  Asia/Bangkok
+                </small>
+              </div>
+            </aside>
+          </div>
+          <div
+            class="event-actions"
+          >
+            <button
+              class="btn btn-success"
+            >
+              บันทึกการแก้ไข
+            </button>
+            <a
+              class="btn btn-outline-secondary"
+              href="/organizer/events/33333333-3333-4333-8333-333333333333"
+            >
+              ยกเลิก
+            </a>
+          </div>
+        </form>
+      </section>
+    </section>
+  </div>
+</body>
+ ❯ waitForWrapper node_modules/@testing-library/dom/dist/wait-for.js:163:27
+ ❯ node_modules/@testing-library/dom/dist/query-helpers.js:86:33
+ ❯ client/src/features/events/EventEdit.test.tsx:51:25
+     49|     fireEvent.change(field('ชื่อกิจกรรม'), { target: { value: title } …
+     50|     fireEvent.click(saveButton());
+     51|     expect(await screen.findByText('กรุณากรอก 3–120 ตัวอักษร')).toBeTr…
+       |                         ^
+     52|     expect(calls.filter(c => c.method === 'PATCH')).toHaveLength(0);
+     53|   });
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[2/11]⎯
+
+ FAIL  client/src/features/events/EventEdit.test.tsx > F-07 edit event UI (TEST-52 component, AC-40) > CR-01 refuses a
+changed short title without PATCH: 🌱🌱
+TestingLibraryElementError: Unable to find an element with the text: กรุณากรอก 3–120 ตัวอักษร. This could be because
+the text is broken up by multiple elements. In this case, you can provide a function for your text matcher to make
+your matcher more flexible.
+
+Ignored nodes: comments, script, style
+<body>
+  <div>
+    <section
+      aria-label="แก้ไขกิจกรรม"
+    >
+      <section
+        class="card page-panel"
+      >
+        <div
+          class="mb-4"
+        >
+          <h1
+            class="page-title"
+          >
+            แก้ไขกิจกรรม
+          </h1>
+          <p
+            class="page-subtitle"
+          >
+            แก้ค่าที่ต้องการแล้วบันทึก ระบบจะส่งเฉพาะช่องที่เปลี่ยน
+             · เลือกวันและเวลาเป็นชั่วโมงและนาที ตามเวลาประเทศไทย (Asia/Bangkok)
+          </p>
+        </div>
+        <form
+          aria-busy="false"
+          novalidate=""
+        >
+          <div
+            class="mb-3"
+          >
+            <label
+              class="form-label"
+              for="event-title"
+            >
+              ชื่อกิจกรรม
+            </label>
+            <input
+              aria-invalid="false"
+              class="form-control"
+              id="event-title"
+              type="text"
+              value="🌱🌱"
+            />
+          </div>
+          <div
+            class="mb-3"
+          >
+            <label
+              class="form-label"
+              for="event-description"
+            >
+              รายละเอียด
+            </label>
+            <textarea
+              aria-invalid="false"
+              class="form-control"
+              id="event-description"
+            >
+              รายละเอียดเดิม
+            </textarea>
+          </div>
+          <div
+            class="mb-3"
+          >
+            <label
+              class="form-label"
+              for="event-location"
+            >
+              สถานที่
+            </label>
+            <input
+              aria-invalid="false"
+              class="form-control"
+              id="event-location"
+              type="text"
+              value="KMUTT"
+            />
+          </div>
+          <div
+            class="mb-3"
+          >
+            <label
+              class="form-label"
+              for="event-capacity"
+            >
+              จำนวนที่นั่ง
+            </label>
+            <input
+              aria-invalid="false"
+              class="form-control"
+              id="event-capacity"
+              max="1000"
+              min="1"
+              step="1"
+              type="number"
+              value="3"
+            />
+          </div>
+          <div
+            class="event-schedule-grid mb-4"
+          >
+            <fieldset
+              class="event-schedule-field"
+            >
+              <legend>
+                ปิดรับลงทะเบียน
+              </legend>
+              <div
+                class="event-date-time-row"
+              >
+                <input
+                  aria-invalid="false"
+                  aria-label="วันที่ปิดรับลงทะเบียน"
+                  class="form-control"
+                  type="date"
+                  value="2099-01-01"
+                />
+                <input
+                  aria-invalid="false"
+                  aria-label="เวลาปิดรับลงทะเบียน"
+                  class="form-control"
+                  step="60"
+                  type="time"
+                  value="09:00"
+                />
+              </div>
+            </fieldset>
+            <fieldset
+              class="event-schedule-field"
+            >
+              <legend>
+                เริ่มกิจกรรม
+              </legend>
+              <div
+                class="event-date-time-row"
+              >
+                <input
+                  aria-invalid="false"
+                  aria-label="วันที่เริ่มกิจกรรม"
+                  class="form-control"
+                  type="date"
+                  value="2099-01-01"
+                />
+                <input
+                  aria-invalid="false"
+                  aria-label="เวลาเริ่มกิจกรรม"
+                  class="form-control"
+                  step="60"
+                  type="time"
+                  value="10:00"
+                />
+              </div>
+            </fieldset>
+            <fieldset
+              class="event-schedule-field"
+            >
+              <legend>
+                สิ้นสุดกิจกรรม
+              </legend>
+              <div
+                class="event-date-time-row"
+              >
+                <input
+                  aria-invalid="false"
+                  aria-label="วันที่สิ้นสุดกิจกรรม"
+                  class="form-control"
+                  type="date"
+                  value="2099-01-01"
+                />
+                <input
+                  aria-invalid="false"
+                  aria-label="เวลาสิ้นสุดกิจกรรม"
+                  class="form-control"
+                  step="60"
+                  type="time"
+                  value="12:00"
+                />
+              </div>
+            </fieldset>
+            <aside
+              aria-label="เขตเวลากิจกรรม"
+              class="event-schedule-zone"
+            >
+              <svg
+                aria-hidden="true"
+                fill="none"
+                height="22"
+                stroke="currentColor"
+                stroke-width="1.6"
+                viewBox="0 0 24 24"
+                width="22"
+              >
+                <circle
+                  cx="12"
+                  cy="12"
+                  r="9"
+                />
+                <ellipse
+                  cx="12"
+                  cy="12"
+                  rx="4"
+                  ry="9"
+                />
+                <path
+                  d="M3 12h18"
+                />
+              </svg>
+              <div>
+                <strong>
+                  GMT+07:00
+                </strong>
+                <span>
+                  กรุงเทพมหานคร
+                </span>
+                <small>
+                  Asia/Bangkok
+                </small>
+              </div>
+            </aside>
+          </div>
+          <div
+            class="event-actions"
+          >
+            <button
+              class="btn btn-success"
+            >
+              บันทึกการแก้ไข
+            </button>
+            <a
+              class="btn btn-outline-secondary"
+              href="/organizer/events/33333333-3333-4333-8333-333333333333"
+            >
+              ยกเลิก
+            </a>
+          </div>
+        </form>
+      </section>
+    </section>
+  </div>
+</body>
+
+Ignored nodes: comments, script, style
+<body>
+  <div>
+    <section
+      aria-label="แก้ไขกิจกรรม"
+    >
+      <section
+        class="card page-panel"
+      >
+        <div
+          class="mb-4"
+        >
+          <h1
+            class="page-title"
+          >
+            แก้ไขกิจกรรม
+          </h1>
+          <p
+            class="page-subtitle"
+          >
+            แก้ค่าที่ต้องการแล้วบันทึก ระบบจะส่งเฉพาะช่องที่เปลี่ยน
+             · เลือกวันและเวลาเป็นชั่วโมงและนาที ตามเวลาประเทศไทย (Asia/Bangkok)
+          </p>
+        </div>
+        <form
+          aria-busy="false"
+          novalidate=""
+        >
+          <div
+            class="mb-3"
+          >
+            <label
+              class="form-label"
+              for="event-title"
+            >
+              ชื่อกิจกรรม
+            </label>
+            <input
+              aria-invalid="false"
+              class="form-control"
+              id="event-title"
+              type="text"
+              value="🌱🌱"
+            />
+          </div>
+          <div
+            class="mb-3"
+          >
+            <label
+              class="form-label"
+              for="event-description"
+            >
+              รายละเอียด
+            </label>
+            <textarea
+              aria-invalid="false"
+              class="form-control"
+              id="event-description"
+            >
+              รายละเอียดเดิม
+            </textarea>
+          </div>
+          <div
+            class="mb-3"
+          >
+            <label
+              class="form-label"
+              for="event-location"
+            >
+              สถานที่
+            </label>
+            <input
+              aria-invalid="false"
+              class="form-control"
+              id="event-location"
+              type="text"
+              value="KMUTT"
+            />
+          </div>
+          <div
+            class="mb-3"
+          >
+            <label
+              class="form-label"
+              for="event-capacity"
+            >
+              จำนวนที่นั่ง
+            </label>
+            <input
+              aria-invalid="false"
+              class="form-control"
+              id="event-capacity"
+              max="1000"
+              min="1"
+              step="1"
+              type="number"
+              value="3"
+            />
+          </div>
+          <div
+            class="event-schedule-grid mb-4"
+          >
+            <fieldset
+              class="event-schedule-field"
+            >
+              <legend>
+                ปิดรับลงทะเบียน
+              </legend>
+              <div
+                class="event-date-time-row"
+              >
+                <input
+                  aria-invalid="false"
+                  aria-label="วันที่ปิดรับลงทะเบียน"
+                  class="form-control"
+                  type="date"
+                  value="2099-01-01"
+                />
+                <input
+                  aria-invalid="false"
+                  aria-label="เวลาปิดรับลงทะเบียน"
+                  class="form-control"
+                  step="60"
+                  type="time"
+                  value="09:00"
+                />
+              </div>
+            </fieldset>
+            <fieldset
+              class="event-schedule-field"
+            >
+              <legend>
+                เริ่มกิจกรรม
+              </legend>
+              <div
+                class="event-date-time-row"
+              >
+                <input
+                  aria-invalid="false"
+                  aria-label="วันที่เริ่มกิจกรรม"
+                  class="form-control"
+                  type="date"
+                  value="2099-01-01"
+                />
+                <input
+                  aria-invalid="false"
+                  aria-label="เวลาเริ่มกิจกรรม"
+                  class="form-control"
+                  step="60"
+                  type="time"
+                  value="10:00"
+                />
+              </div>
+            </fieldset>
+            <fieldset
+              class="event-schedule-field"
+            >
+              <legend>
+                สิ้นสุดกิจกรรม
+              </legend>
+              <div
+                class="event-date-time-row"
+              >
+                <input
+                  aria-invalid="false"
+                  aria-label="วันที่สิ้นสุดกิจกรรม"
+                  class="form-control"
+                  type="date"
+                  value="2099-01-01"
+                />
+                <input
+                  aria-invalid="false"
+                  aria-label="เวลาสิ้นสุดกิจกรรม"
+                  class="form-control"
+                  step="60"
+                  type="time"
+                  value="12:00"
+                />
+              </div>
+            </fieldset>
+            <aside
+              aria-label="เขตเวลากิจกรรม"
+              class="event-schedule-zone"
+            >
+              <svg
+                aria-hidden="true"
+                fill="none"
+                height="22"
+                stroke="currentColor"
+                stroke-width="1.6"
+                viewBox="0 0 24 24"
+                width="22"
+              >
+                <circle
+                  cx="12"
+                  cy="12"
+                  r="9"
+                />
+                <ellipse
+                  cx="12"
+                  cy="12"
+                  rx="4"
+                  ry="9"
+                />
+                <path
+                  d="M3 12h18"
+                />
+              </svg>
+              <div>
+                <strong>
+                  GMT+07:00
+                </strong>
+                <span>
+                  กรุงเทพมหานคร
+                </span>
+                <small>
+                  Asia/Bangkok
+                </small>
+              </div>
+            </aside>
+          </div>
+          <div
+            class="event-actions"
+          >
+            <button
+              class="btn btn-success"
+            >
+              บันทึกการแก้ไข
+            </button>
+            <a
+              class="btn btn-outline-secondary"
+              href="/organizer/events/33333333-3333-4333-8333-333333333333"
+            >
+              ยกเลิก
+            </a>
+          </div>
+        </form>
+      </section>
+    </section>
+  </div>
+</body>
+ ❯ waitForWrapper node_modules/@testing-library/dom/dist/wait-for.js:163:27
+ ❯ node_modules/@testing-library/dom/dist/query-helpers.js:86:33
+ ❯ client/src/features/events/EventEdit.test.tsx:51:25
+     49|     fireEvent.change(field('ชื่อกิจกรรม'), { target: { value: title } …
+     50|     fireEvent.click(saveButton());
+     51|     expect(await screen.findByText('กรุณากรอก 3–120 ตัวอักษร')).toBeTr…
+       |                         ^
+     52|     expect(calls.filter(c => c.method === 'PATCH')).toHaveLength(0);
+     53|   });
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[3/11]⎯
+
+ FAIL  client/src/features/events/EventForm.test.tsx > CR-01 TEST-08 create form (AC-07) > shows the 3–120 error and
+sends no POST for ab
+TestingLibraryElementError: Unable to find an element with the text: กรุณากรอก 3–120 ตัวอักษร. This could be because
+the text is broken up by multiple elements. In this case, you can provide a function for your text matcher to make
+your matcher more flexible.
+
+Ignored nodes: comments, script, style
+<body>
+  <div>
+    <section
+      class="card page-panel"
+    >
+      <div
+        class="mb-4"
+      >
+        <h1
+          class="page-title"
+        >
+          สร้างกิจกรรม
+        </h1>
+        <p
+          class="page-subtitle"
+        >
+          บันทึกเป็น DRAFT แล้วตรวจตัวอย่างก่อนเผยแพร่
+           · เลือกวันและเวลาเป็นชั่วโมงและนาที ตามเวลาประเทศไทย (Asia/Bangkok)
+        </p>
+      </div>
+      <form
+        aria-busy="false"
+        novalidate=""
+      >
+        <div
+          class="mb-3"
+        >
+          <label
+            class="form-label"
+            for="event-title"
+          >
+            ชื่อกิจกรรม
+          </label>
+          <input
+            aria-invalid="false"
+            class="form-control"
+            id="event-title"
+            type="text"
+            value="ab"
+          />
+        </div>
+        <div
+          class="mb-3"
+        >
+          <label
+            class="form-label"
+            for="event-description"
+          >
+            รายละเอียด
+          </label>
+          <textarea
+            aria-invalid="false"
+            class="form-control"
+            id="event-description"
+          >
+            รายละเอียด
+          </textarea>
+        </div>
+        <div
+          class="mb-3"
+        >
+          <label
+            class="form-label"
+            for="event-location"
+          >
+            สถานที่
+          </label>
+          <input
+            aria-invalid="false"
+            class="form-control"
+            id="event-location"
+            type="text"
+            value="บางมด"
+          />
+        </div>
+        <div
+          class="mb-3"
+        >
+          <label
+            class="form-label"
+            for="event-capacity"
+          >
+            จำนวนที่นั่ง
+          </label>
+          <input
+            aria-invalid="false"
+            class="form-control"
+            id="event-capacity"
+            max="1000"
+            min="1"
+            step="1"
+            type="number"
+            value="2"
+          />
+        </div>
+        <div
+          class="event-schedule-grid mb-4"
+        >
+          <fieldset
+            class="event-schedule-field"
+          >
+            <legend>
+              ปิดรับลงทะเบียน
+            </legend>
+            <div
+              class="event-date-time-row"
+            >
+              <input
+                aria-invalid="false"
+                aria-label="วันที่ปิดรับลงทะเบียน"
+                class="form-control"
+                type="date"
+                value="2099-01-01"
+              />
+              <input
+                aria-invalid="false"
+                aria-label="เวลาปิดรับลงทะเบียน"
+                class="form-control"
+                step="60"
+                type="time"
+                value="09:00"
+              />
+            </div>
+          </fieldset>
+          <fieldset
+            class="event-schedule-field"
+          >
+            <legend>
+              เริ่มกิจกรรม
+            </legend>
+            <div
+              class="event-date-time-row"
+            >
+              <input
+                aria-invalid="false"
+                aria-label="วันที่เริ่มกิจกรรม"
+                class="form-control"
+                type="date"
+                value="2099-01-01"
+              />
+              <input
+                aria-invalid="false"
+                aria-label="เวลาเริ่มกิจกรรม"
+                class="form-control"
+                step="60"
+                type="time"
+                value="10:00"
+              />
+            </div>
+          </fieldset>
+          <fieldset
+            class="event-schedule-field"
+          >
+            <legend>
+              สิ้นสุดกิจกรรม
+            </legend>
+            <div
+              class="event-date-time-row"
+            >
+              <input
+                aria-invalid="false"
+                aria-label="วันที่สิ้นสุดกิจกรรม"
+                class="form-control"
+                type="date"
+                value="2099-01-01"
+              />
+              <input
+                aria-invalid="false"
+                aria-label="เวลาสิ้นสุดกิจกรรม"
+                class="form-control"
+                step="60"
+                type="time"
+                value="12:00"
+              />
+            </div>
+          </fieldset>
+          <aside
+            aria-label="เขตเวลากิจกรรม"
+            class="event-schedule-zone"
+          >
+            <svg
+              aria-hidden="true"
+              fill="none"
+              height="22"
+              stroke="currentColor"
+              stroke-width="1.6"
+              viewBox="0 0 24 24"
+              width="22"
+            >
+              <circle
+                cx="12"
+                cy="12"
+                r="9"
+              />
+              <ellipse
+                cx="12"
+                cy="12"
+                rx="4"
+                ry="9"
+              />
+              <path
+                d="M3 12h18"
+              />
+            </svg>
+            <div>
+              <strong>
+                GMT+07:00
+              </strong>
+              <span>
+                กรุงเทพมหานคร
+              </span>
+              <small>
+                Asia/Bangkok
+              </small>
+            </div>
+          </aside>
+        </div>
+        <p
+          class="alert alert-warning"
+          role="alert"
+        >
+          ยังยืนยันผลการบันทึกไม่ได้ กรุณาตรวจรายการกิจกรรมของฉันก่อนบันทึกซ้ำ
+
+          <a
+            href="/organizer/events"
+          >
+            กิจกรรมของฉัน
+          </a>
+        </p>
+        <button
+          class="btn btn-success"
+        >
+          บันทึก DRAFT
+        </button>
+      </form>
+    </section>
+  </div>
+</body>
+
+Ignored nodes: comments, script, style
+<body>
+  <div>
+    <section
+      class="card page-panel"
+    >
+      <div
+        class="mb-4"
+      >
+        <h1
+          class="page-title"
+        >
+          สร้างกิจกรรม
+        </h1>
+        <p
+          class="page-subtitle"
+        >
+          บันทึกเป็น DRAFT แล้วตรวจตัวอย่างก่อนเผยแพร่
+           · เลือกวันและเวลาเป็นชั่วโมงและนาที ตามเวลาประเทศไทย (Asia/Bangkok)
+        </p>
+      </div>
+      <form
+        aria-busy="false"
+        novalidate=""
+      >
+        <div
+          class="mb-3"
+        >
+          <label
+            class="form-label"
+            for="event-title"
+          >
+            ชื่อกิจกรรม
+          </label>
+          <input
+            aria-invalid="false"
+            class="form-control"
+            id="event-title"
+            type="text"
+            value="ab"
+          />
+        </div>
+        <div
+          class="mb-3"
+        >
+          <label
+            class="form-label"
+            for="event-description"
+          >
+            รายละเอียด
+          </label>
+          <textarea
+            aria-invalid="false"
+            class="form-control"
+            id="event-description"
+          >
+            รายละเอียด
+          </textarea>
+        </div>
+        <div
+          class="mb-3"
+        >
+          <label
+            class="form-label"
+            for="event-location"
+          >
+            สถานที่
+          </label>
+          <input
+            aria-invalid="false"
+            class="form-control"
+            id="event-location"
+            type="text"
+            value="บางมด"
+          />
+        </div>
+        <div
+          class="mb-3"
+        >
+          <label
+            class="form-label"
+            for="event-capacity"
+          >
+            จำนวนที่นั่ง
+          </label>
+          <input
+            aria-invalid="false"
+            class="form-control"
+            id="event-capacity"
+            max="1000"
+            min="1"
+            step="1"
+            type="number"
+            value="2"
+          />
+        </div>
+        <div
+          class="event-schedule-grid mb-4"
+        >
+          <fieldset
+            class="event-schedule-field"
+          >
+            <legend>
+              ปิดรับลงทะเบียน
+            </legend>
+            <div
+              class="event-date-time-row"
+            >
+              <input
+                aria-invalid="false"
+                aria-label="วันที่ปิดรับลงทะเบียน"
+                class="form-control"
+                type="date"
+                value="2099-01-01"
+              />
+              <input
+                aria-invalid="false"
+                aria-label="เวลาปิดรับลงทะเบียน"
+                class="form-control"
+                step="60"
+                type="time"
+                value="09:00"
+              />
+            </div>
+          </fieldset>
+          <fieldset
+            class="event-schedule-field"
+          >
+            <legend>
+              เริ่มกิจกรรม
+            </legend>
+            <div
+              class="event-date-time-row"
+            >
+              <input
+                aria-invalid="false"
+                aria-label="วันที่เริ่มกิจกรรม"
+                class="form-control"
+                type="date"
+                value="2099-01-01"
+              />
+              <input
+                aria-invalid="false"
+                aria-label="เวลาเริ่มกิจกรรม"
+                class="form-control"
+                step="60"
+                type="time"
+                value="10:00"
+              />
+            </div>
+          </fieldset>
+          <fieldset
+            class="event-schedule-field"
+          >
+            <legend>
+              สิ้นสุดกิจกรรม
+            </legend>
+            <div
+              class="event-date-time-row"
+            >
+              <input
+                aria-invalid="false"
+                aria-label="วันที่สิ้นสุดกิจกรรม"
+                class="form-control"
+                type="date"
+                value="2099-01-01"
+              />
+              <input
+                aria-invalid="false"
+                aria-label="เวลาสิ้นสุดกิจกรรม"
+                class="form-control"
+                step="60"
+                type="time"
+                value="12:00"
+              />
+            </div>
+          </fieldset>
+          <aside
+            aria-label="เขตเวลากิจกรรม"
+            class="event-schedule-zone"
+          >
+            <svg
+              aria-hidden="true"
+              fill="none"
+              height="22"
+              stroke="currentColor"
+              stroke-width="1.6"
+              viewBox="0 0 24 24"
+              width="22"
+            >
+              <circle
+                cx="12"
+                cy="12"
+                r="9"
+              />
+              <ellipse
+                cx="12"
+                cy="12"
+                rx="4"
+                ry="9"
+              />
+              <path
+                d="M3 12h18"
+              />
+            </svg>
+            <div>
+              <strong>
+                GMT+07:00
+              </strong>
+              <span>
+                กรุงเทพมหานคร
+              </span>
+              <small>
+                Asia/Bangkok
+              </small>
+            </div>
+          </aside>
+        </div>
+        <p
+          class="alert alert-warning"
+          role="alert"
+        >
+          ยังยืนยันผลการบันทึกไม่ได้ กรุณาตรวจรายการกิจกรรมของฉันก่อนบันทึกซ้ำ
+
+          <a
+            href="/organizer/events"
+          >
+            กิจกรรมของฉัน
+          </a>
+        </p>
+        <button
+          class="btn btn-success"
+        >
+          บันทึก DRAFT
+        </button>
+      </form>
+    </section>
+  </div>
+</body>
+ ❯ waitForWrapper node_modules/@testing-library/dom/dist/wait-for.js:163:27
+ ❯ node_modules/@testing-library/dom/dist/query-helpers.js:86:33
+ ❯ client/src/features/events/EventForm.test.tsx:20:25
+     18|     ]) fireEvent.change(screen.getByLabelText(label, { exact: true }),…
+     19|     fireEvent.click(screen.getByRole('button', { name: 'บันทึก DRAFT' …
+     20|     expect(await screen.findByText('กรุณากรอก 3–120 ตัวอักษร')).toBeTr…
+       |                         ^
+     21|     expect(fetch).not.toHaveBeenCalled();
+     22|   });
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[4/11]⎯
+
+ FAIL  client/src/features/events/EventForm.test.tsx > CR-01 TEST-08 create form (AC-07) > shows the 3–120 error and
+sends no POST for   ab
+TestingLibraryElementError: Unable to find an element with the text: กรุณากรอก 3–120 ตัวอักษร. This could be because
+the text is broken up by multiple elements. In this case, you can provide a function for your text matcher to make
+your matcher more flexible.
+
+Ignored nodes: comments, script, style
+<body>
+  <div>
+    <section
+      class="card page-panel"
+    >
+      <div
+        class="mb-4"
+      >
+        <h1
+          class="page-title"
+        >
+          สร้างกิจกรรม
+        </h1>
+        <p
+          class="page-subtitle"
+        >
+          บันทึกเป็น DRAFT แล้วตรวจตัวอย่างก่อนเผยแพร่
+           · เลือกวันและเวลาเป็นชั่วโมงและนาที ตามเวลาประเทศไทย (Asia/Bangkok)
+        </p>
+      </div>
+      <form
+        aria-busy="false"
+        novalidate=""
+      >
+        <div
+          class="mb-3"
+        >
+          <label
+            class="form-label"
+            for="event-title"
+          >
+            ชื่อกิจกรรม
+          </label>
+          <input
+            aria-invalid="false"
+            class="form-control"
+            id="event-title"
+            type="text"
+            value="  ab  "
+          />
+        </div>
+        <div
+          class="mb-3"
+        >
+          <label
+            class="form-label"
+            for="event-description"
+          >
+            รายละเอียด
+          </label>
+          <textarea
+            aria-invalid="false"
+            class="form-control"
+            id="event-description"
+          >
+            รายละเอียด
+          </textarea>
+        </div>
+        <div
+          class="mb-3"
+        >
+          <label
+            class="form-label"
+            for="event-location"
+          >
+            สถานที่
+          </label>
+          <input
+            aria-invalid="false"
+            class="form-control"
+            id="event-location"
+            type="text"
+            value="บางมด"
+          />
+        </div>
+        <div
+          class="mb-3"
+        >
+          <label
+            class="form-label"
+            for="event-capacity"
+          >
+            จำนวนที่นั่ง
+          </label>
+          <input
+            aria-invalid="false"
+            class="form-control"
+            id="event-capacity"
+            max="1000"
+            min="1"
+            step="1"
+            type="number"
+            value="2"
+          />
+        </div>
+        <div
+          class="event-schedule-grid mb-4"
+        >
+          <fieldset
+            class="event-schedule-field"
+          >
+            <legend>
+              ปิดรับลงทะเบียน
+            </legend>
+            <div
+              class="event-date-time-row"
+            >
+              <input
+                aria-invalid="false"
+                aria-label="วันที่ปิดรับลงทะเบียน"
+                class="form-control"
+                type="date"
+                value="2099-01-01"
+              />
+              <input
+                aria-invalid="false"
+                aria-label="เวลาปิดรับลงทะเบียน"
+                class="form-control"
+                step="60"
+                type="time"
+                value="09:00"
+              />
+            </div>
+          </fieldset>
+          <fieldset
+            class="event-schedule-field"
+          >
+            <legend>
+              เริ่มกิจกรรม
+            </legend>
+            <div
+              class="event-date-time-row"
+            >
+              <input
+                aria-invalid="false"
+                aria-label="วันที่เริ่มกิจกรรม"
+                class="form-control"
+                type="date"
+                value="2099-01-01"
+              />
+              <input
+                aria-invalid="false"
+                aria-label="เวลาเริ่มกิจกรรม"
+                class="form-control"
+                step="60"
+                type="time"
+                value="10:00"
+              />
+            </div>
+          </fieldset>
+          <fieldset
+            class="event-schedule-field"
+          >
+            <legend>
+              สิ้นสุดกิจกรรม
+            </legend>
+            <div
+              class="event-date-time-row"
+            >
+              <input
+                aria-invalid="false"
+                aria-label="วันที่สิ้นสุดกิจกรรม"
+                class="form-control"
+                type="date"
+                value="2099-01-01"
+              />
+              <input
+                aria-invalid="false"
+                aria-label="เวลาสิ้นสุดกิจกรรม"
+                class="form-control"
+                step="60"
+                type="time"
+                value="12:00"
+              />
+            </div>
+          </fieldset>
+          <aside
+            aria-label="เขตเวลากิจกรรม"
+            class="event-schedule-zone"
+          >
+            <svg
+              aria-hidden="true"
+              fill="none"
+              height="22"
+              stroke="currentColor"
+              stroke-width="1.6"
+              viewBox="0 0 24 24"
+              width="22"
+            >
+              <circle
+                cx="12"
+                cy="12"
+                r="9"
+              />
+              <ellipse
+                cx="12"
+                cy="12"
+                rx="4"
+                ry="9"
+              />
+              <path
+                d="M3 12h18"
+              />
+            </svg>
+            <div>
+              <strong>
+                GMT+07:00
+              </strong>
+              <span>
+                กรุงเทพมหานคร
+              </span>
+              <small>
+                Asia/Bangkok
+              </small>
+            </div>
+          </aside>
+        </div>
+        <p
+          class="alert alert-warning"
+          role="alert"
+        >
+          ยังยืนยันผลการบันทึกไม่ได้ กรุณาตรวจรายการกิจกรรมของฉันก่อนบันทึกซ้ำ
+
+          <a
+            href="/organizer/events"
+          >
+            กิจกรรมของฉัน
+          </a>
+        </p>
+        <button
+          class="btn btn-success"
+        >
+          บันทึก DRAFT
+        </button>
+      </form>
+    </section>
+  </div>
+</body>
+
+Ignored nodes: comments, script, style
+<body>
+  <div>
+    <section
+      class="card page-panel"
+    >
+      <div
+        class="mb-4"
+      >
+        <h1
+          class="page-title"
+        >
+          สร้างกิจกรรม
+        </h1>
+        <p
+          class="page-subtitle"
+        >
+          บันทึกเป็น DRAFT แล้วตรวจตัวอย่างก่อนเผยแพร่
+           · เลือกวันและเวลาเป็นชั่วโมงและนาที ตามเวลาประเทศไทย (Asia/Bangkok)
+        </p>
+      </div>
+      <form
+        aria-busy="false"
+        novalidate=""
+      >
+        <div
+          class="mb-3"
+        >
+          <label
+            class="form-label"
+            for="event-title"
+          >
+            ชื่อกิจกรรม
+          </label>
+          <input
+            aria-invalid="false"
+            class="form-control"
+            id="event-title"
+            type="text"
+            value="  ab  "
+          />
+        </div>
+        <div
+          class="mb-3"
+        >
+          <label
+            class="form-label"
+            for="event-description"
+          >
+            รายละเอียด
+          </label>
+          <textarea
+            aria-invalid="false"
+            class="form-control"
+            id="event-description"
+          >
+            รายละเอียด
+          </textarea>
+        </div>
+        <div
+          class="mb-3"
+        >
+          <label
+            class="form-label"
+            for="event-location"
+          >
+            สถานที่
+          </label>
+          <input
+            aria-invalid="false"
+            class="form-control"
+            id="event-location"
+            type="text"
+            value="บางมด"
+          />
+        </div>
+        <div
+          class="mb-3"
+        >
+          <label
+            class="form-label"
+            for="event-capacity"
+          >
+            จำนวนที่นั่ง
+          </label>
+          <input
+            aria-invalid="false"
+            class="form-control"
+            id="event-capacity"
+            max="1000"
+            min="1"
+            step="1"
+            type="number"
+            value="2"
+          />
+        </div>
+        <div
+          class="event-schedule-grid mb-4"
+        >
+          <fieldset
+            class="event-schedule-field"
+          >
+            <legend>
+              ปิดรับลงทะเบียน
+            </legend>
+            <div
+              class="event-date-time-row"
+            >
+              <input
+                aria-invalid="false"
+                aria-label="วันที่ปิดรับลงทะเบียน"
+                class="form-control"
+                type="date"
+                value="2099-01-01"
+              />
+              <input
+                aria-invalid="false"
+                aria-label="เวลาปิดรับลงทะเบียน"
+                class="form-control"
+                step="60"
+                type="time"
+                value="09:00"
+              />
+            </div>
+          </fieldset>
+          <fieldset
+            class="event-schedule-field"
+          >
+            <legend>
+              เริ่มกิจกรรม
+            </legend>
+            <div
+              class="event-date-time-row"
+            >
+              <input
+                aria-invalid="false"
+                aria-label="วันที่เริ่มกิจกรรม"
+                class="form-control"
+                type="date"
+                value="2099-01-01"
+              />
+              <input
+                aria-invalid="false"
+                aria-label="เวลาเริ่มกิจกรรม"
+                class="form-control"
+                step="60"
+                type="time"
+                value="10:00"
+              />
+            </div>
+          </fieldset>
+          <fieldset
+            class="event-schedule-field"
+          >
+            <legend>
+              สิ้นสุดกิจกรรม
+            </legend>
+            <div
+              class="event-date-time-row"
+            >
+              <input
+                aria-invalid="false"
+                aria-label="วันที่สิ้นสุดกิจกรรม"
+                class="form-control"
+                type="date"
+                value="2099-01-01"
+              />
+              <input
+                aria-invalid="false"
+                aria-label="เวลาสิ้นสุดกิจกรรม"
+                class="form-control"
+                step="60"
+                type="time"
+                value="12:00"
+              />
+            </div>
+          </fieldset>
+          <aside
+            aria-label="เขตเวลากิจกรรม"
+            class="event-schedule-zone"
+          >
+            <svg
+              aria-hidden="true"
+              fill="none"
+              height="22"
+              stroke="currentColor"
+              stroke-width="1.6"
+              viewBox="0 0 24 24"
+              width="22"
+            >
+              <circle
+                cx="12"
+                cy="12"
+                r="9"
+              />
+              <ellipse
+                cx="12"
+                cy="12"
+                rx="4"
+                ry="9"
+              />
+              <path
+                d="M3 12h18"
+              />
+            </svg>
+            <div>
+              <strong>
+                GMT+07:00
+              </strong>
+              <span>
+                กรุงเทพมหานคร
+              </span>
+              <small>
+                Asia/Bangkok
+              </small>
+            </div>
+          </aside>
+        </div>
+        <p
+          class="alert alert-warning"
+          role="alert"
+        >
+          ยังยืนยันผลการบันทึกไม่ได้ กรุณาตรวจรายการกิจกรรมของฉันก่อนบันทึกซ้ำ
+
+          <a
+            href="/organizer/events"
+          >
+            กิจกรรมของฉัน
+          </a>
+        </p>
+        <button
+          class="btn btn-success"
+        >
+          บันทึก DRAFT
+        </button>
+      </form>
+    </section>
+  </div>
+</body>
+ ❯ waitForWrapper node_modules/@testing-library/dom/dist/wait-for.js:163:27
+ ❯ node_modules/@testing-library/dom/dist/query-helpers.js:86:33
+ ❯ client/src/features/events/EventForm.test.tsx:20:25
+     18|     ]) fireEvent.change(screen.getByLabelText(label, { exact: true }),…
+     19|     fireEvent.click(screen.getByRole('button', { name: 'บันทึก DRAFT' …
+     20|     expect(await screen.findByText('กรุณากรอก 3–120 ตัวอักษร')).toBeTr…
+       |                         ^
+     21|     expect(fetch).not.toHaveBeenCalled();
+     22|   });
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[5/11]⎯
+
+ FAIL  client/src/features/events/EventForm.test.tsx > CR-01 TEST-08 create form (AC-07) > shows the 3–120 error and
+sends no POST for 🌱🌱
+TestingLibraryElementError: Unable to find an element with the text: กรุณากรอก 3–120 ตัวอักษร. This could be because
+the text is broken up by multiple elements. In this case, you can provide a function for your text matcher to make
+your matcher more flexible.
+
+Ignored nodes: comments, script, style
+<body>
+  <div>
+    <section
+      class="card page-panel"
+    >
+      <div
+        class="mb-4"
+      >
+        <h1
+          class="page-title"
+        >
+          สร้างกิจกรรม
+        </h1>
+        <p
+          class="page-subtitle"
+        >
+          บันทึกเป็น DRAFT แล้วตรวจตัวอย่างก่อนเผยแพร่
+           · เลือกวันและเวลาเป็นชั่วโมงและนาที ตามเวลาประเทศไทย (Asia/Bangkok)
+        </p>
+      </div>
+      <form
+        aria-busy="false"
+        novalidate=""
+      >
+        <div
+          class="mb-3"
+        >
+          <label
+            class="form-label"
+            for="event-title"
+          >
+            ชื่อกิจกรรม
+          </label>
+          <input
+            aria-invalid="false"
+            class="form-control"
+            id="event-title"
+            type="text"
+            value="🌱🌱"
+          />
+        </div>
+        <div
+          class="mb-3"
+        >
+          <label
+            class="form-label"
+            for="event-description"
+          >
+            รายละเอียด
+          </label>
+          <textarea
+            aria-invalid="false"
+            class="form-control"
+            id="event-description"
+          >
+            รายละเอียด
+          </textarea>
+        </div>
+        <div
+          class="mb-3"
+        >
+          <label
+            class="form-label"
+            for="event-location"
+          >
+            สถานที่
+          </label>
+          <input
+            aria-invalid="false"
+            class="form-control"
+            id="event-location"
+            type="text"
+            value="บางมด"
+          />
+        </div>
+        <div
+          class="mb-3"
+        >
+          <label
+            class="form-label"
+            for="event-capacity"
+          >
+            จำนวนที่นั่ง
+          </label>
+          <input
+            aria-invalid="false"
+            class="form-control"
+            id="event-capacity"
+            max="1000"
+            min="1"
+            step="1"
+            type="number"
+            value="2"
+          />
+        </div>
+        <div
+          class="event-schedule-grid mb-4"
+        >
+          <fieldset
+            class="event-schedule-field"
+          >
+            <legend>
+              ปิดรับลงทะเบียน
+            </legend>
+            <div
+              class="event-date-time-row"
+            >
+              <input
+                aria-invalid="false"
+                aria-label="วันที่ปิดรับลงทะเบียน"
+                class="form-control"
+                type="date"
+                value="2099-01-01"
+              />
+              <input
+                aria-invalid="false"
+                aria-label="เวลาปิดรับลงทะเบียน"
+                class="form-control"
+                step="60"
+                type="time"
+                value="09:00"
+              />
+            </div>
+          </fieldset>
+          <fieldset
+            class="event-schedule-field"
+          >
+            <legend>
+              เริ่มกิจกรรม
+            </legend>
+            <div
+              class="event-date-time-row"
+            >
+              <input
+                aria-invalid="false"
+                aria-label="วันที่เริ่มกิจกรรม"
+                class="form-control"
+                type="date"
+                value="2099-01-01"
+              />
+              <input
+                aria-invalid="false"
+                aria-label="เวลาเริ่มกิจกรรม"
+                class="form-control"
+                step="60"
+                type="time"
+                value="10:00"
+              />
+            </div>
+          </fieldset>
+          <fieldset
+            class="event-schedule-field"
+          >
+            <legend>
+              สิ้นสุดกิจกรรม
+            </legend>
+            <div
+              class="event-date-time-row"
+            >
+              <input
+                aria-invalid="false"
+                aria-label="วันที่สิ้นสุดกิจกรรม"
+                class="form-control"
+                type="date"
+                value="2099-01-01"
+              />
+              <input
+                aria-invalid="false"
+                aria-label="เวลาสิ้นสุดกิจกรรม"
+                class="form-control"
+                step="60"
+                type="time"
+                value="12:00"
+              />
+            </div>
+          </fieldset>
+          <aside
+            aria-label="เขตเวลากิจกรรม"
+            class="event-schedule-zone"
+          >
+            <svg
+              aria-hidden="true"
+              fill="none"
+              height="22"
+              stroke="currentColor"
+              stroke-width="1.6"
+              viewBox="0 0 24 24"
+              width="22"
+            >
+              <circle
+                cx="12"
+                cy="12"
+                r="9"
+              />
+              <ellipse
+                cx="12"
+                cy="12"
+                rx="4"
+                ry="9"
+              />
+              <path
+                d="M3 12h18"
+              />
+            </svg>
+            <div>
+              <strong>
+                GMT+07:00
+              </strong>
+              <span>
+                กรุงเทพมหานคร
+              </span>
+              <small>
+                Asia/Bangkok
+              </small>
+            </div>
+          </aside>
+        </div>
+        <p
+          class="alert alert-warning"
+          role="alert"
+        >
+          ยังยืนยันผลการบันทึกไม่ได้ กรุณาตรวจรายการกิจกรรมของฉันก่อนบันทึกซ้ำ
+
+          <a
+            href="/organizer/events"
+          >
+            กิจกรรมของฉัน
+          </a>
+        </p>
+        <button
+          class="btn btn-success"
+        >
+          บันทึก DRAFT
+        </button>
+      </form>
+    </section>
+  </div>
+</body>
+
+Ignored nodes: comments, script, style
+<body>
+  <div>
+    <section
+      class="card page-panel"
+    >
+      <div
+        class="mb-4"
+      >
+        <h1
+          class="page-title"
+        >
+          สร้างกิจกรรม
+        </h1>
+        <p
+          class="page-subtitle"
+        >
+          บันทึกเป็น DRAFT แล้วตรวจตัวอย่างก่อนเผยแพร่
+           · เลือกวันและเวลาเป็นชั่วโมงและนาที ตามเวลาประเทศไทย (Asia/Bangkok)
+        </p>
+      </div>
+      <form
+        aria-busy="false"
+        novalidate=""
+      >
+        <div
+          class="mb-3"
+        >
+          <label
+            class="form-label"
+            for="event-title"
+          >
+            ชื่อกิจกรรม
+          </label>
+          <input
+            aria-invalid="false"
+            class="form-control"
+            id="event-title"
+            type="text"
+            value="🌱🌱"
+          />
+        </div>
+        <div
+          class="mb-3"
+        >
+          <label
+            class="form-label"
+            for="event-description"
+          >
+            รายละเอียด
+          </label>
+          <textarea
+            aria-invalid="false"
+            class="form-control"
+            id="event-description"
+          >
+            รายละเอียด
+          </textarea>
+        </div>
+        <div
+          class="mb-3"
+        >
+          <label
+            class="form-label"
+            for="event-location"
+          >
+            สถานที่
+          </label>
+          <input
+            aria-invalid="false"
+            class="form-control"
+            id="event-location"
+            type="text"
+            value="บางมด"
+          />
+        </div>
+        <div
+          class="mb-3"
+        >
+          <label
+            class="form-label"
+            for="event-capacity"
+          >
+            จำนวนที่นั่ง
+          </label>
+          <input
+            aria-invalid="false"
+            class="form-control"
+            id="event-capacity"
+            max="1000"
+            min="1"
+            step="1"
+            type="number"
+            value="2"
+          />
+        </div>
+        <div
+          class="event-schedule-grid mb-4"
+        >
+          <fieldset
+            class="event-schedule-field"
+          >
+            <legend>
+              ปิดรับลงทะเบียน
+            </legend>
+            <div
+              class="event-date-time-row"
+            >
+              <input
+                aria-invalid="false"
+                aria-label="วันที่ปิดรับลงทะเบียน"
+                class="form-control"
+                type="date"
+                value="2099-01-01"
+              />
+              <input
+                aria-invalid="false"
+                aria-label="เวลาปิดรับลงทะเบียน"
+                class="form-control"
+                step="60"
+                type="time"
+                value="09:00"
+              />
+            </div>
+          </fieldset>
+          <fieldset
+            class="event-schedule-field"
+          >
+            <legend>
+              เริ่มกิจกรรม
+            </legend>
+            <div
+              class="event-date-time-row"
+            >
+              <input
+                aria-invalid="false"
+                aria-label="วันที่เริ่มกิจกรรม"
+                class="form-control"
+                type="date"
+                value="2099-01-01"
+              />
+              <input
+                aria-invalid="false"
+                aria-label="เวลาเริ่มกิจกรรม"
+                class="form-control"
+                step="60"
+                type="time"
+                value="10:00"
+              />
+            </div>
+          </fieldset>
+          <fieldset
+            class="event-schedule-field"
+          >
+            <legend>
+              สิ้นสุดกิจกรรม
+            </legend>
+            <div
+              class="event-date-time-row"
+            >
+
+ Test Files  3 failed (3)
+      Tests  11 failed | 6 passed | 19 skipped (36)
+   Start at  01:57:43
+   Duration  11.73s (tests 64%, environment 27%, import 7%, transform 1%)
+              <input
+                aria-invalid="false"
+                aria-label="วันที่สิ้นสุดกิจกรรม"
+                class="form-control"
+                type="date"
+                value="2099-01-01"
+              />
+              <input
+                aria-invalid="false"
+                aria-label="เวลาสิ้นสุดกิจกรรม"
+                class="form-control"
+                step="60"
+                type="time"
+                value="12:00"
+              />
+            </div>
+          </fieldset>
+          <aside
+            aria-label="เขตเวลากิจกรรม"
+            class="event-schedule-zone"
+          >
+            <svg
+              aria-hidden="true"
+              fill="none"
+              height="22"
+              stroke="currentColor"
+              stroke-width="1.6"
+              viewBox="0 0 24 24"
+              width="22"
+            >
+              <circle
+                cx="12"
+                cy="12"
+                r="9"
+
+    Isolate  3 workers spawned · ~1.16s startup each (spawn + environment, per file)
+             at least ~2.32s faster with isolate: false — reuses workers across files instead of one per file
+
+              />
+              <ellipse
+                cx="12"
+                cy="12"
+                rx="4"
+                ry="9"
+              />
+              <path
+                d="M3 12h18"
+              />
+            </svg>
+            <div>
+              <strong>
+                GMT+07:00
+              </strong>
+              <span>
+                กรุงเทพมหานคร
+              </span>
+              <small>
+                Asia/Bangkok
+              </small>
+            </div>
+          </aside>
+        </div>
+        <p
+          class="alert alert-warning"
+          role="alert"
+        >
+          ยังยืนยันผลการบันทึกไม่ได้ กรุณาตรวจรายการกิจกรรมของฉันก่อนบันทึกซ้ำ
+
+          <a
+            href="/organizer/events"
+          >
+            กิจกรรมของฉัน
+          </a>
+        </p>
+        <button
+          class="btn btn-success"
+        >
+          บันทึก DRAFT
+        </button>
+      </form>
+    </section>
+  </div>
+</body>
+ ❯ waitForWrapper node_modules/@testing-library/dom/dist/wait-for.js:163:27
+ ❯ node_modules/@testing-library/dom/dist/query-helpers.js:86:33
+ ❯ client/src/features/events/EventForm.test.tsx:20:25
+     18|     ]) fireEvent.change(screen.getByLabelText(label, { exact: true }),…
+     19|     fireEvent.click(screen.getByRole('button', { name: 'บันทึก DRAFT' …
+     20|     expect(await screen.findByText('กรุณากรอก 3–120 ตัวอักษร')).toBeTr…
+       |                         ^
+     21|     expect(fetch).not.toHaveBeenCalled();
+     22|   });
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[6/11]⎯
+
+ FAIL  client/src/features/events/model.test.ts > F-02 form/time contract audit > CR-01 TEST-08 rejects title shorter
+than 3 code points after trim: a
+ FAIL  client/src/features/events/model.test.ts > F-02 form/time contract audit > CR-01 TEST-08 rejects title shorter
+than 3 code points after trim: ab
+ FAIL  client/src/features/events/model.test.ts > F-02 form/time contract audit > CR-01 TEST-08 rejects title shorter
+than 3 code points after trim:   ab
+ FAIL  client/src/features/events/model.test.ts > F-02 form/time contract audit > CR-01 TEST-08 rejects title shorter
+than 3 code points after trim: 🌱🌱
+AssertionError: expected undefined to deeply equal [ 'กรุณากรอก 3–120 ตัวอักษร' ]
+
+- Expected:
+[
+  "กรุณากรอก 3–120 ตัวอักษร",
+]
+
++ Received:
+undefined
+
+ ❯ client/src/features/events/model.test.ts:9:63
+      7| describe('F-02 form/time contract audit', () => {
+      8|   it.each(['a', 'ab', '  ab  ', '🌱🌱'])('CR-01 TEST-08 rejects title …
+      9|     expect(validateForm({ ...values(), title }).fields.title).toEqual(…
+       |                                                               ^
+     10|   });
+     11|   it.each(['abc', '  abc  ', 'กขค', '🌱🌱🌱', 'x'.repeat(120)])('CR-01…
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[7/11]⎯
+
+ FAIL  client/src/features/events/model.test.ts > F-02 form/time contract audit > CR-01 TEST-08 rejects 121 code points
+AssertionError: expected [ 'กรุณากรอก 1–120 ตัวอักษร' ] to deeply equal [ 'กรุณากรอก 3–120 ตัวอักษร' ]
+
+- Expected
++ Received
+
+  [
+-   "กรุณากรอก 3–120 ตัวอักษร",
++   "กรุณากรอก 1–120 ตัวอักษร",
+  ]
+
+ ❯ client/src/features/events/model.test.ts:17:81
+     15|   });
+     16|   it('CR-01 TEST-08 rejects 121 code points', () => {
+     17|     expect(validateForm({ ...values(), title: '🌱'.repeat(121) }).fiel…
+       |                                                                                 ^
+     18|   });
+     19|   it.each(['title', 'description', 'location'] as const)('TEST-08 reje…
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[8/11]⎯

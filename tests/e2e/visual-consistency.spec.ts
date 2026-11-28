@@ -110,7 +110,7 @@ for (const width of [1280, 390, 320]) test(`visual consistency: page hierarchy, 
   await inspect('owner-list-error', 'กิจกรรมของฉัน'); ownerRead = 'ready';
   await page.goto('/organizer/events/new'); await inspect('create', 'สร้างกิจกรรม', true);
   await page.getByRole('button', { name: 'บันทึก DRAFT', exact: true }).click();
-  await expect(page.getByText('กรุณากรอก 1–120 ตัวอักษร')).toBeVisible();
+  await expect(page.getByText('กรุณากรอก 3–120 ตัวอักษร')).toBeVisible();
   await inspect('create-invalid', 'สร้างกิจกรรม', true);
   await page.goto(`/organizer/events/${draft.id}`); await inspect('draft-detail', draft.title, true);
   await page.goto(`/organizer/events/${published.id}`); await inspect('owner-detail', published.title, true);

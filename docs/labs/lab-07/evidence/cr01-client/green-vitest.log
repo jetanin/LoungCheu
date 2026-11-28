@@ -1,0 +1,11 @@
+
+ RUN  v5.1.0 C:/DEV/University/Kmutt/Year3/Term1/CPE334/Final/LoungCheu
+
+
+ Test Files  3 passed (3)
+      Tests  36 passed (36)
+   Start at  04:49:45
+   Duration  5.53s (environment 58%, tests 27%, import 14%, transform 1%)
+
+    Isolate  3 workers spawned · ~1.13s startup each (spawn + environment, per file)
+             at least ~2.25s faster with isolate: false — reuses workers across files instead of one per file

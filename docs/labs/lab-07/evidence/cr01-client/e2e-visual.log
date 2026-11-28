@@ -1,0 +1,14 @@
+[WebServer] (node:42028) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+[WebServer] (Use `node --trace-warnings ...` to show where the warning was created)
+[WebServer] (node:31788) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+[WebServer] (Use `node --trace-warnings ...` to show where the warning was created)
+
+Running 3 tests using 1 worker
+
+(node:45240) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ok 1 tests\e2e\visual-consistency.spec.ts:14:39 › visual consistency: page hierarchy, branding, controls and layout at 1280px (4.7s)
+  ok 2 tests\e2e\visual-consistency.spec.ts:14:39 › visual consistency: page hierarchy, branding, controls and layout at 390px (4.3s)
+  ok 3 tests\e2e\visual-consistency.spec.ts:14:39 › visual consistency: page hierarchy, branding, controls and layout at 320px (4.6s)
+
+  3 passed (19.2s)
